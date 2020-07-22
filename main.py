@@ -10,7 +10,10 @@ def render_question(question):
 
 
 @route('/')
-def render_html(title='Magically Delicious', question="are you happy?", answers=[]):
+def poop():
+    return render_html(title='Magically Delicious', question="are you happy?", answers=['Yes','No'])
+
+def render_html(title, question, answers):
     return f"""
 <!DOCTYPE html>
 <html>
@@ -21,10 +24,10 @@ def render_html(title='Magically Delicious', question="are you happy?", answers=
 <section>
 <h1 class="page-title">{title}<h1>
 </section>
-<selection>
+<form>
 <p class='question-asked'>{question}</p>
 <option>{answers[0]}</option>
-</selection>
+</form>
 </body>
 
 </html>"""

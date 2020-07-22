@@ -18,12 +18,6 @@ class TestSomeStuff(unittest.TestCase):
         body_text = soup.body.text
         self.assertIn(title, body_text)
 
-    def test_question_appears_in_selection_body(self):
-        question = 'Does this question appear?'
-        soup = self.render(question=question)
-        selection = soup.body.selection
-        self.assertIn(question, selection.text)
-
     def test_question_appears_in_form(self):
         question = "is this in a form?"
         soup = self.render(question=question)
