@@ -1,15 +1,16 @@
-from bottle import route, run
+from bottle import route, run, template
 
-@route('/')
+
 def render_question(question):
     title = question['title']
     questions = question['questions']
     asked = questions[0].get('question', 'nothing asked')
     answers = questions[0].get('answers', [])
-    return render_html(title=title, question=asked)
+    return render_html(title=title, question=asked, answers=answers)
 
 
-def render_html(title='Magically Delicious', question="are you happy?"):
+@route('/')
+def render_html(title='Magically Delicious', question="are you happy?", answers=[]):
     return f"""
 <!DOCTYPE html>
 <html>
@@ -22,6 +23,7 @@ def render_html(title='Magically Delicious', question="are you happy?"):
 </section>
 <selection>
 <p class='question-asked'>{question}</p>
+<option>{answers[0]}</option>
 </selection>
 </body>
 
