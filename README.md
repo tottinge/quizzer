@@ -1,9 +1,5 @@
 # quizzer
 
-Has anyone seen Perry?  
-
-I am right here!! 
-
 It runs.
 It kinda works.
 Some tests pass.
