@@ -1,19 +1,25 @@
 from bottle import route, run, template
+from box import Box
 
 
 def render_question(question):
-    title = question['title']
-    questions = question['questions']
-    asked = questions[0].get('question', 'nothing asked')
-    answers = questions[0].get('answers', [])
-    return render_html(title=title, question=asked, answers=answers)
+    qbox = Box(question)
+    return render_html(qbox.title, qbox.questions[0])
 
 
 @route('/')
 def poop():
-    return render_html(title='Magically Delicious', question="are you happy?", answers=['Yes','No'])
+    doc = {
+            'title':"Magically Delicious",
+            'questions':[
+                { 'question':"Are you happy now?", 'answers':['Yes','No'] }
+            ]
+    }
+    return render_question(doc)
 
-def render_html(title, question, answers):
+def render_html(title, question):
+    text = question.question
+    answers=question.answers
     return f"""
 <!DOCTYPE html>
 <html>
@@ -21,16 +27,19 @@ def render_html(title, question, answers):
 <title>{title}</title>
 </head>
 <body>
+
 <section>
 <h1 class="page-title">{title}<h1>
 </section>
 <form>
-<p class='question-asked'>{question}</p>
-<option>{answers[0]}</option>
+<p class='question-asked'>{text}</p>
+<input type='radio' name='answer', id={answers[0]}, value={answers[0]}> 
+<label for={answers[0]}>{answers[0]}</label>
+<input type='radio' name='answer', id={answers[1]}, value={answers[1]}> 
+<label for={answers[1]}>{answers[1]}</label>
 </form>
 </body>
-
 </html>"""
 
 if __name__ == '__main__':
-    run(debug=True)
+    run(reloader=True, debug=True)
