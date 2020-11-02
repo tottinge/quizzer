@@ -1,7 +1,7 @@
 import unittest.mock
 from bs4 import BeautifulSoup
 
-from main import render_question
+from main import render_quiz
 
 
 class TestSomeStuff(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestSomeStuff(unittest.TestCase):
     def test_title_appears_as_title(self):
         title = "fred"
         soup = self.render(title=title)
-        found = soup.head.find('title').text
+        found = soup.head.find("title").text
         self.assertIn(title, found, f"Did not find {title} in [{found}]")
 
     def test_title_appears_in_page_body(self):
@@ -24,16 +24,16 @@ class TestSomeStuff(unittest.TestCase):
         selection = soup.body.form
         self.assertIn(question, selection.text)
 
-    def render(self, title="_", question='?', answers=['True','False']):
+    def render(self, title="_", question="?", answers=["True","False"]):
         document = {
-            'title':title,
-            'questions':[
+            "title":title,
+            "questions":[
                 {
-                    'question':question,
-                    'answers':answers
+                    "question":question,
+                    "answers":answers
                 }
             ]
         }
-        markup = render_question(document)
-        soup = BeautifulSoup(markup, 'html.parser')
+        markup = render_quiz(document)
+        soup = BeautifulSoup(markup, "html.parser")
         return soup
