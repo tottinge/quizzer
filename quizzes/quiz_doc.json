@@ -1,13 +1,27 @@
 {
-    "title":"Toy quiz for development",
+    "title":"Development Practice Quiz",
     "questions":[
         { 
-           "question":"Are radio buttons a better choice than regular buttons?", 
-           "answers":["Sure","Nope","It Depends"]
+           "question": "Are radio buttons a better choice than regular buttons?", 
+           "answers": [
+                "Sure",
+                "Nope",
+                "It Depends"
+            ]
         },
+
         {
-           "question":"Are radio buttons a better choice than regular buttons?",
-           "answers":["Sure","Nope"]
+           "question":"Is there a test for this?",
+           "answers":[
+            "There should be",
+            "It's a waste of time"
+           ]
+        },
+
+        {
+            "question": "What if all questions are empty?",
+            "answers": []
         }
+
     ]
 }
