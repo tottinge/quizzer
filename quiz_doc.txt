@@ -1,9 +1,0 @@
-{
-    "title":"Toy quiz for development",
-    "questions":[
-        { 
-           "question":"Are radio buttons a better choice than regular buttons?", 
-           "answers":["Yes","No"] 
-        }
-    ]
-}
