@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from main import render_quiz
 
 
-class TestSomeStuff(unittest.TestCase):
+class TestQuizRendering(unittest.TestCase):
 
     def test_title_appears_as_title(self):
         title = "Page Title"
