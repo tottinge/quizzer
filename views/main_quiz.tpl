@@ -13,8 +13,8 @@
 
     % for answer in answers:
     <div class="form-answer">
-        <input type='radio' name='answer', id={{answer}}, value={{answer}}/>
-        <label for={{answer}}>
+        <input type='radio' name='answer' id='{{answer}}' value='{{answer}}'/>
+        <label for='{{answer}}'>
             {{answer}}
         </label>
     </div>

@@ -24,6 +24,13 @@ class TestQuizRendering(unittest.TestCase):
         selection = soup.body.form
         self.assertIn(question, selection.text)
 
+    def test_answers_appear_in_inputs(self):
+        answers = ["yes", "no"]
+        form_body = self.render(answers=answers)
+        inputs = [tag["value"] for tag in form_body.find_all("input")]
+        self.assertSetEqual(set(answers), set(inputs))
+
+
     def render(self, title="_", question="?", answers=["True","False"]):
         document = {
             "title":title,
