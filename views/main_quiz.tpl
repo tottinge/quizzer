@@ -6,7 +6,7 @@
 <body>
 
 <section>
-<h1 class="page-title">{{title}}<h1>
+<h1 class="page-title">{{title}}</h1>
 </section>
 <form>
     <p class='question-asked'>{{question}}</p>

@@ -18,7 +18,7 @@ def render_quiz(quiz):
 def begin_quiz():
     doc = None
     try:
-        with open("quizzes/quiz_doc.txt") as quiz:
+        with open("quizzes/quiz_doc.json") as quiz:
             doc = json.load(quiz)
     except JSONDecodeError as err:
         print("Quiz file is invalid json")
