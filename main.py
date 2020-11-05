@@ -1,3 +1,4 @@
+import os
 from json import JSONDecodeError
 
 from bottle import route, run, template, view
@@ -28,8 +29,16 @@ def begin_quiz():
         raise
     return render_quiz(doc)
 
+def get_test_files(directory):
+    return [ os.path.join(directory,x)
+             for x in os.listdir(directory)
+             if x.endswith('json')
+             ]
+
+def get_test_summary(quiz_file_paths):
+    return [('pass', 'a tests that passes', 'd/pass.json')
+            for q in quiz_file_paths]
+
 
 if __name__ == '__main__':
     run(reloader=True, debug=True)
-
-

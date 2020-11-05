@@ -1,17 +1,9 @@
-import os
 import unittest
 from unittest.mock import patch
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes
-
-
-def get_test_files(directory):
-    return [ os.path.join(directory,x)
-             for x in os.listdir(directory)
-             if x.endswith('json')
-             ]
+from main import render_menu_of_quizzes, get_test_files, get_test_summary
 
 
 class TestQuizSelection(unittest.TestCase):
@@ -27,8 +19,8 @@ class TestQuizSelection(unittest.TestCase):
         title = "_"
         directory = "quiz_selection_test"
         expected = [
-            ("a", "a test"),
-            ("b", "b test")
+            ("a", "a test", "quizzes/a.json"),
+            ("b", "b test", "quizzes/b.json")
         ]
         page = self.render(title, directory)
         buttons = page.body.find_all('button', class_ = 'quiz_button')
@@ -50,6 +42,13 @@ class TestQuizSelection(unittest.TestCase):
                 expected,
                 set(get_test_files("q"))
             )
+    def test_get_names_and_titles_returns_emptylists(self):
+        self.assertEqual([], get_test_summary([]))
+
+    def test_get_names_and_titles_returns_summary(self):
+        expected = {('pass', 'a tests that passes', 'd/pass.json')}
+        actual = get_test_summary(['d/pass.json'])
+        self.assertSetEqual(set(expected), set(actual))
 
 
     def render(self, title):
