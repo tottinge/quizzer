@@ -1,22 +1,25 @@
+import json
 import os
 from json import JSONDecodeError
 
-from bottle import route, run, template, view
+from bottle import route, run, view
 from box import Box
-import json
+
 
 @view("main_quiz")
 def render_quiz(quiz):
     quiz = Box(quiz)
     return dict(
-        title = quiz.title,
-        question = quiz.questions[0].question,
-        answers = quiz.questions[0].answers
+        title=quiz.title,
+        question=quiz.questions[0].question,
+        answers=quiz.questions[0].answers
     )
+
 
 @view("quiz_selection")
 def render_menu_of_quizzes(title):
     return dict(title=title)
+
 
 @route('/')
 def begin_quiz():
@@ -29,11 +32,13 @@ def begin_quiz():
         raise
     return render_quiz(doc)
 
+
 def get_test_files(directory):
-    return [ os.path.join(directory,x)
-             for x in os.listdir(directory)
-             if x.endswith('json')
-             ]
+    return [os.path.join(directory, x)
+            for x in os.listdir(directory)
+            if x.endswith('json')
+            ]
+
 
 def get_test_summary(quiz_file_paths):
     return [('pass', 'a tests that passes', 'd/pass.json')
