@@ -2,7 +2,7 @@
     "title":"Development Practice Quiz",
     "questions":[
         { 
-           "question": "Are radio buttons a better choice than regular buttons?", 
+           "question": "Are radio buttons a better choice than regular buttons?",
            "answers": [
                 "Sure",
                 "Nope",
