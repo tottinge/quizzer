@@ -6,12 +6,6 @@ from main import render_quiz
 
 class TestQuizRendering(unittest.TestCase):
 
-    def test_title_appears_as_title(self):
-        title = "Page Title"
-        soup = self.render(title=title)
-        found = soup.head.title.string
-        self.assertIn(title, found, f"Did not find '{title}' as page title, found '{found}' instead")
-
     def test_title_appears_in_page_body(self):
         title = "Page Title"
         soup = self.render(title=title)
@@ -42,5 +36,4 @@ class TestQuizRendering(unittest.TestCase):
             ]
         }
         markup = render_quiz(document)
-        soup = BeautifulSoup(markup, "html.parser")
-        return soup
+        return BeautifulSoup(markup, "html.parser")

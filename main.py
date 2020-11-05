@@ -13,6 +13,9 @@ def render_quiz(quiz):
         answers = quiz.questions[0].answers
     )
 
+@view("quiz_selection")
+def render_menu_of_quizzes(title):
+    return dict(title=title)
 
 @route('/')
 def begin_quiz():
@@ -28,3 +31,5 @@ def begin_quiz():
 
 if __name__ == '__main__':
     run(reloader=True, debug=True)
+
+
