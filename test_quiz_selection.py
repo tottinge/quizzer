@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes, get_test_files, get_test_summary
+from main import render_menu_of_quizzes, get_quiz_files, get_quiz_summary
 
 
 class TestQuizSelection(TestCase):
@@ -33,7 +33,7 @@ class TestQuizSelection(TestCase):
             expected = "q/a.json", "q/b.json"
             self.assertSetEqual(
                 set(expected),
-                set(get_test_files("q"))
+                set(get_quiz_files("q"))
             )
 
     def test_get_test_files_ignores_non_json_files(self):
@@ -41,15 +41,15 @@ class TestQuizSelection(TestCase):
             expected = {"q/a.json"}
             self.assertSetEqual(
                 expected,
-                set(get_test_files("q"))
+                set(get_quiz_files("q"))
             )
 
     def test_get_summary_returns_emptylists(self):
-        self.assertEqual([], get_test_summary([]))
+        self.assertEqual([], get_quiz_summary([]))
 
     def test_get_summary_returns_one_summary(self):
         expected = {('pass', 'a tests that passes', 'd/pass.json')}
-        actual = get_test_summary(['d/pass.json'])
+        actual = get_quiz_summary(['d/pass.json'])
         self.assertSetEqual(set(expected), set(actual))
 
     @skip("Perry hasn't seen this yet")
@@ -58,7 +58,8 @@ class TestQuizSelection(TestCase):
             ('cats', 'a tests about felines', 'd/cats.json'),
             ('dogs', 'explore the canine world', 'd/dogs.json')
         }
-        actual = get_test_summary(['d/cats.json', 'd/dogs.json'])
+        quiz_file_paths = ['d/cats.json', 'd/dogs.json']
+        actual = get_quiz_summary(quz_file_paths)
         self.assertSetEqual(set(expected), set(actual))
 
     def test_mocking_how_it_works(self):

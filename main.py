@@ -33,14 +33,18 @@ def begin_quiz():
     return render_quiz(doc)
 
 
-def get_test_files(directory):
+def get_quiz_files(directory):
+    """
+    Find the files in a given directory (not doing dirwalk)
+    which end in '.json'
+    """
     return [os.path.join(directory, x)
             for x in os.listdir(directory)
             if x.endswith('json')
             ]
 
 
-def get_test_summary(quiz_file_paths):
+def get_quiz_summary(quiz_file_paths):
     return [('pass', 'a tests that passes', 'd/pass.json')
             for q in quiz_file_paths]
 
