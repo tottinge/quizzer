@@ -1,6 +1,7 @@
 import json
+import os
 from unittest import TestCase, skip
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 
 from bs4 import BeautifulSoup
 
@@ -9,24 +10,27 @@ from main import render_menu_of_quizzes, get_quiz_files, get_quiz_summary
 
 class TestQuizSelection(TestCase):
 
-    def test_title_appears_as_title(self):
+    @patch("os.listdir", return_value=[])
+    def test_title_appears_as_title(self, *_):
         title = "Page Title"
-        soup = self.render(title=title)
+        soup = self.render(title=title, directory='')
         found = soup.head.title.string
         self.assertIn(title, found, f"Did not find '{title}' as page title, found '{found}' instead")
 
-    @skip("Not Implemented Yet")
-    def test_list_of_quizzes_from_quizzes_directory(self):
-        title = "_"
-        directory = "quiz_selection_test"
-        expected = [
-            ("a", "a test", "quizzes/a.json"),
-            ("b", "b test", "quizzes/b.json")
-        ]
-        page = self.render(title, directory)
-        buttons = page.body.find_all('button', class_='quiz_button')
-        actual = [(b.value, b.text) for b in buttons]
-        self.assertSetEqual(set(expected), set(actual))
+    @patch("os.listdir", return_value =['a.json', 'b.json'])
+    @patch("json.load", side_effect = [
+        dict(name='a', title="a test"),
+        dict(name='b', title='b.test')
+    ])
+    def test_list_of_quizzes_from_quizzes_directory(self, summary_mock, *_):
+        with patch('main._summary_from_file', side_effect = [
+            ("a", "a test", "quizzes_dir/a.json"),
+            ("b", "b test", "quizzes_dir/b.json")
+        ]):
+            page = self.render("_", "quizzes_dir")
+            buttons = page.body.find_all('button', class_='quiz_button')
+            actual = [(b['value'], b.text) for b in buttons]
+            self.assertSetEqual({('a','a test'), ('b','b test')}, set(actual))
 
     def test_get_a_list_of_test_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.json']):
@@ -44,34 +48,31 @@ class TestQuizSelection(TestCase):
                 set(get_quiz_files("q"))
             )
 
-    def test_get_summary_returns_emptylists(self):
+    def test_get_summary_handles_empty_lists(self):
         self.assertEqual([], get_quiz_summary([]))
 
+    @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):
-        expected = {('pass', 'a tests that passes', 'd/pass.json')}
-        actual = get_quiz_summary(['d/pass.json'])
-        self.assertSetEqual(set(expected), set(actual))
+        json_for_file = dict(name='pass', title='a test that passes')
+        with patch('json.load', return_value =json_for_file):
+            expected = {('pass', 'a test that passes', 'd/pass.json')}
+            actual = get_quiz_summary(['d/pass.json'])
+            self.assertSetEqual(set(expected), set(actual))
 
-    @skip("Perry hasn't seen this yet")
+    @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_multiple_summary(self):
-        expected = {
+        expected = [
             ('cats', 'a tests about felines', 'd/cats.json'),
             ('dogs', 'explore the canine world', 'd/dogs.json')
-        }
-        quiz_file_paths = ['d/cats.json', 'd/dogs.json']
-        actual = get_quiz_summary(quz_file_paths)
-        self.assertSetEqual(set(expected), set(actual))
+        ]
+        filenames = [ path for (_,_,path) in expected]
+        json_docs = [ dict(name=name, title=title) for (name,title,_) in expected ]
 
-    def test_mocking_how_it_works(self):
-        # Fake results
-        first_doc = {"name": "Cats", "title": "cattiness"}
-        second_doc = {"name": "dog", "title": "dogginess"}
-        # Patch them in as side-effect sequence
-        with patch("json.load", side_effect=[first_doc, second_doc]):
-            # Actual parameters are ignored, side_effects returned
-            assert json.load(None)['name'] == 'Cats'
-            assert json.load('_')['name'] == 'dog'
+        with patch("json.load", side_effect = json_docs):
+            actual = get_quiz_summary(filenames)
+            self.assertSetEqual(set(expected), set(actual))
 
-    def render(self, title):
-        markup = render_menu_of_quizzes(title)
+
+    def render(self, title, directory):
+        markup = render_menu_of_quizzes(title, directory)
         return BeautifulSoup(markup, "html.parser")

@@ -17,8 +17,16 @@ def render_quiz(quiz):
 
 
 @view("quiz_selection")
-def render_menu_of_quizzes(title):
-    return dict(title=title)
+def render_menu_of_quizzes(title, directory='quizzes'):
+    try:
+        files = get_quiz_files(directory)
+        choices = get_quiz_summary(files)
+        return dict(
+            title=title,
+            choices=choices
+        )
+    except Exception as e:
+        return f"Blew up - {e}"
 
 
 @route('/')
@@ -45,8 +53,18 @@ def get_quiz_files(directory):
 
 
 def get_quiz_summary(quiz_file_paths):
-    return [('pass', 'a tests that passes', 'd/pass.json')
-            for q in quiz_file_paths]
+    """
+    Collect a list containing test name, title (description), and filename
+    from a given directory of json files
+    For use in selecting a quiz.txt
+    """
+    return [_summary_from_file(filename)
+            for filename in quiz_file_paths]
+
+def _summary_from_file(filename):
+    with open(filename) as input_file:
+        doc = json.load(input_file)
+        return ((doc['name']), (doc['title']), filename)
 
 
 if __name__ == '__main__':
