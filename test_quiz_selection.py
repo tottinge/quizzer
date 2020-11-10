@@ -28,9 +28,13 @@ class TestQuizSelection(TestCase):
             ("b", "b test", "quizzes_dir/b.json")
         ]):
             page = self.render("_", "quizzes_dir")
-            buttons = page.body.find_all('button', class_='quiz_button')
-            actual = [(b['value'], b.text) for b in buttons]
-            self.assertSetEqual({('a','a test'), ('b','b test')}, set(actual))
+
+            menu_items = page.body.find_all('a', class_='quiz_selection')
+
+            actual = [(b['href'], b.text) for b in menu_items]
+            expected = {('/quizzes_dir/a.json', 'a test'), ('/quizzes_dir/b.json', 'b test')}
+            self.assertSetEqual(expected, set(actual))
+
 
     def test_get_a_list_of_test_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.json']):

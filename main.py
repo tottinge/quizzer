@@ -15,25 +15,23 @@ def render_quiz(quiz):
         answers=quiz.questions[0].answers
     )
 
-
-@view("quiz_selection")
-def render_menu_of_quizzes(title, directory='quizzes'):
-    try:
-        files = get_quiz_files(directory)
-        choices = get_quiz_summary(files)
-        return dict(
-            title=title,
-            choices=choices
-        )
-    except Exception as e:
-        return f"Blew up - {e}"
-
-
 @route('/')
-def begin_quiz():
+@view("quiz_selection")
+def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
+    files = get_quiz_files(directory)
+    choices = get_quiz_summary(files)
+    return dict(
+        title=title,
+        choices=choices
+    )
+
+
+@route('/<dirname>/<filename>')
+def begin_quiz(dirname, filename):
     doc = None
     try:
-        with open("quizzes/quiz_doc.json") as quiz:
+        filename = os.path.join(dirname, filename)
+        with open(filename) as quiz:
             doc = json.load(quiz)
     except JSONDecodeError as err:
         print("Quiz file is invalid json")
@@ -68,4 +66,4 @@ def _summary_from_file(filename):
 
 
 if __name__ == '__main__':
-    run(reloader=True, debug=True)
+    run(port=4000, reloader=True, debug=True)
