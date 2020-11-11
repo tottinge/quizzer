@@ -26,19 +26,24 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
-        form_body = self.render(resource=resource)
-        print(form_body.body.section)
-        actuals = form_body.body.resources.findall('a')
-        self.assertSetEqual(set(resource), set(actuals))
 
+        page = self.render(resource=resource)
 
-    def render(self, title="_", question="?", answers=["True","False"], resource=[]):
+        resources = page.find('section', id='resources')
+        print(f"Resources: {resources}, {type(resources)}")
+        assert resources is not None
+        actuals = set((tag.text,tag.get('href')) for tag in resources.find_all('a'))
+        print(f"Actuals: {actuals}")
+        self.assertSetEqual(set([resource,]), actuals)
+
+    def render(self, title="_", question="?", answers=["True","False"], resource=None):
         document = {
             "title":title,
             "questions":[
                 {
                     "question":question,
-                    "answers":answers
+                    "answers":answers,
+                    "resources":resource and [resource,] or []
                 }
             ]
         }

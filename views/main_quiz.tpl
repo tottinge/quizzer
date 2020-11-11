@@ -6,7 +6,7 @@
 <body>
 
 <section>
-<h1 class="page-title">{{title}}</h1>
+<h1 id="title" class="page-title">{{title}}</h1>
 </section>
 <form>
     <p class='question-asked'>{{question}}</p>
@@ -20,6 +20,12 @@
     </div>
     % end
 </form>
-<section id="resources"></section>
+<section id="resources">
+<h2>Additional Resources</h2>
+{{ resources }}
+% for (text, url) in resources:
+<a href="{{ url }}">{{ text }}</a>
+% end
+</section>
 </body>
 </html>
