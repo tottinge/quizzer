@@ -10,11 +10,12 @@ from box import Box
 def render_quiz(quiz):
     quiz = Box(quiz)
     q = quiz.questions and quiz.questions[0] or {}
+    r = q.get("resources")
     return dict(
         title=quiz.title,
         question=q.question,
         answers=q.answers,
-        resources=q.resources
+        resources=r
     )
 
 @route('/')

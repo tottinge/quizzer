@@ -20,12 +20,14 @@
     </div>
     % end
 </form>
+% if resources:
 <section id="resources">
 <h2>Additional Resources</h2>
-{{ resources }}
 % for (text, url) in resources:
 <a href="{{ url }}">{{ text }}</a>
+<br>
 % end
 </section>
+% end
 </body>
 </html>

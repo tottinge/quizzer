@@ -24,16 +24,23 @@ class TestQuizRendering(unittest.TestCase):
         inputs = [tag["value"] for tag in form_body.find_all("input")]
         self.assertSetEqual(set(answers), set(inputs))
 
+    def test_page_can_render_with_no_resources(self):
+        document = {
+            "title":"no resources at all",
+            "questions":[
+                {
+                    "question":"Why no resources?",
+                    "answers":["who knows?"]
+                }
+            ]
+        }
+        render_quiz(document)
+
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
-
         page = self.render(resource=resource)
-
         resources = page.find('section', id='resources')
-        print(f"Resources: {resources}, {type(resources)}")
-        assert resources is not None
         actuals = set((tag.text,tag.get('href')) for tag in resources.find_all('a'))
-        print(f"Actuals: {actuals}")
         self.assertSetEqual(set([resource,]), actuals)
 
     def render(self, title="_", question="?", answers=["True","False"], resource=None):
