@@ -6,8 +6,8 @@ from bottle import route, run, view
 from box import Box
 
 
-@view("main_quiz")
-def render_quiz(quiz):
+@view("quiz_question")
+def render_question(quiz):
     quiz = Box(quiz)
     q = quiz.questions and quiz.questions[0] or {}
     r = q.get("resources")
@@ -39,7 +39,7 @@ def begin_quiz(dirname, filename):
     except JSONDecodeError as err:
         print("Quiz file is invalid json")
         raise
-    return render_quiz(doc)
+    return render_question(doc)
 
 
 def get_quiz_files(directory):
