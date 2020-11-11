@@ -24,8 +24,15 @@ class TestQuizRendering(unittest.TestCase):
         inputs = [tag["value"] for tag in form_body.find_all("input")]
         self.assertSetEqual(set(answers), set(inputs))
 
+    def test_resource_link_appear_in_resource_section(self):
+        resource = "Google That", "http://www.google.com"
+        form_body = self.render(resource=resource)
+        print(form_body.body.section)
+        actuals = form_body.body.resources.findall('a')
+        self.assertSetEqual(set(resource), set(actuals))
 
-    def render(self, title="_", question="?", answers=["True","False"]):
+
+    def render(self, title="_", question="?", answers=["True","False"], resource=[]):
         document = {
             "title":title,
             "questions":[

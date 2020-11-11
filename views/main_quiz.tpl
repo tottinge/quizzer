@@ -19,7 +19,7 @@
         </label>
     </div>
     % end
-
 </form>
+<section id="resources"></section>
 </body>
 </html>
