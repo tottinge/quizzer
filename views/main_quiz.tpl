@@ -24,7 +24,7 @@
 <section id="resources">
 <h2>Additional Resources</h2>
 % for (text, url) in resources:
-<a href="{{ url }}">{{ text }}</a>
+<a href="{{ url }}" target="_blank" rel="noreferrer noopener">{{ text }}</a>
 <br>
 % end
 </section>

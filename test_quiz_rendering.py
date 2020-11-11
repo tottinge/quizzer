@@ -34,23 +34,37 @@ class TestQuizRendering(unittest.TestCase):
                 }
             ]
         }
-        render_quiz(document)
+        page = BeautifulSoup(render_quiz(document), 'html.parser')
+        self.assertIsNone(page.find("section", id="resources"))
 
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
-        page = self.render(resource=resource)
+        page = self.render(resources=[resource,])
         resources = page.find('section', id='resources')
         actuals = set((tag.text,tag.get('href')) for tag in resources.find_all('a'))
         self.assertSetEqual(set([resource,]), actuals)
 
-    def render(self, title="_", question="?", answers=["True","False"], resource=None):
+    def test_resource_multiple_links(self):
+        resources = [
+            ("Google That", "http://www.google.com"),
+            ("Let Me", "https://lmgtfy.app/?q=calligraphy")
+        ]
+        page = self.render(resources=resources)
+        section = page.find('section', id='resources')
+        actual = set(
+            (tag.text, tag.get('href'))
+            for tag in (section.find_all('a'))
+        )
+        self.assertSetEqual(set(resources), actual)
+
+    def render(self, title="_", question="?", answers=["True","False"], resources=None):
         document = {
             "title":title,
             "questions":[
                 {
                     "question":question,
                     "answers":answers,
-                    "resources":resource and [resource,] or []
+                    "resources":resources or []
                 }
             ]
         }
