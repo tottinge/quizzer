@@ -1,7 +1,7 @@
 import unittest.mock
 from bs4 import BeautifulSoup
 
-from main import render_question
+from main import render_question, answer_question
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -41,7 +41,9 @@ class TestQuizRendering(unittest.TestCase):
         resource = "Google That", "http://www.google.com"
         page = self.render(resources=[resource,])
         resources = page.find('section', id='resources')
-        actuals = set((tag.text,tag.get('href')) for tag in resources.find_all('a'))
+        actuals = set(
+            (tag.text,tag['href']) for tag in resources.find_all('a')
+        )
         self.assertSetEqual(set([resource,]), actuals)
 
     def test_resource_multiple_links(self):
@@ -56,6 +58,12 @@ class TestQuizRendering(unittest.TestCase):
             for tag in (section.find_all('a'))
         )
         self.assertSetEqual(set(resources), actual)
+
+    def test_answer_question_correctly(self):
+        actual = answer_question("quiz_name", "1", "choice")
+        # pick up here!
+        self.assertEqual(True, actual)
+
 
     def render(self, title="_", question="?", answers=["True","False"], resources=None):
         document = {

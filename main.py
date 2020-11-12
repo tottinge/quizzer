@@ -5,6 +5,16 @@ from json import JSONDecodeError
 from bottle import route, run, view
 from box import Box
 
+@route('/')
+@view("quiz_selection")
+def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
+    files = get_quiz_files(directory)
+    choices = get_quiz_summary(files)
+    return dict(
+        title=title,
+        choices=choices
+    )
+
 
 @view("quiz_question")
 def render_question(quiz):
@@ -16,16 +26,6 @@ def render_question(quiz):
         question=q.question,
         answers=q.answers,
         resources=r
-    )
-
-@route('/')
-@view("quiz_selection")
-def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
-    files = get_quiz_files(directory)
-    choices = get_quiz_summary(files)
-    return dict(
-        title=title,
-        choices=choices
     )
 
 
@@ -40,6 +40,11 @@ def begin_quiz(dirname, filename):
         print("Quiz file is invalid json")
         raise
     return render_question(doc)
+
+
+def answer_question(quiz, question, choice):
+    return None
+
 
 
 def get_quiz_files(directory):
