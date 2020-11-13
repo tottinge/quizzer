@@ -5,7 +5,9 @@ from unittest.mock import patch, mock_open
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes, get_quiz_files, get_quiz_summary
+from main import render_menu_of_quizzes, get_quiz_summary
+from main import QUIZ_STORE
+
 
 
 class TestQuizSelection(TestCase):
@@ -41,7 +43,7 @@ class TestQuizSelection(TestCase):
             expected = "q/a.json", "q/b.json"
             self.assertSetEqual(
                 set(expected),
-                set(get_quiz_files("q"))
+                set(QUIZ_STORE.get_quiz_files("q"))
             )
 
     def test_get_test_files_ignores_non_json_files(self):
@@ -49,7 +51,7 @@ class TestQuizSelection(TestCase):
             expected = {"q/a.json"}
             self.assertSetEqual(
                 expected,
-                set(get_quiz_files("q"))
+                set(QUIZ_STORE.get_quiz_files("q"))
             )
 
     def test_get_summary_handles_empty_lists(self):

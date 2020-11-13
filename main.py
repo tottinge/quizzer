@@ -5,10 +5,45 @@ from json import JSONDecodeError
 from bottle import route, run, view
 from box import Box
 
+
+# ------- Doomed methods -- to be moved into QUIZ_STORE ----------
+def get_quiz_files(directory):
+    return [os.path.join(directory, x)
+            for x in os.listdir(directory)
+            if x.endswith('json')
+            ]
+
+
+def get_quiz_summary(quiz_file_paths):
+    return [_summary_from_file(filename)
+            for filename in quiz_file_paths]
+
+
+def _summary_from_file(filename):
+    with open(filename) as input_file:
+        doc = json.load(input_file)
+        return ((doc['name']), (doc['title']), filename)
+
+# ------- Doomed methods -- to be moved into QUIZ_STORE ----------
+
+class QuizStore(object):
+    def __init__(self):
+        self.directories = []
+        self.quizzes = []
+
+    def get_quiz_files(self, directory):
+        return get_quiz_files(directory)
+
+
+
+QUIZ_STORE = QuizStore()
+
+
 @route('/')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
     files = get_quiz_files(directory)
+    QUIZ_STORE.get_quiz_files(directory)
     choices = get_quiz_summary(files)
     return dict(
         title=title,
@@ -47,33 +82,6 @@ def answer_question(quiz, question, choice):
     # find the question
     # see if this answer is the right answer
     return True
-
-
-
-def get_quiz_files(directory):
-    """
-    Find the files in a given directory (not doing dirwalk)
-    which end in '.json'
-    """
-    return [os.path.join(directory, x)
-            for x in os.listdir(directory)
-            if x.endswith('json')
-            ]
-
-
-def get_quiz_summary(quiz_file_paths):
-    """
-    Collect a list containing test name, title (description), and filename
-    from a given directory of json files
-    For use in selecting a quiz.txt
-    """
-    return [_summary_from_file(filename)
-            for filename in quiz_file_paths]
-
-def _summary_from_file(filename):
-    with open(filename) as input_file:
-        doc = json.load(input_file)
-        return ((doc['name']), (doc['title']), filename)
 
 
 if __name__ == '__main__':
