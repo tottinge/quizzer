@@ -5,14 +5,6 @@ from json import JSONDecodeError
 from bottle import route, run, view
 from box import Box
 
-
-# ------- Doomed methods -- to be moved into QUIZ_STORE ----------
-
-
-
-
-# ------- Doomed methods -- to be moved into QUIZ_STORE ----------
-
 class QuizStore(object):
     def __init__(self):
         self.directories = []
@@ -45,10 +37,9 @@ QUIZ_STORE = QuizStore()
 @route('/')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
-    choices = QUIZ_STORE.quiz_summaries_for(directory)
     return dict(
         title=title,
-        choices=choices
+        choices=(QUIZ_STORE.quiz_summaries_for(directory))
     )
 
 
@@ -56,12 +47,12 @@ def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
 def render_question(quiz):
     quiz = Box(quiz)
     q = quiz.questions and quiz.questions[0] or {}
-    r = q.get("resources")
+    resources = q.get("resources")
     return dict(
         title=quiz.title,
         question=q.question,
         answers=q.answers,
-        resources=r
+        resources=resources
     )
 
 
