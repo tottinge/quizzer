@@ -7,7 +7,7 @@ from box import Box
 
 
 # ------- Doomed methods -- to be moved into QUIZ_STORE ----------
-def get_quiz_files(directory):
+def _get_quiz_files(directory):
     return [os.path.join(directory, x)
             for x in os.listdir(directory)
             if x.endswith('json')
@@ -32,7 +32,7 @@ class QuizStore(object):
         self.quizzes = []
 
     def get_quiz_files(self, directory):
-        return get_quiz_files(directory)
+        return _get_quiz_files(directory)
 
     def get_quiz_summaries(self, quiz_file_paths):
         return _get_quiz_summaries(quiz_file_paths)
