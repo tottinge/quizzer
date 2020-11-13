@@ -1,7 +1,7 @@
 import json
 import os
 from unittest import TestCase, skip
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, Mock
 
 from bs4 import BeautifulSoup
 
@@ -19,23 +19,22 @@ class TestQuizSelection(TestCase):
         found = soup.head.title.string
         self.assertIn(title, found, f"Did not find '{title}' as page title, found '{found}' instead")
 
-    @patch("os.listdir", return_value =['a.json', 'b.json'])
     @patch("json.load", side_effect = [
         dict(name='a', title="a test"),
         dict(name='b', title='b.test')
     ])
-    def test_list_of_quizzes_from_quizzes_directory(self, summary_mock, *_):
-        with patch('main._summary_from_file', side_effect = [
+    def test_list_of_quizzes_from_quizzes_directory(self, *_):
+        QUIZ_STORE.quiz_summaries_for = Mock(return_value = [
             ("a", "a test", "quizzes_dir/a.json"),
             ("b", "b test", "quizzes_dir/b.json")
-        ]):
-            page = self.render("_", "quizzes_dir")
+        ])
+        page = self.render("_", "quizzes_dir")
 
-            menu_items = page.body.find_all('a', class_='quiz_selection')
+        menu_items = page.body.find_all('a', class_='quiz_selection')
 
-            actual = [(b['href'], b.text) for b in menu_items]
-            expected = {('/quizzes_dir/a.json', 'a test'), ('/quizzes_dir/b.json', 'b test')}
-            self.assertSetEqual(expected, set(actual))
+        actual = [(b['href'], b.text) for b in menu_items]
+        expected = {('/quizzes_dir/a.json', 'a test'), ('/quizzes_dir/b.json', 'b test')}
+        self.assertSetEqual(expected, set(actual))
 
 
     def test_get_a_list_of_test_files(self):

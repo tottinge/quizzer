@@ -9,15 +9,7 @@ from box import Box
 # ------- Doomed methods -- to be moved into QUIZ_STORE ----------
 
 
-def _get_quiz_summaries(quiz_file_paths):
-    return [_summary_from_file(filename)
-            for filename in quiz_file_paths]
 
-
-def _summary_from_file(filename):
-    with open(filename) as input_file:
-        doc = json.load(input_file)
-        return ((doc['name']), (doc['title']), filename)
 
 # ------- Doomed methods -- to be moved into QUIZ_STORE ----------
 
@@ -33,7 +25,17 @@ class QuizStore(object):
                     ]
 
     def get_quiz_summaries(self, quiz_file_paths):
-        return _get_quiz_summaries(quiz_file_paths)
+        return [self._summary_from_file(filename)
+                for filename in quiz_file_paths]
+
+    def _summary_from_file(self, filename):
+        with open(filename) as input_file:
+            doc = json.load(input_file)
+            return ((doc['name']), (doc['title']), filename)
+
+    def quiz_summaries_for(self, directory):
+        return self.get_quiz_summaries(self.get_quiz_files(directory))
+
 
 
 
@@ -43,8 +45,7 @@ QUIZ_STORE = QuizStore()
 @route('/')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
-    files = QUIZ_STORE.get_quiz_files(directory)
-    choices = QUIZ_STORE.get_quiz_summaries(files)
+    choices = QUIZ_STORE.quiz_summaries_for(directory)
     return dict(
         title=title,
         choices=choices
