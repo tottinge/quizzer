@@ -5,7 +5,7 @@ from unittest.mock import patch, mock_open
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes, get_quiz_summary
+from main import render_menu_of_quizzes
 from main import QUIZ_STORE
 
 
@@ -55,14 +55,14 @@ class TestQuizSelection(TestCase):
             )
 
     def test_get_summary_handles_empty_lists(self):
-        self.assertEqual([], get_quiz_summary([]))
+        self.assertEqual([], QUIZ_STORE.get_quiz_summaries([]))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value =json_for_file):
             expected = {('pass', 'a test that passes', 'd/pass.json')}
-            actual = get_quiz_summary(['d/pass.json'])
+            actual = QUIZ_STORE.get_quiz_summaries(['d/pass.json'])
             self.assertSetEqual(set(expected), set(actual))
 
     @patch('builtins.open', mock_open(read_data=None))
@@ -75,7 +75,7 @@ class TestQuizSelection(TestCase):
         json_docs = [ dict(name=name, title=title) for (name,title,_) in expected ]
 
         with patch("json.load", side_effect = json_docs):
-            actual = get_quiz_summary(filenames)
+            actual = QUIZ_STORE.get_quiz_summaries(filenames)
             self.assertSetEqual(set(expected), set(actual))
 
 

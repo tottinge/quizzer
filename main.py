@@ -14,7 +14,7 @@ def get_quiz_files(directory):
             ]
 
 
-def get_quiz_summary(quiz_file_paths):
+def _get_quiz_summaries(quiz_file_paths):
     return [_summary_from_file(filename)
             for filename in quiz_file_paths]
 
@@ -34,6 +34,9 @@ class QuizStore(object):
     def get_quiz_files(self, directory):
         return get_quiz_files(directory)
 
+    def get_quiz_summaries(self, quiz_file_paths):
+        return _get_quiz_summaries(quiz_file_paths)
+
 
 
 QUIZ_STORE = QuizStore()
@@ -42,9 +45,8 @@ QUIZ_STORE = QuizStore()
 @route('/')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
-    files = get_quiz_files(directory)
-    QUIZ_STORE.get_quiz_files(directory)
-    choices = get_quiz_summary(files)
+    files = QUIZ_STORE.get_quiz_files(directory)
+    choices = QUIZ_STORE.get_quiz_summaries(files)
     return dict(
         title=title,
         choices=choices
