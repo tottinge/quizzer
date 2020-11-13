@@ -43,7 +43,10 @@ def begin_quiz(dirname, filename):
 
 
 def answer_question(quiz, question, choice):
-    return None
+    # go get the quiz
+    # find the question
+    # see if this answer is the right answer
+    return True
 
 
 
