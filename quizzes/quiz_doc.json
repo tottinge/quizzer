@@ -4,10 +4,10 @@
     "questions":[
         { 
            "question": "Are radio buttons a better choice than regular buttons?",
-           "answers": [
+           "answer": "It Depends",
+           "decoys": [
                 "Sure",
-                "Nope",
-                "It Depends"
+                "Nope"
             ],
           "resources": [
             ["Radio Buttons", "https://www.w3schools.com/tags/att_input_type_radio.asp"],
@@ -17,15 +17,16 @@
 
         {
            "question":"Is there a test for this?",
-           "answers":[
-            "There should be",
+           "answer": "There should be",
+           "decoys":[
             "It's a waste of time"
            ]
         },
 
         {
             "question": "What if all questions are empty?",
-            "answers": []
+            "answer": "",
+            "decoys": []
         }
 
     ]

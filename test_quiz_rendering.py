@@ -20,7 +20,7 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_answers_appear_in_inputs(self):
         answers = ["yes", "no"]
-        form_body = self.render(answers=answers)
+        form_body = self.render(decoys=answers)
         inputs = [tag["value"] for tag in form_body.find_all("input")]
         self.assertSetEqual(set(answers), set(inputs))
 
@@ -30,7 +30,8 @@ class TestQuizRendering(unittest.TestCase):
             "questions":[
                 {
                     "question":"Why no resources?",
-                    "answers":["who knows?"]
+                    "decoys":["Who knows?"],
+                    "answer": "I'm lazy",
                 }
             ]
         }
@@ -39,7 +40,7 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
-        page = self.render(resources=[resource,])
+        page = self.render(resources=[resource, ])
         resources = page.find('section', id='resources')
         actuals = set(
             (tag.text,tag['href']) for tag in resources.find_all('a')
@@ -65,13 +66,14 @@ class TestQuizRendering(unittest.TestCase):
         self.assertEqual(True, actual)
 
 
-    def render(self, title="_", question="?", answers=["True","False"], resources=None):
+    def render(self, title="_", question="?", decoys=["True", "False"], answer="True", resources=None):
         document = {
             "title":title,
             "questions":[
                 {
                     "question":question,
-                    "answers":answers,
+                    "decoys":decoys,
+                    "answer":answer,
                     "resources":resources or []
                 }
             ]
