@@ -9,9 +9,12 @@
 <h1 id="title" class="page-title">{{title}}</h1>
 </section>
 <form>
-    <p class='question-asked'>{{question}}</p>
+    % from random import shuffle
+    % choices = [*decoys,answer]
+    % shuffle(choices)
 
-    % for answer in answers:
+    <p class='question-asked'>{{question}}</p>
+    % for answer in choices:
     <div class="form-answer">
         <input type='radio' name='answer' id='{{answer}}' value='{{answer}}'/>
         <label for='{{answer}}'>

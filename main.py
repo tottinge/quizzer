@@ -51,7 +51,8 @@ def render_question(quiz):
     return dict(
         title=quiz.title,
         question=q.question,
-        answers=q.decoys,
+        decoys=q.decoys,
+        answer=q.answer,
         resources=resources
     )
 

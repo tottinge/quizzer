@@ -19,10 +19,9 @@ class TestQuizRendering(unittest.TestCase):
         self.assertIn(question, selection.text)
 
     def test_answers_appear_in_inputs(self):
-        answers = ["yes", "no"]
-        form_body = self.render(decoys=answers)
+        form_body = self.render(decoys=["no"], answer="yes")
         inputs = [tag["value"] for tag in form_body.find_all("input")]
-        self.assertSetEqual(set(answers), set(inputs))
+        self.assertIn('yes', inputs)
 
     def test_page_can_render_with_no_resources(self):
         document = {
@@ -62,7 +61,6 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_answer_question_correctly(self):
         actual = answer_question("quiz_name", "1", "choice")
-        # pick up here!
         self.assertEqual(True, actual)
 
 
