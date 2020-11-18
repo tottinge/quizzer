@@ -5,26 +5,34 @@ from json import JSONDecodeError
 from bottle import route, run, view
 from box import Box
 
+
 class QuizStore(object):
+
+    def __init__(self):
+        self.quiz_dir = 'quizzes'
 
     def get_quiz_files(self, directory):
         return [os.path.join(directory, x)
-                    for x in os.listdir(directory)
-                    if x.endswith('json')
-                    ]
+                for x in os.listdir(directory)
+                if x.endswith('json')
+                ]
 
-    def get_quiz_summaries(self, quiz_file_paths):
-        return [self._summary_from_file(filename)
+    def get_quiz_summaries_from_directory(self, quiz_file_paths):
+        def get_name_title_filename_from(filename):
+            with open(filename) as input_file:
+                doc = json.load(input_file)
+                return doc['name'], doc['title'], filename
+
+        return [get_name_title_filename_from(filename)
                 for filename in quiz_file_paths]
 
-    def _summary_from_file(self, filename):
-        with open(filename) as input_file:
-            doc = json.load(input_file)
-            return ((doc['name']), (doc['title']), filename)
-
     def quiz_summaries_for(self, directory):
-        return self.get_quiz_summaries(self.get_quiz_files(directory))
+        return self.get_quiz_summaries_from_directory(self.get_quiz_files(directory))
 
+    def get_quiz_summaries(self):
+        return self.get_quiz_summaries_from_directory(
+            self.get_quiz_files(self.quiz_dir)
+        )
 
 
 QUIZ_STORE = QuizStore()
