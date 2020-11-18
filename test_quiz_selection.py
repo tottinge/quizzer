@@ -79,5 +79,6 @@ class TestQuizSelection(TestCase):
 
 
     def render(self, title, directory):
+
         markup = render_menu_of_quizzes(title, directory)
         return BeautifulSoup(markup, "html.parser")

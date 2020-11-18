@@ -39,12 +39,13 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
-        page = self.render(resources=[resource, ])
+        page = self.render(resources=[resource])
         resources = page.find('section', id='resources')
         actuals = set(
-            (tag.text,tag['href']) for tag in resources.find_all('a')
+            (tag.text,tag['href'])
+            for tag in resources.find_all('a')
         )
-        self.assertSetEqual(set([resource,]), actuals)
+        self.assertSetEqual(set([resource]), actuals)
 
     def test_resource_multiple_links(self):
         resources = [

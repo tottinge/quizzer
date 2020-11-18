@@ -6,9 +6,6 @@ from bottle import route, run, view
 from box import Box
 
 class QuizStore(object):
-    def __init__(self):
-        self.directories = []
-        self.quizzes = []
 
     def get_quiz_files(self, directory):
         return [os.path.join(directory, x)
@@ -27,7 +24,6 @@ class QuizStore(object):
 
     def quiz_summaries_for(self, directory):
         return self.get_quiz_summaries(self.get_quiz_files(directory))
-
 
 
 
