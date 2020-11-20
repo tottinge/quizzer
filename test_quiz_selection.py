@@ -42,7 +42,7 @@ class TestQuizSelection(TestCase):
             expected = "q/a.json", "q/b.json"
             self.assertSetEqual(
                 set(expected),
-                set(QUIZ_STORE.get_quiz_files("q"))
+                set(QUIZ_STORE.get_quiz_files_from_directory("q"))
             )
 
     def test_get_test_files_ignores_non_json_files(self):
@@ -50,18 +50,18 @@ class TestQuizSelection(TestCase):
             expected = {"q/a.json"}
             self.assertSetEqual(
                 expected,
-                set(QUIZ_STORE.get_quiz_files("q"))
+                set(QUIZ_STORE.get_quiz_files_from_directory("q"))
             )
 
     def test_get_summary_handles_empty_lists(self):
-        self.assertEqual([], QUIZ_STORE.get_quiz_summaries_from_directory([]))
+        self.assertEqual([], QUIZ_STORE.get_quiz_summaries_from_file_list([]))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value =json_for_file):
             expected = {('pass', 'a test that passes', 'd/pass.json')}
-            actual = QUIZ_STORE.get_quiz_summaries_from_directory(['d/pass.json'])
+            actual = QUIZ_STORE.get_quiz_summaries_from_file_list(['d/pass.json'])
             self.assertSetEqual(set(expected), set(actual))
 
     @patch('builtins.open', mock_open(read_data=None))
@@ -74,7 +74,7 @@ class TestQuizSelection(TestCase):
         json_docs = [ dict(name=name, title=title) for (name,title,_) in expected ]
 
         with patch("json.load", side_effect = json_docs):
-            actual = QUIZ_STORE.get_quiz_summaries_from_directory(filenames)
+            actual = QUIZ_STORE.get_quiz_summaries_from_file_list(filenames)
             self.assertSetEqual(set(expected), set(actual))
 
 

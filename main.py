@@ -11,13 +11,13 @@ class QuizStore(object):
     def __init__(self):
         self.quiz_dir = 'quizzes'
 
-    def get_quiz_files(self, directory):
+    def get_quiz_files_from_directory(self, directory):
         return [os.path.join(directory, x)
                 for x in os.listdir(directory)
                 if x.endswith('json')
                 ]
 
-    def get_quiz_summaries_from_directory(self, quiz_file_paths):
+    def get_quiz_summaries_from_file_list(self, quiz_file_paths):
         def get_name_title_filename_from(filename):
             with open(filename) as input_file:
                 doc = json.load(input_file)
@@ -27,12 +27,16 @@ class QuizStore(object):
                 for filename in quiz_file_paths]
 
     def quiz_summaries_for(self, directory):
-        return self.get_quiz_summaries_from_directory(self.get_quiz_files(directory))
+        return self.get_quiz_summaries_from_file_list(self.get_quiz_files_from_directory(directory))
 
     def get_quiz_summaries(self):
-        return self.get_quiz_summaries_from_directory(
-            self.get_quiz_files(self.quiz_dir)
+        return self.get_quiz_summaries_from_file_list(
+            self.get_quiz_files_from_directory(self.quiz_dir)
         )
+
+    def get_quiz(self, quiz_name):
+        lookup={name:filename for (name, _, filename) in self.get_quiz_summaries()}
+        return dict(name='Testquiz')
 
 
 QUIZ_STORE = QuizStore()
