@@ -25,6 +25,11 @@ class QuizStoreTest(unittest.TestCase):
         actual = store.get_quiz(test_quiz)
         self.assertEqual(test_quiz, actual['name'])
 
+    # Test when a file isn't found
+    # Test when the file we load isn't good json
+    # test when listdir() fails for notfound
+    # Test for empty quiz list
+    # Test for no questions in file
 
 
 
