@@ -7,35 +7,34 @@ from box import Box
 
 
 class QuizStore(object):
-
     def __init__(self):
         self.quiz_dir = 'quizzes'
 
-    def get_quiz_files_from_directory(self, directory):
-        return [os.path.join(directory, x)
-                for x in os.listdir(directory)
-                if x.endswith('json')
-                ]
-
-    def get_quiz_summaries_from_file_list(self, quiz_file_paths):
-        def get_name_title_filename_from(quiz_filename):
-            doc = self._read_quiz_doc_from_file(quiz_filename)
-            return doc['name'], doc['title'], quiz_filename
-
-        return [get_name_title_filename_from(filename)
-                for filename in quiz_file_paths]
-
-    def quiz_summaries_for(self, directory):
-        return self.get_quiz_summaries_from_file_list(self.get_quiz_files_from_directory(directory))
-
     def get_quiz_summaries(self):
-        return self.get_quiz_summaries_from_file_list(
-            self.get_quiz_files_from_directory(self.quiz_dir)
+        return self._get_quiz_summaries_from_file_list(
+            self._get_quiz_files_from_directory(self.quiz_dir)
         )
 
     def get_quiz(self, quiz_name):
         filename = self._find_file_for_named_quiz(quiz_name)
         return self._read_quiz_document(filename)
+
+    def _get_quiz_files_from_directory(self, directory):
+        return [os.path.join(directory, x)
+                for x in os.listdir(directory)
+                if x.endswith('json')
+                ]
+
+    def _get_quiz_summaries_from_file_list(self, quiz_file_paths):
+        def get_name_title_filename_from(quiz_filename):
+            document = self._read_quiz_doc_from_file(quiz_filename)
+            return document['name'], document['title'], quiz_filename
+
+        return [get_name_title_filename_from(filename)
+                for filename in quiz_file_paths]
+
+    def _quiz_summaries_for(self, directory):
+        return self._get_quiz_summaries_from_file_list(self._get_quiz_files_from_directory(directory))
 
     def _read_quiz_doc_from_file(self, filename):
         with open(filename) as input_file:
@@ -62,7 +61,7 @@ QUIZ_STORE = QuizStore()
 def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
     return dict(
         title=title,
-        choices=(QUIZ_STORE.quiz_summaries_for(directory))
+        choices=(QUIZ_STORE._quiz_summaries_for(directory))
     )
 
 
