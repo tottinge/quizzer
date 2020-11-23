@@ -1,6 +1,5 @@
 import os
 import json
-
 QUIZ_DIR = 'quizzes'
 
 def doomed_filescan(filename):
