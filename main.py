@@ -18,10 +18,9 @@ class QuizStore(object):
                 ]
 
     def get_quiz_summaries_from_file_list(self, quiz_file_paths):
-        def get_name_title_filename_from(filename):
-            with open(filename) as input_file:
-                doc = json.load(input_file)
-                return doc['name'], doc['title'], filename
+        def get_name_title_filename_from(quiz_filename):
+            doc = self._read_quiz_doc_from_file(quiz_filename)
+            return doc['name'], doc['title'], quiz_filename
 
         return [get_name_title_filename_from(filename)
                 for filename in quiz_file_paths]
@@ -35,8 +34,24 @@ class QuizStore(object):
         )
 
     def get_quiz(self, quiz_name):
-        lookup={name:filename for (name, _, filename) in self.get_quiz_summaries()}
-        return dict(name='Testquiz')
+        filename = self._find_file_for_named_quiz(quiz_name)
+        return self._read_quiz_document(filename)
+
+    def _read_quiz_doc_from_file(self, filename):
+        with open(filename) as input_file:
+            return json.load(input_file)
+
+    def _find_file_for_named_quiz(self, quiz_name):
+        lookup = {
+            name: filename
+                  for (name, _, filename)
+                  in self.get_quiz_summaries()
+        }
+        filename = lookup.get(quiz_name)
+        return filename
+
+    def _read_quiz_document(self, filename):
+        return self._read_quiz_doc_from_file(filename)
 
 
 QUIZ_STORE = QuizStore()

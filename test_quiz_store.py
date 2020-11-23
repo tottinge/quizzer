@@ -15,8 +15,10 @@ class QuizStoreTest(unittest.TestCase):
         self.assertSetEqual(expected, set(actual))
 
     @patch('main.QuizStore.get_quiz_summaries', return_value=[
-        ('Tesquiz',None,'quizzes/a.json')
+        ('Testquiz',None,'quizzes/a.json')
     ])
+    @patch('main.QuizStore._read_quiz_doc_from_file',
+           return_value = dict(name='Testquiz'))
     def test_it_retrieves_a_quiz(self, *_):
         store = QuizStore()
         test_quiz = 'Testquiz'
