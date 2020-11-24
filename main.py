@@ -1,10 +1,12 @@
-import json
 import os
+from logging import getLogger
+import json
 from json import JSONDecodeError
 
 from bottle import route, run, view
 from box import Box
 
+logger = getLogger(__name__)
 
 class QuizStore(object):
     def __init__(self):
@@ -20,10 +22,15 @@ class QuizStore(object):
         return self._read_quiz_document(filename)
 
     def _get_quiz_files_from_directory(self, directory):
-        return [os.path.join(directory, x)
-                for x in os.listdir(directory)
-                if x.endswith('json')
-                ]
+        try:
+            return [os.path.join(directory, x)
+                    for x in os.listdir(directory)
+                    if x.endswith('json')
+                    ]
+        except FileNotFoundError as error:
+            logger.error(f"reading quiz directory: {error}")
+            return []
+
 
     def _get_quiz_summaries_from_file_list(self, quiz_file_paths):
         def get_name_title_filename_from(quiz_filename):
