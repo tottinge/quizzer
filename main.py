@@ -9,6 +9,12 @@ from box import Box
 logger = getLogger(__name__)
 
 class QuizStore(object):
+    """ For consideration
+    * why keep passing directories around?
+    * why not do a dirwalk?
+    * instead of filename, an ID in summaries?
+    """
+
     def __init__(self):
         self.quiz_dir = 'quizzes'
 
@@ -88,6 +94,10 @@ def render_question(quiz):
 
 @route('/<dirname>/<filename>')
 def begin_quiz(dirname, filename):
+    """
+    * Shouldn't read files; use QuizStore
+    * Shouldn't receive file path, name, but just an ID for QuizStore
+    """
     doc = None
     try:
         filename = os.path.join(dirname, filename)
