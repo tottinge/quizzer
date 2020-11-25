@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from main import QuizStore, logger
+from quiz_store import QuizStore, logger
 
 
 class QuizStoreTest(unittest.TestCase):
@@ -34,8 +34,10 @@ class QuizStoreTest(unittest.TestCase):
             returned_summaries = store.get_quiz_summaries()
 
             self.assertEqual([], returned_summaries)
-            (logged_message,) = mock_call.call_args[0]
-            self.assertIn('boo', logged_message)
+
+            logger.error.assert_called_with("Reading quiz directory: boo")
+            # (logged_message,) = mock_call.call_args[0]
+            # self.assertIn('boo', logged_message)
 
 
 
