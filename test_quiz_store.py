@@ -34,7 +34,8 @@ class QuizStoreTest(unittest.TestCase):
             returned_summaries = store.get_quiz_summaries()
 
             self.assertEqual([], returned_summaries)
-            self.assertIn('boo', mock_call.call_args.args[0])
+            (logged_message,) = mock_call.call_args[0]
+            self.assertIn('boo', logged_message)
 
 
 
