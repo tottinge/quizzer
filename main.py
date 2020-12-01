@@ -25,14 +25,13 @@ def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
 @view("quiz_question")
 def render_question(quiz):
     quiz = Box(quiz)
-    q = quiz.questions and quiz.questions[0] or {}
-    resources = q.get("resources")
+    selected_question = quiz.questions and quiz.questions[0] or {}
     return dict(
         title=quiz.title,
-        question=q.question,
-        decoys=q.decoys,
-        answer=q.answer,
-        resources=resources
+        question=selected_question.question,
+        decoys=selected_question.decoys,
+        answer=selected_question.answer,
+        resources=(selected_question.get("resources"))
     )
 
 
@@ -52,6 +51,9 @@ def begin_quiz(dirname, filename):
         raise
     return render_question(doc)
 
+@route('/quizzes/<quizname>/question')
+def replacement_for_begin_quiz_above():
+    pass
 
 def answer_question(quiz, question, choice):
     # go get the quiz

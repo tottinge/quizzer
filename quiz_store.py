@@ -1,5 +1,6 @@
 import json
 import os
+from json import JSONDecodeError
 
 from logging import getLogger
 logger = getLogger(__name__)
@@ -59,4 +60,8 @@ class QuizStore(object):
         return filename
 
     def _read_quiz_document(self, filename):
-        return self._read_quiz_doc_from_file(filename)
+        try:
+            return self._read_quiz_doc_from_file(filename)
+        except JSONDecodeError as err:
+            logger.error(f"Not valid JSON: {filename}. {err}")
+            return None

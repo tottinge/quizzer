@@ -1,4 +1,5 @@
 import unittest
+from json import JSONDecodeError
 from unittest.mock import patch
 
 from quiz_store import QuizStore, logger
@@ -25,27 +26,24 @@ class QuizStoreTest(unittest.TestCase):
         actual = store.get_quiz(test_quiz)
         self.assertEqual(test_quiz, actual['name'])
 
-    # Test when the quiz dir doesn't exist
     @patch('os.listdir', side_effect=FileNotFoundError('boo'))
     def test_returns_empty_list_and_log_exception_if_no_quiz_dir(self, _):
         store = QuizStore()
         store.quiz_dir = 'nonesuch_directory_exists_here'
         with patch.object(logger, 'error') as mock_call:
             returned_summaries = store.get_quiz_summaries()
-
             self.assertEqual([], returned_summaries)
-
             logger.error.assert_called_with("Reading quiz directory: boo")
-            # (logged_message,) = mock_call.call_args[0]
-            # self.assertIn('boo', logged_message)
 
 
+    @patch('builtins.open')
+    @patch('main.QuizStore.get_quiz_summaries')
+    @patch('json.load', side_effect=JSONDecodeError('yuck','testfile',0))
+    def test_json_file_invalid(self, open_mock,summaries_mock, reader_mock):
+        summaries_mock.return_value = [('nonesuch','no title','nonesuch.json'),]
+        store = QuizStore()
+        store.get_quiz('nonesuch')
 
-    # Test when the file we load isn't good json
-
-
-
-    # test when listdir() fails for notfound
     # Test for empty quiz list
     # Test for no questions in file
 
