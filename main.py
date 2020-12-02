@@ -31,30 +31,14 @@ def render_question(quiz, question_number=0):
     return dict(
         title=quiz.title,
         question=selected_question.question,
-        decoys=selected_question.decoys,
-        answer=selected_question.answer,
+        decoys=selected_question.get("decoys",None),
+        answer=selected_question.get("answer",None),
         resources=(selected_question.get("resources"))
     )
 
 
-@route('/<dirname>/<filename>')
-def begin_quiz(dirname, filename):
-    """
-    * Shouldn't read files; use QuizStore
-    * Shouldn't receive file path, name, but just an ID for QuizStore
-    """
-    doc = None
-    try:
-        filename = os.path.join(dirname, filename)
-        with open(filename) as quiz:
-            doc = json.load(quiz)
-    except JSONDecodeError as err:
-        print("Quiz file is invalid json")
-        raise
-    return render_question(doc)
-
 @route('/quizzes/<quiz_name>/<question_number:int>')
-def replacement_for_begin_quiz_above(quiz_name, question_number):
+def quiz_question(quiz_name, question_number):
     print(f"Getting q:{question_number} of {quiz_name}")
     doc = QUIZ_STORE.get_quiz(quiz_name)
     print(doc['title'], doc['name'], doc['questions'][question_number])

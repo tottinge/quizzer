@@ -33,7 +33,9 @@ class TestQuizSelection(TestCase):
         menu_items = page.body.find_all('a', class_='quiz_selection')
 
         actual = [(b['href'], b.text) for b in menu_items]
-        expected = {('/quizzes_dir/a.json', 'a test'), ('/quizzes_dir/b.json', 'b test')}
+        expected = {
+            ('/quizzes/a/0', 'a test'),
+            ('/quizzes/b/0', 'b test')}
         self.assertSetEqual(expected, set(actual))
 
 

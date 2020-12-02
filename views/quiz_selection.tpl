@@ -9,7 +9,7 @@
     <h1> {{ title }} </h1>
     <form>
     % for (name, description, filename) in choices:
-    <a class="quiz_selection" href="/{{filename}}">{{ description }}</a>
+    <a class="quiz_selection" href="/quizzes/{{name}}/0">{{ description }}</a>
     <br>
     % end
     </form>
