@@ -44,11 +44,10 @@ def quiz_question(quiz_name, question_number):
     print(doc['title'], doc['name'], doc['questions'][question_number])
     return render_question(doc, int(question_number))
 
-def answer_question(quiz, question, choice):
-    # go get the quiz
-    # find the question
-    # see if this answer is the right answer
-    return True
+def answer_question(quiz_name, question_number, choice):
+    doc = QUIZ_STORE.get_quiz(quiz_name)
+    question_number = doc.get('questions')[question_number]
+    return choice == question_number['answer']
 
 
 if __name__ == '__main__':

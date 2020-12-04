@@ -1,7 +1,8 @@
 import unittest.mock
+from unittest.mock import patch
 from bs4 import BeautifulSoup
 
-from main import render_question, answer_question
+from main import render_question, answer_question, QUIZ_STORE
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -61,9 +62,34 @@ class TestQuizRendering(unittest.TestCase):
         self.assertSetEqual(set(resources), actual)
 
     def test_answer_question_correctly(self):
-        actual = answer_question("quiz_name", "1", "choice")
-        self.assertEqual(True, actual)
+        test_question = {
+            "questions": [
+                {
+                    "question": "whatever",
+                    "answer": "the truth",
+                    "decoys": ["falsehood", "foolishness"]
+                }
+            ]
+        }
+        with patch('main.QUIZ_STORE.get_quiz') as getterMock:
+            getterMock.return_value = test_question
+            actual = answer_question("quiz_name", 0, "the truth")
+            self.assertTrue(actual, "correct answer should be 'the truth'")
 
+    def test_answer_question_incorrectly(self):
+        test_question = {
+            "questions": [
+                {
+                    "question": "whatever",
+                    "answer": "the truth",
+                    "decoys": ["falsehood", "foolishness"]
+                }
+            ]
+        }
+        with patch('main.QUIZ_STORE.get_quiz') as getterMock:
+            getterMock.return_value = test_question
+            actual = answer_question("quiz_name", 0, "falsehood")
+            self.assertFalse(actual, "Gave 'falsehood' where answer is 'the truth'")
 
     def render(self, title="_", question="?", decoys=["True", "False"], answer="True", resources=None):
         document = {
