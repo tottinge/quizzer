@@ -22,6 +22,7 @@
         </label>
     </div>
     % end
+    <button type="submit">Check Answer</button>
 </form>
 % if resources:
 <section id="resources">

@@ -74,7 +74,7 @@ class TestQuizRendering(unittest.TestCase):
         with patch('main.QUIZ_STORE.get_quiz') as getterMock:
             getterMock.return_value = test_question
             actual = answer_question("quiz_name", 0, "the truth")
-            self.assertTrue(actual, "correct answer should be 'the truth'")
+            self.assertTrue(actual, "Rejected correct answer 'the truth'")
 
     def test_answer_question_incorrectly(self):
         test_question = {
@@ -88,8 +88,8 @@ class TestQuizRendering(unittest.TestCase):
         }
         with patch('main.QUIZ_STORE.get_quiz') as getterMock:
             getterMock.return_value = test_question
-            actual = answer_question("quiz_name", 0, "falsehood")
-            self.assertFalse(actual, "Gave 'falsehood' where answer is 'the truth'")
+            self.assertFalse(answer_question("quiz_name", 0, "falsehood"),
+                             "Accepted 'falsehood' where answer is 'the truth'")
 
     def render(self, title="_", question="?", decoys=["True", "False"], answer="True", resources=None):
         document = {
