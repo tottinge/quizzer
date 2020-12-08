@@ -7,8 +7,7 @@
 
 <section>
 <h1 id="title" class="page-title">{{title}}</h1>
-</section>
-<form>
+<form action="/quizzes/Devquiz/0" method="POST">
     % from random import shuffle
     % choices = [*decoys,answer]
     % shuffle(choices)
@@ -22,8 +21,11 @@
         </label>
     </div>
     % end
-    <button type="submit">Check Answer</button>
+    <button onclick="myFunction()">Check Answer</button>
+    <div id="result_text">You haven't answered yet.</div>
 </form>
+</section>
+
 % if resources:
 <section id="resources">
 <h2>Additional Resources</h2>
@@ -34,4 +36,12 @@
 </section>
 % end
 </body>
+
+
+<script>
+function myFunction() {
+  document.getElementById("result_text").innerHTML = "That is an answer.";
+}
+</script>
+
 </html>

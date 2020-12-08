@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from bottle import route, run, view
+from bottle import route, run, view, request, post, get
 from box import Box
 
 from quiz_store import QuizStore
@@ -20,10 +20,17 @@ def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
     )
 
 
-@route('/quizzes/<quiz_name>/<question_number:int>')
+@get('/quizzes/<quiz_name>/<question_number:int>')
 def quiz_question(quiz_name, question_number):
     doc = QUIZ_STORE.get_quiz(quiz_name)
     return render_question(doc, question_number)
+
+@post('/quizzes/<quiz_name>/<question_number:int>')
+def check_answer_from_quiz(quiz_name, question_number):
+    selection = request.forms.get('answer')
+    correct = answer_question(quiz_name, question_number, selection)
+    judgment = correct and "correct" or "not what we're looking for"
+    return f"Answer is [{selection}], which is {judgment}."
 
 
 @view("quiz_question")
