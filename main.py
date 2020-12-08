@@ -41,10 +41,10 @@ def render_question(quiz, question_number=0):
     )
 
 
-def answer_question(quiz_name, question_number, choice):
-    doc = QUIZ_STORE.get_quiz(quiz_name)
-    question_number = doc.get('questions')[question_number]
-    return choice == question_number['answer']
+def answer_question(quiz_name, question_number, chosen):
+    quiz = QUIZ_STORE.get_quiz(quiz_name)
+    question = quiz.get('questions')[question_number]
+    return chosen == question['answer']
 
 
 if __name__ == '__main__':
