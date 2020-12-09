@@ -1,8 +1,7 @@
 import unittest.mock
-from unittest.mock import patch
 from bs4 import BeautifulSoup
 
-from main import render_question, answer_question, QUIZ_STORE
+from main import render_question
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -26,11 +25,11 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_page_can_render_with_no_resources(self):
         document = {
-            "title":"no resources at all",
-            "questions":[
+            "title": "no resources at all",
+            "questions": [
                 {
-                    "question":"Why no resources?",
-                    "decoys":["Who knows?"],
+                    "question": "Why no resources?",
+                    "decoys": ["Who knows?"],
                     "answer": "I'm lazy",
                 }
             ]
@@ -43,7 +42,7 @@ class TestQuizRendering(unittest.TestCase):
         page = self.render(resources=[resource])
         resources = page.find('section', id='resources')
         actuals = set(
-            (tag.text,tag['href'])
+            (tag.text, tag['href'])
             for tag in resources.find_all('a')
         )
         self.assertSetEqual(set([resource]), actuals)
@@ -61,47 +60,19 @@ class TestQuizRendering(unittest.TestCase):
         )
         self.assertSetEqual(set(resources), actual)
 
-    def test_answer_question_correctly(self):
-        test_question = {
-            "questions": [
-                {
-                    "question": "whatever",
-                    "answer": "the truth",
-                    "decoys": ["falsehood", "foolishness"]
-                }
-            ]
-        }
-        with patch('main.QUIZ_STORE.get_quiz') as getterMock:
-            getterMock.return_value = test_question
-            actual = answer_question("quiz_name", 0, "the truth")
-            self.assertTrue(actual, "Rejected correct answer 'the truth'")
-
-    def test_answer_question_incorrectly(self):
-        test_question = {
-            "questions": [
-                {
-                    "question": "whatever",
-                    "answer": "the truth",
-                    "decoys": ["falsehood", "foolishness"]
-                }
-            ]
-        }
-        with patch('main.QUIZ_STORE.get_quiz') as getterMock:
-            getterMock.return_value = test_question
-            self.assertFalse(answer_question("quiz_name", 0, "falsehood"),
-                             "Accepted 'falsehood' where answer is 'the truth'")
-
     def render(self, title="_", question="?", decoys=["True", "False"], answer="True", resources=None):
         document = {
-            "title":title,
-            "questions":[
+            "title": title,
+            "questions": [
                 {
-                    "question":question,
-                    "decoys":decoys,
-                    "answer":answer,
-                    "resources":resources or []
+                    "question": question,
+                    "decoys": decoys,
+                    "answer": answer,
+                    "resources": resources or []
                 }
             ]
         }
         markup = render_question(document)
         return BeautifulSoup(markup, "html.parser")
+
+
