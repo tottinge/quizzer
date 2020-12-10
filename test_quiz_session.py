@@ -1,36 +1,30 @@
 import unittest
 from unittest.mock import patch
 
-from main import answer_question
+from main import is_answer_correct, check_answer, render_judgment
 
 
 class TestSession(unittest.TestCase):
-    def test_answer_question_correctly(self):
-        test_question = {
-            "questions": [
-                {
-                    "question": "whatever",
-                    "answer": "the truth",
-                    "decoys": ["falsehood", "foolishness"]
-                }
-            ]
+    def __init__(self, methodName: str = ...):
+        super().__init__(methodName)
+        self.question = {
+            "question": "whatever",
+            "answer": "the truth",
+            "decoys": ["falsehood", "foolishness"]
         }
-        with patch('main.QUIZ_STORE.get_quiz') as getterMock:
-            getterMock.return_value = test_question
-            actual = answer_question("quiz_name", 0, "the truth")
-            self.assertTrue(actual, "Rejected correct answer 'the truth'")
+
+    def test_answer_question_correctly(self):
+        actual = is_answer_correct(
+            self.question,
+            self.question["answer"]
+        )
+        self.assertTrue(actual, "Rejected correct answer 'the truth'")
 
     def test_answer_question_incorrectly(self):
-        test_question = {
-            "questions": [
-                {
-                    "question": "whatever",
-                    "answer": "the truth",
-                    "decoys": ["falsehood", "foolishness"]
-                }
-            ]
-        }
-        with patch('main.QUIZ_STORE.get_quiz') as getterMock:
-            getterMock.return_value = test_question
-            self.assertFalse(answer_question("quiz_name", 0, "falsehood"),
-                             "Accepted 'falsehood' where answer is 'the truth'")
+        self.assertFalse(
+            is_answer_correct(self.question, "falsehood"),
+            f"Accepted 'falsehood' where answer is {self.question['answer']}"
+        )
+
+    def test_render_judgment(self):
+        render_judgment(self.question, "")

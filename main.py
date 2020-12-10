@@ -21,14 +21,19 @@ def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
 
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
-def quiz_question(quiz_name, question_number):
+def ask_question(quiz_name, question_number):
     doc = QUIZ_STORE.get_quiz(quiz_name)
     return render_question(doc, question_number)
 
 @post('/quizzes/<quiz_name>/<question_number:int>')
-def check_answer_from_quiz(quiz_name, question_number):
+def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
-    correct = answer_question(quiz_name, question_number, selection)
+    quiz = QUIZ_STORE(quiz_name)
+    question = quiz['questions'][question_number]
+    render_judgment(question, selection)
+
+def render_judgment(question, selection):
+    correct = is_answer_correct(question, selection)
     judgment = correct and "correct" or "not what we're looking for"
     return f"Answer is [{selection}], which is {judgment}."
 
@@ -48,9 +53,7 @@ def render_question(quiz, question_number=0):
     )
 
 
-def answer_question(quiz_name, question_number, chosen):
-    quiz = QUIZ_STORE.get_quiz(quiz_name)
-    question = quiz.get('questions')[question_number]
+def is_answer_correct(question, chosen):
     return chosen == question['answer']
 
 
