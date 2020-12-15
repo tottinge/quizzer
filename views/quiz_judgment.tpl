@@ -8,8 +8,9 @@
 <section>
     <h1 id="title" class="page-title">{{title}}</h1>
     <p>{{text}}</p>
+    <a href="{{url}}">Try Again</a>
 </section>
-<a href="http://www.toyota.com">toyota</a>
+
 </body>
 
 </html>

@@ -21,7 +21,7 @@
         </label>
     </div>
     % end
-    <button onclick="myFunction()">Check Answer</button>
+    <button>Check Answer</button>
     <div id="result_text">You haven't answered yet.</div>
 </form>
 </section>
@@ -37,11 +37,5 @@
 % end
 </body>
 
-
-<script>
-function myFunction() {
-  document.getElementById("result_text").innerHTML = "That is an answer.";
-}
-</script>
 
 </html>

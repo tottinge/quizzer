@@ -45,23 +45,27 @@ def render_question(quiz, question_number=0):
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
     quiz = QUIZ_STORE.get_quiz(quiz_name)
+    title = quiz['title']
     question = quiz['questions'][question_number]
-    return render_judgment(question, selection)
+    return render_judgment(quiz, 0, selection)
 
 
 @view("quiz_judgment")
-def render_judgment(question, selection):
-    correct = is_answer_correct(question, selection)
-    judgment = correct and "correct" or "not what we're looking for"
-    print("Made it to render_judgement" )
-    print(f"Answer is [{selection}], which is {judgment}." )
+def render_judgment(quiz, question_number, selection):
+    question = quiz['questions'][question_number]
+    judgment = is_answer_correct(question, selection) \
+               and "correct" \
+               or "not what we're looking for"
+    quiz_name = quiz['name']
+    url = f"/quizzes/{quiz_name}/{question_number}"
     # Did you pass
     # if you fail - can you retry
     # if there's another question - advance
     # else display end of quiz page
     return dict(
-        title="title",
-        text=f"Answer is [{selection}], which is {judgment}."
+        title=quiz['title'],
+        text=f"Answer is [{selection}], which is {judgment}.",
+        url=url
     )
 
 
