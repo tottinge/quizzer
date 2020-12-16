@@ -37,12 +37,12 @@ class TestSession(unittest.TestCase):
     def test_render_judgment_incorrect_answer(self):
         markup = render_judgment(self.quiz, 0, "")
         doc = BeautifulSoup(markup, "html.parser")
-        print(doc.text)
         self.assertIn("not what we're looking for", doc.text)
-        links = doc.body.find_all("a")
-        self.assertGreater(len(links), 0)
+        self.assertIsNotNone(doc.body.find("a", string="Try Again"))
+
 
     def test_render_judgment_correct_answer(self):
         markup = render_judgment(self.quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIn("is correct", doc.text)
+        self.assertIsNone(doc.body.find("a", string="Try Again"))

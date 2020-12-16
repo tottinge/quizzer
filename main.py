@@ -53,7 +53,8 @@ def check_answer(quiz_name, question_number):
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
     question = quiz['questions'][question_number]
-    judgment = is_answer_correct(question, selection) \
+    correct = is_answer_correct(question, selection)
+    judgment = correct \
                and "correct" \
                or "not what we're looking for"
     quiz_name = quiz['name']
@@ -64,6 +65,7 @@ def render_judgment(quiz, question_number, selection):
     # else display end of quiz page
     return dict(
         title=quiz['title'],
+        correct = correct,
         text=f"Answer is [{selection}], which is {judgment}.",
         url=url
     )
