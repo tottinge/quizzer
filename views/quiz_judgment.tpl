@@ -7,8 +7,12 @@
 <body>
 <section>
     <h1 id="title" class="page-title">{{title}}</h1>
-    <p>{{text}}</p>
-    % if not correct:
+
+    % if correct:
+    <p>Your answer <em>"{{selection}}"</em> is correct.</p>
+    <p>Fact is successfully acquired and recalled! You're on your way!</p>
+    % else:
+    <p>Your answer <em>"{{selection}}"</em> is not what we're looking for.</p>
     <a href="{{url}}">Try Again</a>
     % end
 </section>

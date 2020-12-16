@@ -54,9 +54,6 @@ def check_answer(quiz_name, question_number):
 def render_judgment(quiz, question_number, selection):
     question = quiz['questions'][question_number]
     correct = is_answer_correct(question, selection)
-    judgment = correct \
-               and "correct" \
-               or "not what we're looking for"
     quiz_name = quiz['name']
     url = f"/quizzes/{quiz_name}/{question_number}"
     # Did you pass
@@ -66,7 +63,7 @@ def render_judgment(quiz, question_number, selection):
     return dict(
         title=quiz['title'],
         correct = correct,
-        text=f"Answer is [{selection}], which is {judgment}.",
+        selection=selection,
         url=url
     )
 
