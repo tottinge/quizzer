@@ -26,6 +26,7 @@ class TestQuizRendering(unittest.TestCase):
     def test_page_can_render_with_no_resources(self):
         document = {
             "title": "no resources at all",
+            "name":"resourceless_test",
             "questions": [
                 {
                     "question": "Why no resources?",
@@ -60,9 +61,10 @@ class TestQuizRendering(unittest.TestCase):
         )
         self.assertSetEqual(set(resources), actual)
 
-    def render(self, title="_", question="?", decoys=["True", "False"], answer="True", resources=None):
+    def render(self, title="_", name="quiz_name", question="?", decoys=["True", "False"], answer="True", resources=None):
         document = {
             "title": title,
+            "name": name,
             "questions": [
                 {
                     "question": question,

@@ -11,6 +11,7 @@ QUIZ_STORE = QuizStore()
 
 
 @route('/')
+@route('/quizzes')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
     return dict(
@@ -34,6 +35,7 @@ def render_question(quiz, question_number=0):
                         or {}
     return dict(
         title=quiz.title,
+        quiz_name=quiz.name,
         question=selected_question.question,
         decoys=selected_question.get("decoys", None),
         answer=selected_question.get("answer", None),
