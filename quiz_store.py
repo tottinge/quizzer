@@ -10,7 +10,7 @@ logger = getLogger(__name__)
 
 class Quiz(Box):
     def next_question_number(self, number):
-        if number < len(self.questions):
+        if number+1 >= len(self.questions):
             return None
         return number+1
 

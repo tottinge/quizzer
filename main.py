@@ -29,12 +29,12 @@ def ask_question(quiz_name, question_number):
 
 @view("quiz_question")
 def render_question(quiz, question_number=0):
-    quiz = Box(quiz)
     selected_question = quiz.questions \
                         and quiz.questions[question_number] \
                         or {}
     return dict(
         title=quiz.title,
+        question_number=question_number,
         quiz_name=quiz.name,
         question=selected_question.question,
         decoys=selected_question.get("decoys", None),
@@ -56,7 +56,7 @@ def render_judgment(quiz, question_number, selection):
     correct = is_answer_correct(question, selection)
     quiz_name = quiz['name']
     return_url = f"/quizzes/{quiz_name}/{question_number}"
-    next_url = "/"
+    next_url = None
     next_number = quiz.next_question_number(question_number)
     if next_number is not None:
         next_url = f"/quizzes/{quiz_name}/{next_number}"

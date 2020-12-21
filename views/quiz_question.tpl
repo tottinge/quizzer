@@ -7,7 +7,7 @@
 
 <section>
 <h1 id="title" class="page-title">{{title}}</h1>
-<form action="/quizzes/{{quiz_name}}/0" method="POST">
+<form action="/quizzes/{{quiz_name}}/{{question_number}}" method="POST">
     % from random import shuffle
     % choices = [*decoys,answer]
     % shuffle(choices)
