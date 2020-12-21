@@ -11,9 +11,12 @@
     % if correct:
     <p>Your answer <em>"{{selection}}"</em> is correct.</p>
     <p>Fact is successfully acquired and recalled! You're on your way!</p>
+        % if next_url:
+        <a href={{next_url}}>Next Question</a>
+        % end
     % else:
     <p>Your answer <em>"{{selection}}"</em> is not what we're looking for.</p>
-    <a href="{{url}}">Try Again</a>
+    <a href="{{return_url}}">Try Again</a>
     % end
 </section>
 

@@ -4,6 +4,7 @@ from unittest.mock import patch
 from bs4 import BeautifulSoup
 
 from main import is_answer_correct, check_answer, render_judgment
+from quiz_store import Quiz
 
 
 class TestSession(unittest.TestCase):
@@ -15,11 +16,11 @@ class TestSession(unittest.TestCase):
             'answer': 'the truth',
             'decoys': ['falsehood', 'foolishness']
         }
-        self.quiz = {
+        self.quiz = Quiz({
             'title':'frankfurter',
             'name':'TestSessionQuiz',
             'questions': [self.question]
-        }
+        })
 
     def test_answer_question_correctly(self):
         result = is_answer_correct(self.question, self.question["answer"])

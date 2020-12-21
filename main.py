@@ -47,9 +47,7 @@ def render_question(quiz, question_number=0):
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
     quiz = QUIZ_STORE.get_quiz(quiz_name)
-    title = quiz['title']
-    question = quiz['questions'][question_number]
-    return render_judgment(quiz, 0, selection)
+    return render_judgment(quiz, question_number, selection)
 
 
 @view("quiz_judgment")
@@ -57,19 +55,22 @@ def render_judgment(quiz, question_number, selection):
     question = quiz['questions'][question_number]
     correct = is_answer_correct(question, selection)
     quiz_name = quiz['name']
-    url = f"/quizzes/{quiz_name}/{question_number}"
+    return_url = f"/quizzes/{quiz_name}/{question_number}"
+    next_url = "/"
+    next_number = quiz.next_question_number(question_number)
+    if next_number is not None:
+        next_url = f"/quizzes/{quiz_name}/{next_number}"
     # Did you pass
     # if you fail - can you retry
     # if there's another question - advance
     # else display end of quiz page
     return dict(
         title=quiz['title'],
-        correct = correct,
+        correct=correct,
         selection=selection,
-        url=url
+        next_url=next_url,
+        return_url=return_url
     )
-
-
 
 
 def is_answer_correct(question: object, chosen: object) -> object:
