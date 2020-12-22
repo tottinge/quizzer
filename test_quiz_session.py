@@ -4,6 +4,7 @@ from unittest.mock import patch
 from bs4 import BeautifulSoup
 
 from main import is_answer_correct, check_answer, render_judgment
+from quiz_store import Quiz
 
 
 class TestSession(unittest.TestCase):
@@ -15,11 +16,11 @@ class TestSession(unittest.TestCase):
             'answer': 'the truth',
             'decoys': ['falsehood', 'foolishness']
         }
-        self.quiz = {
+        self.quiz = Quiz({
             'title':'frankfurter',
             'name':'TestSessionQuiz',
             'questions': [self.question]
-        }
+        })
 
     def test_answer_question_correctly(self):
         result = is_answer_correct(self.question, self.question["answer"])
@@ -38,10 +39,29 @@ class TestSession(unittest.TestCase):
         markup = render_judgment(self.quiz, 0, "")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIn("not what we're looking for", doc.text)
-        self.assertIsNotNone(doc.body.find("a", string="Try Again"))
+        self.assertIsNotNone(doc.body.find("a", id="try_again"), "Should be a try_again link")
 
     def test_render_judgment_correct_answer(self):
         markup = render_judgment(self.quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIn("is correct", doc.text)
-        self.assertIsNone(doc.body.find("a", string="Try Again"))
+        self.assertIsNone(doc.body.find("a", id="try_again"), "Should have no try_again link when correct answer given.")
+
+    def test_no_next_url_offered_if_no_more_questions_exist(self):
+        markup = render_judgment(self.quiz, 0, "the truth")
+        doc = BeautifulSoup(markup, "html.parser")
+        self.assertIsNone(doc.body.find("a", id="try_again"), "Should have no try_again link when correct answer given.")
+        self.assertIsNone(doc.body.find("a", id="next_question"), "Should have no next_question link (only 1 question).")
+
+
+    def test_offers_next_question_if_any_exist(self):
+        two_question = Quiz({
+            'title':'2q',
+            'name':'Test2Questions',
+            'questions': [self.question, self.question]
+        })
+        markup = render_judgment(self.quiz, 0, "the truth")
+        doc = BeautifulSoup(markup, "html.parser")
+        actual = doc.body.find("a", id="next_question")
+        print(doc.body.find_all('a'))
+        self.assertIsNotNone(actual, "Should have next_question link.")

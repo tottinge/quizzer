@@ -3,7 +3,16 @@ import os
 from json import JSONDecodeError
 
 from logging import getLogger
+
+from box.box import Box
+
 logger = getLogger(__name__)
+
+class Quiz(Box):
+    def next_question_number(self, number):
+        if number+1 >= len(self.questions):
+            return None
+        return number+1
 
 class QuizStore(object):
     """ For consideration
@@ -22,7 +31,8 @@ class QuizStore(object):
 
     def get_quiz(self, quiz_name):
         filename = self._find_file_for_named_quiz(quiz_name)
-        return self._read_quiz_document(filename)
+        document = self._read_quiz_document(filename)
+        return document and Quiz(document) or None
 
     def _get_quiz_files_from_directory(self, directory):
         try:
