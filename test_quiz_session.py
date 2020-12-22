@@ -40,7 +40,6 @@ class TestSession(unittest.TestCase):
         self.assertIn("not what we're looking for", doc.text)
         self.assertIsNotNone(doc.body.find("a", string="Try Again"))
 
-
     def test_render_judgment_correct_answer(self):
         markup = render_judgment(self.quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")

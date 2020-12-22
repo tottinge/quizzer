@@ -6,8 +6,8 @@
            "question": "Are radio buttons a better choice than regular buttons?",
            "answer": "It Depends",
            "decoys": [
-                "Sure",
-                "Nope"
+              "Sure",
+              "Nope"
             ],
           "resources": [
             ["Radio Buttons", "https://www.w3schools.com/tags/att_input_type_radio.asp"],
@@ -16,11 +16,16 @@
         },
 
         {
-           "question":"Is there a test for this?",
-           "answer": "There should be",
+           "question":"When should you write a unit test?",
+           "answer": "First, as a way to express the desired behavior",
            "decoys":[
-            "It's a waste of time"
-           ]
+              "Never, they are a waste of time",
+              "After implementing the code, to make sure it works",
+              "Only if the solution is really complicated"
+           ],
+          "resources": [
+            ["The Three Rules of TDD", "https://www.w3schools.com/tags/att_input_type_radio.asp"]
+          ]
         },
 
         {
