@@ -52,9 +52,9 @@ def check_answer(quiz_name, question_number):
 
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
-    question = quiz['questions'][question_number]
+    question = quiz.questions[question_number]
     correct = is_answer_correct(question, selection)
-    quiz_name = quiz['name']
+    quiz_name = quiz.name
     return_url = f"/quizzes/{quiz_name}/{question_number}"
     next_url = None
     next_number = quiz.next_question_number(question_number)
@@ -65,7 +65,7 @@ def render_judgment(quiz, question_number, selection):
     # if there's another question - advance
     # else display end of quiz page
     return dict(
-        title=quiz['title'],
+        title=quiz.title,
         correct=correct,
         selection=selection,
         next_url=next_url,
@@ -74,7 +74,7 @@ def render_judgment(quiz, question_number, selection):
 
 
 def is_answer_correct(question: object, chosen: object) -> object:
-    return chosen == question['answer']
+    return chosen == question.answer
 
 
 if __name__ == '__main__':

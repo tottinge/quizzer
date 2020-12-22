@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 
+from box import Box
 from bs4 import BeautifulSoup
 
 from main import is_answer_correct, check_answer, render_judgment
@@ -11,11 +12,11 @@ class TestSession(unittest.TestCase):
     def __init__(self, methodName: str = ...):
         super().__init__(methodName)
 
-        self.question = {
+        self.question = Box({
             'question': 'whatever',
             'answer': 'the truth',
             'decoys': ['falsehood', 'foolishness']
-        }
+        })
         self.quiz = Quiz({
             'title':'frankfurter',
             'name':'TestSessionQuiz',
@@ -50,7 +51,6 @@ class TestSession(unittest.TestCase):
     def test_no_next_url_offered_if_no_more_questions_exist(self):
         markup = render_judgment(self.quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
-        self.assertIsNone(doc.body.find("a", id="try_again"), "Should have no try_again link when correct answer given.")
         self.assertIsNone(doc.body.find("a", id="next_question"), "Should have no next_question link (only 1 question).")
 
 
@@ -60,8 +60,6 @@ class TestSession(unittest.TestCase):
             'name':'Test2Questions',
             'questions': [self.question, self.question]
         })
-        markup = render_judgment(self.quiz, 0, "the truth")
+        markup = render_judgment(two_question, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
-        actual = doc.body.find("a", id="next_question")
-        print(doc.body.find_all('a'))
-        self.assertIsNotNone(actual, "Should have next_question link.")
+        self.assertIsNotNone(doc.body.find("a", id="next_question"), "Should have next_question link.")
