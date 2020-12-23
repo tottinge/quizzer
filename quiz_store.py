@@ -1,7 +1,6 @@
 import json
 import os
 from json import JSONDecodeError
-
 from logging import getLogger
 
 from quiz import Quiz
@@ -38,7 +37,6 @@ class QuizStore(object):
             logger.error(f"Reading quiz directory: {error}")
             return []
 
-
     def _get_quiz_summaries_from_file_list(self, quiz_file_paths):
         def get_name_title_filename_from(quiz_filename):
             document = self._read_quiz_doc_from_file(quiz_filename)
@@ -54,8 +52,8 @@ class QuizStore(object):
     def _find_file_for_named_quiz(self, quiz_name):
         lookup = {
             name: filename
-                  for (name, _, filename)
-                  in self.get_quiz_summaries()
+            for (name, _, filename)
+            in self.get_quiz_summaries()
         }
         filename = lookup.get(quiz_name)
         return filename

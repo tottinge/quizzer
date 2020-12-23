@@ -1,7 +1,5 @@
 from logging import getLogger
-
 from bottle import route, run, view, request, post, get
-
 from quiz_store import QuizStore
 
 logger = getLogger(__name__)

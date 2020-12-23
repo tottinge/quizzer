@@ -18,8 +18,8 @@ class TestSession(unittest.TestCase):
             'decoys': ['falsehood', 'foolishness']
         })
         self.quiz = Quiz({
-            'title':'frankfurter',
-            'name':'TestSessionQuiz',
+            'title': 'frankfurter',
+            'name': 'TestSessionQuiz',
             'questions': [self.question]
         })
 
@@ -46,21 +46,22 @@ class TestSession(unittest.TestCase):
         markup = render_judgment(self.quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIn("is correct", doc.text)
-        self.assertIsNone(doc.body.find("a", id="try_again"), "Should have no try_again link when correct answer given.")
+        self.assertIsNone(doc.body.find("a", id="try_again"),
+                          "Should have no try_again link when correct answer given.")
 
     def test_offers_next_question_if_any_exist(self):
         two_question = Quiz({
-            'title':'2q',
-            'name':'Test2Questions',
+            'title': '2q',
+            'name': 'Test2Questions',
             'questions': [self.question, self.question]
         })
         markup = render_judgment(two_question, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIsNotNone(doc.body.find("a", id="next_question"), "Should have next_question link.")
 
-
     def test_no_next_url_offered_if_no_more_questions_exist(self):
         markup = render_judgment(self.quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
-        self.assertIsNone(doc.body.find("a", id="next_question"), "Should have no next_question link (only 1 question).")
+        self.assertIsNone(doc.body.find("a", id="next_question"),
+                          "Should have no next_question link (only 1 question).")
         self.assertIsNotNone(doc.body.find("a", id="go_home"), "Should be able to return to home page")
