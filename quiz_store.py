@@ -47,9 +47,6 @@ class QuizStore(object):
         return [get_name_title_filename_from(filename)
                 for filename in quiz_file_paths]
 
-    def _quiz_summaries_for(self, directory):
-        return self._get_quiz_summaries_from_file_list(self._get_quiz_files_from_directory(directory))
-
     def _read_quiz_doc_from_file(self, filename):
         with open(filename) as input_file:
             return json.load(input_file)

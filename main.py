@@ -12,11 +12,10 @@ QUIZ_STORE = QuizStore()
 @route('/')
 @route('/quizzes')
 @view("quiz_selection")
-def render_menu_of_quizzes(title="Quizzology", directory='quizzes'):
+def render_menu_of_quizzes(title="Quizzology"):
     return dict(
         title=title,
-        # Todo : This is the wrong function -- it's private and knows directories.
-        choices=(QUIZ_STORE._quiz_summaries_for(directory))
+        choices=QUIZ_STORE.get_quiz_summaries()
     )
 
 
@@ -59,10 +58,6 @@ def render_judgment(quiz, question_number, selection):
     next_number = quiz.next_question_number(question_number)
     if next_number is not None:
         next_url = f"/quizzes/{quiz_name}/{next_number}"
-    # Did you pass
-    # if you fail - can you retry
-    # if there's another question - advance
-    # else display end of quiz page
     return dict(
         title=quiz.title,
         correct=correct,

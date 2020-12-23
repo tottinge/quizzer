@@ -15,20 +15,16 @@ class TestQuizSelection(TestCase):
     @patch("os.listdir", return_value=[])
     def test_title_appears_as_title(self, *_):
         title = "Page Title"
-        soup = self.render(title=title, directory='')
+        soup = self.render(title=title)
         found = soup.head.title.string
         self.assertIn(title, found, f"Did not find '{title}' as page title, found '{found}' instead")
 
-    @patch("json.load", side_effect = [
-        dict(name='a', title="a test"),
-        dict(name='b', title='b.test')
+    @patch("main.QUIZ_STORE.get_quiz_summaries", return_value = [
+        ('a', 'a test', 'filename'),
+        ('b', 'b test', 'otherfile')
     ])
     def test_list_of_quizzes_from_quizzes_directory(self, *_):
-        QUIZ_STORE._quiz_summaries_for = Mock(return_value = [
-            ("a", "a test", "quizzes_dir/a.json"),
-            ("b", "b test", "quizzes_dir/b.json")
-        ])
-        page = self.render("_", "quizzes_dir")
+        page = self.render("_")
 
         menu_items = page.body.find_all('a', class_='quiz_selection')
 
@@ -80,6 +76,6 @@ class TestQuizSelection(TestCase):
             self.assertSetEqual(set(expected), set(actual))
 
 
-    def render(self, title, directory):
-        markup = render_menu_of_quizzes(title, directory)
+    def render(self, title):
+        markup = render_menu_of_quizzes(title)
         return BeautifulSoup(markup, "html.parser")
