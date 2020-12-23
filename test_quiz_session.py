@@ -5,7 +5,7 @@ from box import Box
 from bs4 import BeautifulSoup
 
 from main import is_answer_correct, check_answer, render_judgment
-from quiz_store import Quiz
+from quiz import Quiz
 
 
 class TestSession(unittest.TestCase):
@@ -48,12 +48,6 @@ class TestSession(unittest.TestCase):
         self.assertIn("is correct", doc.text)
         self.assertIsNone(doc.body.find("a", id="try_again"), "Should have no try_again link when correct answer given.")
 
-    def test_no_next_url_offered_if_no_more_questions_exist(self):
-        markup = render_judgment(self.quiz, 0, "the truth")
-        doc = BeautifulSoup(markup, "html.parser")
-        self.assertIsNone(doc.body.find("a", id="next_question"), "Should have no next_question link (only 1 question).")
-
-
     def test_offers_next_question_if_any_exist(self):
         two_question = Quiz({
             'title':'2q',
@@ -63,3 +57,10 @@ class TestSession(unittest.TestCase):
         markup = render_judgment(two_question, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIsNotNone(doc.body.find("a", id="next_question"), "Should have next_question link.")
+
+
+    def test_no_next_url_offered_if_no_more_questions_exist(self):
+        markup = render_judgment(self.quiz, 0, "the truth")
+        doc = BeautifulSoup(markup, "html.parser")
+        self.assertIsNone(doc.body.find("a", id="next_question"), "Should have no next_question link (only 1 question).")
+        self.assertIsNotNone(doc.body.find("a", id="go_home"), "Should be able to return to home page")

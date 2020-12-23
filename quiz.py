@@ -1,5 +1,8 @@
 import os
 import json
+
+from box import Box
+
 QUIZ_DIR = 'quizzes'
 
 def doomed_filescan(filename):
@@ -21,3 +24,10 @@ def doomed_quiz_collector():
 
 if __name__ == "__main__":
     print(list(get_quizzes()))
+
+
+class Quiz(Box):
+    def next_question_number(self, number):
+        if number+1 >= len(self.questions):
+            return None
+        return number+1

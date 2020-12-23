@@ -1,7 +1,6 @@
 from logging import getLogger
 
 from bottle import route, run, view, request, post, get
-from box import Box
 
 from quiz_store import QuizStore
 

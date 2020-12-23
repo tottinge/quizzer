@@ -4,19 +4,13 @@ from json import JSONDecodeError
 
 from logging import getLogger
 
-from box.box import Box
+from quiz import Quiz
 
 logger = getLogger(__name__)
 
-class Quiz(Box):
-    def next_question_number(self, number):
-        if number+1 >= len(self.questions):
-            return None
-        return number+1
 
 class QuizStore(object):
     """ For consideration
-    * why keep passing directories around?
     * why not do a dirwalk?
     * instead of filename, an ID in summaries?
     """

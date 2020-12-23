@@ -2,7 +2,7 @@ import unittest.mock
 from bs4 import BeautifulSoup
 
 from main import render_question
-from quiz_store import Quiz
+from quiz import Quiz
 
 
 class TestQuizRendering(unittest.TestCase):
