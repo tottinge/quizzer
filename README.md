@@ -1,21 +1,21 @@
-# quizzer
-
+# Quizzology
 
 It runs.
-It kinda works.
-Some tests pass.
-We seem to be able to do some json documents, sort of.
-There is a front-end that will render a document on the screen
-It has a form.
 
-We need to make it a working form: https://www.w3schools.com/html/html_form_elements.asp 
-<label for="cars">Choose a car:</label>
-<select id="cars" name="cars" size="4" multiple>
-  <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="fiat">Fiat</option>
-  <option value="audi">Audi</option>
-</select>
+Currently Quizzology is a slow-coding target. We work on it a very little bit
+at a time, and constantly refer to the charter. We didn't choose a nice fancy
+architecture, no CSS, no nice HTML5, no client-side javascript wizardry.
+
+The purpose of this project is not so much to make a project, but to intentionally
+and carefully practice TDD, refactoring, evolutionary design, and minimalism.
+
+Don't look at it as a finished product, but a starting point for doing fun stuff.
+
+In the works:
+* Create sessions so that we can record actions and grade tests
+* Remember past sessions, so we can re-quiz on quizzes and questions from past
+* Keep track of questions that we've missed most, and refresh on those
+* Make it look less awful
 
 
 
