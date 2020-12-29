@@ -69,5 +69,12 @@ def is_answer_correct(question: object, chosen: object) -> object:
     return chosen == question.answer
 
 
+@get("/me")
+def show_me():
+    # Display information about the session environment
+    # return request.environ.get('REMOTE_ADDR')
+    return "<br>".join(f"{key}:{value}" for (key,value) in list(request.environ.items()))
+
+
 if __name__ == '__main__':
     run(port=4000, reloader=True, debug=True)
