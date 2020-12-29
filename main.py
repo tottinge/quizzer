@@ -7,7 +7,10 @@ logger = getLogger(__name__)
 QUIZ_STORE = QuizStore()
 
 
-class SessionStore(object):
+class SessionStore:
+    """
+    Store user sessions for later analysis and reporting
+    """
     pass
     # SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
 
