@@ -1,10 +1,17 @@
 from logging import getLogger
-from bottle import route, run, view, request, post, get
+from bottle import route, run, view, request, post, get, response
 from quiz_store import QuizStore
 
 logger = getLogger(__name__)
 
 QUIZ_STORE = QuizStore()
+
+
+class SessionStore(object):
+    pass
+    # SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
+
+SESSION_STORE = SessionStore()
 
 
 @route('/')
@@ -25,9 +32,7 @@ def ask_question(quiz_name, question_number):
 
 @view("quiz_question")
 def render_question(quiz, question_number=0):
-    selected_question = quiz.questions \
-                        and quiz.questions[question_number] \
-                        or {}
+    selected_question = quiz.questions[question_number] if quiz.questions else {}
     return dict(
         title=quiz.title,
         question_number=question_number,
@@ -52,10 +57,11 @@ def render_judgment(quiz, question_number, selection):
     correct = is_answer_correct(question, selection)
     quiz_name = quiz.name
     return_url = f"/quizzes/{quiz_name}/{question_number}"
-    next_url = None
     next_number = quiz.next_question_number(question_number)
-    if next_number is not None:
-        next_url = f"/quizzes/{quiz_name}/{next_number}"
+    next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
+
+    # SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
+
     return dict(
         title=quiz.title,
         correct=correct,
@@ -71,9 +77,20 @@ def is_answer_correct(question: object, chosen: object) -> object:
 
 @get("/me")
 def show_me():
+    "Junk method for exploring the session environment variables. Delete at will."
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
+    print("Remote route", request.remote_route)
     return "<br>".join(f"{key}:{value}" for (key,value) in list(request.environ.items()))
+
+@get("/cookies")
+def cookie_explorer():
+    "Junk method for exploring cookies. Delete at will."
+    name = request.get_cookie('name', '')
+    counter = int(request.get_cookie('counter', '0'))
+    response.set_cookie('name', 'phydeaux')
+    return f"Name was {name}, Counter was {counter}"
+
 
 
 if __name__ == '__main__':

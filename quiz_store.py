@@ -2,13 +2,12 @@ import json
 import os
 from json import JSONDecodeError
 from logging import getLogger
-
 from quiz import Quiz
 
 logger = getLogger(__name__)
 
 
-class QuizStore(object):
+class QuizStore:
     """ For consideration
     * why not do a dirwalk?
     * instead of filename, an ID in summaries?
@@ -25,7 +24,8 @@ class QuizStore(object):
     def get_quiz(self, quiz_name):
         filename = self._find_file_for_named_quiz(quiz_name)
         document = self._read_quiz_document(filename)
-        return document and Quiz(document) or None
+        return Quiz(document) if document else None
+
 
     def _get_quiz_files_from_directory(self, directory):
         try:
