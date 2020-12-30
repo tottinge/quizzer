@@ -1,3 +1,4 @@
+""" Whee. This is the main routine!"""
 from logging import getLogger
 from bottle import route, run, view, request, post, get, response
 from quiz_store import QuizStore
