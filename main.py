@@ -2,19 +2,10 @@
 from logging import getLogger
 from bottle import route, run, view, request, post, get, response
 from quiz_store import QuizStore
+from session_store import SessionStore
 
 logger = getLogger(__name__)
-
 QUIZ_STORE = QuizStore()
-
-
-class SessionStore:
-    """
-    Store user sessions for later analysis and reporting
-    """
-    pass
-    # SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
-
 SESSION_STORE = SessionStore()
 
 
