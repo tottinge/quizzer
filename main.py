@@ -84,7 +84,8 @@ def cookie_explorer():
     name = request.get_cookie('name', '')
     counter = int(request.get_cookie('counter', '0'))
     response.set_cookie('name', 'phydeaux')
-    return f"Name was {name}, Counter was {counter}"
+    result = "".join(f"<p>{key}:{value}</p>" for (key,value) in request.cookies.items() )
+    return result
 
 
 
