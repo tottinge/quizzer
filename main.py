@@ -55,12 +55,12 @@ def render_judgment(quiz, question_number, selection):
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
 
-    # SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
-
+    SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
     return dict(
         title=quiz.title,
         correct=correct,
         selection=selection,
+        incorrect_answers=SESSION_STORE.number_of_incorrect_answers(quiz_name),
         next_url=next_url,
         return_url=return_url
     )
@@ -76,17 +76,21 @@ def show_me():
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
     print("Remote route", request.remote_route)
-    return "<br>".join(f"{key}:{value}" for (key,value) in list(request.environ.items()))
+    return "".join(f"<p>{key}: {value}</p>" for (key,value) in list(request.environ.items()))
 
 @get("/cookies")
 def cookie_explorer():
     "Junk method for exploring cookies. Delete at will."
-    name = request.get_cookie('name', '')
-    counter = int(request.get_cookie('counter', '0'))
     response.set_cookie('name', 'phydeaux')
-    result = "".join(f"<p>{key}:{value}</p>" for (key,value) in request.cookies.items() )
+    result = "".join(f"<p>{key}: {value}</p>" for (key,value) in request.cookies.items() )
     return result
 
+@get("/session")
+def show_session():
+    answers = SESSION_STORE.recorded_answers
+    text_answers = [ f"{name} {number} {choice} {correct}"
+                     for (name, number, choice, correct) in answers ]
+    return "<br>".join(text_answers)
 
 
 if __name__ == '__main__':
