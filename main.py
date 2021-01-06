@@ -55,12 +55,12 @@ def render_judgment(quiz, question_number, selection):
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
 
-    SESSION_STORE.record_answer(quiz_name, question_number, selection, correct)
+    SESSION_STORE.record_answer("DOOMED", quiz_name, question_number, selection, correct)
     return dict(
         title=quiz.title,
         correct=correct,
         selection=selection,
-        incorrect_answers=SESSION_STORE.number_of_incorrect_answers(quiz_name),
+        incorrect_answers=SESSION_STORE.number_of_incorrect_answers("DOOMED", quiz_name),
         next_url=next_url,
         return_url=return_url
     )
