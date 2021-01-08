@@ -49,6 +49,38 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertEqual(2, session_store.number_of_correct_answers(session_2, quiz_name))
         self.assertEqual(0, session_store.number_of_incorrect_answers(session_2, quiz_name))
 
+    def test_questions_answered_correctly_coalesces(self):
+        session_store = SessionStore()
+        session_id = 'session'
+        inputs = [
+            (session_id, 'quiz', 1, '', True),
+            (session_id, 'quiz', 1, '', True),
+            (session_id, 'quiz', 2, '', False),
+        ]
+        for each in inputs:
+            session_store.record_answer(*each)
+        actual = session_store.questions_answered_correctly(session_id)
+
+        self.assertEqual(1, len(actual))
+        self.assertIn(('quiz',1), actual)
+
+    def test_questions_answered_incorrectly_coalesces(self):
+        session_store = SessionStore()
+        session_id = 'session'
+        inputs = [
+            (session_id, 'quiz', 1, '', False),
+            (session_id, 'quiz', 1, '', False),
+            (session_id, 'quiz', 1, '', True),
+            (session_id, 'quiz', 2, '', True),
+        ]
+        for each in inputs:
+            session_store.record_answer(*each)
+        actual = session_store.questions_answered_incorrectly(session_id)
+
+        self.assertEqual(1, len(actual))
+        self.assertIn( ('quiz',1), actual)
+        self.assertNotIn( ('quiz',2), actual)
+
 
 
 if __name__ == '__main__':

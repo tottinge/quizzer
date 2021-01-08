@@ -6,6 +6,7 @@ from session_store import SessionStore
 
 logger = getLogger(__name__)
 QUIZ_STORE = QuizStore()
+SESSION_COOKIE_NAME = 'qz_session'
 SESSION_STORE = SessionStore()
 
 
@@ -28,8 +29,11 @@ def ask_question(quiz_name, question_number):
 @view("quiz_question")
 def render_question(quiz, question_number=0):
     selected_question = quiz.questions[question_number] if quiz.questions else {}
+    total_questions = len(quiz.questions)
     return dict(
         title=quiz.title,
+        progress = int(((question_number+1) / total_questions)*100),
+        total_questions =total_questions,
         question_number=question_number,
         quiz_name=quiz.name,
         question=selected_question.question,
@@ -51,6 +55,8 @@ def render_judgment(quiz, question_number, selection):
     question = quiz.questions[question_number]
     correct = is_answer_correct(question, selection)
     quiz_name = quiz.name
+    total_questions = len(quiz.questions)
+    progress = int(((question_number+1) / total_questions)*100)
     return_url = f"/quizzes/{quiz_name}/{question_number}"
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
@@ -58,9 +64,12 @@ def render_judgment(quiz, question_number, selection):
     SESSION_STORE.record_answer("DOOMED", quiz_name, question_number, selection, correct)
     return dict(
         title=quiz.title,
+        total_questions=total_questions,
+        question_number=question_number,
         correct=correct,
         selection=selection,
         incorrect_answers=SESSION_STORE.number_of_incorrect_answers("DOOMED", quiz_name),
+        progress=progress,
         next_url=next_url,
         return_url=return_url
     )
@@ -76,20 +85,22 @@ def show_me():
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
     print("Remote route", request.remote_route)
-    return "".join(f"<p>{key}: {value}</p>" for (key,value) in list(request.environ.items()))
+    return "".join(f"<p>{key}: {value}</p>" for (key, value) in list(request.environ.items()))
+
 
 @get("/cookies")
 def cookie_explorer():
     "Junk method for exploring cookies. Delete at will."
     response.set_cookie('name', 'phydeaux')
-    result = "".join(f"<p>{key}: {value}</p>" for (key,value) in request.cookies.items() )
+    result = "".join(f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
     return result
+
 
 @get("/session")
 def show_session():
     answers = SESSION_STORE.recorded_answers
-    text_answers = [ f"{name} {number} {choice} {correct}"
-                     for (name, number, choice, correct) in answers ]
+    text_answers = [f"{name} {number} {choice} {correct}"
+                    for (name, number, choice, correct) in answers]
     return "<br>".join(text_answers)
 
 

@@ -28,3 +28,17 @@ class SessionStore:
     def get_new_session_id():
         import uuid
         return str(uuid.uuid4())
+
+    def questions_answered_incorrectly(self, target_session):
+        return { (quiz_name, question_number)
+                 for (session, quiz_name, question_number, selection, is_correct)
+                 in self.recorded_answers
+                 if session == target_session and not is_correct
+        }
+
+    def questions_answered_correctly(self, target_session):
+        return { (quiz_name, question_number)
+                 for (session, quiz_name, question_number, selection, is_correct)
+                 in self.recorded_answers
+                 if session == target_session and is_correct
+        }
