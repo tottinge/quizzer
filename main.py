@@ -1,14 +1,14 @@
 """ Whee. This is the main routine!"""
-from logging import getLogger
+import logging
+from logging import getLogger, INFO, DEBUG
 from bottle import route, run, view, request, post, get, response
 from quiz_store import QuizStore
 from session_store import SessionStore
 
-SESSION_COOKIE_ID = "QuizzologyID"
+SESSION_COOKIE_ID = "QuizSessionID"
 
 logger = getLogger(__name__)
 QUIZ_STORE = QuizStore()
-SESSION_COOKIE_NAME = 'qz_session'
 SESSION_STORE = SessionStore()
 
 
@@ -16,6 +16,7 @@ SESSION_STORE = SessionStore()
 @route('/quizzes')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology"):
+    response.delete_cookie(SESSION_COOKIE_ID)
     return dict(
         title=title,
         choices=QUIZ_STORE.get_quiz_summaries()
@@ -63,7 +64,11 @@ def render_judgment(quiz, question_number, selection):
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
 
-    SESSION_STORE.record_answer("DOOMED", quiz_name, question_number, selection, correct)
+    logger.info("getting id")
+    id = get_client_session_id(request, response)
+    logger.info("Recording answer")
+    SESSION_STORE.record_answer(id, quiz_name, question_number, selection, correct)
+    logger.info("On like usual...")
     return dict(
         title=quiz.title,
         total_questions=total_questions,
@@ -93,7 +98,6 @@ def show_me():
 @get("/cookies")
 def cookie_explorer():
     "Junk method for exploring cookies. Delete at will."
-    response.set_cookie('name', 'phydeaux')
     result = "".join(f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
     return result
 
@@ -107,11 +111,17 @@ def show_session():
 
 
 def get_client_session_id(request, response):
-    id = request.get_cookie(SESSION_COOKIE_ID) or SESSION_STORE.get_new_session_id()
-    response.set_cookie("QuizzologyID", "BLA")
+    id = request.get_cookie(SESSION_COOKIE_ID)
+    if not id:
+        id = SESSION_STORE.get_new_session_id()
+        response.set_cookie("QuizzologyID", id)
     return id
 
+def drop_client_session_id(response):
+    response.delete_cookie(SESSION_COOKIE_ID)
+
 if __name__ == '__main__':
+    logger.setLevel(DEBUG)
     run(port=4000, reloader=True, debug=True)
 
 
