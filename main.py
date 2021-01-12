@@ -99,10 +99,19 @@ def cookie_explorer():
 @get("/session")
 def show_session():
     answers = SESSION_STORE.recorded_answers
-    text_answers = [f"{name} {number} {choice} {correct}"
-                    for (name, number, choice, correct) in answers]
+    text_answers = [f"{session} {name} {number} {choice} {correct}"
+                    for (session, name, number, choice, correct) in answers]
     return "<br>".join(text_answers)
 
 
+def get_client_session_id(request, response):
+    id = request.get_cookie("QuizzologyID")
+    if id == None:
+        id = SESSION_STORE.get_new_session_id()
+    # response.set_cookie("QuizzologyID", "BLA")
+    return id
+
 if __name__ == '__main__':
     run(port=4000, reloader=True, debug=True)
+
+

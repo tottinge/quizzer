@@ -1,11 +1,11 @@
 import unittest
-from unittest.mock import patch
 
 from box import Box
 from bs4 import BeautifulSoup
 
-from main import is_answer_correct, check_answer, render_judgment
+from main import is_answer_correct, render_judgment, get_client_session_id
 from quiz import Quiz
+from bottle import request, response, LocalRequest
 
 
 class TestSession(unittest.TestCase):
@@ -65,3 +65,15 @@ class TestSession(unittest.TestCase):
         self.assertIsNone(doc.body.find("a", id="next_question"),
                           "Should have no next_question link (only 1 question).")
         self.assertIsNotNone(doc.body.find("a", id="go_home"), "Should be able to return to home page")
+
+    def test_create_session_cookie(self):
+        request = LocalRequest()
+        id = get_client_session_id(request, response)
+        self.assertIsNotNone(id)
+
+    def test_retains_session_cookie(self):
+        request.cookies["QuizzologyID"] = "ImFake"
+        id = get_client_session_id(request, response)
+        self.assertEqual("ImFake", id)
+
+
