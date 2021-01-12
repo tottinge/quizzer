@@ -3,9 +3,9 @@ import unittest
 from box import Box
 from bs4 import BeautifulSoup
 
-from main import is_answer_correct, render_judgment, get_client_session_id
+from main import is_answer_correct, render_judgment, get_client_session_id, SESSION_COOKIE_ID
 from quiz import Quiz
-from bottle import request, response, LocalRequest
+from bottle import request, response, LocalRequest, LocalResponse
 
 
 class TestSession(unittest.TestCase):
@@ -66,14 +66,31 @@ class TestSession(unittest.TestCase):
                           "Should have no next_question link (only 1 question).")
         self.assertIsNotNone(doc.body.find("a", id="go_home"), "Should be able to return to home page")
 
+
+class TestSessionCookieHandling(unittest.TestCase):
+
+    def fresh_session_objects(self):
+        return LocalRequest(), LocalResponse()
+
+    def cookies_from_response(self, response):
+        "Extract cookies into a dictionary from the response without violating encapsulation"
+        return dict((value.split('=')) for (key, value) in response.headerlist if key == 'Set-Cookie')
+
     def test_create_session_cookie(self):
-        request = LocalRequest()
+        request, response = self.fresh_session_objects()
+
         id = get_client_session_id(request, response)
-        self.assertIsNotNone(id)
+
+        cookies = self.cookies_from_response(response)
+        self.assertIsNotNone(id, "Cookies should be created when none exists")
+        self.assertIsNotNone(cookies.get(SESSION_COOKIE_ID), "Cookies should be set in the response object")
 
     def test_retains_session_cookie(self):
-        request.cookies["QuizzologyID"] = "ImFake"
+        request, response = self.fresh_session_objects()
+        request.cookies[SESSION_COOKIE_ID] = "ImFake"
+
         id = get_client_session_id(request, response)
+
+        cookies = self.cookies_from_response(response)
+        self.assertIsNotNone(id)
         self.assertEqual("ImFake", id)
-
-
