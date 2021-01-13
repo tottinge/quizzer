@@ -1,3 +1,23 @@
+class AnswerEntry:
+    def __init__(self, session_id, quiz_name, question_number, selection, is_correct):
+        self.session_id = session_id
+        self.quiz_name = quiz_name
+        self.question_number = question_number
+        self.selection = selection
+        self.is_correct = is_correct
+
+    def __eq__(self, other):
+        return (
+            self.session_id == other.session_id
+            and self.quiz_name == other.quiz_name
+            and self.question_number == other.question_number
+            and self.selection == other.selection
+            and self.is_correct == other.is_correct
+        )
+            
+
+
+
 class SessionStore:
     """
     Store user sessions for later analysis and reporting
@@ -7,16 +27,16 @@ class SessionStore:
         self.recorded_answers = []
 
     def record_answer(self, session_id, quiz_name, question_number, selection, is_correct):
-        record = (session_id, quiz_name, question_number, selection, is_correct)
+        record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct)
         self.recorded_answers.append(record)
 
     def perfect_answers(self, session_id, quiz_name):
         return [item for item in self.recorded_answers
-                if item[0] == session_id and item[-1] is True]
+                if item.session_id == session_id and item.is_correct]
 
     def incorrect_answers(self, session_id, quiz_name):
         return [item for item in self.recorded_answers
-                if item[0] == session_id and item[-1] is False]
+                if item.session_id == session_id and not item.is_correct]
 
     def number_of_correct_answers(self, session_id, quiz_name):
         return len(self.perfect_answers(session_id, quiz_name))
@@ -30,15 +50,13 @@ class SessionStore:
         return str(uuid.uuid4())
 
     def questions_answered_incorrectly(self, target_session):
-        return { (quiz_name, question_number)
-                 for (session, quiz_name, question_number, selection, is_correct)
-                 in self.recorded_answers
-                 if session == target_session and not is_correct
+        return { (answer.quiz_name, answer.question_number)
+                 for answer in self.recorded_answers
+                 if answer.session_id == target_session and not answer.is_correct
         }
 
     def questions_answered_correctly(self, target_session):
-        return { (quiz_name, question_number)
-                 for (session, quiz_name, question_number, selection, is_correct)
-                 in self.recorded_answers
-                 if session == target_session and is_correct
+        return { (answer.quiz_name, answer.question_number)
+                 for answer in self.recorded_answers
+                 if answer.session_id == target_session and answer.is_correct
         }
