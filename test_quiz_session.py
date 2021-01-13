@@ -97,7 +97,6 @@ class TestSessionCookieHandling(unittest.TestCase):
         id = get_client_session_id(request, response)
 
         self.assertEqual("ImFake", id)
-        self.assertEqual("ImFake", self.get_session_cookie(response))
 
     def test_can_drop_session_cookie(self):
         """

@@ -5,7 +5,7 @@ from bottle import route, run, view, request, post, get, response
 from quiz_store import QuizStore
 from session_store import SessionStore
 
-SESSION_COOKIE_ID = "QuizSessionID"
+SESSION_COOKIE_ID = "qz_current_quiz"
 
 logger = getLogger(__name__)
 QUIZ_STORE = QuizStore()
@@ -114,11 +114,11 @@ def get_client_session_id(request, response):
     id = request.get_cookie(SESSION_COOKIE_ID)
     if not id:
         id = SESSION_STORE.get_new_session_id()
-        response.set_cookie("QuizzologyID", id)
+        response.set_cookie(SESSION_COOKIE_ID, id, path="/")
     return id
 
 def drop_client_session_id(response):
-    response.delete_cookie(SESSION_COOKIE_ID)
+    response.delete_cookie(SESSION_COOKIE_ID, path="/")
 
 if __name__ == '__main__':
     logger.setLevel(DEBUG)
