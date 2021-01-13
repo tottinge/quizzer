@@ -8,14 +8,12 @@ class AnswerEntry:
 
     def __eq__(self, other):
         return (
-            self.session_id == other.session_id
-            and self.quiz_name == other.quiz_name
-            and self.question_number == other.question_number
-            and self.selection == other.selection
-            and self.is_correct == other.is_correct
+                self.session_id == other.session_id
+                and self.quiz_name == other.quiz_name
+                and self.question_number == other.question_number
+                and self.selection == other.selection
+                and self.is_correct == other.is_correct
         )
-            
-
 
 
 class SessionStore:
@@ -50,13 +48,13 @@ class SessionStore:
         return str(uuid.uuid4())
 
     def questions_answered_incorrectly(self, target_session):
-        return { (answer.quiz_name, answer.question_number)
-                 for answer in self.recorded_answers
-                 if answer.session_id == target_session and not answer.is_correct
-        }
+        return {(answer.quiz_name, answer.question_number)
+                for answer in self.recorded_answers
+                if answer.session_id == target_session and not answer.is_correct
+                }
 
     def questions_answered_correctly(self, target_session):
-        return { (answer.quiz_name, answer.question_number)
-                 for answer in self.recorded_answers
-                 if answer.session_id == target_session and answer.is_correct
-        }
+        return {(answer.quiz_name, answer.question_number)
+                for answer in self.recorded_answers
+                if answer.session_id == target_session and answer.is_correct
+                }
