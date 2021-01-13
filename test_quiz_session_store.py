@@ -9,25 +9,29 @@ class SessionStoreStuff(unittest.TestCase):
         session_store = SessionStore()
         quiz_name = "quiz_name"
         session_id = session_store.get_new_session_id()
-        expected_record = AnswerEntry(session_id, quiz_name, 10, 'selection', True)
 
         session_store.record_answer(session_id, quiz_name, 10, 'selection', True)
 
-        self.assertEqual([expected_record], session_store.perfect_answers(session_id, quiz_name))
         self.assertEqual(1, session_store.number_of_correct_answers(session_id, quiz_name))
         self.assertEqual(0, session_store.number_of_incorrect_answers(session_id, quiz_name))
+        [record] = session_store.perfect_answers(session_id, quiz_name)
+        self.assertEqual(session_id, record.session_id)
+        self.assertEqual(quiz_name, record.quiz_name)
+        self.assertTrue(record.is_correct)
 
     def test_record_incorrect_answer(self):
         session_store = SessionStore()
         quiz_name = "quiz_name"
         session_id = session_store.get_new_session_id()
-        expected_record = AnswerEntry(session_id, quiz_name, 0, 'selection', False)
 
         session_store.record_answer(session_id, quiz_name, 0, 'selection', False)
 
         self.assertEqual(0, session_store.number_of_correct_answers(session_id, quiz_name))
         self.assertEqual(1, session_store.number_of_incorrect_answers(session_id, quiz_name))
-        self.assertEqual([expected_record], session_store.incorrect_answers(session_id, quiz_name))
+        [record] = session_store.incorrect_answers(session_id, quiz_name)
+        self.assertEqual(session_id, record.session_id)
+        self.assertEqual(quiz_name, record.quiz_name)
+        self.assertEqual(False, record.is_correct)
 
     def test_get_new_session_id(self):
         session_store = SessionStore()
