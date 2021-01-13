@@ -1,4 +1,8 @@
 class AnswerEntry:
+    """
+    Record an answer given to a question in a test session.
+    Whole-value class allows for evolution of records without breaking existing code.
+    """
     def __init__(self, session_id, quiz_name, question_number, selection, is_correct):
         self.session_id = session_id
         self.quiz_name = quiz_name
@@ -30,11 +34,15 @@ class SessionStore:
 
     def perfect_answers(self, session_id, quiz_name):
         return [item for item in self.recorded_answers
-                if item.session_id == session_id and item.is_correct]
+                if item.session_id == session_id
+                and item.quiz_name == quiz_name
+                and item.is_correct]
 
     def incorrect_answers(self, session_id, quiz_name):
         return [item for item in self.recorded_answers
-                if item.session_id == session_id and not item.is_correct]
+                if item.session_id == session_id
+                and item.quiz_name == quiz_name
+                and not item.is_correct]
 
     def number_of_correct_answers(self, session_id, quiz_name):
         return len(self.perfect_answers(session_id, quiz_name))
@@ -48,12 +56,20 @@ class SessionStore:
         return str(uuid.uuid4())
 
     def questions_answered_incorrectly(self, target_session):
+        """
+        Get a list of questions which were answered incorrectly
+        at least once during a session.
+        """
         return {(answer.quiz_name, answer.question_number)
                 for answer in self.recorded_answers
                 if answer.session_id == target_session and not answer.is_correct
                 }
 
     def questions_answered_correctly(self, target_session):
+        """
+        Get a list of questions which were never answered incorrectly
+        in a given session.
+        """
         return {(answer.quiz_name, answer.question_number)
                 for answer in self.recorded_answers
                 if answer.session_id == target_session and answer.is_correct
