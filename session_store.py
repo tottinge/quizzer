@@ -1,3 +1,7 @@
+from tinydb import TinyDB
+PATH_TO_LOG_DB = "session_log.json"
+
+
 class AnswerEntry:
     """
     Record an answer given to a question in a test session.
@@ -19,18 +23,29 @@ class AnswerEntry:
                 and self.is_correct == other.is_correct
         )
 
+    def as_dict(self):
+        return dict(
+            session_id=self.session_id,
+            quiz_name=self.quiz_name,
+            question_number=self.question_number,
+            selection=self.selection,
+            is_correct=self.is_correct
+        )
+
 
 class SessionStore:
     """
     Store user sessions for later analysis and reporting
     """
 
-    def __init__(self):
+    def __init__(self, storage=None):
         self.recorded_answers = []
+        self.storage = storage or TinyDB(PATH_TO_LOG_DB)
 
     def record_answer(self, session_id, quiz_name, question_number, selection, is_correct):
         record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct)
         self.recorded_answers.append(record)
+        self.storage.insert(record.as_dict())
 
     def perfect_answers(self, session_id, quiz_name):
         return [item for item in self.recorded_answers

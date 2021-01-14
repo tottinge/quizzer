@@ -1,17 +1,20 @@
 import unittest
 
+from bottle import LocalRequest, LocalResponse
 from box import Box
 from bs4 import BeautifulSoup
+from tinydb import TinyDB
+from tinydb.storages import MemoryStorage
 
 from main import is_answer_correct, render_judgment, get_client_session_id, SESSION_COOKIE_ID, drop_client_session_id
+import main
 from quiz import Quiz
-from bottle import request, response, LocalRequest, LocalResponse
+from session_store import SessionStore
 
 
 class TestSession(unittest.TestCase):
-    def __init__(self, methodName: str = ...):
-        super().__init__(methodName)
-
+    def setUp(self):
+        main.SESSION_STORE = SessionStore(TinyDB(storage=MemoryStorage))
         self.question = Box({
             'question': 'whatever',
             'answer': 'the truth',

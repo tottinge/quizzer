@@ -1,12 +1,17 @@
 import unittest
-
-from session_store import SessionStore, AnswerEntry
+from tinydb import TinyDB
+from tinydb.storages import MemoryStorage
+from session_store import SessionStore
 
 
 class SessionStoreStuff(unittest.TestCase):
-    
+
+    def setUp(self):
+        self.session_store = SessionStore(TinyDB(storage=MemoryStorage))
+
+
     def test_record_correct_answer(self):
-        session_store = SessionStore()
+        session_store = self.session_store
         quiz_name = "quiz_name"
         session_id = session_store.get_new_session_id()
 
@@ -20,7 +25,7 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertTrue(record.is_correct)
 
     def test_record_incorrect_answer(self):
-        session_store = SessionStore()
+        session_store = self.session_store
         quiz_name = "quiz_name"
         session_id = session_store.get_new_session_id()
 
@@ -34,11 +39,11 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertEqual(False, record.is_correct)
 
     def test_get_new_session_id(self):
-        session_store = SessionStore()
+        session_store = self.session_store
         self.assertIsNotNone(session_store.get_new_session_id())
 
     def test_recorded_answers_are_unique_within_session(self):
-        session_store = SessionStore()
+        session_store = self.session_store
         quiz_name = "quiz_name"
         session_1 = session_store.get_new_session_id()
         session_2 = session_store.get_new_session_id()
@@ -54,7 +59,7 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertEqual(0, session_store.number_of_incorrect_answers(session_2, quiz_name))
 
     def test_questions_answered_correctly_coalesces(self):
-        session_store = SessionStore()
+        session_store = self.session_store
         session_id = 'session'
         inputs = [
             (session_id, 'quiz', 1, '', True),
@@ -69,7 +74,7 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertIn(('quiz',1), actual)
 
     def test_questions_answered_incorrectly_coalesces(self):
-        session_store = SessionStore()
+        session_store = self.session_store
         session_id = 'session'
         inputs = [
             (session_id, 'quiz', 1, '', False),
