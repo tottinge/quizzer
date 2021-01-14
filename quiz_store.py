@@ -26,7 +26,6 @@ class QuizStore:
         document = self._read_quiz_document(filename)
         return Quiz(document) if document else None
 
-
     def _get_quiz_files_from_directory(self, directory):
         try:
             return [os.path.join(directory, x)

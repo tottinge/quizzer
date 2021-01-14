@@ -9,7 +9,6 @@ class SessionStoreStuff(unittest.TestCase):
     def setUp(self):
         self.session_store = SessionStore(TinyDB(storage=MemoryStorage))
 
-
     def test_record_correct_answer(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
@@ -71,7 +70,7 @@ class SessionStoreStuff(unittest.TestCase):
         actual = session_store.questions_answered_correctly(session_id)
 
         self.assertEqual(1, len(actual))
-        self.assertIn(('quiz',1), actual)
+        self.assertIn(('quiz', 1), actual)
 
     def test_questions_answered_incorrectly_coalesces(self):
         session_store = self.session_store
@@ -87,9 +86,8 @@ class SessionStoreStuff(unittest.TestCase):
         actual = session_store.questions_answered_incorrectly(session_id)
 
         self.assertEqual(1, len(actual))
-        self.assertIn( ('quiz',1), actual)
-        self.assertNotIn( ('quiz',2), actual)
-
+        self.assertIn(('quiz', 1), actual)
+        self.assertNotIn(('quiz', 2), actual)
 
 
 if __name__ == '__main__':

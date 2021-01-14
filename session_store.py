@@ -3,6 +3,7 @@ class AnswerEntry:
     Record an answer given to a question in a test session.
     Whole-value class allows for evolution of records without breaking existing code.
     """
+
     def __init__(self, session_id, quiz_name, question_number, selection, is_correct):
         self.session_id = session_id
         self.quiz_name = quiz_name

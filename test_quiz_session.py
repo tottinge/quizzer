@@ -78,7 +78,7 @@ class TestSessionCookieHandling(unittest.TestCase):
     def cookies_from_response(self, response):
         "Extract cookies into a dictionary from the response without violating encapsulation"
         entries = [value.split(';')[0] for (key, value) in response.headerlist if key == 'Set-Cookie']
-        return dict((value.split('=',1)) for value in entries)
+        return dict((value.split('=', 1)) for value in entries)
 
     def get_session_cookie(self, response):
         cookies = self.cookies_from_response(response)
@@ -112,5 +112,3 @@ class TestSessionCookieHandling(unittest.TestCase):
         old_id = get_client_session_id(request, response)
         drop_client_session_id(response)
         self.assertNotEqual(old_id, self.get_session_cookie(response))
-
-

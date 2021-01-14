@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import patch, mock_open
-
 from bs4 import BeautifulSoup
-
 from main import render_menu_of_quizzes, QUIZ_STORE
 
 

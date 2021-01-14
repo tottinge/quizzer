@@ -2,13 +2,16 @@
 import logging
 from logging import getLogger, INFO, DEBUG
 from bottle import route, run, view, request, post, get, response
+from tinydb import TinyDB
+
 from quiz_store import QuizStore
 from session_store import SessionStore
 
+QUIZ_STORE = QuizStore()
+SESSION_STORE = None
+
 SESSION_COOKIE_ID = "qz_current_quiz"
-
 logger = getLogger(__name__)
-
 PATH_TO_LOG_DB = "session_log.json"
 
 
@@ -35,8 +38,8 @@ def render_question(quiz, question_number=0):
     total_questions = len(quiz.questions)
     return dict(
         title=quiz.title,
-        progress = int(((question_number+1) / total_questions)*100),
-        total_questions =total_questions,
+        progress=int(((question_number + 1) / total_questions) * 100),
+        total_questions=total_questions,
         question_number=question_number,
         quiz_name=quiz.name,
         question=selected_question.question,
@@ -59,7 +62,7 @@ def render_judgment(quiz, question_number, selection):
     correct = is_answer_correct(question, selection)
     quiz_name = quiz.name
     total_questions = len(quiz.questions)
-    progress = int(((question_number+1) / total_questions)*100)
+    progress = int(((question_number + 1) / total_questions) * 100)
     return_url = f"/quizzes/{quiz_name}/{question_number}"
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
@@ -117,20 +120,17 @@ def get_client_session_id(request, response):
         response.set_cookie(SESSION_COOKIE_ID, id, path="/")
     return id
 
+
 def drop_client_session_id(response):
     response.delete_cookie(SESSION_COOKIE_ID, path="/")
 
-QUIZ_STORE = QuizStore()
-SESSION_STORE = None
 
 def main():
     global QUIZ_STORE, SESSION_STORE
-    SESSION_STORE = SessionStore(PATH_TO_LOG_DB)
+    SESSION_STORE = SessionStore(TinyDB(PATH_TO_LOG_DB))
     logger.setLevel(DEBUG)
     run(port=4000, reloader=True, debug=True)
 
+
 if __name__ == '__main__':
     main()
-
-
-
