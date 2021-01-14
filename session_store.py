@@ -1,7 +1,3 @@
-from tinydb import TinyDB
-PATH_TO_LOG_DB = "session_log.json"
-
-
 class AnswerEntry:
     """
     Record an answer given to a question in a test session.
@@ -40,7 +36,7 @@ class SessionStore:
 
     def __init__(self, storage=None):
         self.recorded_answers = []
-        self.storage = storage or TinyDB(PATH_TO_LOG_DB)
+        self.storage = storage
 
     def record_answer(self, session_id, quiz_name, question_number, selection, is_correct):
         record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct)

@@ -3,8 +3,7 @@ from unittest.mock import patch, mock_open
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes
-from main import QUIZ_STORE
+from main import render_menu_of_quizzes, QUIZ_STORE
 
 
 class TestQuizSelection(TestCase):

@@ -8,8 +8,8 @@ from session_store import SessionStore
 SESSION_COOKIE_ID = "qz_current_quiz"
 
 logger = getLogger(__name__)
-QUIZ_STORE = QuizStore()
-SESSION_STORE = SessionStore()
+
+PATH_TO_LOG_DB = "session_log.json"
 
 
 @route('/')
@@ -120,8 +120,17 @@ def get_client_session_id(request, response):
 def drop_client_session_id(response):
     response.delete_cookie(SESSION_COOKIE_ID, path="/")
 
-if __name__ == '__main__':
+QUIZ_STORE = QuizStore()
+SESSION_STORE = None
+
+def main():
+    global QUIZ_STORE, SESSION_STORE
+    SESSION_STORE = SessionStore(PATH_TO_LOG_DB)
     logger.setLevel(DEBUG)
     run(port=4000, reloader=True, debug=True)
+
+if __name__ == '__main__':
+    main()
+
 
 
