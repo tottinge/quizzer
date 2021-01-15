@@ -50,39 +50,40 @@ class SessionStore:
         self.recorded_answers = []
         self.storage = storage
 
+    @staticmethod
+    def get_new_session_id():
+        import uuid
+        return str(uuid.uuid4())
+
     def record_answer(self, session_id, quiz_name, question_number, selection, is_correct):
         record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct)
         self.recorded_answers.append(record)
         self.storage.insert(record.as_dict())
 
     def perfect_answers(self, session_id, quiz_name):
-        query = Query()
-        records = self.storage.search(query.session_id == session_id)
-        result = [AnswerEntry.from_dict(x) for x in records]
-        old_result = [item for item in self.recorded_answers
-            if item.session_id == session_id
-            and item.quiz_name == quiz_name
-            and item.is_correct]
-
-        return old_result
+        criteria = Query()
+        records = self.storage.search(
+            (criteria.session_id == session_id)
+            & (criteria.quiz_name == quiz_name)
+            & (criteria.is_correct == True)
+        )
+        return [AnswerEntry.from_dict(x) for x in records]
 
 
     def incorrect_answers(self, session_id, quiz_name):
-        return [item for item in self.recorded_answers
-                if item.session_id == session_id
-                and item.quiz_name == quiz_name
-                and not item.is_correct]
+        criteria = Query()
+        records = self.storage.search(
+            (criteria.session_id == session_id)
+            & (criteria.quiz_name == quiz_name)
+            & (criteria.is_correct == False)
+        )
+        return [AnswerEntry.from_dict(x) for x in records]
 
     def number_of_correct_answers(self, session_id, quiz_name):
         return len(self.perfect_answers(session_id, quiz_name))
 
     def number_of_incorrect_answers(self, session_id, quiz_name):
         return len(self.incorrect_answers(session_id, quiz_name))
-
-    @staticmethod
-    def get_new_session_id():
-        import uuid
-        return str(uuid.uuid4())
 
     def questions_answered_incorrectly(self, target_session):
         """

@@ -12,7 +12,7 @@ class SessionStoreStuff(unittest.TestCase):
     def test_record_correct_answer(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_id = session_store.get_new_session_id()
+        session_id = 'test_' + session_store.get_new_session_id()
 
         session_store.record_answer(session_id, quiz_name, 10, 'selection', True)
 
@@ -26,7 +26,7 @@ class SessionStoreStuff(unittest.TestCase):
     def test_record_incorrect_answer(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_id = session_store.get_new_session_id()
+        session_id = 'test_' + session_store.get_new_session_id()
 
         session_store.record_answer(session_id, quiz_name, 0, 'selection', False)
 
@@ -44,8 +44,8 @@ class SessionStoreStuff(unittest.TestCase):
     def test_recorded_answers_are_unique_within_session(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_1 = session_store.get_new_session_id()
-        session_2 = session_store.get_new_session_id()
+        session_1 = "test1_"+session_store.get_new_session_id()
+        session_2 = "test2_"+ session_store.get_new_session_id()
 
         session_store.record_answer(session_1, quiz_name, 10, "selection", True)
         session_store.record_answer(session_1, quiz_name, 10, "selection", False)
