@@ -26,6 +26,16 @@ class TestSession(unittest.TestCase):
             'questions': [self.question]
         })
 
+    def test_answer_appears_in_session_page(self):
+        main.SESSION_STORE.record_answer("id", "quiz_name", 222, "selection", True)
+        result = main.show_session()
+        self.assertIn("id", result)
+        self.assertIn("quiz_name", result)
+        self.assertIn("222", result)
+        self.assertIn("selection", result)
+        self.assertIn("True", result)
+
+
     def test_answer_question_correctly(self):
         result = is_answer_correct(self.question, self.question["answer"])
         self.assertTrue(

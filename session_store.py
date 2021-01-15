@@ -1,3 +1,6 @@
+from tinydb import Query
+
+
 class AnswerEntry:
     """
     Record an answer given to a question in a test session.
@@ -28,7 +31,15 @@ class AnswerEntry:
             selection=self.selection,
             is_correct=self.is_correct
         )
-
+    @classmethod
+    def from_dict(cls, record):
+        return AnswerEntry(
+            session_id=record["session_id"],
+            quiz_name=record["quiz_name"],
+            question_number=record["question_number"],
+            selection=record["selection"],
+            is_correct=record["is_correct"]
+        )
 
 class SessionStore:
     """
@@ -45,10 +56,16 @@ class SessionStore:
         self.storage.insert(record.as_dict())
 
     def perfect_answers(self, session_id, quiz_name):
-        return [item for item in self.recorded_answers
-                if item.session_id == session_id
-                and item.quiz_name == quiz_name
-                and item.is_correct]
+        query = Query()
+        records = self.storage.search(query.session_id == session_id)
+        result = [AnswerEntry.from_dict(x) for x in records]
+        old_result = [item for item in self.recorded_answers
+            if item.session_id == session_id
+            and item.quiz_name == quiz_name
+            and item.is_correct]
+
+        return old_result
+
 
     def incorrect_answers(self, session_id, quiz_name):
         return [item for item in self.recorded_answers

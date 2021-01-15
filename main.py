@@ -107,9 +107,9 @@ def cookie_explorer():
 
 @get("/session")
 def show_session():
-    answers = SESSION_STORE.recorded_answers
-    text_answers = [f"{session} {name} {number} {choice} {correct}"
-                    for (session, name, number, choice, correct) in answers]
+    text_answers = [
+        f"{answer.session_id} {answer.quiz_name} {answer.question_number} {answer.selection} {answer.is_correct}"
+        for answer in (SESSION_STORE.recorded_answers)]
     return "<br>".join(text_answers)
 
 
