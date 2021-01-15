@@ -90,10 +90,13 @@ class SessionStore:
         Get a list of questions which were answered incorrectly
         at least once during a session.
         """
-        return {(answer.quiz_name, answer.question_number)
-                for answer in self.recorded_answers
-                if answer.session_id == target_session and not answer.is_correct
-                }
+        criteria = Query()
+        records = self.storage.search(
+            (criteria.session_id == target_session)
+            & (criteria.is_correct == False)
+        )
+        answers = (AnswerEntry.from_dict(x) for x in records)
+        return {(x.quiz_name, x.question_number) for x in answers}
 
     def questions_answered_correctly(self, target_session):
         """
