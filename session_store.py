@@ -57,7 +57,6 @@ class SessionStore:
 
     def record_answer(self, session_id, quiz_name, question_number, selection, is_correct):
         record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct)
-        self.recorded_answers.append(record)
         self.storage.insert(record.as_dict())
 
     def perfect_answers(self, session_id, quiz_name):
@@ -103,7 +102,10 @@ class SessionStore:
         Get a list of questions which were never answered incorrectly
         in a given session.
         """
-        return {(answer.quiz_name, answer.question_number)
-                for answer in self.recorded_answers
-                if answer.session_id == target_session and answer.is_correct
-                }
+        criteria = Query()
+        records = self.storage.search(criteria.session_id == target_session)
+        answers = [AnswerEntry.from_dict(x) for x in records]
+        total = { (a.quiz_name,a.question_number) for a in answers}
+        bad = { (a.quiz_name, a.question_number) for a in answers if not a.is_correct}
+        return total.difference(bad)
+

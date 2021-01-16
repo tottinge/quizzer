@@ -5,7 +5,7 @@ from bottle import route, run, view, request, post, get, response
 from tinydb import TinyDB
 
 from quiz_store import QuizStore
-from session_store import SessionStore
+from session_store import SessionStore, AnswerEntry
 
 QUIZ_STORE = QuizStore()
 SESSION_STORE = None
@@ -109,7 +109,7 @@ def cookie_explorer():
 def show_session():
     text_answers = [
         f"{answer.session_id} {answer.quiz_name} {answer.question_number} {answer.selection} {answer.is_correct}"
-        for answer in (SESSION_STORE.recorded_answers)]
+        for answer in (AnswerEntry.from_dict(x) for x in SESSION_STORE.storage.all()) ]
     return "<br>".join(text_answers)
 
 
