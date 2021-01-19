@@ -1,6 +1,8 @@
 import unittest
+
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
+
 from session_store import SessionStore
 
 
@@ -44,8 +46,8 @@ class SessionStoreStuff(unittest.TestCase):
     def test_recorded_answers_are_unique_within_session(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_1 = "test1_"+session_store.get_new_session_id()
-        session_2 = "test2_"+ session_store.get_new_session_id()
+        session_1 = "test1_" + session_store.get_new_session_id()
+        session_2 = "test2_" + session_store.get_new_session_id()
 
         session_store.record_answer(session_1, quiz_name, 10, "selection", True)
         session_store.record_answer(session_1, quiz_name, 10, "selection", False)
