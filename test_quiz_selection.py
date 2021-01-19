@@ -13,7 +13,9 @@ class TestQuizSelection(TestCase):
         title = "Page Title"
         soup = self.render(title=title)
         found = soup.head.title.string
-        self.assertIn(title, found, f"Did not find '{title}' as page title, found '{found}' instead")
+        self.assertIn(title, found,
+          f"Did not find '{title}' as page title, found '{found}' instead"
+        )
 
     @patch("main.QUIZ_STORE.get_quiz_summaries", return_value=[
         ('a', 'a test', 'filename'),
