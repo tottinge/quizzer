@@ -1,6 +1,6 @@
 """ Whee. This is the main routine!"""
-import logging
-from logging import getLogger, INFO, DEBUG
+from logging import getLogger, DEBUG
+
 from bottle import route, run, view, request, post, get, response
 from tinydb import TinyDB
 
@@ -109,7 +109,7 @@ def cookie_explorer():
 def show_session():
     text_answers = [
         f"{answer.session_id} {answer.quiz_name} {answer.question_number} {answer.selection} {answer.is_correct}"
-        for answer in (AnswerEntry.from_dict(x) for x in SESSION_STORE.storage.all()) ]
+        for answer in (AnswerEntry.from_dict(x) for x in SESSION_STORE.storage.all())]
     return "<br>".join(text_answers)
 
 
