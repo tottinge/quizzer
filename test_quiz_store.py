@@ -35,12 +35,11 @@ class QuizStoreTest(unittest.TestCase):
             self.assertEqual([], returned_summaries)
             logger.error.assert_called_with("Reading quiz directory: boo")
 
-
     @patch('builtins.open')
     @patch('main.QuizStore.get_quiz_summaries')
-    @patch('json.load', side_effect=JSONDecodeError('yuck','testfile',0))
-    def test_json_file_invalid(self, open_mock,summaries_mock, reader_mock):
-        summaries_mock.return_value = [('nonesuch','no title','nonesuch.json'),]
+    @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
+    def test_json_file_invalid(self, open_mock, summaries_mock, reader_mock):
+        summaries_mock.return_value = [('nonesuch', 'no title', 'nonesuch.json'), ]
         store = QuizStore()
         store.get_quiz('nonesuch')
 

@@ -2,6 +2,7 @@ import json
 import os
 from json import JSONDecodeError
 from logging import getLogger
+
 from quiz import Quiz
 
 logger = getLogger(__name__)

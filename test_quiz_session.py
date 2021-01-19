@@ -6,8 +6,14 @@ from bs4 import BeautifulSoup
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
-from main import is_answer_correct, render_judgment, get_client_session_id, SESSION_COOKIE_ID, drop_client_session_id
 import main
+from main import (
+    is_answer_correct,
+    render_judgment,
+    get_client_session_id,
+    SESSION_COOKIE_ID,
+    drop_client_session_id
+)
 from quiz import Quiz
 from session_store import SessionStore
 
@@ -34,7 +40,6 @@ class TestSession(unittest.TestCase):
         self.assertIn("222", result)
         self.assertIn("selection", result)
         self.assertIn("True", result)
-
 
     def test_answer_question_correctly(self):
         result = is_answer_correct(self.question, self.question["answer"])

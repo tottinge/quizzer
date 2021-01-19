@@ -31,6 +31,7 @@ class AnswerEntry:
             selection=self.selection,
             is_correct=self.is_correct
         )
+
     @classmethod
     def from_dict(cls, record):
         return AnswerEntry(
@@ -40,6 +41,7 @@ class AnswerEntry:
             selection=record["selection"],
             is_correct=record["is_correct"]
         )
+
 
 class SessionStore:
     """
@@ -67,7 +69,6 @@ class SessionStore:
             & (criteria.is_correct == True)
         )
         return [AnswerEntry.from_dict(x) for x in records]
-
 
     def incorrect_answers(self, session_id, quiz_name):
         criteria = Query()
@@ -105,7 +106,6 @@ class SessionStore:
         criteria = Query()
         records = self.storage.search(criteria.session_id == target_session)
         answers = [AnswerEntry.from_dict(x) for x in records]
-        total = { (a.quiz_name,a.question_number) for a in answers}
-        bad = { (a.quiz_name, a.question_number) for a in answers if not a.is_correct}
+        total = {(a.quiz_name, a.question_number) for a in answers}
+        bad = {(a.quiz_name, a.question_number) for a in answers if not a.is_correct}
         return total.difference(bad)
-
