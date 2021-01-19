@@ -12,7 +12,7 @@ SESSION_STORE = None
 
 SESSION_COOKIE_ID = "qz_current_quiz"
 logger = getLogger(__name__)
-PATH_TO_LOG_DB = "session_log.json"
+PATH_TO_LOG_DB = "logs/session_log.json"
 
 
 @route('/')
