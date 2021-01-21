@@ -108,8 +108,15 @@ def cookie_explorer():
 @get("/session")
 def show_session():
     text_answers = [
-        f"{answer.session_id} {answer.quiz_name} {answer.question_number} {answer.selection} {answer.is_correct}"
-        for answer in (
+        "{} {} {} {} {} '{}'".format(
+            a.timestamp,
+            a.session_id,
+            a.quiz_name,
+            a.question_number,
+            a.is_correct,
+            a.selection
+        )
+        for a in (
             AnswerEntry.from_dict(x)
             for x in SESSION_STORE.storage.all()
         )

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from tinydb import Query
 
 
@@ -7,16 +9,18 @@ class AnswerEntry:
     Whole-value class allows for evolution of records without breaking existing code.
     """
 
-    def __init__(self, session_id, quiz_name, question_number, selection, is_correct):
+    def __init__(self, session_id, quiz_name, question_number, selection, is_correct, timestamp=None):
         self.session_id = session_id
         self.quiz_name = quiz_name
         self.question_number = question_number
         self.selection = selection
         self.is_correct = is_correct
+        self.timestamp = timestamp or datetime.now().isoformat()
 
     def __eq__(self, other):
         return (
-                self.session_id == other.session_id
+                self.timestamp == other.timestamp
+                and self.session_id == other.session_id
                 and self.quiz_name == other.quiz_name
                 and self.question_number == other.question_number
                 and self.selection == other.selection
@@ -25,6 +29,7 @@ class AnswerEntry:
 
     def as_dict(self):
         return dict(
+            timestamp=self.timestamp,
             session_id=self.session_id,
             quiz_name=self.quiz_name,
             question_number=self.question_number,
@@ -34,13 +39,12 @@ class AnswerEntry:
 
     @classmethod
     def from_dict(cls, record):
-        return AnswerEntry(
-            session_id=record["session_id"],
-            quiz_name=record["quiz_name"],
-            question_number=record["question_number"],
-            selection=record["selection"],
-            is_correct=record["is_correct"]
-        )
+        return AnswerEntry(session_id=record["session_id"],
+                           quiz_name=record["quiz_name"],
+                           question_number=record["question_number"],
+                           selection=record["selection"],
+                           is_correct=record["is_correct"],
+                           timestamp=record.get("timestamp", None))
 
 
 class SessionStore:
