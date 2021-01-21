@@ -107,19 +107,18 @@ def cookie_explorer():
 
 @get("/session")
 def show_session():
+    from string import Template
+    template = Template(
+        "$timestamp "
+        "$session_id "
+        "$quiz_name:"
+        "$question_number "
+        "$is_correct "
+        "'$selection'"
+    )
     text_answers = [
-        "{} {} {} {} {} '{}'".format(
-            a.timestamp,
-            a.session_id,
-            a.quiz_name,
-            a.question_number,
-            a.is_correct,
-            a.selection
-        )
-        for a in (
-            AnswerEntry.from_dict(x)
-            for x in SESSION_STORE.storage.all()
-        )
+        template.substitute(answer)
+        for answer in SESSION_STORE.storage.all()
     ]
     return "<br>".join(text_answers)
 
