@@ -109,11 +109,9 @@ def cookie_explorer():
 def show_session():
     from string import Template
     template = Template(
-        "$timestamp "
-        "$session_id "
-        "$quiz_name:"
-        "$question_number "
-        "$is_correct "
+        "$timestamp $session_id\t"
+        "$quiz_name:$question_number\t"
+        "$is_correct\t"
         "'$selection'"
     )
     text_answers = [
