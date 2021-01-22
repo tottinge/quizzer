@@ -61,8 +61,8 @@ class SessionStore:
         import uuid
         return str(uuid.uuid4())
 
-    def record_answer(self, session_id, quiz_name, question_number, selection, is_correct):
-        record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct)
+    def record_answer(self, session_id, quiz_name, question_number, selection, is_correct, timestamp=None):
+        record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct, timestamp)
         self.storage.insert(record.as_dict())
 
     def perfect_answers(self, session_id, quiz_name):
