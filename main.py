@@ -1,4 +1,5 @@
 """ Whee. This is the main routine!"""
+import os
 from logging import getLogger, DEBUG
 
 from bottle import route, run, view, request, post, get, response
@@ -135,6 +136,9 @@ def drop_client_session_id(response):
 
 def main():
     global QUIZ_STORE, SESSION_STORE
+    path,filename = os.path.split(PATH_TO_LOG_DB)
+    if not os.path.exists(path):
+        os.makedirs(path)
     SESSION_STORE = SessionStore(TinyDB(PATH_TO_LOG_DB))
     logger.setLevel(DEBUG)
     run(port=4000, reloader=True, debug=True)
