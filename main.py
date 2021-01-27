@@ -135,15 +135,23 @@ def drop_client_session_id(response):
 
 
 def main():
-    global QUIZ_STORE, SESSION_STORE
-    path,filename = os.path.split(PATH_TO_LOG_DB)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    SESSION_STORE = SessionStore(TinyDB(PATH_TO_LOG_DB))
-    logger.setLevel(DEBUG)
+    global SESSION_STORE
+    SESSION_STORE = prepare_session_store()
+    host_name, port_number = get_endpoint_address()
+    run(host=host_name, port=port_number, reloader=True, debug=True)
+
+
+def get_endpoint_address():
     host_name = os.environ.get('QUIZ_HOST', '0.0.0.0')
     port_number = int(os.environ.get('QUIZ_PORT', '4000'))
-    run(host=host_name, port=port_number, reloader=True, debug=True)
+    return host_name, port_number
+
+
+def prepare_session_store():
+    path, filename = os.path.split(PATH_TO_LOG_DB)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return SessionStore(TinyDB(PATH_TO_LOG_DB))
 
 
 if __name__ == '__main__':
