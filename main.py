@@ -141,7 +141,9 @@ def main():
         os.makedirs(path)
     SESSION_STORE = SessionStore(TinyDB(PATH_TO_LOG_DB))
     logger.setLevel(DEBUG)
-    run(port=4000, reloader=True, debug=True)
+    host_name = os.environ.get('QUIZ_HOST', '0.0.0.0')
+    port_number = int(os.environ.get('QUIZ_PORT', '4000'))
+    run(host=host_name, port=port_number, reloader=True, debug=True)
 
 
 if __name__ == '__main__':
