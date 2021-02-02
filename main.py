@@ -143,7 +143,8 @@ def main():
 
 def get_endpoint_address():
     host_name = os.environ.get('QUIZ_HOST', '0.0.0.0')
-    port_number = int(os.environ.get('QUIZ_PORT', '4000'))
+    heroku_port = os.environ.get('PORT', '4000')
+    port_number = int(os.environ.get('QUIZ_PORT', heroku_port))
     return host_name, port_number
 
 
