@@ -111,11 +111,11 @@ def show_me():
                 or request.environ.get('REMOTE_ADDR') \
                 or "a ninja"
     print("Remote route", request.remote_route)
-    vars = (f"<p>{key}: {value}</p>"
+    vars = (f"<span>{key}: {value}</span><br>"
             for (key, value) in
             sorted(list(request.environ.items()))
             )
-    return f"You seem to be {whoareyou}.<br>" + "<br>".join(vars)
+    return f"<p>You seem to be {whoareyou}</p>.<br>" + "".join(vars)
 
 
 @get("/cookies")
