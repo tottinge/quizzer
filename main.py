@@ -1,12 +1,14 @@
 """ Whee. This is the main routine!"""
 import os
-from logging import getLogger, DEBUG
+from logging import getLogger
 
-from bottle import route, run, view, request, post, get, response
+from bottle import (
+    route, run, view, request, post, get, response, static_file
+)
 from tinydb import TinyDB
 
 from quiz_store import QuizStore
-from session_store import SessionStore, AnswerEntry
+from session_store import SessionStore
 
 QUIZ_STORE = QuizStore()
 SESSION_STORE = None
@@ -25,6 +27,12 @@ def render_menu_of_quizzes(title="Quizzology"):
         title=title,
         choices=QUIZ_STORE.get_quiz_summaries()
     )
+
+
+@route('/static/<filename>')
+def get_static_file(filename):
+    rootpath = os.environ.get('STATIC_PATH', './static/')
+    return static_file(filename, root=rootpath)
 
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
@@ -73,7 +81,8 @@ def render_judgment(quiz, question_number, selection):
     logger.info("getting id")
     id = get_client_session_id(request, response)
     logger.info("Recording answer")
-    SESSION_STORE.record_answer(id, quiz_name, question_number, selection, correct)
+    SESSION_STORE.record_answer(id, quiz_name, question_number, selection,
+                                correct)
     logger.info("On like usual...")
     return dict(
         title=quiz.title,
@@ -81,7 +90,8 @@ def render_judgment(quiz, question_number, selection):
         question_number=question_number,
         correct=correct,
         selection=selection,
-        incorrect_answers=SESSION_STORE.number_of_incorrect_answers("DOOMED", quiz_name),
+        incorrect_answers=SESSION_STORE.number_of_incorrect_answers("DOOMED",
+                                                                    quiz_name),
         progress=progress,
         next_url=next_url,
         return_url=return_url
@@ -98,13 +108,15 @@ def show_me():
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
     print("Remote route", request.remote_route)
-    return "".join(f"<p>{key}: {value}</p>" for (key, value) in list(request.environ.items()))
+    return "".join(f"<p>{key}: {value}</p>" for (key, value) in
+                   list(request.environ.items()))
 
 
 @get("/cookies")
 def cookie_explorer():
     "Junk method for exploring cookies. Delete at will."
-    result = "".join(f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
+    result = "".join(
+        f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
     return result
 
 
