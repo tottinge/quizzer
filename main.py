@@ -35,7 +35,9 @@ def ask_question(quiz_name, question_number):
 
 @view("quiz_question")
 def render_question(quiz, question_number=0):
-    selected_question = quiz.questions[question_number] if quiz.questions else {}
+    selected_question = quiz.questions[question_number] \
+        if quiz.questions \
+        else {}
     total_questions = len(quiz.questions)
     return dict(
         title=quiz.title,
