@@ -107,9 +107,15 @@ def show_me():
     "Junk method for exploring the session environment variables. Delete at will."
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
+    whoareyou = request.environ.get("X-Forwarded-For","").split(" ")[-1] \
+                or request.environ.get('REMOTE_ADDR') \
+                or "a ninja"
     print("Remote route", request.remote_route)
-    return "".join(f"<p>{key}: {value}</p>" for (key, value) in
-                   list(request.environ.items()))
+    vars = (f"<p>{key}: {value}</p>"
+            for (key, value) in
+            sorted(list(request.environ.items()))
+            )
+    return f"You seem to be {whoareyou}.<br>" + "<br>".join(vars)
 
 
 @get("/cookies")
