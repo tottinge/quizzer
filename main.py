@@ -109,7 +109,7 @@ def show_me():
     # return request.environ.get('REMOTE_ADDR')
     fwd_for = request.environ.get("HTTP_X_FORWARDED_FOR","not listed in HTTP_X-forwarded")
     remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr") 
-    whoareyou = request.environ.get("HTTP_X-Forwarded-For","").split(" ")[-1] \
+    whoareyou = request.environ.get("HTTP_X_FORWARDED_FOR","").split(" ")[-1] \
                 or request.environ.get('REMOTE_ADDR') \
                 or "a ninja"
     print("Remote route", request.remote_route)
