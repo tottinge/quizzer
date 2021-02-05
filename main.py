@@ -3,7 +3,7 @@ import os
 from logging import getLogger
 
 from bottle import (
-    route, run, view, request, post, get, response, static_file
+    route, run, view, request, post, get, response, static_file, redirect
 )
 from tinydb import TinyDB
 
@@ -30,7 +30,7 @@ def render_menu_of_quizzes(title="Quizzology"):
 
 @route('/favicon.ico')
 def get_favicon():
-    return static_file("favicon.ico", root="./static")
+    return redirect("/static/favicon.ico")
 
 @route('/static/<filename>')
 def get_static_file(filename):
