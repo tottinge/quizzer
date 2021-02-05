@@ -38,16 +38,16 @@ class QuizStore:
             return []
 
     def _get_quiz_summaries_from_file_list(self, quiz_file_paths):
-        def get_name_title_filename_from(quiz_filename):
-            document = self._read_quiz_doc_from_file(quiz_filename)
-            return document['name'], document['title'], quiz_filename
-
-        return [get_name_title_filename_from(filename)
-                for filename in quiz_file_paths]
+        for quiz_filename in quiz_file_paths:
+            try:
+                document = self._read_quiz_doc_from_file(quiz_filename)
+                yield document['name'], document['title'], quiz_filename
+            except Exception as err:
+                logger.error(f"FAILED: {quiz_filename}: {str(err)}")
 
     def _read_quiz_doc_from_file(self, filename):
         with open(filename) as input_file:
-            return json.load(input_file)
+                return json.load(input_file)
 
     def _find_file_for_named_quiz(self, quiz_name):
         lookup = {

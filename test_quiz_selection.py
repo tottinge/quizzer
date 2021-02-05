@@ -49,7 +49,8 @@ class TestQuizSelection(TestCase):
             )
 
     def test_get_summary_handles_empty_lists(self):
-        self.assertEqual([], QUIZ_STORE._get_quiz_summaries_from_file_list([]))
+        actual = QUIZ_STORE._get_quiz_summaries_from_file_list([])
+        self.assertEqual([], list(actual))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):

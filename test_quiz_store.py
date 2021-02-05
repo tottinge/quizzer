@@ -31,7 +31,7 @@ class QuizStoreTest(unittest.TestCase):
         store = QuizStore()
         store.quiz_dir = 'nonesuch_directory_exists_here'
         with patch.object(logger, 'error') as mock_call:
-            returned_summaries = store.get_quiz_summaries()
+            returned_summaries = list(store.get_quiz_summaries())
             self.assertEqual([], returned_summaries)
             logger.error.assert_called_with("Reading quiz directory: boo")
 

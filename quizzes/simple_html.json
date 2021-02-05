@@ -1,0 +1,53 @@
+{
+    "name": "simple_html",
+    "title":"Basics of HTML",
+    "questions":[
+        { 
+           "question": "How do i display a graphic on a web page?",
+           "answer": "<img src=\"/URL\" />",
+           "decoys": [
+              "<photo img=\"/URL\" />",
+              "<img>/path/to/file</img>",
+             "<img src=\"/path/to/file\" />"
+            ],
+          "resources": [
+            ["Image Tags", "https://www.w3schools.com/tags/tag_img.asp"],
+            ["HTML.com", "https://html.com/attributes/img-src/"]
+          ]
+        },
+
+        {
+           "question":"How does one adjust the spaceing around an image?",
+           "answer": "hspace and vspace",
+           "decoys":[
+              "wrap it in a <section>",
+              "set the hsize extra wide",
+              "there is no way"
+           ]
+        },
+        {
+           "question":"",
+           "answer": "",
+           "decoys":[
+              "",
+              ""
+           ],
+          "resources": [
+            ["title", "http://url/"]
+          ]
+        },
+
+      {
+           "question":"",
+           "answer": "",
+           "decoys":[
+              "",
+              ""
+           ],
+          "resources": [
+            ["title", "http://url/"]
+          ]
+      }
+
+    ]
+}
