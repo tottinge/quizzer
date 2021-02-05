@@ -28,6 +28,9 @@ def render_menu_of_quizzes(title="Quizzology"):
         choices=QUIZ_STORE.get_quiz_summaries()
     )
 
+@route('/favicon.ico')
+def get_favicon():
+    return static_file("favicon.ico", root="./static")
 
 @route('/static/<filename>')
 def get_static_file(filename):
