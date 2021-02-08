@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <title>{{title}}</title>
-</head>
-
-<body>
+% rebase('skeleton.tpl', title=title)
 % include('sub_progress.tpl')
 <section>
     % if correct:
@@ -27,6 +20,3 @@
     % end
 </section>
 
-</body>
-
-</html>
