@@ -5,7 +5,7 @@
 </head>
 <body>
 
-% include('session_progress.tpl')
+% include('sub_progress.tpl')
 
 <section>
 <form action="/quizzes/{{quiz_name}}/{{question_number}}" method="POST">

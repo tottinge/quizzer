@@ -5,7 +5,7 @@
 </head>
 
 <body>
-% include('session_progress.tpl')
+% include('sub_progress.tpl')
 <section>
     % if correct:
         <p>Your answer <em>"{{selection}}"</em> is correct.</p>
