@@ -4,9 +4,9 @@
     "questions":[
         { 
            "question": "How do i display a graphic on a web page?",
-           "answer": "<img src=\"/URL\" />",
+           "answer": "<img src=\"URL\" />",
            "decoys": [
-              "<photo img=\"/URL\" />",
+              "<photo img=\"URL\" />",
               "<img>/path/to/file</img>",
              "<img src=\"/path/to/file\" />"
             ],
