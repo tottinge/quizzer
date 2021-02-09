@@ -1,7 +1,7 @@
 % rebase('skeleton.tpl', title=title)
 % include('sub_progress.tpl')
 
-<form class="w3-container" action="/quizzes/{{quiz_name}}/{{question_number}}" method="POST">
+<form class="w3-con" action="/quizzes/{{quiz_name}}/{{question_number}}" method="POST">
     % from random import shuffle
     % choices = [*decoys,answer]
     % shuffle(choices)
@@ -18,7 +18,8 @@
         % end
         <br/>
     </section>
-    <button>Check Answer</button>
+    <br/>
+    <button class="w3-btn w3-blue w3-round">Check Answer</button>
 </form>
 
 % if resources:
