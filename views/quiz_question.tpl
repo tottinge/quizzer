@@ -7,7 +7,7 @@
     % shuffle(choices)
 
     <section class="w3-card">
-        <p class="w3-panel w3-blue w3-card-4 question-asked">{{question}}</p>
+        <p class="w3-panel w3-teal w3-card-4 question-asked">{{question}}</p>
         % for answer in choices:
         <div class="form-answer">
             <input type='radio' class="w3-radio" name='answer' id='{{answer}}' value='{{answer}}'/>
@@ -19,7 +19,7 @@
         <br/>
     </section>
     <br/>
-    <button class="w3-btn w3-blue w3-round">Check Answer</button>
+    <button class="w3-btn w3-teal w3-round">Check Answer</button>
 </form>
 
 % if resources:
