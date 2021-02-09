@@ -26,7 +26,7 @@ class TestQuizSelection(TestCase):
 
         menu_items = page.body.find_all('a', class_='quiz_selection')
 
-        actual = [(b['href'], b.text) for b in menu_items]
+        actual = [(b['href'], b.text.strip()) for b in menu_items]
         expected = {
             ('/quizzes/a/0', 'a test'),
             ('/quizzes/b/0', 'b test')}
