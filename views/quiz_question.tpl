@@ -1,22 +1,24 @@
 % rebase('skeleton.tpl', title=title)
 % include('sub_progress.tpl')
 
-<form class="w3-section" action="/quizzes/{{quiz_name}}/{{question_number}}" method="POST">
+<form class="w3-container" action="/quizzes/{{quiz_name}}/{{question_number}}" method="POST">
     % from random import shuffle
     % choices = [*decoys,answer]
     % shuffle(choices)
 
-    <p class='question-asked'>{{question}}</p>
-    % for answer in choices:
-    <div class="form-answer">
-        <input type='radio' name='answer' id='{{answer}}' value='{{answer}}'/>
-        <label for='{{answer}}'>
-            {{answer}}
-        </label>
-    </div>
-    % end
+    <section class="w3-card">
+        <p class="w3-panel w3-blue w3-card-4 question-asked">{{question}}</p>
+        % for answer in choices:
+        <div class="form-answer">
+            <input type='radio' class="w3-radio" name='answer' id='{{answer}}' value='{{answer}}'/>
+            <label for='{{answer}}'>
+                {{answer}}
+            </label>
+        </div>
+        % end
+        <br/>
+    </section>
     <button>Check Answer</button>
-    <div id="result_text">You haven't answered yet.</div>
 </form>
 
 % if resources:
