@@ -23,11 +23,24 @@
 </form>
 
 % if resources:
-    <section class="w3-container" id="resources">
-        <h2>Additional Resources</h2>
-        % for (text, url) in resources:
-            <a href="{{ url }}" target="_blank" rel="noreferrer noopener">{{ text }}</a>
-            <br>
-        % end
-    </section>
+<div class="w3-panel">
+    <button class="w3-btn w3-round w3-light-gray" onclick="showResources()">Additional Resources</button>
+        <section class="w3-card w3-hide w3-margin" id="resources">
+            % for (text, url) in resources:
+                <a href="{{ url }}" target="_blank" rel="noreferrer noopener">{{ text }}</a>
+                <br>
+            % end
+        </section>
+</div>
 % end
+
+<script>
+    function showResources(){
+        var resources = document.getElementById('resources');
+        if (resources.className.includes("w3-show")) {
+            resources.className = resources.className.replace(" w3-show", "")
+        }else{
+            resources.className += " w3-show"
+        }
+    }
+</script>
