@@ -82,9 +82,9 @@ def render_judgment(quiz, question_number, selection):
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
 
     logger.info("getting id")
-    id = get_client_session_id(request, response)
+    session_id = get_client_session_id(request, response)
     logger.info("Recording answer")
-    SESSION_STORE.record_answer(id, quiz_name, question_number, selection,
+    SESSION_STORE.record_answer(session_id, quiz_name, question_number, selection,
                                 correct)
     logger.info("On like usual...")
     return dict(
@@ -111,19 +111,19 @@ def show_me():
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
     fwd_for = request.environ.get("HTTP_X_FORWARDED_FOR","not listed in HTTP_X-forwarded")
-    remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr") 
+    remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr")
     whoareyou = request.environ.get("HTTP_X_FORWARDED_FOR","").split(" ")[-1] \
                 or request.environ.get('REMOTE_ADDR') \
                 or "a ninja"
     print("Remote route", request.remote_route)
-    vars = (f"<span>{key}: {value}</span><br>"
+    env_vars = (f"<span>{key}: {value}</span><br>"
             for (key, value) in
             sorted(list(request.environ.items()))
             )
     return (
         f"<p>Maybe you're {fwd_for}, and maybe you're {remote}.</p>"
-        + f"<p>I'm guessing you are {whoareyou}.</p>" 
-        + "".join(vars)
+        + f"<p>I'm guessing you are {whoareyou}.</p>"
+        + "".join(env_vars)
     )
 
 
@@ -152,11 +152,11 @@ def show_session():
 
 
 def get_client_session_id(request, response):
-    id = request.get_cookie(SESSION_COOKIE_ID)
-    if not id:
-        id = SESSION_STORE.get_new_session_id()
-        response.set_cookie(SESSION_COOKIE_ID, id, path="/")
-    return id
+    session_id = request.get_cookie(SESSION_COOKIE_ID)
+    if not session_id:
+        session_id = SESSION_STORE.get_new_session_id()
+        response.set_cookie(SESSION_COOKIE_ID, session_id, path="/")
+    return session_id
 
 
 def drop_client_session_id(response):
@@ -178,7 +178,7 @@ def get_endpoint_address():
 
 
 def prepare_session_store():
-    path, filename = os.path.split(PATH_TO_LOG_DB)
+    path = os.path.dirname(PATH_TO_LOG_DB)
     if not os.path.exists(path):
         os.makedirs(path)
     return SessionStore(TinyDB(PATH_TO_LOG_DB))

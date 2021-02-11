@@ -47,7 +47,7 @@ class QuizStore:
 
     def _read_quiz_doc_from_file(self, filename):
         with open(filename) as input_file:
-                return json.load(input_file)
+            return json.load(input_file)
 
     def _find_file_for_named_quiz(self, quiz_name):
         lookup = {
