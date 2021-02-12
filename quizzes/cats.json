@@ -1,6 +1,6 @@
 {
   "name": "catsquiz",
-  "title": "Name Tim's coworkers",
+  "title": "Cats Quiz",
   "questions": [
     {
       "question": "Which cat is sleeping in the window?",
@@ -8,8 +8,45 @@
       "decoys": [
         "Phydeaux",
         "Jack",
-        "Fluffypants"
+        "Fluffybutt"
+      ]
+    },
+    {
+      "question": "Which cat jumps on the counter?",
+      "answer": "Jack",
+      "decoys": [
+        "Phydeaux",
+        "Gray",
+        "Fluffybutt"
+      ]
+    },
+    {
+      "question": "Which name is only a nickname?",
+      "answer": "Fluffybutt",
+      "decoys": [
+        "Phydeaux",
+        "Jack",
+        "Gray"
+      ]
+    },
+    {
+      "question": "Who is a trash panda?",
+      "answer": "Gray",
+      "decoys": [
+        "Phydeaux",
+        "Jack",
+        "Mr Tiddles"
+      ]
+    },
+    {
+      "question": "Which cat lived in the 70s?",
+      "answer": "Phydeaux",
+      "decoys": [
+        "Gray",
+        "Jack",
+        "Fluffybutt"
       ]
     }
+
   ]
 }
