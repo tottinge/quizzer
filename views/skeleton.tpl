@@ -16,9 +16,5 @@
 
     {{!base}}
 
-   <footer class="w3-bottom">
-   Hey, it's just for fun, you know? Don't expect too much.
-   </footer>
-
 </body>
 </html>
