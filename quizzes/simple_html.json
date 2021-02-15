@@ -17,7 +17,7 @@
         },
 
         {
-           "question":"How does one adjust the spaceing around an image?",
+           "question":"How does one adjust the spacing around an image?",
            "answer": "hspace and vspace",
            "decoys":[
               "wrap it in a <section>",
