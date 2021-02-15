@@ -23,24 +23,16 @@
 </form>
 
 % if resources:
-<div class="w3-panel">
-<!--    w3-button w3-border w3-mobile-->
-    <button class="w3-btn w3-round w3-light-gray" onclick="showResources()">Additional Resources</button>
-    <section class="w3-hide w3-margin w3-ul w3-hoverable" id="resources">
+<div class="w3-panel w3-dropdown-hover">
+    <button class="w3-button w3-round w3-light-gray">Additional Resources</button>
+    <section class="w3-dropdown-content w3-bar-block w3-border" id="resources">
         % for (text, url) in resources:
-            <a class="w3-button w3-border w3-mobile" href="{{ url }}" target="_blank" rel="noreferrer noopener">{{ text }}</a>
+            <a class="w3-button w3-bar-item"
+               href="{{ url }}"
+               target="_blank"
+               rel="noreferrer noopener">{{ text }}
+            </a>
         % end
     </section>
 </div>
 % end
-
-<script>
-    function showResources(){
-        var resources = document.getElementById('resources');
-        if (resources.className.includes("w3-show")) {
-            resources.className = resources.className.replace(" w3-show", "")
-        }else{
-            resources.className += " w3-show"
-        }
-    }
-</script>

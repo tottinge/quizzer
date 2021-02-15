@@ -43,11 +43,7 @@ class TestQuizRendering(unittest.TestCase):
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
         page = self.render(resources=[resource])
-        resources = page.find('section', id='resources')
-        actuals = set(
-            (tag.text, tag['href'])
-            for tag in resources.find_all('a')
-        )
+        actuals = self.getResourceAnchorsFromPage(page)
         self.assertSetEqual(set([resource]), actuals)
 
     def test_resource_multiple_links(self):
@@ -56,14 +52,18 @@ class TestQuizRendering(unittest.TestCase):
             ("Let Me", "https://lmgtfy.app/?q=calligraphy")
         ]
         page = self.render(resources=resources)
-        section = page.find('section', id='resources')
-        actual = set(
-            (tag.text, tag.get('href'))
-            for tag in (section.find_all('a'))
-        )
+        actual = self.getResourceAnchorsFromPage(page)
         self.assertSetEqual(set(resources), actual)
 
-    def render(self, title="_", name="quiz_name", question="?", decoys=["True", "False"], answer="True",
+    def getResourceAnchorsFromPage(self, page):
+        resources = page.find('section', id='resources')
+        return set(
+            (tag.text.strip(), tag['href'])
+            for tag in resources.find_all('a')
+        )
+
+    def render(self, title="_", name="quiz_name", question="?",
+               decoys=["True", "False"], answer="True",
                resources=None):
         document = Quiz({
             "title": title,
