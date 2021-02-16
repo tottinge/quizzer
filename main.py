@@ -87,14 +87,14 @@ def render_judgment(quiz, question_number, selection):
     SESSION_STORE.record_answer(session_id, quiz_name, question_number, selection,
                                 correct)
     logger.info("On like usual...")
+    incorrect_answers = SESSION_STORE.number_of_incorrect_answers(session_id, quiz_name)
     return dict(
         title=quiz.title,
         total_questions=total_questions,
         question_number=question_number,
         correct=correct,
         selection=selection,
-        incorrect_answers=SESSION_STORE.number_of_incorrect_answers("DOOMED",
-                                                                    quiz_name),
+        incorrect_answers=incorrect_answers,
         progress=progress,
         next_url=next_url,
         return_url=return_url
