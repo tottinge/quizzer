@@ -1,9 +1,4 @@
-Feature: showing off behave
-
-  Scenario: run a simple test
-    Given we have behave installed
-    When we implement a test
-    Then behave will test it for us!
+Feature: The Feature To Be Named Later
 
   Scenario: Student initiates quiz
     Given a student starts quizzology
