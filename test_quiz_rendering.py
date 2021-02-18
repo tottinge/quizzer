@@ -12,7 +12,7 @@ class TestQuizRendering(unittest.TestCase):
         title = "Page Title"
         soup = self.render(title=title)
         [title_tag_in_body] = soup.body.select("h1", class_="page-title")
-        self.assertIn(title, title_tag_in_body)
+        self.assertIn(title, str(title_tag_in_body))
 
     def test_question_appears_in_form(self):
         question = "is this in a form?"
