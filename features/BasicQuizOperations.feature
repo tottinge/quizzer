@@ -1,4 +1,4 @@
-Feature: The Feature To Be Named Later
+Feature: Basic Quiz Operations
 
   Scenario: Student initiates quiz
     Given a student starts quizzology

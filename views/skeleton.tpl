@@ -8,13 +8,12 @@
 
 <body>
     <header>
-        <h1 id="title" class="page-title w3-middle">
+        <h1 id="title" class="page-title ">
             <a href="/">
-            <img class="w3-image w3-middle"
-                 src="/favicon.ico"
+            <img src="/favicon.ico"
                  hspace="5"
                  align="left"
-                 style="height:1em;"
+                 style="height:1.1em;"
             />
             </a>
             {{title}}
