@@ -10,7 +10,15 @@ from tinydb import TinyDB
 from quiz_store import QuizStore
 from session_store import SessionStore
 
-QUIZ_STORE = QuizStore()
+QUIZ_STORE = None
+
+
+def set_quiz_store(newStore):
+    global QUIZ_STORE
+    QUIZ_STORE = newStore
+    assert QUIZ_STORE is not None
+
+
 SESSION_STORE = None
 
 SESSION_COOKIE_ID = "qz_current_quiz"
@@ -28,9 +36,11 @@ def render_menu_of_quizzes(title="Quizzology"):
         choices=QUIZ_STORE.get_quiz_summaries()
     )
 
+
 @route('/favicon.ico')
 def get_favicon():
     return redirect("/static/favicon.ico")
+
 
 @route('/static/<filename>')
 def get_static_file(filename):
@@ -84,10 +94,12 @@ def render_judgment(quiz, question_number, selection):
     logger.info("getting id")
     session_id = get_client_session_id(request, response)
     logger.info("Recording answer")
-    SESSION_STORE.record_answer(session_id, quiz_name, question_number, selection,
+    SESSION_STORE.record_answer(session_id, quiz_name, question_number,
+                                selection,
                                 correct)
     logger.info("On like usual...")
-    incorrect_answers = SESSION_STORE.number_of_incorrect_answers(session_id, quiz_name)
+    incorrect_answers = SESSION_STORE.number_of_incorrect_answers(session_id,
+                                                                  quiz_name)
     return dict(
         title=quiz.title,
         total_questions=total_questions,
@@ -110,20 +122,21 @@ def show_me():
     "Junk method for exploring the session environment variables. Delete at will."
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
-    fwd_for = request.environ.get("HTTP_X_FORWARDED_FOR","not listed in HTTP_X-forwarded")
+    fwd_for = request.environ.get("HTTP_X_FORWARDED_FOR",
+                                  "not listed in HTTP_X-forwarded")
     remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr")
-    whoareyou = request.environ.get("HTTP_X_FORWARDED_FOR","").split(" ")[-1] \
+    whoareyou = request.environ.get("HTTP_X_FORWARDED_FOR", "").split(" ")[-1] \
                 or request.environ.get('REMOTE_ADDR') \
                 or "a ninja"
     print("Remote route", request.remote_route)
     env_vars = (f"<span>{key}: {value}</span><br>"
-            for (key, value) in
-            sorted(list(request.environ.items()))
-            )
+                for (key, value) in
+                sorted(list(request.environ.items()))
+                )
     return (
-        f"<p>Maybe you're {fwd_for}, and maybe you're {remote}.</p>"
-        + f"<p>I'm guessing you are {whoareyou}.</p>"
-        + "".join(env_vars)
+            f"<p>Maybe you're {fwd_for}, and maybe you're {remote}.</p>"
+            + f"<p>I'm guessing you are {whoareyou}.</p>"
+            + "".join(env_vars)
     )
 
 
@@ -164,8 +177,9 @@ def drop_client_session_id(response):
 
 
 def main():
-    global SESSION_STORE
+    global SESSION_STORE, QUIZ_STORE
     SESSION_STORE = prepare_session_store()
+    set_quiz_store(QuizStore())
     host_name, port_number = get_endpoint_address()
     run(host=host_name, port=port_number, reloader=True, debug=True)
 

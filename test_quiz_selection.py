@@ -3,10 +3,17 @@ from unittest.mock import patch, mock_open
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes, QUIZ_STORE
+from main import render_menu_of_quizzes, set_quiz_store
+from quiz_store import QuizStore
 
+QUIZ_STORE=None
 
 class TestQuizSelection(TestCase):
+
+    def setUp(self):
+        global QUIZ_STORE
+        QUIZ_STORE = QuizStore()
+        set_quiz_store(QUIZ_STORE)
 
     @patch("os.listdir", return_value=[])
     def test_title_appears_as_title(self, *_):

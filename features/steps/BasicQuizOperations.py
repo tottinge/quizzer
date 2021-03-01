@@ -10,9 +10,6 @@ def step_impl(context):
 
 @step('we have a quiz called "{quizname}"')
 def step_impl(context, quizname):
-    """
-    :type context: behave.runner.Context
-    """
     raise NotImplementedError(u'STEP: And we have a quiz called "{quizname}"'.format(quizname=quizname))
 
 
