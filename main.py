@@ -10,13 +10,18 @@ from tinydb import TinyDB
 from quiz_store import QuizStore
 from session_store import SessionStore
 
-QUIZ_STORE = None
+class Quizzology:
+    doomed_QUIZ_STORE = None
+
+quizzology = Quizzology()
+
+doomed_QUIZ_STORE = None
 
 
-def set_quiz_store(newStore):
-    global QUIZ_STORE
-    QUIZ_STORE = newStore
-    assert QUIZ_STORE is not None
+def set_quiz_store(new_store):
+    global doomed_QUIZ_STORE
+    doomed_QUIZ_STORE = new_store
+    quizzology.QUIZ_STORE = new_store
 
 
 SESSION_STORE = None
@@ -33,7 +38,7 @@ def render_menu_of_quizzes(title="Quizzology"):
     response.delete_cookie(SESSION_COOKIE_ID)
     return dict(
         title=title,
-        choices=QUIZ_STORE.get_quiz_summaries()
+        choices=doomed_QUIZ_STORE.get_quiz_summaries()
     )
 
 
@@ -50,7 +55,7 @@ def get_static_file(filename):
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
 def ask_question(quiz_name, question_number):
-    doc = QUIZ_STORE.get_quiz(quiz_name)
+    doc = doomed_QUIZ_STORE.get_quiz(quiz_name)
     return render_question(doc, question_number)
 
 
@@ -76,7 +81,7 @@ def render_question(quiz, question_number=0):
 @post('/quizzes/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
-    quiz = QUIZ_STORE.get_quiz(quiz_name)
+    quiz = doomed_QUIZ_STORE.get_quiz(quiz_name)
     return render_judgment(quiz, question_number, selection)
 
 
@@ -177,7 +182,7 @@ def drop_client_session_id(response):
 
 
 def main():
-    global SESSION_STORE, QUIZ_STORE
+    global SESSION_STORE, doomed_QUIZ_STORE
     SESSION_STORE = prepare_session_store()
     set_quiz_store(QuizStore())
     host_name, port_number = get_endpoint_address()

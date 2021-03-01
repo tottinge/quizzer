@@ -6,14 +6,14 @@ from bs4 import BeautifulSoup
 from main import render_menu_of_quizzes, set_quiz_store
 from quiz_store import QuizStore
 
-QUIZ_STORE=None
+doomed_QUIZ_STORE=None
 
 class TestQuizSelection(TestCase):
 
     def setUp(self):
-        global QUIZ_STORE
-        QUIZ_STORE = QuizStore()
-        set_quiz_store(QUIZ_STORE)
+        global doomed_QUIZ_STORE
+        doomed_QUIZ_STORE = QuizStore()
+        set_quiz_store(doomed_QUIZ_STORE)
 
     @patch("os.listdir", return_value=[])
     def test_title_appears_as_title(self, *_):
@@ -24,7 +24,7 @@ class TestQuizSelection(TestCase):
           f"Did not find '{title}' as page title, found '{found}' instead"
         )
 
-    @patch("main.QUIZ_STORE.get_quiz_summaries", return_value=[
+    @patch("main.doomed_QUIZ_STORE.get_quiz_summaries", return_value=[
         ('a', 'a test', 'filename'),
         ('b', 'b test', 'otherfile')
     ])
@@ -44,7 +44,7 @@ class TestQuizSelection(TestCase):
             expected = "q/a.json", "q/b.json"
             self.assertSetEqual(
                 set(expected),
-                set(QUIZ_STORE._get_quiz_files_from_directory("q"))
+                set(doomed_QUIZ_STORE._get_quiz_files_from_directory("q"))
             )
 
     def test_get_test_files_ignores_non_json_files(self):
@@ -52,11 +52,11 @@ class TestQuizSelection(TestCase):
             expected = {"q/a.json"}
             self.assertSetEqual(
                 expected,
-                set(QUIZ_STORE._get_quiz_files_from_directory("q"))
+                set(doomed_QUIZ_STORE._get_quiz_files_from_directory("q"))
             )
 
     def test_get_summary_handles_empty_lists(self):
-        actual = QUIZ_STORE._get_quiz_summaries_from_file_list([])
+        actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list([])
         self.assertEqual([], list(actual))
 
     @patch('builtins.open', mock_open(read_data=None))
@@ -64,7 +64,7 @@ class TestQuizSelection(TestCase):
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
             expected = {('pass', 'a test that passes', 'd/pass.json')}
-            actual = QUIZ_STORE._get_quiz_summaries_from_file_list(['d/pass.json'])
+            actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list(['d/pass.json'])
             self.assertSetEqual(set(expected), set(actual))
 
     @patch('builtins.open', mock_open(read_data=None))
@@ -77,7 +77,7 @@ class TestQuizSelection(TestCase):
         json_docs = [dict(name=name, title=title) for (name, title, _) in expected]
 
         with patch("json.load", side_effect=json_docs):
-            actual = QUIZ_STORE._get_quiz_summaries_from_file_list(filenames)
+            actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list(filenames)
             self.assertSetEqual(set(expected), set(actual))
 
     def render(self, title):
