@@ -11,7 +11,12 @@ from quiz_store import QuizStore
 from session_store import SessionStore
 
 class Quizzology:
-    doomed_QUIZ_STORE = None
+    quiz_store = None
+
+    def set_quiz_store(self, new_store):
+        self.quiz_store = new_store
+
+
 
 quizzology = Quizzology()
 
@@ -21,7 +26,7 @@ doomed_QUIZ_STORE = None
 def set_quiz_store(new_store):
     global doomed_QUIZ_STORE
     doomed_QUIZ_STORE = new_store
-    quizzology.QUIZ_STORE = new_store
+    quizzology.set_quiz_store(new_store)
 
 
 SESSION_STORE = None
