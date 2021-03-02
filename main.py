@@ -12,6 +12,7 @@ from session_store import SessionStore
 
 class Quizzology:
     quiz_store = None
+    session_store = None
 
     def set_quiz_store(self, new_store):
         self.quiz_store = new_store
@@ -19,10 +20,14 @@ class Quizzology:
     def get_quiz_store(self):
         return self.quiz_store
 
+    def set_session_store(self, session_store):
+        self.session_store = session_store
+
+    def get_session_store(self):
+        return self.session_store
+
 
 quizzology = Quizzology()
-
-SESSION_STORE = None
 
 SESSION_COOKIE_ID = "qz_current_quiz"
 logger = getLogger(__name__)
@@ -97,11 +102,11 @@ def render_judgment(quiz, question_number, selection):
     logger.info("getting id")
     session_id = get_client_session_id(request, response)
     logger.info("Recording answer")
-    SESSION_STORE.record_answer(session_id, quiz_name, question_number,
+    quizzology.get_session_store().record_answer(session_id, quiz_name, question_number,
                                 selection,
                                 correct)
     logger.info("On like usual...")
-    incorrect_answers = SESSION_STORE.number_of_incorrect_answers(session_id,
+    incorrect_answers = quizzology.get_session_store().number_of_incorrect_answers(session_id,
                                                                   quiz_name)
     return dict(
         title=quiz.title,
@@ -162,7 +167,7 @@ def show_session():
     )
     text_answers = [
         template.substitute(answer)
-        for answer in SESSION_STORE.storage.all()
+        for answer in quizzology.get_session_store().storage.all()
     ]
     return "<br>".join(text_answers)
 
@@ -170,7 +175,7 @@ def show_session():
 def get_client_session_id(request, response):
     session_id = request.get_cookie(SESSION_COOKIE_ID)
     if not session_id:
-        session_id = SESSION_STORE.get_new_session_id()
+        session_id = quizzology.get_session_store().get_new_session_id()
         response.set_cookie(SESSION_COOKIE_ID, session_id, path="/")
     return session_id
 
@@ -180,10 +185,9 @@ def drop_client_session_id(response):
 
 
 def main():
-    global SESSION_STORE
-    SESSION_STORE = prepare_session_store()
     store = QuizStore()
     quizzology.set_quiz_store(store)
+    quizzology.set_session_store(prepare_session_store())
     host_name, port_number = get_endpoint_address()
     run(host=host_name, port=port_number, reloader=True, debug=True)
 

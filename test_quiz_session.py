@@ -20,7 +20,7 @@ from session_store import SessionStore
 
 class TestSession(unittest.TestCase):
     def setUp(self):
-        main.SESSION_STORE = SessionStore(TinyDB(storage=MemoryStorage))
+        main.quizzology.set_session_store(SessionStore(TinyDB(storage=MemoryStorage)))
         self.question = Box({
             'question': 'whatever',
             'answer': 'the truth',
@@ -39,7 +39,7 @@ class TestSession(unittest.TestCase):
         user_answer = "selection"
         correct = True
         timestamp = "TODAY"
-        main.SESSION_STORE.record_answer(
+        main.quizzology.get_session_store().record_answer(
             id, name, question, user_answer, correct, timestamp
         )
         result = main.show_session()
