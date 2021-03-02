@@ -16,18 +16,11 @@ class Quizzology:
     def set_quiz_store(self, new_store):
         self.quiz_store = new_store
 
+    def get_quiz_store(self):
+        return self.quiz_store
 
 
 quizzology = Quizzology()
-
-doomed_QUIZ_STORE = None
-
-
-def set_quiz_store(new_store):
-    global doomed_QUIZ_STORE
-    doomed_QUIZ_STORE = new_store
-    quizzology.set_quiz_store(new_store)
-
 
 SESSION_STORE = None
 
@@ -43,7 +36,7 @@ def render_menu_of_quizzes(title="Quizzology"):
     response.delete_cookie(SESSION_COOKIE_ID)
     return dict(
         title=title,
-        choices=doomed_QUIZ_STORE.get_quiz_summaries()
+        choices=quizzology.get_quiz_store().get_quiz_summaries()
     )
 
 
@@ -60,7 +53,7 @@ def get_static_file(filename):
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
 def ask_question(quiz_name, question_number):
-    doc = doomed_QUIZ_STORE.get_quiz(quiz_name)
+    doc = quizzology.get_quiz_store().get_quiz(quiz_name)
     return render_question(doc, question_number)
 
 
@@ -86,7 +79,7 @@ def render_question(quiz, question_number=0):
 @post('/quizzes/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
-    quiz = doomed_QUIZ_STORE.get_quiz(quiz_name)
+    quiz = quizzology.get_quiz_store().get_quiz(quiz_name)
     return render_judgment(quiz, question_number, selection)
 
 
@@ -187,9 +180,10 @@ def drop_client_session_id(response):
 
 
 def main():
-    global SESSION_STORE, doomed_QUIZ_STORE
+    global SESSION_STORE
     SESSION_STORE = prepare_session_store()
-    set_quiz_store(QuizStore())
+    store = QuizStore()
+    quizzology.set_quiz_store(store)
     host_name, port_number = get_endpoint_address()
     run(host=host_name, port=port_number, reloader=True, debug=True)
 

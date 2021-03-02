@@ -3,7 +3,7 @@ from unittest.mock import patch, mock_open
 
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes, set_quiz_store
+from main import render_menu_of_quizzes, quizzology
 from quiz_store import QuizStore
 
 doomed_QUIZ_STORE=None
@@ -13,7 +13,7 @@ class TestQuizSelection(TestCase):
     def setUp(self):
         global doomed_QUIZ_STORE
         doomed_QUIZ_STORE = QuizStore()
-        set_quiz_store(doomed_QUIZ_STORE)
+        quizzology.set_quiz_store(doomed_QUIZ_STORE)
 
     @patch("os.listdir", return_value=[])
     def test_title_appears_as_title(self, *_):
@@ -24,7 +24,7 @@ class TestQuizSelection(TestCase):
           f"Did not find '{title}' as page title, found '{found}' instead"
         )
 
-    @patch("main.doomed_QUIZ_STORE.get_quiz_summaries", return_value=[
+    @patch("main.quizzology.quiz_store.get_quiz_summaries", return_value=[
         ('a', 'a test', 'filename'),
         ('b', 'b test', 'otherfile')
     ])
