@@ -8,24 +8,8 @@ from bottle import (
 from tinydb import TinyDB
 
 from quiz_store import QuizStore
+from quizzology import Quizzology
 from session_store import SessionStore
-
-class Quizzology:
-    quiz_store = None
-    session_store = None
-
-    def set_quiz_store(self, new_store):
-        self.quiz_store = new_store
-
-    def get_quiz_store(self):
-        return self.quiz_store
-
-    def set_session_store(self, session_store):
-        self.session_store = session_store
-
-    def get_session_store(self):
-        return self.session_store
-
 
 quizzology = Quizzology()
 
