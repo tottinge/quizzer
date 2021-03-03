@@ -1,6 +1,4 @@
 from quiz import Quiz
-
-# Future home of the Quizzology object
 from quiz_store import QuizStore
 from session_store import SessionStore
 

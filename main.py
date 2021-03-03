@@ -48,10 +48,10 @@ def ask_question(quiz_name, question_number):
 
 @view("quiz_question")
 def render_question(quiz, question_number=0):
-    selected_question = quiz.questions[question_number] \
-        if quiz.questions \
+    selected_question = quiz.question_by_number(question_number) \
+        if quiz.has_questions() \
         else {}
-    total_questions = len(quiz.questions)
+    total_questions = quiz.number_of_questions()
     return dict(
         title=quiz.title,
         progress=int(((question_number + 1) / total_questions) * 100),
