@@ -14,3 +14,9 @@ class Quizzology:
 
     def get_session_store(self):
         return self.session_store
+
+    def get_quiz_summaries(self):
+        return self.quiz_store.get_quiz_summaries()
+
+    def get_quiz_by_name(self, quiz_name):
+        doc = self.get_quiz_store().get_quiz(quiz_name)

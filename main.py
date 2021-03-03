@@ -25,7 +25,7 @@ def render_menu_of_quizzes(title="Quizzology"):
     response.delete_cookie(SESSION_COOKIE_ID)
     return dict(
         title=title,
-        choices=quizzology.get_quiz_store().get_quiz_summaries()
+        choices=quizzology.get_quiz_summaries()
     )
 
 
@@ -42,7 +42,7 @@ def get_static_file(filename):
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
 def ask_question(quiz_name, question_number):
-    doc = quizzology.get_quiz_store().get_quiz(quiz_name)
+    doc = quizzology.get_quiz_by_name(quiz_name)
     return render_question(doc, question_number)
 
 
@@ -68,7 +68,7 @@ def render_question(quiz, question_number=0):
 @post('/quizzes/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
-    quiz = quizzology.get_quiz_store().get_quiz(quiz_name)
+    quiz = quizzology.get_quiz_by_name(quiz_name)
     return render_judgment(quiz, question_number, selection)
 
 
