@@ -17,17 +17,17 @@ class QuizStore:
     def __init__(self):
         self.quiz_dir = 'quizzes'
 
-    def get_quiz_summaries(self):
-        return self._get_quiz_summaries_from_file_list(
-            self._get_quiz_files_from_directory(self.quiz_dir)
-        )
+    def get_quiz_summaries(self) -> list:
+        file_list = self._get_quiz_files_from_directory(self.quiz_dir)
+        return self._get_quiz_summaries_from_file_list(file_list)
 
-    def get_quiz(self, quiz_name):
+    def get_quiz(self, quiz_name: str):
         filename = self._find_file_for_named_quiz(quiz_name)
         document = self._read_quiz_document(filename)
         return Quiz(document) if document else None
 
-    def _get_quiz_files_from_directory(self, directory):
+    @staticmethod
+    def _get_quiz_files_from_directory(directory: str) -> list:
         try:
             return [os.path.join(directory, x)
                     for x in os.listdir(directory)
@@ -37,7 +37,7 @@ class QuizStore:
             logger.error(f"Reading quiz directory: {error}")
             return []
 
-    def _get_quiz_summaries_from_file_list(self, quiz_file_paths):
+    def _get_quiz_summaries_from_file_list(self, quiz_file_paths) -> list:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
@@ -45,11 +45,12 @@ class QuizStore:
             except Exception as err:
                 logger.error(f"FAILED: {quiz_filename}: {str(err)}")
 
-    def _read_quiz_doc_from_file(self, filename):
+    @staticmethod
+    def _read_quiz_doc_from_file(filename):
         with open(filename) as input_file:
             return json.load(input_file)
 
-    def _find_file_for_named_quiz(self, quiz_name):
+    def _find_file_for_named_quiz(self, quiz_name: str) -> str:
         lookup = {
             name: filename
             for (name, _, filename)

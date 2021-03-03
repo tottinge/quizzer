@@ -105,7 +105,7 @@ def render_judgment(quiz, question_number, selection):
     )
 
 
-def is_answer_correct(question: object, chosen: object) -> object:
+def is_answer_correct(question, chosen: str) -> bool:
     return chosen == question.answer
 
 
