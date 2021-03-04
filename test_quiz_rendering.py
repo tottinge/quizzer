@@ -30,7 +30,7 @@ class TestQuizRendering(unittest.TestCase):
             title="no resources at all",
             name="resourceless_test",
             questions = [
-                Question(
+                dict(
                     question="Why no resources?",
                     decoys=["Who knows?"],
                     answer="I'm lazy"
@@ -69,7 +69,7 @@ class TestQuizRendering(unittest.TestCase):
             title=title,
             name=name,
             questions=[
-                Question(
+                dict(
                     question= question,
                     decoys = decoys,
                     answer = answer,

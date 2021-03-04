@@ -2,7 +2,7 @@
 from box import Box
 
 
-class Question(Box):
+class Question:
     def __init__(self, **kwargs):
         self.question = kwargs.get('question','[blank]')
         self.answer = kwargs.get('answer', '')

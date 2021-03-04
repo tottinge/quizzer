@@ -76,7 +76,7 @@ def check_answer(quiz_name, question_number):
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
     question = quiz.question_by_number(question_number)
-    correct = is_answer_correct(question, selection)
+    correct = question.is_correct_answer(selection)
     quiz_name = quiz.name
     total_questions = len(quiz.questions)
     progress = int(((question_number + 1) / total_questions) * 100)
@@ -104,10 +104,6 @@ def render_judgment(quiz, question_number, selection):
         next_url=next_url,
         return_url=return_url
     )
-
-
-def is_answer_correct(question: Question, chosen: str) -> bool:
-    return question.is_correct_answer(chosen)
 
 
 @get("/me")
