@@ -7,6 +7,7 @@ from bottle import (
 )
 from tinydb import TinyDB
 
+from quiz import Question
 from quiz_store import QuizStore
 from quizzology import Quizzology
 from session_store import SessionStore
@@ -50,7 +51,7 @@ def ask_question(quiz_name, question_number):
 def render_question(quiz, question_number=0):
     selected_question = quiz.question_by_number(question_number) \
         if quiz.has_questions() \
-        else {}
+        else Question({})
     total_questions = quiz.number_of_questions()
     return dict(
         title=quiz.title,
@@ -59,9 +60,9 @@ def render_question(quiz, question_number=0):
         question_number=question_number,
         quiz_name=quiz.name,
         question=selected_question.question,
-        decoys=selected_question.get("decoys", None),
-        answer=selected_question.get("answer", None),
-        resources=(selected_question.get("resources"))
+        decoys=selected_question.decoys,
+        answer=selected_question.answer,
+        resources=selected_question.resources
     )
 
 

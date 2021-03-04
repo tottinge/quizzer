@@ -3,7 +3,7 @@ import unittest.mock
 from bs4 import BeautifulSoup
 
 from main import render_question
-from quiz import Quiz
+from quiz import Quiz, Question
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -26,17 +26,17 @@ class TestQuizRendering(unittest.TestCase):
         self.assertIn('yes', inputs)
 
     def test_page_can_render_with_no_resources(self):
-        document = Quiz(**{
-            "title": "no resources at all",
-            "name": "resourceless_test",
-            "questions": [
-                {
-                    "question": "Why no resources?",
-                    "decoys": ["Who knows?"],
-                    "answer": "I'm lazy",
-                }
+        document = Quiz(
+            title="no resources at all",
+            name="resourceless_test",
+            questions = [
+                Question(
+                    question="Why no resources?",
+                    decoys=["Who knows?"],
+                    answer="I'm lazy"
+                )
             ]
-        })
+        )
         page = BeautifulSoup(render_question(document), 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
 
@@ -69,12 +69,12 @@ class TestQuizRendering(unittest.TestCase):
             title=title,
             name=name,
             questions=[
-                {
-                    "question": question,
-                    "decoys": decoys,
-                    "answer": answer,
-                    "resources": resources or []
-                }
+                Question(
+                    question= question,
+                    decoys = decoys,
+                    answer = answer,
+                    resources = resources or []
+                )
             ]
         )
         markup = render_question(document)
