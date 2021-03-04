@@ -24,7 +24,7 @@ class QuizStoreTest(unittest.TestCase):
         store = QuizStore()
         test_quiz = 'Testquiz'
         actual = store.get_quiz(test_quiz)
-        self.assertEqual(test_quiz, actual['name'])
+        self.assertEqual(test_quiz, actual.name)
 
     @patch('os.listdir', side_effect=FileNotFoundError('boo'))
     def test_returns_empty_list_and_log_exception_if_no_quiz_dir(self, _):

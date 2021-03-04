@@ -26,7 +26,7 @@ class TestQuizRendering(unittest.TestCase):
         self.assertIn('yes', inputs)
 
     def test_page_can_render_with_no_resources(self):
-        document = Quiz({
+        document = Quiz(**{
             "title": "no resources at all",
             "name": "resourceless_test",
             "questions": [
@@ -65,10 +65,10 @@ class TestQuizRendering(unittest.TestCase):
     def render(self, title="_", name="quiz_name", question="?",
                decoys=["True", "False"], answer="True",
                resources=None):
-        document = Quiz({
-            "title": title,
-            "name": name,
-            "questions": [
+        document = Quiz(
+            title=title,
+            name=name,
+            questions=[
                 {
                     "question": question,
                     "decoys": decoys,
@@ -76,6 +76,6 @@ class TestQuizRendering(unittest.TestCase):
                     "resources": resources or []
                 }
             ]
-        })
+        )
         markup = render_question(document)
         return BeautifulSoup(markup, "html.parser")

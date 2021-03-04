@@ -2,12 +2,17 @@
 from box import Box
 
 
-class Question(dict):
+class Question(Box):
     pass
 
 
-class Quiz(Box):
+class Quiz:
     """ questions to ask, with answers, and decoy answers"""
+
+    def __init__(self, **kwargs):
+        self.title=kwargs.get('title', '')
+        self.name = kwargs.get('name','')
+        self.questions = kwargs.get('questions', None)
 
     def has_questions(self):
         return bool(self.questions)
@@ -16,7 +21,7 @@ class Quiz(Box):
         return len(self.questions)
 
     def question_by_number(self, number: int):
-        return self.questions[number]
+        return Question(self.questions[number])
 
     def next_question_number(self, number: int):
         """If there is a next question, returns the question number"""

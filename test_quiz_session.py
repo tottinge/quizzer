@@ -26,11 +26,11 @@ class TestSession(unittest.TestCase):
             'answer': 'the truth',
             'decoys': ['falsehood', 'foolishness']
         })
-        self.quiz = Quiz({
-            'title': 'frankfurter',
-            'name': 'TestSessionQuiz',
-            'questions': [self.question]
-        })
+        self.quiz = Quiz(
+            title='frankfurter',
+            name='TestSessionQuiz',
+            questions= [self.question]
+        )
 
     def test_answer_appears_in_session_page(self):
         id = "id"
@@ -78,11 +78,11 @@ class TestSession(unittest.TestCase):
                           "Should have no try_again link when correct answer given.")
 
     def test_offers_next_question_if_any_exist(self):
-        two_question = Quiz({
-            'title': '2q',
-            'name': 'Test2Questions',
-            'questions': [self.question, self.question]
-        })
+        two_question = Quiz(
+            title= '2q',
+            name='Test2Questions',
+            questions=[self.question, self.question]
+        )
         markup = render_judgment(two_question, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
         self.assertIsNotNone(doc.body.find("a", id="next_question"), "Should have next_question link.")

@@ -24,7 +24,7 @@ class QuizStore:
     def get_quiz(self, quiz_name: str):
         filename = self._find_file_for_named_quiz(quiz_name)
         document = self._read_quiz_document(filename)
-        return Quiz(document) if document else None
+        return Quiz(**document) if document else None
 
     @staticmethod
     def _get_quiz_files_from_directory(directory: str) -> list:
