@@ -74,7 +74,7 @@ def check_answer(quiz_name, question_number):
 
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
-    question = quiz.questions[question_number]
+    question = quiz.question_by_number(question_number)
     correct = is_answer_correct(question, selection)
     quiz_name = quiz.name
     total_questions = len(quiz.questions)
