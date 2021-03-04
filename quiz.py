@@ -8,6 +8,9 @@ class Question(Box):
         self.answer = kwargs.get('answer', '')
         self.decoys = kwargs.get('decoys', [])
         self.resources = kwargs.get('resources', None)
+    def is_correct_answer(self, selection:str):
+        return self.answer == selection
+
 
 class Quiz:
     """ questions to ask, with answers, and decoy answers"""

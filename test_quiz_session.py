@@ -14,18 +14,18 @@ from main import (
     SESSION_COOKIE_ID,
     drop_client_session_id
 )
-from quiz import Quiz
+from quiz import Quiz, Question
 from session_store import SessionStore
 
 
 class TestSession(unittest.TestCase):
     def setUp(self):
         main.quizzology.set_session_store(SessionStore(TinyDB(storage=MemoryStorage)))
-        self.question = Box({
-            'question': 'whatever',
-            'answer': 'the truth',
-            'decoys': ['falsehood', 'foolishness']
-        })
+        self.question = Question(
+            question='whatever',
+            answer='the truth',
+            decoys= ['falsehood', 'foolishness']
+        )
         self.quiz = Quiz(
             title='frankfurter',
             name='TestSessionQuiz',
@@ -52,7 +52,7 @@ class TestSession(unittest.TestCase):
 
 
     def test_answer_question_correctly(self):
-        result = is_answer_correct(self.question, self.question["answer"])
+        result = is_answer_correct(self.question, self.question.answer)
         self.assertTrue(
             result,
             "Rejected correct answer 'the truth'")

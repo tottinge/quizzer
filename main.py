@@ -106,8 +106,8 @@ def render_judgment(quiz, question_number, selection):
     )
 
 
-def is_answer_correct(question, chosen: str) -> bool:
-    return chosen == question.answer
+def is_answer_correct(question: Question, chosen: str) -> bool:
+    return question.is_correct_answer(chosen)
 
 
 @get("/me")
