@@ -7,16 +7,16 @@ from bottle import (
 )
 from tinydb import TinyDB
 
-from quiz import Question
+from question import Question
 from quiz_store import QuizStore
 from quizzology import Quizzology
 from session_store import SessionStore
 
 quizzology = Quizzology()
 
-SESSION_COOKIE_ID = "qz_current_quiz"
+SESSION_COOKIE_ID = "qz_current_quiz"  # misplaced?
 logger = getLogger(__name__)
-PATH_TO_LOG_DB = "logs/session_log.json"
+PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 
 
 @route('/')
@@ -37,8 +37,8 @@ def get_favicon():
 
 @route('/static/<filename>')
 def get_static_file(filename):
-    rootpath = os.environ.get('STATIC_PATH', './static/')
-    return static_file(filename, root=rootpath)
+    root_path = os.environ.get('STATIC_PATH', './static/')
+    return static_file(filename, root=root_path)
 
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
@@ -51,7 +51,7 @@ def ask_question(quiz_name, question_number):
 def render_question(quiz, question_number=0):
     selected_question = quiz.question_by_number(question_number) \
         if quiz.has_questions() \
-        else Question({})
+        else Question.from_json({})
     total_questions = quiz.number_of_questions()
     return dict(
         title=quiz.title,
@@ -87,12 +87,14 @@ def render_judgment(quiz, question_number, selection):
     logger.info("getting id")
     session_id = get_client_session_id(request, response)
     logger.info("Recording answer")
-    quizzology.get_session_store().record_answer(session_id, quiz_name, question_number,
-                                selection,
-                                correct)
+    quizzology.get_session_store().record_answer(session_id, quiz_name,
+                                                 question_number,
+                                                 selection,
+                                                 correct)
     logger.info("On like usual...")
-    incorrect_answers = quizzology.get_session_store().number_of_incorrect_answers(session_id,
-                                                                  quiz_name)
+    incorrect_answers = quizzology.get_session_store().number_of_incorrect_answers(
+        session_id,
+        quiz_name)
     return dict(
         title=quiz.title,
         total_questions=total_questions,
@@ -108,15 +110,14 @@ def render_judgment(quiz, question_number, selection):
 
 @get("/me")
 def show_me():
-    "Junk method for exploring the session environment variables. Delete at will."
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
     fwd_for = request.environ.get("HTTP_X_FORWARDED_FOR",
                                   "not listed in HTTP_X-forwarded")
     remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr")
-    whoareyou = request.environ.get("HTTP_X_FORWARDED_FOR", "").split(" ")[-1] \
-                or request.environ.get('REMOTE_ADDR') \
-                or "a ninja"
+    who_are_you = request.environ.get("HTTP_X_FORWARDED_FOR", "").split(" ")[-1] \
+        or request.environ.get('REMOTE_ADDR') \
+        or "a ninja"
     print("Remote route", request.remote_route)
     env_vars = (f"<span>{key}: {value}</span><br>"
                 for (key, value) in
@@ -124,14 +125,14 @@ def show_me():
                 )
     return (
             f"<p>Maybe you're {fwd_for}, and maybe you're {remote}.</p>"
-            + f"<p>I'm guessing you are {whoareyou}.</p>"
+            + f"<p>I'm guessing you are {who_are_you}.</p>"
             + "".join(env_vars)
     )
 
 
 @get("/cookies")
 def cookie_explorer():
-    "Junk method for exploring cookies. Delete at will."
+    """Junk method for exploring cookies. Delete at will."""
     result = "".join(
         f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
     return result

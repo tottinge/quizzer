@@ -3,7 +3,8 @@ import unittest.mock
 from bs4 import BeautifulSoup
 
 from main import render_question
-from quiz import Quiz, Question
+from question import Question
+from quiz import Quiz
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -29,7 +30,7 @@ class TestQuizRendering(unittest.TestCase):
         document = Quiz(
             title="no resources at all",
             name="resourceless_test",
-            questions = [
+            questions=[
                 Question(
                     question="Why no resources?",
                     decoys=["Who knows?"],
@@ -43,8 +44,8 @@ class TestQuizRendering(unittest.TestCase):
     def test_resource_link_appear_in_resource_section(self):
         resource = "Google That", "http://www.google.com"
         page = self.render(resources=[resource])
-        actuals = self.getResourceAnchorsFromPage(page)
-        self.assertSetEqual(set([resource]), actuals)
+        actual = self.getResourceAnchorsFromPage(page)
+        self.assertSetEqual({resource}, actual)
 
     def test_resource_multiple_links(self):
         resources = [
@@ -55,14 +56,16 @@ class TestQuizRendering(unittest.TestCase):
         actual = self.getResourceAnchorsFromPage(page)
         self.assertSetEqual(set(resources), actual)
 
-    def getResourceAnchorsFromPage(self, page):
+    @staticmethod
+    def getResourceAnchorsFromPage(page):
         resources = page.find('section', id='resources')
         return set(
             (tag.text.strip(), tag['href'])
             for tag in resources.find_all('a')
         )
 
-    def render(self, title="_", name="quiz_name", question="?",
+    @staticmethod
+    def render(title="_", name="quiz_name", question="?",
                decoys=["True", "False"], answer="True",
                resources=None):
         document = Quiz(
@@ -70,10 +73,10 @@ class TestQuizRendering(unittest.TestCase):
             name=name,
             questions=[
                 Question(
-                    question= question,
-                    decoys = decoys,
-                    answer = answer,
-                    resources = resources or []
+                    question=question,
+                    decoys=decoys,
+                    answer=answer,
+                    resources=resources or []
                 )
             ]
         )

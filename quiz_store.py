@@ -10,7 +10,7 @@ logger = getLogger(__name__)
 
 class QuizStore:
     """ For consideration
-    * why not do a dirwalk?
+    * why not do a dir walk?
     * instead of filename, an ID in summaries?
     """
 

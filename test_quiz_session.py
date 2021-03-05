@@ -12,7 +12,8 @@ from main import (
     SESSION_COOKIE_ID,
     drop_client_session_id
 )
-from quiz import Quiz, Question
+from quiz import Quiz
+from question import Question
 from session_store import SessionStore
 
 
