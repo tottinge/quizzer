@@ -20,7 +20,7 @@ class TestSession(unittest.TestCase):
     def setUp(self):
         main.quizzology.set_session_store(
             SessionStore(TinyDB(storage=MemoryStorage)))
-        self.question = dict(
+        self.question = Question(
             question='whatever',
             answer='the truth',
             decoys=['falsehood', 'foolishness']
@@ -50,16 +50,14 @@ class TestSession(unittest.TestCase):
         self.assertIn(timestamp, result)
 
     def test_answer_question_correctly(self):
-        q = Question(**self.question)
         self.assertTrue(
-            q.is_correct_answer(q.answer),
-            f"Rejected correct answer '{q.answer}'")
+            self.question.is_correct_answer(self.question.answer),
+            f"Rejected correct answer '{self.question.answer}'")
 
     def test_answer_question_incorrectly(self):
-        q = Question(**self.question)
         self.assertFalse(
-            q.is_correct_answer("falsehood"),
-            f"Accepted 'falsehood' where answer is {q.answer}"
+            self.question.is_correct_answer("falsehood"),
+            f"Accepted 'falsehood' where answer is {self.question.answer}"
         )
 
     def test_render_judgment_incorrect_answer(self):
