@@ -9,12 +9,11 @@ from tinydb import TinyDB
 
 from question import Question
 from quiz_store import QuizStore
-from quizzology import Quizzology
+from quizzology import Quizzology, SESSION_COOKIE_ID
 from session_store import SessionStore
 
 quizzology = Quizzology()
 
-SESSION_COOKIE_ID = "qz_current_quiz"  # misplaced?
 logger = getLogger(__name__)
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 
@@ -23,7 +22,7 @@ PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 @route('/quizzes')
 @view("quiz_selection")
 def render_menu_of_quizzes(title="Quizzology"):
-    response.delete_cookie(SESSION_COOKIE_ID)
+    quizzology.begin_session(response)
     return dict(
         title=title,
         choices=quizzology.get_quiz_summaries()
@@ -84,17 +83,12 @@ def render_judgment(quiz, question_number, selection):
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
 
-    logger.info("getting id")
     session_id = get_client_session_id(request, response)
-    logger.info("Recording answer")
-    quizzology.get_session_store().record_answer(session_id, quiz_name,
-                                                 question_number,
-                                                 selection,
-                                                 correct)
-    logger.info("On like usual...")
-    incorrect_answers = quizzology.get_session_store().number_of_incorrect_answers(
-        session_id,
-        quiz_name)
+    quizzology.record_answer(session_id, quiz_name,
+                                question_number,
+                                selection,
+                                correct)
+    incorrect_answers = quizzology.number_of_incorrect_answers(quiz_name, session_id)
     return dict(
         title=quiz.title,
         total_questions=total_questions,

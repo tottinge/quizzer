@@ -2,6 +2,7 @@ from quiz import Quiz
 from quiz_store import QuizStore
 from session_store import SessionStore
 
+SESSION_COOKIE_ID = "qz_current_quiz"
 
 class Quizzology:
     quiz_store = None
@@ -24,3 +25,18 @@ class Quizzology:
 
     def get_quiz_by_name(self, quiz_name: str) -> Quiz:
         return self.get_quiz_store().get_quiz(quiz_name)
+
+    @staticmethod
+    def begin_session(http_response):
+        http_response.delete_cookie(SESSION_COOKIE_ID)
+
+    def record_answer(self, session_id, quiz_name, question_number,
+                      selection, correct):
+        self.get_session_store().record_answer(session_id, quiz_name,
+                                               question_number,
+                                               selection,
+                                               correct)
+    def number_of_incorrect_answers(self, quiz_name, session_id):
+        return self.get_session_store().number_of_incorrect_answers(
+            session_id,
+            quiz_name)

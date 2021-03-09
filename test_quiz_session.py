@@ -9,9 +9,9 @@ import main
 from main import (
     render_judgment,
     get_client_session_id,
-    SESSION_COOKIE_ID,
     drop_client_session_id
 )
+from quizzology import SESSION_COOKIE_ID
 from quiz import Quiz
 from question import Question
 from session_store import SessionStore
