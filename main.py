@@ -53,13 +53,11 @@ def render_question(quiz, question_number=0):
         else Question.from_json({})
     total_questions = quiz.number_of_questions()
     return dict(
-        title=quiz.title,
-        progress=int(((question_number + 1) / total_questions) * 100),
+        quiz=quiz,
+        question=selected_question,
+
         total_questions=total_questions,
         question_number=question_number,
-        quiz_name=quiz.name,
-        question=selected_question.question,
-        decoys=selected_question.decoys,
         answer=selected_question.answer,
         resources=selected_question.resources
     )
