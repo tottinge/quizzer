@@ -4,6 +4,7 @@ from session_store import SessionStore
 
 SESSION_COOKIE_ID = "qz_current_quiz"
 
+
 class Quizzology:
     quiz_store = None
     session_store = None
@@ -36,6 +37,7 @@ class Quizzology:
                                                question_number,
                                                selection,
                                                correct)
+
     def number_of_incorrect_answers(self, quiz_name, session_id):
         return self.get_session_store().number_of_incorrect_answers(
             session_id,
