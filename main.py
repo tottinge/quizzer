@@ -51,15 +51,10 @@ def render_question(quiz, question_number=0):
     selected_question = quiz.question_by_number(question_number) \
         if quiz.has_questions() \
         else Question.from_json({})
-    total_questions = quiz.number_of_questions()
     return dict(
         quiz=quiz,
         question=selected_question,
-
-        total_questions=total_questions,
-        question_number=question_number,
-        answer=selected_question.answer,
-        resources=selected_question.resources
+        question_number=question_number
     )
 
 
@@ -75,8 +70,6 @@ def render_judgment(quiz, question_number, selection):
     question = quiz.question_by_number(question_number)
     correct = question.is_correct_answer(selection)
     quiz_name = quiz.name
-    total_questions = len(quiz.questions)
-    progress = int(((question_number + 1) / total_questions) * 100)
     return_url = f"/quizzes/{quiz_name}/{question_number}"
     next_number = quiz.next_question_number(question_number)
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
@@ -88,13 +81,13 @@ def render_judgment(quiz, question_number, selection):
                                 correct)
     incorrect_answers = quizzology.number_of_incorrect_answers(quiz_name, session_id)
     return dict(
+        quiz=quiz,
+
         title=quiz.title,
-        total_questions=total_questions,
         question_number=question_number,
         correct=correct,
         selection=selection,
         incorrect_answers=incorrect_answers,
-        progress=progress,
         next_url=next_url,
         return_url=return_url
     )
