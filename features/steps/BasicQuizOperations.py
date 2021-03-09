@@ -1,5 +1,6 @@
 from behave import *
 
+
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 
@@ -8,9 +9,12 @@ from behave import *
 def step_impl(context):
     pass
 
+
 @step('we have a quiz called "{quizname}"')
 def step_impl(context, quizname):
-    raise NotImplementedError(u'STEP: And we have a quiz called "{quizname}"'.format(quizname=quizname))
+    raise NotImplementedError(
+        u'STEP: And we have a quiz called "{quizname}"'.format(
+            quizname=quizname))
 
 
 @when('the student selects the quiz "cats"')
