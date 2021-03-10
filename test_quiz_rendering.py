@@ -3,7 +3,7 @@ import unittest.mock
 from bottle import template
 from bs4 import BeautifulSoup
 
-from main import render_question
+from quizzology import Quizzology
 from question import Question
 from quiz import Quiz
 
@@ -39,7 +39,8 @@ class TestQuizRendering(unittest.TestCase):
                 )
             ]
         )
-        html = template('quiz_question',render_question(document))
+        html = template('quiz_question',
+                        Quizzology.prepare_quiz_question_document(document, 0))
         page = BeautifulSoup(html, 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
 
@@ -82,5 +83,6 @@ class TestQuizRendering(unittest.TestCase):
                 )
             ]
         )
-        markup = template('quiz_question', render_question(document))
+        markup = template('quiz_question',
+                          Quizzology.prepare_quiz_question_document(document, 0))
         return BeautifulSoup(markup, "html.parser")

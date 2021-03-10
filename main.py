@@ -3,11 +3,10 @@ import os
 from logging import getLogger
 
 from bottle import (
-    route, run, view, request, post, get, response, static_file, redirect, template
+    route, run, view, request, post, get, response, static_file, redirect
 )
 from tinydb import TinyDB
 
-from question import Question
 from quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
 from session_store import SessionStore
@@ -44,19 +43,7 @@ def get_static_file(filename):
 @view("quiz_question")
 def ask_question(quiz_name, question_number):
     doc = quizzology.get_quiz_by_name(quiz_name)
-    return render_question(doc, question_number)
-
-
-def render_question(quiz, question_number=0):
-    selected_question = quiz.question_by_number(question_number) \
-        if quiz.has_questions() \
-        else Question.from_json({})
-    return dict(
-        quiz=quiz,
-        question=selected_question,
-        question_number=question_number
-    )
-
+    return Quizzology.prepare_quiz_question_document(doc, question_number)
 
 
 @post('/quizzes/<quiz_name>/<question_number:int>')

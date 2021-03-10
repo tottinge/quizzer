@@ -1,3 +1,4 @@
+from question import Question
 from quiz import Quiz
 from quiz_store import QuizStore
 from session_store import SessionStore
@@ -42,3 +43,15 @@ class Quizzology:
         return self.get_session_store().number_of_incorrect_answers(
             session_id,
             quiz_name)
+
+    @staticmethod
+    def prepare_quiz_question_document(quiz, question_number=0):
+        selected_question = quiz.question_by_number(question_number) \
+            if quiz.has_questions() \
+            else Question.from_json({})
+        return dict(
+            quiz=quiz,
+            question=selected_question,
+            question_number=question_number
+        )
+
