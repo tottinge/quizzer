@@ -3,7 +3,7 @@ import os
 from logging import getLogger
 
 from bottle import (
-    route, run, view, request, post, get, response, static_file, redirect
+    route, run, view, request, post, get, response, static_file, redirect, template
 )
 from tinydb import TinyDB
 
@@ -41,12 +41,12 @@ def get_static_file(filename):
 
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
+@view("quiz_question")
 def ask_question(quiz_name, question_number):
     doc = quizzology.get_quiz_by_name(quiz_name)
     return render_question(doc, question_number)
 
 
-@view("quiz_question")
 def render_question(quiz, question_number=0):
     selected_question = quiz.question_by_number(question_number) \
         if quiz.has_questions() \
@@ -56,6 +56,7 @@ def render_question(quiz, question_number=0):
         question=selected_question,
         question_number=question_number
     )
+
 
 
 @post('/quizzes/<quiz_name>/<question_number:int>')

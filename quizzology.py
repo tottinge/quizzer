@@ -25,7 +25,7 @@ class Quizzology:
         return self.quiz_store.get_quiz_summaries()
 
     def get_quiz_by_name(self, quiz_name: str) -> Quiz:
-        return self.get_quiz_store().get_quiz(quiz_name)
+        return self.quiz_store.get_quiz(quiz_name)
 
     @staticmethod
     def begin_session(http_response):

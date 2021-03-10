@@ -1,5 +1,6 @@
 import unittest.mock
 
+from bottle import template
 from bs4 import BeautifulSoup
 
 from main import render_question
@@ -38,7 +39,8 @@ class TestQuizRendering(unittest.TestCase):
                 )
             ]
         )
-        page = BeautifulSoup(render_question(document), 'html.parser')
+        html = template('quiz_question',render_question(document))
+        page = BeautifulSoup(html, 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
 
     def test_resource_link_appear_in_resource_section(self):
@@ -80,5 +82,5 @@ class TestQuizRendering(unittest.TestCase):
                 )
             ]
         )
-        markup = render_question(document)
+        markup = template('quiz_question', render_question(document))
         return BeautifulSoup(markup, "html.parser")
