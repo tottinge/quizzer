@@ -14,8 +14,8 @@ class QuizStore:
     * instead of filename, an ID in summaries?
     """
 
-    def __init__(self):
-        self.quiz_dir = 'quizzes'
+    def __init__(self, dir_name='quizzes'):
+        self.quiz_dir = dir_name
 
     def get_quiz_summaries(self) -> list:
         file_list = self._get_quiz_files_from_directory(self.quiz_dir)
@@ -59,7 +59,7 @@ class QuizStore:
         filename = lookup.get(quiz_name)
         return filename
 
-    def _read_quiz_document(self, filename):
+    def _read_quiz_document(self, filename: str) -> dict:
         try:
             return self._read_quiz_doc_from_file(filename)
         except JSONDecodeError as err:

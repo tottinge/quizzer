@@ -1,5 +1,7 @@
-from behave import *
+import json
+import os
 
+from behave import *
 
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
@@ -9,16 +11,21 @@ from quizzology import Quizzology
 quizzology = None
 current_question_thingy = None
 
+
 @given("a student starts quizzology")
 def step_impl(context):
     global quizzology
     quizzology = Quizzology()
-    quizzology.set_quiz_store( QuizStore() )
+    assert quizzology is not None
+    quizzology.set_quiz_store( QuizStore(context.temporary_directory) )
 
 
 @step('we have a quiz called "{quizname}"')
 def step_impl(context, quizname):
-    raise NotImplementedError("We haven't figured this one out yet.")
+    filename = os.path.join(context.temporary_directory.name, quizname + ".json")
+    with open(filename, "w") as json_file:
+        json.dump({"name": quizname}, json_file)
+    assert os.path.exists(filename)
 
 
 @when('the student selects the quiz "cats"')
