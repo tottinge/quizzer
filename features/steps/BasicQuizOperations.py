@@ -17,12 +17,13 @@ def step_impl(context):
     global quizzology
     quizzology = Quizzology()
     assert quizzology is not None
-    quizzology.set_quiz_store( QuizStore(context.temporary_directory.name) )
+    quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
 
 
 @step('we have a quiz called "{quizname}"')
 def step_impl(context, quizname):
-    filename = os.path.join(context.temporary_directory.name, quizname + ".json")
+    filename = os.path.join(context.temporary_directory.name,
+                            quizname + ".json")
     with open(filename, "w") as json_file:
         document = {
             "name": quizname,
@@ -44,23 +45,25 @@ def step_impl(context, quizname: str):
     first_question = quizzology.begin_quiz(quiz)
 
 
-@then('the "cats" quiz status is in-progress')
-def step_impl(context):
+@then('the "{quizname}" quiz is in-progress')
+def step_impl(context, quizname):
     """
     :type context: behave.runner.Context
     """
     # Dictionary for selecting cats quiz contains cats quiz
     assert (
             first_question is not None
-            and first_question.quiz.name == "cats"
+            and first_question["quiz"].name == quizname
     )
 
 
-@step('the first "cats" question is displayed')
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    # The question number is the first question in cats
-    raise NotImplementedError(
-        u'STEP: And the first "cats" question is displayed')
+@step('the first "{quizname}" question is displayed')
+def step_impl(context, quizname):
+    quiz = first_question["quiz"]
+    current_question = first_question["question"]
+    assert (
+            first_question is not None
+            and first_question["quiz"].name == quizname
+            and first_question["question_number"] == 0
+            # and quiz.first_question() == current_question
+    )
