@@ -27,7 +27,10 @@ def step_impl(context, quizname):
     with open(filename, "w") as json_file:
         document = {
             "name": quizname,
-            "title": f"This is {quizname}"
+            "title": f"This is {quizname}",
+            "questions":[
+                dict(question=f"{quizname}'s first", answer="?", decoys=[])
+            ]
         }
         json.dump(document, json_file)
     assert os.path.exists(filename)
@@ -59,11 +62,10 @@ def step_impl(context, quizname):
 
 @step('the first "{quizname}" question is displayed')
 def step_impl(context, quizname):
+    assert first_question is not None
+    assert first_question["quiz"].name == quizname
     quiz = first_question["quiz"]
-    current_question = first_question["question"]
-    assert (
-            first_question is not None
-            and first_question["quiz"].name == quizname
-            and first_question["question_number"] == 0
-            # and quiz.first_question() == current_question
-    )
+    expected_first_question = first_question["question"]
+    actual_first_question = quiz.first_question()
+    print(f"Expected {expected_first_question} got {actual_first_question}")
+    assert actual_first_question == expected_first_question

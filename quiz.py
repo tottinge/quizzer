@@ -30,8 +30,28 @@ class Quiz:
     def question_by_number(self, number: int) -> Question:
         return self.questions[number]
 
+    def first_question(self):
+        return (
+            self.question_by_number(self.first_question_number())
+            if self.has_questions()
+            else None
+        )
+
+    def first_question_number(self):
+        return 0 if self.has_questions() else None
+
+    def last_question_number(self):
+        if not self.has_questions():
+            return None
+        return max(0, self.number_of_questions() - 1)
+
     def next_question_number(self, number: int):
         """If there is a next question, returns the question number"""
-        if number + 1 >= len(self.questions):
+        if not self.has_questions():
             return None
-        return number + 1
+        likely_next = number + 1
+        return (
+            likely_next
+            if likely_next <= self.last_question_number()
+            else None
+        )
