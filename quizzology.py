@@ -55,3 +55,5 @@ class Quizzology:
             question_number=question_number
         )
 
+    def begin_quiz(self, quiz: Quiz) -> dict:
+        return self.prepare_quiz_question_document(quiz, 0)
