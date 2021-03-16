@@ -130,7 +130,7 @@ def show_session():
 def get_client_session_id(request, response):
     session_id = request.get_cookie(SESSION_COOKIE_ID)
     if not session_id:
-        session_id = quizzology.get_session_store().get_new_session_id()
+        session_id = quizzology.new_session_id()
         response.set_cookie(SESSION_COOKIE_ID, session_id, path="/")
     return session_id
 

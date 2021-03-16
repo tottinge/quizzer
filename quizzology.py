@@ -57,3 +57,6 @@ class Quizzology:
 
     def begin_quiz(self, quiz: Quiz) -> dict:
         return self.prepare_quiz_question_document(quiz, 0)
+
+    def new_session_id(self):
+        return self.session_store.get_new_session_id()
