@@ -13,14 +13,8 @@ class Quizzology:
     def set_quiz_store(self, new_store: QuizStore):
         self.quiz_store = new_store
 
-    def get_quiz_store(self) -> QuizStore:
-        return self.quiz_store
-
     def set_session_store(self, session_store: SessionStore):
         self.session_store = session_store
-
-    def get_session_store(self) -> SessionStore:
-        return self.session_store
 
     def get_quiz_summaries(self) -> list:
         return self.quiz_store.get_quiz_summaries()
@@ -34,14 +28,14 @@ class Quizzology:
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
                       correct, timestamp):
-        self.get_session_store().record_answer(session_id, quiz_name,
-                                               question_number,
-                                               selection,
-                                               correct,
-                                               timestamp)
+        self.session_store.record_answer(session_id, quiz_name,
+                                         question_number,
+                                         selection,
+                                         correct,
+                                         timestamp)
 
     def number_of_incorrect_answers(self, quiz_name, session_id):
-        return self.get_session_store().number_of_incorrect_answers(
+        return self.session_store.number_of_incorrect_answers(
             session_id,
             quiz_name)
 
