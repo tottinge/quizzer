@@ -32,12 +32,13 @@ class Quizzology:
     def begin_session(http_response):
         http_response.delete_cookie(SESSION_COOKIE_ID)
 
-    def record_answer(self, session_id, quiz_name, question_number,
-                      selection, correct):
+    def record_answer(self, session_id, quiz_name, question_number, selection,
+                      correct, timestamp):
         self.get_session_store().record_answer(session_id, quiz_name,
                                                question_number,
                                                selection,
-                                               correct)
+                                               correct,
+                                               timestamp)
 
     def number_of_incorrect_answers(self, quiz_name, session_id):
         return self.get_session_store().number_of_incorrect_answers(
@@ -60,3 +61,6 @@ class Quizzology:
 
     def new_session_id(self):
         return self.session_store.get_new_session_id()
+
+    def get_log_messages(self):
+        return self.session_store.get_all()

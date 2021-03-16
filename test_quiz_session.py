@@ -39,9 +39,8 @@ class TestSession(unittest.TestCase):
         user_answer = "selection"
         correct = True
         timestamp = "TODAY"
-        main.quizzology.get_session_store().record_answer(
-            session_id, name, question, user_answer, correct, timestamp
-        )
+        main.quizzology.record_answer(session_id, name, question, user_answer,
+                                      correct, timestamp)
         result = main.show_session()
         self.assertIn(session_id, result)
         self.assertIn(name, result)

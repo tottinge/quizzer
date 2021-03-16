@@ -63,10 +63,8 @@ def render_judgment(quiz, question_number, selection):
     next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
 
     session_id = get_client_session_id(request, response)
-    quizzology.record_answer(session_id, quiz_name,
-                                question_number,
-                                selection,
-                                correct)
+    quizzology.record_answer(session_id, quiz_name, question_number, selection,
+                             correct, None)
     incorrect_answers = quizzology.number_of_incorrect_answers(quiz_name, session_id)
     return dict(
         quiz=quiz,
@@ -122,7 +120,7 @@ def show_session():
     )
     text_answers = [
         template.substitute(answer)
-        for answer in quizzology.get_session_store().storage.all()
+        for answer in quizzology.get_log_messages()
     ]
     return "<br>".join(text_answers)
 

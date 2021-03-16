@@ -113,3 +113,6 @@ class SessionStore:
         total = {(a.quiz_name, a.question_number) for a in answers}
         bad = {(a.quiz_name, a.question_number) for a in answers if not a.is_correct}
         return total.difference(bad)
+
+    def get_all(self):
+        return self.storage.all()
