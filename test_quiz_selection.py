@@ -39,46 +39,6 @@ class TestQuizSelection(TestCase):
             ('/quizzes/b/0', 'b test')}
         self.assertSetEqual(expected, set(actual))
 
-    def test_get_a_list_of_test_files(self):
-        with patch("os.listdir", return_value=['a.json', 'b.json']):
-            expected = "q/a.json", "q/b.json"
-            self.assertSetEqual(
-                set(expected),
-                set(doomed_QUIZ_STORE._get_quiz_files_from_directory("q"))
-            )
-
-    def test_get_test_files_ignores_non_json_files(self):
-        with patch("os.listdir", return_value=['a.json', 'b.txt']):
-            expected = {"q/a.json"}
-            self.assertSetEqual(
-                expected,
-                set(doomed_QUIZ_STORE._get_quiz_files_from_directory("q"))
-            )
-
-    def test_get_summary_handles_empty_lists(self):
-        actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list([])
-        self.assertEqual([], list(actual))
-
-    @patch('builtins.open', mock_open(read_data=None))
-    def test_get_summary_returns_one_summary(self):
-        json_for_file = dict(name='pass', title='a test that passes')
-        with patch('json.load', return_value=json_for_file):
-            expected = {('pass', 'a test that passes', 'd/pass.json')}
-            actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list(['d/pass.json'])
-            self.assertSetEqual(set(expected), set(actual))
-
-    @patch('builtins.open', mock_open(read_data=None))
-    def test_get_summary_returns_multiple_summary(self):
-        expected = [
-            ('cats', 'a tests about felines', 'd/cats.json'),
-            ('dogs', 'explore the canine world', 'd/dogs.json')
-        ]
-        filenames = [path for (_, _, path) in expected]
-        json_docs = [dict(name=name, title=title) for (name, title, _) in expected]
-
-        with patch("json.load", side_effect=json_docs):
-            actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list(filenames)
-            self.assertSetEqual(set(expected), set(actual))
 
     def render(self, title):
         markup = render_menu_of_quizzes(title)
