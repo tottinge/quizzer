@@ -19,14 +19,14 @@ PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 
 @route('/')
 @route('/quizzes')
-@view("quiz_selection")
-def render_menu_of_quizzes(title="Quizzology"):
+def menu_of_quizzes(title="Quizzology"):
     quizzology.begin_session(response)
-    return dict(
-        title=title,
-        choices=quizzology.get_quiz_summaries()
-    )
+    summaries = quizzology.get_quiz_summaries()
+    return render_menu_of_quizzes(title, summaries)
 
+@view("quiz_selection")
+def render_menu_of_quizzes(title, choices):
+    return dict(title=title, choices=choices)
 
 @route('/favicon.ico')
 def get_favicon():
