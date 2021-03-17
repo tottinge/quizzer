@@ -30,19 +30,19 @@ class QuizStoreTest(unittest.TestCase):
     def test_returns_empty_list_and_log_exception_if_no_quiz_dir(self, _):
         store = QuizStore()
         store.quiz_dir = 'nonesuch_directory_exists_here'
-        with patch.object(logger, 'error') as mock_call:
+        with patch.object(logger, 'error'):
             returned_summaries = list(store.get_quiz_summaries())
             self.assertEqual([], returned_summaries)
             logger.error.assert_called_with("Reading quiz directory: boo")
 
-    @patch('builtins.open')
     @patch('main.QuizStore.get_quiz_summaries')
+    @patch('builtins.open')
     @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
-    def test_json_file_invalid(self, open_mock, summaries_mock, reader_mock):
-        summaries_mock.return_value = [('nonesuch', 'no title', 'nonesuch.json'), ]
+    def test_json_file_invalid(self, summaries_mock, *_):
+        summaries_mock.return_value = [
+            ('nonesuch', 'no title', 'nonesuch.json'), ]
         store = QuizStore()
         store.get_quiz('nonesuch')
-
 
     def test_get_a_list_of_test_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.json']):
@@ -63,32 +63,32 @@ class QuizStoreTest(unittest.TestCase):
             )
 
     def test_get_summary_handles_empty_lists(self):
-        doomed_QUIZ_STORE = QuizStore()
-        actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list([])
+        store = QuizStore()
+        actual = store._get_quiz_summaries_from_file_list([])
         self.assertEqual([], list(actual))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):
-        doomed_QUIZ_STORE = QuizStore()
+        store = QuizStore()
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
             expected = {('pass', 'a test that passes', 'd/pass.json')}
-            actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list(['d/pass.json'])
+            actual = store._get_quiz_summaries_from_file_list(['d/pass.json'])
             self.assertSetEqual(set(expected), set(actual))
-
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_multiple_summary(self):
-        doomed_QUIZ_STORE = QuizStore()
+        store = QuizStore()
         expected = [
             ('cats', 'a tests about felines', 'd/cats.json'),
             ('dogs', 'explore the canine world', 'd/dogs.json')
         ]
         filenames = [path for (_, _, path) in expected]
-        json_docs = [dict(name=name, title=title) for (name, title, _) in expected]
+        json_docs = [dict(name=name, title=title) for (name, title, _) in
+                     expected]
 
         with patch("json.load", side_effect=json_docs):
-            actual = doomed_QUIZ_STORE._get_quiz_summaries_from_file_list(filenames)
+            actual = store._get_quiz_summaries_from_file_list(filenames)
             self.assertSetEqual(set(expected), set(actual))
 
     # Test for empty quiz list
