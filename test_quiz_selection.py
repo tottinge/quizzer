@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from bottle import template
 from bs4 import BeautifulSoup
 
 from main import render_menu_of_quizzes
@@ -30,5 +31,5 @@ class TestQuizSelection(TestCase):
         self.assertSetEqual(expected, set(actual))
 
     def render(self, title, choices):
-        markup = render_menu_of_quizzes(title, choices)
+        markup = template("quiz_selection", dict(title=title, choices=choices))
         return BeautifulSoup(markup, "html.parser")

@@ -52,30 +52,27 @@ def check_answer(quiz_name, question_number):
     quiz = quizzology.get_quiz_by_name(quiz_name)
     return render_judgment(quiz, question_number, selection)
 
+def url_for(quiz, question_number):
+    return f"/quizzes/{quiz.name}/{question_number}"
 
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
     question = quiz.question_by_number(question_number)
     correct = question.is_correct_answer(selection)
-    quiz_name = quiz.name
-    return_url = f"/quizzes/{quiz_name}/{question_number}"
     next_number = quiz.next_question_number(question_number)
-    next_url = f"/quizzes/{quiz_name}/{next_number}" if next_number else None
-
     session_id = get_client_session_id(request, response)
-    quizzology.record_answer(session_id, quiz_name, question_number, selection,
+    quizzology.record_answer(session_id, quiz.name, question_number, selection,
                              correct, None)
-    incorrect_answers = quizzology.number_of_incorrect_answers(quiz_name, session_id)
+    incorrect_answers = quizzology.number_of_incorrect_answers(quiz.name, session_id)
     return dict(
         quiz=quiz,
-
         title=quiz.title,
         question_number=question_number,
         correct=correct,
         selection=selection,
         incorrect_answers=incorrect_answers,
-        next_url=next_url,
-        return_url=return_url
+        next_url=(url_for(quiz, next_number) if next_number else None),
+        return_url=(url_for(quiz, question_number))
     )
 
 
