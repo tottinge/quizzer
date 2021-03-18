@@ -36,4 +36,4 @@ jobs:
         pytest
     - name: Test with behave
       run: |
-        behave
+        behave -t "~wip"
