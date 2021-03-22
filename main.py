@@ -57,13 +57,18 @@ def url_for(quiz, question_number):
 
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
+    return get_answer_results(question_number, quiz, selection)
+
+#TODO -- Continue looking at moving this and that dependant methods to Quizzology
+def get_answer_results(question_number, quiz, selection):
     question = quiz.question_by_number(question_number)
     correct = question.is_correct_answer(selection)
     next_number = quiz.next_question_number(question_number)
     session_id = get_client_session_id(request, response)
     quizzology.record_answer(session_id, quiz.name, question_number, selection,
                              correct, None)
-    incorrect_answers = quizzology.number_of_incorrect_answers(quiz.name, session_id)
+    incorrect_answers = quizzology.number_of_incorrect_answers(quiz.name,
+                                                               session_id)
     return dict(
         quiz=quiz,
         title=quiz.title,
