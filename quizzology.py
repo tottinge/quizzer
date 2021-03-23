@@ -1,7 +1,7 @@
 from question import Question
 from quiz import Quiz
 from quiz_store import QuizStore
-from session_store import SessionStore
+from sessions.session_store import SessionStore
 
 SESSION_COOKIE_ID = "qz_current_quiz"
 

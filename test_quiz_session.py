@@ -10,7 +10,7 @@ from main import (
 )
 from question import Question
 from quiz import Quiz
-from session_store import SessionStore
+from sessions.session_store import SessionStore
 
 
 class TestSession(unittest.TestCase):

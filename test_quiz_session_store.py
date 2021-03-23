@@ -3,7 +3,7 @@ import unittest
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
-from session_store import SessionStore
+from sessions.session_store import SessionStore
 
 
 class SessionStoreStuff(unittest.TestCase):
