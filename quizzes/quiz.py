@@ -7,6 +7,7 @@ class Quiz:
 
     @classmethod
     def from_json(cls, json_document):
+        "Create a quiz from a json document"
         return Quiz(
             title=json_document.get('title', ''),
             name=json_document.get('name', ''),
