@@ -7,7 +7,7 @@ from bottle import (
 )
 from tinydb import TinyDB
 
-from quiz_store import QuizStore
+from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
 

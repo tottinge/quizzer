@@ -1,6 +1,6 @@
-from question import Question
-from quiz import Quiz
-from quiz_store import QuizStore
+from quizzes.question import Question
+from quizzes.quiz import Quiz
+from quizzes.quiz_store import QuizStore
 from sessions.session_store import SessionStore
 
 SESSION_COOKIE_ID = "qz_current_quiz"

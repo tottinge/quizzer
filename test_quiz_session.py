@@ -8,8 +8,8 @@ import main
 from main import (
     render_judgment
 )
-from question import Question
-from quiz import Quiz
+from quizzes.question import Question
+from quizzes.quiz import Quiz
 from sessions.session_store import SessionStore
 
 

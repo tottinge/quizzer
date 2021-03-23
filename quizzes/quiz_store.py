@@ -3,7 +3,7 @@ import os
 from json import JSONDecodeError
 from logging import getLogger
 
-from quiz import Quiz
+from quizzes.quiz import Quiz
 
 logger = getLogger(__name__)
 
@@ -14,7 +14,7 @@ class QuizStore:
     * instead of filename, an ID in summaries?
     """
 
-    def __init__(self, dir_name='quizzes'):
+    def __init__(self, dir_name='quiz_content'):
         self.quiz_dir = dir_name
 
     def get_quiz_summaries(self) -> list:

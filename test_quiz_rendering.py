@@ -4,8 +4,8 @@ from bottle import template
 from bs4 import BeautifulSoup
 
 from quizzology import Quizzology
-from question import Question
-from quiz import Quiz
+from quizzes.question import Question
+from quizzes.quiz import Quiz
 
 
 class TestQuizRendering(unittest.TestCase):

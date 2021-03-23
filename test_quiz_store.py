@@ -2,7 +2,7 @@ import unittest
 from json import JSONDecodeError
 from unittest.mock import patch, mock_open
 
-from quiz_store import QuizStore, logger
+from quizzes.quiz_store import QuizStore, logger
 
 
 class QuizStoreTest(unittest.TestCase):
@@ -11,12 +11,12 @@ class QuizStoreTest(unittest.TestCase):
     @patch('json.load', return_value=dict(name="name", title="a title"))
     def test_it_gets_a_summary_of_test(self, *_):
         store = QuizStore()
-        expected = {('name', 'a title', 'quizzes/a.json')}
+        expected = {('name', 'a title', 'quiz_content/a.json')}
         actual = store.get_quiz_summaries()
         self.assertSetEqual(expected, set(actual))
 
     @patch('main.QuizStore.get_quiz_summaries', return_value=[
-        ('Testquiz', None, 'quizzes/a.json')
+        ('Testquiz', None, 'quiz_content/a.json')
     ])
     @patch('main.QuizStore._read_quiz_doc_from_file',
            return_value=dict(name='Testquiz'))

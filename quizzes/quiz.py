@@ -1,5 +1,5 @@
 """ doc string """
-from question import Question
+from quizzes.question import Question
 
 
 class Quiz:

@@ -5,7 +5,7 @@ from behave import *
 
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
-from quiz_store import QuizStore
+from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
 
 quizzology: Quizzology = None
