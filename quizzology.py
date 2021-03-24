@@ -58,3 +58,21 @@ class Quizzology:
 
     def get_log_messages(self):
         return self.session_store.get_all()
+
+    def record_answer_and_get_status(self, question_number, quiz, selection,
+                                     session_id):
+        question = quiz.question_by_number(question_number)
+        correct = question.is_correct_answer(selection)
+
+        self.record_answer(session_id, quiz.name, question_number, selection,
+                           correct, None)
+        incorrect_answers = self.number_of_incorrect_answers(quiz.name,
+                                                             session_id)
+        return dict(
+            quiz=quiz,
+            title=quiz.title,
+            question_number=question_number,
+            correct=correct,
+            selection=selection,
+            incorrect_answers=incorrect_answers
+        )
