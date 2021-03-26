@@ -73,13 +73,16 @@ class TestSession(unittest.TestCase):
             name='Test2Questions',
             questions=[self.question, second_question]
         )
+
         markup = render_judgment(quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
-        expected_question_number = quiz.next_question_number(0)
-        expected_url = main.url_for(quiz, expected_question_number)
         next_page_anchor = doc.body.find("a", id="next_question")
+
         self.assertIsNotNone(next_page_anchor,
                              "Should have next_question link.")
+
+        expected_question_number = quiz.next_question_number(0)
+        expected_url = main.url_for(quiz, expected_question_number)
         self.assertEqual(expected_url, next_page_anchor['href'])
 
 
