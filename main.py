@@ -24,9 +24,11 @@ def menu_of_quizzes(title="Quizzology"):
     summaries = quizzology.get_quiz_summaries()
     return render_menu_of_quizzes(title, summaries)
 
+
 @view("quiz_selection")
 def render_menu_of_quizzes(title, choices):
     return dict(title=title, choices=choices)
+
 
 @route('/favicon.ico')
 def get_favicon():
@@ -52,8 +54,10 @@ def check_answer(quiz_name, question_number):
     quiz = quizzology.get_quiz_by_name(quiz_name)
     return render_judgment(quiz, question_number, selection)
 
+
 def url_for(quiz, question_number):
     return f"/quizzes/{quiz.name}/{question_number}"
+
 
 @view("quiz_judgment")
 def render_judgment(quiz, question_number, selection):
@@ -67,8 +71,7 @@ def render_judgment(quiz, question_number, selection):
         next_url=url_for(quiz, question_number) if next_number else None,
         return_url=url_for(quiz, question_number)
     )
-    return { **results, **additions}
-
+    return {**results, **additions}
 
 
 @get("/me")
@@ -79,8 +82,8 @@ def show_me():
                                   "not listed in HTTP_X-forwarded")
     remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr")
     who_are_you = request.environ.get("HTTP_X_FORWARDED_FOR", "").split(" ")[-1] \
-        or request.environ.get('REMOTE_ADDR') \
-        or "a ninja"
+                  or request.environ.get('REMOTE_ADDR') \
+                  or "a ninja"
     print("Remote route", request.remote_route)
     env_vars = (f"<span>{key}: {value}</span><br>"
                 for (key, value) in
