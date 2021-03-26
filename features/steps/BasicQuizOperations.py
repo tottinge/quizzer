@@ -69,3 +69,9 @@ def step_impl(context, quizname):
     actual_first_question = quiz.first_question()
     print(f"Expected {expected_first_question} got {actual_first_question}")
     assert actual_first_question == expected_first_question
+
+@given(u'we have questions')
+def step_impl(context):
+    for row in context.table:
+        print(row["question"], row["answer"])
+
