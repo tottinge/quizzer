@@ -60,11 +60,14 @@ def render_judgment(quiz, question_number, selection):
     session_id = get_client_session_id(request, response)
     next_number = quiz.next_question_number(question_number)
 
-    results = quizzology.record_answer_and_get_status(question_number, quiz, selection, session_id)
-    results["next_url"]=(url_for(quiz, next_number) if next_number else None)
-    results["return_url"]=(url_for(quiz, question_number))
-
-    return results
+    results = quizzology.record_answer_and_get_status(
+        question_number, quiz, selection, session_id
+    )
+    additions = dict(
+        next_url=url_for(quiz, question_number) if next_number else None,
+        return_url=url_for(quiz, question_number)
+    )
+    return { **results, **additions}
 
 
 
