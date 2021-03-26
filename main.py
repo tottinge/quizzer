@@ -68,7 +68,7 @@ def render_judgment(quiz, question_number, selection):
         question_number, quiz, selection, session_id
     )
     additions = dict(
-        next_url=url_for(quiz, question_number) if next_number else None,
+        next_url=url_for(quiz, next_number) if next_number else None,
         return_url=url_for(quiz, question_number)
     )
     return {**results, **additions}

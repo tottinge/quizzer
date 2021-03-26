@@ -63,15 +63,25 @@ class TestSession(unittest.TestCase):
         )
 
     def test_offers_next_question_if_any_exist(self):
-        two_question = Quiz(
+        second_question = Question(
+            question="Second",
+            decoys=[],
+            answer="answer"
+        )
+        quiz = Quiz(
             title='2q',
             name='Test2Questions',
-            questions=[self.question, self.question]
+            questions=[self.question, second_question]
         )
-        markup = render_judgment(two_question, 0, "the truth")
+        markup = render_judgment(quiz, 0, "the truth")
         doc = BeautifulSoup(markup, "html.parser")
-        self.assertIsNotNone(doc.body.find("a", id="next_question"),
+        expected_question_number = quiz.next_question_number(0)
+        expected_url = main.url_for(quiz, expected_question_number)
+        next_page_anchor = doc.body.find("a", id="next_question")
+        self.assertIsNotNone(next_page_anchor,
                              "Should have next_question link.")
+        self.assertEqual(expected_url, next_page_anchor['href'])
+
 
     def test_no_next_url_offered_if_no_more_questions_exist(self):
         markup = render_judgment(self.quiz, 0, "the truth")
