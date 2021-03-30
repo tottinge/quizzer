@@ -56,3 +56,10 @@ class Quiz:
             if likely_next <= self.last_question_number()
             else None
         )
+
+    def to_json(self):
+        return dict(
+            title = self.title,
+            name = self.name,
+            questions = self.questions
+        )

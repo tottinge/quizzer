@@ -10,21 +10,30 @@ Feature: Basic Quiz Operations
     Then the "cats" quiz is in-progress
     And the first "cats" question is displayed
 
-  @wip
-  Scenario: Student answers question correctly
-    Given we have a quiz called "cats"
-    And we have questions:
+ @wip
+  Scenario: Student answers first question correctly in two question quiz
+    Given we have a quiz called "cats" with questions
       | question                       | answer |
       | How many feet on a normal cat? | 4      |
-    And the student selects the quiz called "cats"
-    When the student answers "4"
-    Then the message "Your answer "4" is correct" is delivered
+      | Do cats eat meat?              | yes    |
+#    And the student selects the quiz called "cats"
+#    And the first "cats" question is displayed
+#    When the student answers "4"
+#    Then the answer is confirmed as correct
+#    And there is a link to the next question
+#    And the log shows the first question was answered correctly
+
+# ORIGINAL Scenario STEPS:
+#    And the first question is presented
+#    When the student answers "4"
+#    Then the answer is confirmed as correct
+#    And there is a link to the next question
+#    And the log shows the first question was answered correctly
 
 
-
-  @wip
+  @future
   Scenario: Student answers question incorrectly
 
-  @wip
+  @future
   Scenario: Student researches topic
 

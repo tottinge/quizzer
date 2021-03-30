@@ -5,6 +5,7 @@ from behave import *
 
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
+from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
 
@@ -16,6 +17,7 @@ first_question = None
 def step_impl(context):
     global quizzology
     quizzology = Quizzology()
+    context.quizzology = quizzology
     assert quizzology is not None
     quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
 
@@ -70,8 +72,20 @@ def step_impl(context, quizname):
     print(f"Expected {expected_first_question} got {actual_first_question}")
     assert actual_first_question == expected_first_question
 
-@given(u'we have questions')
-def step_impl(context):
-    for row in context.table:
-        print(row["question"], row["answer"])
+
+@given('we have a quiz called "{quizname}" with questions')
+def step_impl(context, quizname):
+    """
+    :type context: behave.runner.Context
+    """
+    questions = [(row["question"], row["answer"]) for row in context.table]
+    quiz = Quiz(title=quizname, name=quizname, questions=questions)
+    save_quiz(context, quiz)
+
+
+def save_quiz(context, quiz):
+    dir_name = context.temporary_directory.name
+    filename = os.path.join(dir_name, quiz.name + ".json")
+    with open(filename, "w") as output:
+        json.dump(quiz.to_json(), output)
 
