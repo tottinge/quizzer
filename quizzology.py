@@ -40,7 +40,7 @@ class Quizzology:
             quiz_name)
 
     @staticmethod
-    def prepare_quiz_question_document(quiz, question_number=0):
+    def prepare_quiz_question_document(quiz: Quiz, question_number=0):
         selected_question = quiz.question_by_number(question_number) \
             if quiz.has_questions() \
             else Question.from_json({})
@@ -59,8 +59,11 @@ class Quizzology:
     def get_log_messages(self):
         return self.session_store.get_all()
 
-    def record_answer_and_get_status(self, question_number, quiz, selection,
-                                     session_id):
+    def record_answer_and_get_status(self,
+                                     question_number: int,
+                                     quiz: Quiz,
+                                     selection: str,
+                                     session_id: str) -> dict:
         question = quiz.question_by_number(question_number)
         correct = question.is_correct_answer(selection)
 
