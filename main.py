@@ -40,6 +40,10 @@ def get_static_file(filename):
     root_path = os.environ.get('STATIC_PATH', './static/')
     return static_file(filename, root=root_path)
 
+@get('/quizzes/<quiz_name>')
+@view("quiz_question")
+def start_quizzing(quiz_name):
+    return quizzology.begin_quiz( quizzology.get_quiz_by_name(quiz_name))
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
 @view("quiz_question")

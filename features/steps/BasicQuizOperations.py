@@ -44,7 +44,6 @@ def step_impl(context: Context, quizname: str):
 def step_impl(context: Context, quizname: str):
     # Ask for question 1 in Cats Quiz
     global first_question
-    print("Quiz store is using", quizzology.quiz_store.quiz_dir)
     quiz = quizzology.get_quiz_by_name(quizname)
     first_question = quizzology.begin_quiz(quiz)
 
