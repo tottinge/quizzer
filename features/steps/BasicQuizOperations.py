@@ -5,6 +5,8 @@ from behave import *
 
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
+from behave.runner import Context
+
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
@@ -14,7 +16,7 @@ first_question = None
 
 
 @given("a student starts quizzology")
-def step_impl(context):
+def step_impl(context: Context):
     global quizzology
     quizzology = Quizzology()
     context.quizzology = quizzology
@@ -23,7 +25,7 @@ def step_impl(context):
 
 
 @step('we have a quiz called "{quizname}"')
-def step_impl(context, quizname):
+def step_impl(context: Context, quizname: str):
     filename = os.path.join(context.temporary_directory.name,
                             quizname + ".json")
     with open(filename, "w") as json_file:
@@ -39,10 +41,7 @@ def step_impl(context, quizname):
 
 
 @when('the student selects the quiz called "{quizname}"')
-def step_impl(context, quizname: str):
-    """
-    :type context: behave.runner.Context
-    """
+def step_impl(context: Context, quizname: str):
     # Ask for question 1 in Cats Quiz
     global first_question
     print("Quiz store is using", quizzology.quiz_store.quiz_dir)
@@ -51,7 +50,7 @@ def step_impl(context, quizname: str):
 
 
 @then('the "{quizname}" quiz is in-progress')
-def step_impl(context, quizname):
+def step_impl(context: Context, quizname: str):
     """
     :type context: behave.runner.Context
     """
@@ -63,7 +62,7 @@ def step_impl(context, quizname):
 
 
 @step('the first "{quizname}" question is displayed')
-def step_impl(context, quizname):
+def step_impl(context: Context, quizname: str):
     assert first_question is not None
     assert first_question["quiz"].name == quizname
     quiz = first_question["quiz"]
@@ -73,8 +72,9 @@ def step_impl(context, quizname):
     assert actual_first_question == expected_first_question
 
 
+
 @given('we have a quiz called "{quizname}" with questions')
-def step_impl(context, quizname):
+def step_impl(context: Context, quizname: str):
     """
     :type context: behave.runner.Context
     """
@@ -83,7 +83,7 @@ def step_impl(context, quizname):
     save_quiz(context, quiz)
 
 
-def save_quiz(context, quiz):
+def save_quiz(context: Context, quiz: str):
     dir_name = context.temporary_directory.name
     filename = os.path.join(dir_name, quiz.name + ".json")
     with open(filename, "w") as output:
