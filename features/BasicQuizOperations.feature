@@ -16,7 +16,7 @@ Feature: Basic Quiz Operations
       | question                       | answer |
       | How many feet on a normal cat? | 4      |
       | Do cats eat meat?              | yes    |
-#    And the student selects the quiz called "cats"
+    And the student selects the quiz called "cats"
 #    And the first "cats" question is displayed
 #    When the student answers "4"
 #    Then the answer is confirmed as correct

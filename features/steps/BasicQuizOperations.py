@@ -39,6 +39,13 @@ def step_impl(context: Context, quizname: str):
         json.dump(document, json_file)
     assert os.path.exists(filename)
 
+@given('the student selects the quiz called "{quizname}"')
+def step_impl(context: Context, quizname: str):
+    """
+    @type context: behave.runner.Context
+    """
+    raise NotImplementedError(
+        u'STEP: And the student selects the quiz called "cats"')
 
 @when('the student selects the quiz called "{quizname}"')
 def step_impl(context: Context, quizname: str):
@@ -87,4 +94,5 @@ def save_quiz(context: Context, quiz: str):
     filename = os.path.join(dir_name, quiz.name + ".json")
     with open(filename, "w") as output:
         json.dump(quiz.to_json(), output)
+
 
