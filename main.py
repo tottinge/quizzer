@@ -7,9 +7,14 @@ from bottle import (
 )
 from tinydb import TinyDB
 
+from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
+
+REMOTE_ADDR = 'REMOTE_ADDR'
+
+FORWARDED_FOR = "HTTP_X_FORWARDED_FOR"
 
 quizzology = Quizzology()
 
@@ -40,14 +45,16 @@ def get_static_file(filename):
     root_path = os.environ.get('STATIC_PATH', './static/')
     return static_file(filename, root=root_path)
 
+
 @get('/quizzes/<quiz_name>')
 @view("quiz_question")
 def start_quizzing(quiz_name):
-    return quizzology.begin_quiz( quizzology.get_quiz_by_name(quiz_name))
+    return quizzology.begin_quiz(quizzology.get_quiz_by_name(quiz_name))
+
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
 @view("quiz_question")
-def ask_question(quiz_name, question_number):
+def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
     return Quizzology.prepare_quiz_question_document(doc, question_number)
 
@@ -59,12 +66,12 @@ def check_answer(quiz_name, question_number):
     return render_judgment(quiz, question_number, selection)
 
 
-def url_for(quiz, question_number):
+def url_for(quiz: Quiz, question_number: int):
     return f"/quizzes/{quiz.name}/{question_number}"
 
 
 @view("quiz_judgment")
-def render_judgment(quiz, question_number, selection):
+def render_judgment(quiz: Quiz, question_number: int, selection: str):
     session_id = get_client_session_id(request, response)
     next_number = quiz.next_question_number(question_number)
 
@@ -82,11 +89,12 @@ def render_judgment(quiz, question_number, selection):
 def show_me():
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
-    fwd_for = request.environ.get("HTTP_X_FORWARDED_FOR",
+    fwd_for = request.environ.get(FORWARDED_FOR,
                                   "not listed in HTTP_X-forwarded")
-    remote = request.environ.get('REMOTE_ADDR', "not listed in remote addr")
-    who_are_you = request.environ.get("HTTP_X_FORWARDED_FOR", "").split(" ")[-1] \
-                  or request.environ.get('REMOTE_ADDR') \
+    remote = request.environ.get(REMOTE_ADDR, "not listed in remote addr")
+    last_fwd_addr = request.environ.get(FORWARDED_FOR, "").split(" ")[-1]
+    who_are_you = last_fwd_addr \
+                  or request.environ.get(REMOTE_ADDR) \
                   or "a ninja"
     print("Remote route", request.remote_route)
     env_vars = (f"<span>{key}: {value}</span><br>"
@@ -124,7 +132,7 @@ def show_session():
     return "<br>".join(text_answers)
 
 
-def get_client_session_id(request, response):
+def get_client_session_id(request, response) -> str:
     session_id = request.get_cookie(SESSION_COOKIE_ID)
     if not session_id:
         session_id = quizzology.new_session_id()
@@ -144,14 +152,14 @@ def main():
     run(host=host_name, port=port_number, reloader=True, debug=True)
 
 
-def get_endpoint_address():
+def get_endpoint_address() -> tuple[str, int]:
     host_name = os.environ.get('QUIZ_HOST', '0.0.0.0')
     heroku_port = os.environ.get('PORT', '4000')
     port_number = int(os.environ.get('QUIZ_PORT', heroku_port))
     return host_name, port_number
 
 
-def prepare_session_store():
+def prepare_session_store() -> SessionStore:
     path = os.path.dirname(PATH_TO_LOG_DB)
     if not os.path.exists(path):
         os.makedirs(path)
