@@ -11,15 +11,10 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
 
-quizzology: Quizzology = None
-first_question = None
-
 
 @given("a student starts quizzology")
 def step_impl(context: Context):
-    global quizzology
-    quizzology = Quizzology()
-    context.quizzology = quizzology
+    quizzology = context.quizzology = Quizzology()
     assert quizzology is not None
     quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
 
@@ -49,10 +44,9 @@ def step_impl(context: Context, quizname: str):
 
 @when('the student selects the quiz called "{quizname}"')
 def step_impl(context: Context, quizname: str):
-    # Ask for question 1 in Cats Quiz
-    global first_question
+    quizzology = context.quizzology
     quiz = quizzology.get_quiz_by_name(quizname)
-    first_question = quizzology.begin_quiz(quiz)
+    context.current_question = quizzology.begin_quiz(quiz)
 
 
 @then('the "{quizname}" quiz is in-progress')
@@ -61,6 +55,7 @@ def step_impl(context: Context, quizname: str):
     :type context: behave.runner.Context
     """
     # Dictionary for selecting cats quiz contains cats quiz
+    first_question = context.current_question
     assert (
             first_question is not None
             and first_question["quiz"].name == quizname
@@ -69,6 +64,7 @@ def step_impl(context: Context, quizname: str):
 
 @step('the first "{quizname}" question is displayed')
 def step_impl(context: Context, quizname: str):
+    first_question = context.current_question
     assert first_question is not None
     assert first_question["quiz"].name == quizname
     quiz = first_question["quiz"]
