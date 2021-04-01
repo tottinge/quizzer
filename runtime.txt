@@ -1,2 +1,1 @@
-# heroku uses this to set up the python version
-python-3.9
+python-3.9.1
