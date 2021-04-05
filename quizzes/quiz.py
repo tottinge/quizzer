@@ -61,5 +61,5 @@ class Quiz:
         return dict(
             title = self.title,
             name = self.name,
-            questions = self.questions
+            questions = [q.to_json() for q in self.questions]
         )
