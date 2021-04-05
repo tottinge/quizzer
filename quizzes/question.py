@@ -24,3 +24,11 @@ class Question:
             answer = self.answer,
             resources = self.resources
         )
+
+    def _asdict(self):
+        return dict(
+            question = self.question,
+            decoys = self.decoys,
+            answer = self.answer,
+            resources = self.resources
+        )
