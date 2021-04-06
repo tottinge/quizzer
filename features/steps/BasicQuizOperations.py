@@ -45,6 +45,7 @@ def step_impl(context: Context, quizname: str):
     quizzology = context.quizzology
     quiz = quizzology.get_quiz_by_name(quizname)
     context.current_question = quizzology.begin_quiz(quiz)
+    assert quiz == context.current_question.quiz
 
 
 @then('the "{quizname}" quiz is in-progress')

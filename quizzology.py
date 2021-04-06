@@ -1,3 +1,5 @@
+from box import Box
+
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
@@ -44,7 +46,7 @@ class Quizzology:
         selected_question = quiz.question_by_number(question_number) \
             if quiz.has_questions() \
             else Question.from_json({})
-        return dict(
+        return Box(
             quiz=quiz,
             question=selected_question,
             question_number=question_number
