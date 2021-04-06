@@ -63,13 +63,11 @@ def step_impl(context: Context, quizname: str):
 
 @step('the first "{quizname}" question is displayed')
 def step_impl(context: Context, quizname: str):
-    first_question = context.current_question
-    assert first_question is not None
-    assert first_question["quiz"].name == quizname
-    quiz = first_question["quiz"]
-    expected_first_question = first_question["question"]
-    actual_first_question = quiz.first_question()
-    print(f"Expected {expected_first_question} got {actual_first_question}")
+    current_question = context.current_question
+    assert current_question.quiz.name == quizname
+
+    expected_first_question = current_question.quiz.first_question()
+    actual_first_question = current_question.question
     assert actual_first_question == expected_first_question
 
 
@@ -86,3 +84,6 @@ def save_quiz(context: Context, quiz: Quiz):
         json.dump(quiz.to_dict(), output)
 
 
+@when('the student answers "{answer}"')
+def step_impl(context: Context, answer: str):
+    raise NotImplementedError(u'STEP: When the student answers "4"')
