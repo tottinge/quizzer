@@ -17,15 +17,7 @@ class Question:
     def is_correct_answer(self, selection: str):
         return self.answer == selection
 
-    def to_json(self):
-        return dict(
-            question = self.question,
-            decoys = self.decoys,
-            answer = self.answer,
-            resources = self.resources
-        )
-
-    def _asdict(self):
+    def to_dict(self):
         return dict(
             question = self.question,
             decoys = self.decoys,

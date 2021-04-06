@@ -57,17 +57,9 @@ class Quiz:
             else None
         )
 
-    def to_json(self):
+    def to_dict(self):
         return dict(
             title = self.title,
             name = self.name,
-            questions = [q.to_json() for q in self.questions]
-        )
-
-#TODO - See if we can make Quiz and Question use these instead of to_json() and write some tests
-    def _asdict(self):
-        return dict(
-            title = self.title,
-            name = self.name,
-            questions = self.questions
+            questions = [q.to_dict() for q in self.questions]
         )

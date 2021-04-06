@@ -82,6 +82,6 @@ def save_quiz(context: Context, quiz: Quiz):
     dir_name = context.temporary_directory.name
     filename = os.path.join(dir_name, quiz.name + ".json")
     with open(filename, "w") as output:
-        json.dump(quiz.to_json(), output)
+        json.dump(quiz.to_dict(), output)
 
 
