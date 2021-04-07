@@ -98,3 +98,8 @@ def step_impl(context: Context, answer: str):
         quiz=context.current_question.quiz,
         selection=answer,
         session_id=None)
+
+
+@then("the answer is confirmed as correct")
+def step_impl(context: Context):
+    assert context.recent_answer.correct

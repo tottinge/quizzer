@@ -19,7 +19,7 @@ Feature: Basic Quiz Operations
     And the student selects the quiz called "cats"
     And the first "cats" question is displayed
     When the student answers "4"
-#    Then the answer is confirmed as correct
+    Then the answer is confirmed as correct
 #    And there is a link to the next question
 #    And the log shows the first question was answered correctly
 
