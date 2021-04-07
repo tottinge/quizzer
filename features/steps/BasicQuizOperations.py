@@ -6,18 +6,25 @@ from behave import *
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
+from tinydb import TinyDB
+from tinydb.storages import MemoryStorage
 
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
+from sessions.session_store import SessionStore
 
 
 @given("a student starts quizzology")
 def step_impl(context: Context):
-    quizzology = context.quizzology = Quizzology()
+    quizzology: Quizzology = Quizzology()
     assert quizzology is not None
     quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
+    session_store = SessionStore(TinyDB(storage=MemoryStorage))
+    quizzology.set_session_store(session_store)
+    context.quizzology = quizzology
+
 
 
 @step('we have a quiz called "{quizname}"')
@@ -86,4 +93,8 @@ def save_quiz(context: Context, quiz: Quiz):
 
 @when('the student answers "{answer}"')
 def step_impl(context: Context, answer: str):
-    raise NotImplementedError(u'STEP: When the student answers "4"')
+    context.recent_answer = context.quizzology.record_answer_and_get_status(
+        question_number=context.current_question.question_number,
+        quiz=context.current_question.quiz,
+        selection=answer,
+        session_id=None)

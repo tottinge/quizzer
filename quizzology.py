@@ -42,7 +42,7 @@ class Quizzology:
             quiz_name)
 
     @staticmethod
-    def prepare_quiz_question_document(quiz: Quiz, question_number=0):
+    def prepare_quiz_question_document(quiz: Quiz, question_number=0) -> Box:
         selected_question = quiz.question_by_number(question_number) \
             if quiz.has_questions() \
             else Question.from_json({})
@@ -65,7 +65,7 @@ class Quizzology:
                                      question_number: int,
                                      quiz: Quiz,
                                      selection: str,
-                                     session_id: str) -> dict:
+                                     session_id: str) -> Box:
         question = quiz.question_by_number(question_number)
         correct = question.is_correct_answer(selection)
 
@@ -73,7 +73,7 @@ class Quizzology:
                            correct, None)
         incorrect_answers = self.number_of_incorrect_answers(quiz.name,
                                                              session_id)
-        return dict(
+        return Box(
             quiz=quiz,
             title=quiz.title,
             question_number=question_number,
