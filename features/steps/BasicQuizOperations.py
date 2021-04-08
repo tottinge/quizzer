@@ -6,6 +6,7 @@ from behave import *
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
+from hamcrest import assert_that, equal_to
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
@@ -103,3 +104,11 @@ def step_impl(context: Context, answer: str):
 @then("the answer is confirmed as correct")
 def step_impl(context: Context):
     assert context.recent_answer.correct
+
+
+@step('the next question is "{question_text}"')
+def step_impl(context: Context, question_text: str):
+    quiz: Quiz = context.recent_answer.quiz
+    next_question_number: int = context.recent_answer.next_question_number
+    question: Question = quiz.question_by_number(next_question_number)
+    assert_that(question_text, equal_to(question_text))
