@@ -20,7 +20,7 @@ Feature: Basic Quiz Operations
     And the first "cats" question is displayed
     When the student answers "4"
     Then the answer is confirmed as correct
-#    And there is a link to the next question
+#    And the next question is "Do cats eat meat?"
 #    And the log shows the first question was answered correctly
 
 # ORIGINAL Scenario STEPS:

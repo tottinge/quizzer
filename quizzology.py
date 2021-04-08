@@ -73,11 +73,15 @@ class Quizzology:
                            correct, None)
         incorrect_answers = self.number_of_incorrect_answers(quiz.name,
                                                              session_id)
+        next_question_number = quiz.next_question_number(question_number) \
+            if correct\
+            else None
         return Box(
             quiz=quiz,
             title=quiz.title,
             question_number=question_number,
             correct=correct,
             selection=selection,
-            incorrect_answers=incorrect_answers
+            incorrect_answers=incorrect_answers,
+            next_question_number=next_question_number
         )

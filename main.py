@@ -73,13 +73,12 @@ def url_for(quiz: Quiz, question_number: int):
 @view("quiz_judgment")
 def render_judgment(quiz: Quiz, question_number: int, selection: str):
     session_id = get_client_session_id(request, response)
-    next_number = quiz.next_question_number(question_number)
-
     results = quizzology.record_answer_and_get_status(
         question_number, quiz, selection, session_id
     )
+    go_next = results.next_question_number
     additions = dict(
-        next_url=url_for(quiz, next_number) if next_number else None,
+        next_url=url_for(quiz, go_next) if go_next else None,
         return_url=url_for(quiz, question_number)
     )
     return {**results, **additions}
