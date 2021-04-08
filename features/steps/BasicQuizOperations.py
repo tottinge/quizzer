@@ -111,4 +111,4 @@ def step_impl(context: Context, question_text: str):
     quiz: Quiz = context.recent_answer.quiz
     next_question_number: int = context.recent_answer.next_question_number
     question: Question = quiz.question_by_number(next_question_number)
-    assert_that(question_text, equal_to(question_text))
+    assert_that(question.question, equal_to(question_text))
