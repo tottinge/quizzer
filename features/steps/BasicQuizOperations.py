@@ -6,7 +6,7 @@ from behave import *
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
-from hamcrest import assert_that, equal_to
+from hamcrest import assert_that, equal_to, not_none
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
@@ -53,7 +53,7 @@ def step_impl(context: Context, quizname: str):
     quizzology = context.quizzology
     quiz = quizzology.get_quiz_by_name(quizname)
     context.current_question = quizzology.begin_quiz(quiz)
-    assert quiz == context.current_question.quiz
+    assert_that(context.current_question.quiz, equal_to(quiz))
 
 
 @then('the "{quizname}" quiz is in-progress')
@@ -67,16 +67,18 @@ def step_impl(context: Context, quizname: str):
             first_question is not None
             and first_question["quiz"].name == quizname
     )
+    assert_that(first_question, not_none)
+    assert_that(first_question["quiz"].name, equal_to(quizname))
 
 
 @step('the first "{quizname}" question is displayed')
 def step_impl(context: Context, quizname: str):
     current_question = context.current_question
-    assert current_question.quiz.name == quizname
+    assert_that(current_question.quiz.name, equal_to(quizname))
 
     expected_first_question = current_question.quiz.first_question()
     actual_first_question = current_question.question
-    assert actual_first_question == expected_first_question
+    assert_that(actual_first_question, equal_to(expected_first_question))
 
 
 def save_quiz(context: Context, quiz: Quiz):
@@ -103,7 +105,7 @@ def step_impl(context: Context, answer: str):
 
 @then("the answer is confirmed as correct")
 def step_impl(context: Context):
-    assert context.recent_answer.correct
+    assert_that(context.recent_answer.correct, f"Answer should be correct")
 
 
 @step('the next question is "{question_text}"')
