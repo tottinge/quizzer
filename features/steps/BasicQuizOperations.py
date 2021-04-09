@@ -36,9 +36,6 @@ def step_impl(context: Context, quizname: str):
 
 @given('we have a quiz called "{quizname}" with questions')
 def step_impl(context: Context, quizname: str):
-    """
-    :type context: behave.runner.Context
-    """
     questions = [Question(question=row["question"],
                           answer=row["answer"],
                           decoys=[])
@@ -57,16 +54,13 @@ def step_impl(context: Context, quizname: str):
 
 @then('the "{quizname}" quiz is in-progress')
 def step_impl(context: Context, quizname: str):
-    """
-    :type context: behave.runner.Context
-    """
     # Dictionary for selecting cats quiz contains cats quiz
     first_question = context.current_question
     assert (
             first_question is not None
             and first_question["quiz"].name == quizname
     )
-    assert_that(first_question, not_none)
+    assert_that(first_question, not_none())
     assert_that(first_question["quiz"].name, equal_to(quizname))
 
 
