@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git pull &&
+  pip install -r requirements.txt &&
+  pip install -r devtools.txt &&
+  pytest &&
+  behave -t "~wip"
