@@ -2,7 +2,6 @@ import json
 import os
 
 from behave import *
-
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
@@ -27,10 +26,10 @@ def step_impl(context: Context):
     context.quizzology = quizzology
 
 
-
 @step('we have a quiz called "{quizname}"')
 def step_impl(context: Context, quizname: str):
-    questions = [Question(question=f"{quizname}'s first", answer="?", decoys=[])]
+    questions = [
+        Question(question=f"{quizname}'s first", answer="?", decoys=[])]
     quiz = Quiz(title=f"This is {quizname}", name=quizname, questions=questions)
     save_quiz(context, quiz)
 
@@ -40,9 +39,9 @@ def step_impl(context: Context, quizname: str):
     """
     :type context: behave.runner.Context
     """
-    questions = [Question(question = row["question"],
-                          answer = row["answer"],
-                          decoys = [])
+    questions = [Question(question=row["question"],
+                          answer=row["answer"],
+                          decoys=[])
                  for row in context.table]
     quiz = Quiz(title=quizname, name=quizname, questions=questions)
     save_quiz(context, quiz)
