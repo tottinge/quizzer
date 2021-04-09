@@ -26,48 +26,52 @@ def step_impl(context: Context):
     context.quizzology = quizzology
 
 
-@step('we have a quiz called "{quizname}"')
-def step_impl(context: Context, quizname: str):
+@step('we have a quiz called "{quiz_name}"')
+def step_impl(context: Context, quiz_name: str):
     questions = [
-        Question(question=f"{quizname}'s first", answer="?", decoys=[])]
-    quiz = Quiz(title=f"This is {quizname}", name=quizname, questions=questions)
+        Question(question=f"{quiz_name}'s first", answer="?", decoys=[])]
+    quiz = Quiz(
+        title=f"This is {quiz_name}",
+        name=quiz_name,
+        questions=questions
+    )
     save_quiz(context, quiz)
 
 
-@given('we have a quiz called "{quizname}" with questions')
-def step_impl(context: Context, quizname: str):
+@given('we have a quiz called "{quiz_name}" with questions')
+def step_impl(context: Context, quiz_name: str):
     questions = [Question(question=row["question"],
                           answer=row["answer"],
                           decoys=[])
                  for row in context.table]
-    quiz = Quiz(title=quizname, name=quizname, questions=questions)
+    quiz = Quiz(title=quiz_name, name=quiz_name, questions=questions)
     save_quiz(context, quiz)
 
 
-@step('the student selects the quiz called "{quizname}"')
-def step_impl(context: Context, quizname: str):
+@step('the student selects the quiz called "{quiz_name}"')
+def step_impl(context: Context, quiz_name: str):
     quizzology = context.quizzology
-    quiz = quizzology.get_quiz_by_name(quizname)
+    quiz = quizzology.get_quiz_by_name(quiz_name)
     context.current_question = quizzology.begin_quiz(quiz)
     assert_that(context.current_question.quiz, equal_to(quiz))
 
 
-@then('the "{quizname}" quiz is in-progress')
-def step_impl(context: Context, quizname: str):
+@then('the "{quiz_name}" quiz is in-progress')
+def step_impl(context: Context, quiz_name: str):
     # Dictionary for selecting cats quiz contains cats quiz
     first_question = context.current_question
     assert (
             first_question is not None
-            and first_question["quiz"].name == quizname
+            and first_question["quiz"].name == quiz_name
     )
     assert_that(first_question, not_none())
-    assert_that(first_question["quiz"].name, equal_to(quizname))
+    assert_that(first_question["quiz"].name, equal_to(quiz_name))
 
 
-@step('the first "{quizname}" question is displayed')
-def step_impl(context: Context, quizname: str):
+@step('the first "{quiz_name}" question is displayed')
+def step_impl(context: Context, quiz_name: str):
     current_question = context.current_question
-    assert_that(current_question.quiz.name, equal_to(quizname))
+    assert_that(current_question.quiz.name, equal_to(quiz_name))
 
     expected_first_question = current_question.quiz.first_question()
     actual_first_question = current_question.question
