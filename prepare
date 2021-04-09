@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 git pull &&
-  pip install -r requirements.txt &&
-  pip install -r devtools.txt &&
+  pip install -qr requirements.txt &&
+  pip install -qr devtools.txt &&
   pytest &&
   behave -t "~wip"
