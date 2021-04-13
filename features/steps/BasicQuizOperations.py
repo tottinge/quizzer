@@ -13,7 +13,7 @@ from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
-from sessions.session_store import SessionStore
+from sessions.session_store import SessionStore, AnswerEntry
 
 
 @given("a student starts quizzology")
@@ -111,3 +111,17 @@ def step_impl(context: Context, question_text: str):
     next_question_number: int = context.recent_answer.next_question_number
     question: Question = quiz.question_by_number(next_question_number)
     assert_that(question.question, equal_to(question_text))
+
+
+@step("the log shows the question was answered {how}")
+def step_impl(context: Context, how: str):
+    quizzology: Quizzology = context.quizzology
+    session_id = context.recent_answer.session_id
+    quiz_name = context.recent_answer.quiz.name
+    question_number = context.recent_answer.question_number
+    log: AnswerEntry = quizzology.get_log_message_for_question(session_id, quiz_name, 
+                                                               question_number)
+    user_choice = log.selection
+    expected = (how == "correctly")
+    assert_that(log.is_correct, equal_to(expected),
+                f"User said '{user_choice}', which is answered {how}")

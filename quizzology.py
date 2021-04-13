@@ -83,5 +83,11 @@ class Quizzology:
             correct=correct,
             selection=selection,
             incorrect_answers=incorrect_answers,
-            next_question_number=next_question_number
+            next_question_number=next_question_number,
+            session_id=session_id
         )
+
+    def get_log_message_for_question(self, session_id, quiz_name,
+                                     question_number):
+        return self.session_store.get_log_message(session_id, quiz_name,
+                                                  question_number)

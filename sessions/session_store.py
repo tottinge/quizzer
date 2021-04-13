@@ -116,3 +116,12 @@ class SessionStore:
 
     def get_all(self):
         return self.storage.all()
+
+    def get_log_message(self, session_id, quiz_name, question_number)->AnswerEntry:
+        criteria = Query()
+        records = self.storage.search(
+            (criteria.session_id == session_id)
+            & (criteria.quiz_name == quiz_name)
+            & (criteria.question_number == question_number)
+        )
+        return AnswerEntry.from_dict(records[0])
