@@ -5,7 +5,7 @@ from behave import *
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
-from hamcrest import assert_that, equal_to, not_none
+from hamcrest import assert_that, equal_to, not_none, is_not, empty
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
@@ -29,7 +29,7 @@ def step_impl(context: Context):
 @step('we have a quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
     questions = [
-        Question(question=f"{quiz_name}'s first", answer="?", decoys=[])]
+        Question(question=f"{quiz_name}'s first", decoys=[], answer="?")]
     quiz = Quiz(
         title=f"This is {quiz_name}",
         name=quiz_name,
@@ -42,6 +42,7 @@ def step_impl(context: Context, quiz_name: str):
 def step_impl(context: Context, quiz_name: str):
     questions = [Question(question=row["question"],
                           answer=row["answer"],
+                          confirmation=row["confirmation"] if "confirmation" in row else "",
                           decoys=[])
                  for row in context.table]
     quiz = Quiz(title=quiz_name, name=quiz_name, questions=questions)
@@ -125,3 +126,8 @@ def step_impl(context: Context, how: str):
     expected = (how == "correctly")
     assert_that(log.is_correct, equal_to(expected),
                 f"User said '{user_choice}', which is answered {how}")
+
+
+@step("the confirmation message is delivered")
+def step_impl(context: Context):
+    assert_that(context.recent_answer.confirmation, is_not(empty()))

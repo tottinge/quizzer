@@ -3,12 +3,14 @@ class Question:
     def from_json(json_document):
         return Question(
             question=json_document.get('question', ''),
-            answer=json_document.get('answer', ''),
             decoys=json_document.get('decoys', ''),
-            resources=json_document.get('resources', None)
+            answer=json_document.get('answer', ''),
+            resources=json_document.get('resources', None),
+            confirmation=json_document.get('confirmation','')
         )
 
-    def __init__(self, question, decoys, answer, resources=None):
+    def __init__(self, question, decoys, answer, confirmation="", resources=None):
+        self.confirmation = confirmation
         self.question = question
         self.decoys = decoys
         self.answer = answer
@@ -22,5 +24,6 @@ class Question:
             question = self.question,
             decoys = self.decoys,
             answer = self.answer,
-            resources = self.resources
+            resources = self.resources,
+            confirmation=self.confirmation
         )

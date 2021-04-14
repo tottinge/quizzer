@@ -32,11 +32,7 @@ class TestQuizRendering(unittest.TestCase):
             title="no resources at all",
             name="resourceless_test",
             questions=[
-                Question(
-                    question="Why no resources?",
-                    decoys=["Who knows?"],
-                    answer="I'm lazy"
-                )
+                Question(question="Why no resources?", decoys=["Who knows?"], answer="I'm lazy")
             ]
         )
         html = template('quiz_question',
@@ -75,12 +71,7 @@ class TestQuizRendering(unittest.TestCase):
             title=title,
             name=name,
             questions=[
-                Question(
-                    question=question,
-                    decoys=decoys,
-                    answer=answer,
-                    resources=resources or []
-                )
+                Question(question=question, decoys=decoys, answer=answer, resources=resources or [])
             ]
         )
         markup = template('quiz_question',

@@ -81,6 +81,7 @@ class Quizzology:
             title=quiz.title,
             question_number=question_number,
             correct=correct,
+            confirmation=question.confirmation if correct else "",
             selection=selection,
             incorrect_answers=incorrect_answers,
             next_question_number=next_question_number,

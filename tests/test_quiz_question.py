@@ -4,11 +4,7 @@ from quizzes.question import Question
 
 class TestQuiz(unittest.TestCase):
     def setUp(self):
-        self.question = Question(
-            question='whatever',
-            answer='the truth',
-            decoys=['falsehood', 'foolishness']
-        )
+        self.question = Question(question='whatever', decoys=['falsehood', 'foolishness'], answer='the truth')
 
     def test_answer_question_correctly(self):
         self.assertTrue(

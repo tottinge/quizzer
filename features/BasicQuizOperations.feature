@@ -44,7 +44,7 @@ Feature: Basic Quiz Operations
     And the first "cats" question is displayed
     When the student answers "4"
     Then the log shows the question was answered correctly
-#    And the confirmation message is delivered
+    And the confirmation message is delivered
 
   @future
   Scenario: Student researches topic

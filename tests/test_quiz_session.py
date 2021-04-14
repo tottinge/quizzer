@@ -17,11 +17,7 @@ class TestSession(unittest.TestCase):
     def setUp(self):
         main.quizzology.set_session_store(
             SessionStore(TinyDB(storage=MemoryStorage)))
-        self.question = Question(
-            question='whatever',
-            answer='the truth',
-            decoys=['falsehood', 'foolishness']
-        )
+        self.question = Question(question='whatever', decoys=['falsehood', 'foolishness'], answer='the truth')
         self.quiz = Quiz(
             title='frankfurter',
             name='TestSessionQuiz',
@@ -63,11 +59,7 @@ class TestSession(unittest.TestCase):
         )
 
     def test_offers_next_question_if_any_exist(self):
-        second_question = Question(
-            question="Second",
-            decoys=[],
-            answer="answer"
-        )
+        second_question = Question(question="Second", decoys=[], answer="answer")
         quiz = Quiz(
             title='2q',
             name='Test2Questions',
