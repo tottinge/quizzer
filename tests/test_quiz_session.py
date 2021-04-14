@@ -57,6 +57,7 @@ class TestSession(unittest.TestCase):
             doc.body.find("a", id="try_again"),
             "Should have no try_again link when correct answer given."
         )
+        self.fail("We should check confirmation here")
 
     def test_offers_next_question_if_any_exist(self):
         second_question = Question(question="Second", decoys=[], answer="answer")
