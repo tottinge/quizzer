@@ -42,7 +42,7 @@ def step_impl(context: Context, quiz_name: str):
 def step_impl(context: Context, quiz_name: str):
     questions = [Question(question=row["question"],
                           answer=row["answer"],
-                          confirmation=row["confirmation"] if "confirmation" in row else "",
+                          confirmation=row.get("confirmation", ""),
                           decoys=[])
                  for row in context.table]
     quiz = Quiz(title=quiz_name, name=quiz_name, questions=questions)

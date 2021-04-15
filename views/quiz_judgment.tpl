@@ -3,6 +3,9 @@
 <section class="w3-panel">
     % if correct:
         <p>Your answer <em>"{{selection}}"</em> is correct.</p>
+        <div id="confirmation">
+            {{confirmation}}
+        </div>
         % if next_url:
             <a class="w3-btn w3-teal w3-round" href={{next_url}} id="next_question">Next Question</a>
         % else:

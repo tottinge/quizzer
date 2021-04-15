@@ -17,7 +17,12 @@ class TestSession(unittest.TestCase):
     def setUp(self):
         main.quizzology.set_session_store(
             SessionStore(TinyDB(storage=MemoryStorage)))
-        self.question = Question(question='whatever', decoys=['falsehood', 'foolishness'], answer='the truth')
+        self.question = Question(
+            question='whatever',
+            decoys=['falsehood', 'foolishness'],
+            answer='the truth',
+            confirmation="confirmation text"
+        )
         self.quiz = Quiz(
             title='frankfurter',
             name='TestSessionQuiz',
@@ -57,7 +62,8 @@ class TestSession(unittest.TestCase):
             doc.body.find("a", id="try_again"),
             "Should have no try_again link when correct answer given."
         )
-        self.fail("We should check confirmation here")
+        confirmation_tag = doc.body.find("div", id="confirmation")
+        self.assertIn(self.question.confirmation, confirmation_tag.text)
 
     def test_offers_next_question_if_any_exist(self):
         second_question = Question(question="Second", decoys=[], answer="answer")
