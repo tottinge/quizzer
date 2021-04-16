@@ -48,6 +48,12 @@ def step_impl(context: Context, quiz_name: str):
     quiz = Quiz(title=quiz_name, name=quiz_name, questions=questions)
     save_quiz(context, quiz)
 
+def current_question(context: Context) -> Quizzology.PreparedQuestion:
+    """
+    Establishes the type of the current_question object to aid the
+    IDE
+    """
+    return context.current_question
 
 @step('the student selects the quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
@@ -60,22 +66,23 @@ def step_impl(context: Context, quiz_name: str):
 @then('the "{quiz_name}" quiz is in-progress')
 def step_impl(context: Context, quiz_name: str):
     # Dictionary for selecting cats quiz contains cats quiz
-    first_question = context.current_question
+    # first_question: Quizzology.PreparedQuestion = context.current_question
+    first_question = current_question(context)
     assert (
             first_question is not None
-            and first_question["quiz"].name == quiz_name
+            and first_question.quiz.name == quiz_name
     )
     assert_that(first_question, not_none())
-    assert_that(first_question["quiz"].name, equal_to(quiz_name))
+    assert_that(first_question.quiz.name, equal_to(quiz_name))
 
 
 @step('the first "{quiz_name}" question is displayed')
 def step_impl(context: Context, quiz_name: str):
-    current_question = context.current_question
-    assert_that(current_question.quiz.name, equal_to(quiz_name))
+    question = current_question(context)
+    assert_that(question.quiz.name, equal_to(quiz_name))
 
-    expected_first_question = current_question.quiz.first_question()
-    actual_first_question = current_question.question
+    expected_first_question = question.quiz.first_question()
+    actual_first_question = question.question
     assert_that(actual_first_question, equal_to(expected_first_question))
 
 
@@ -94,9 +101,10 @@ def save_quiz(context: Context, quiz: Quiz):
 
 @when('the student answers "{answer}"')
 def step_impl(context: Context, answer: str):
+    question = current_question(context)
     context.recent_answer = context.quizzology.record_answer_and_get_status(
-        question_number=context.current_question.question_number,
-        quiz=context.current_question.quiz,
+        question_number=question.question_number,
+        quiz=question.quiz,
         selection=answer,
         session_id=None)
 

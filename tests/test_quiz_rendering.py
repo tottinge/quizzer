@@ -35,8 +35,8 @@ class TestQuizRendering(unittest.TestCase):
                 Question(question="Why no resources?", decoys=["Who knows?"], answer="I'm lazy")
             ]
         )
-        html = template('quiz_question',
-                        Quizzology.prepare_quiz_question_document(document, 0))
+        document = Quizzology.prepare_quiz_question_document(document,0)
+        html = template('quiz_question', document._asdict())
         page = BeautifulSoup(html, 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
 
@@ -74,6 +74,6 @@ class TestQuizRendering(unittest.TestCase):
                 Question(question=question, decoys=decoys, answer=answer, resources=resources or [])
             ]
         )
-        markup = template('quiz_question',
-                          Quizzology.prepare_quiz_question_document(document, 0))
+        question_document = Quizzology.prepare_quiz_question_document(document,0)
+        markup = template('quiz_question', question_document._asdict())
         return BeautifulSoup(markup, "html.parser")

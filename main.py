@@ -81,7 +81,7 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
         next_url=url_for(quiz, go_next) if go_next else None,
         return_url=url_for(quiz, question_number)
     )
-    return {**results, **additions}
+    return {**results._asdict(), **additions}
 
 
 @get("/me")

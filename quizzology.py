@@ -1,3 +1,5 @@
+from typing import NamedTuple
+
 from box import Box
 
 from quizzes.question import Question
@@ -41,18 +43,23 @@ class Quizzology:
             session_id,
             quiz_name)
 
+    class PreparedQuestion(NamedTuple):
+        quiz: Quiz
+        question: Question
+        question_number: int
+
     @staticmethod
-    def prepare_quiz_question_document(quiz: Quiz, question_number=0) -> Box:
+    def prepare_quiz_question_document(quiz: Quiz, question_number=0) -> PreparedQuestion:
         selected_question = quiz.question_by_number(question_number) \
             if quiz.has_questions() \
             else Question.from_json({})
-        return Box(
+        return Quizzology.PreparedQuestion(
             quiz=quiz,
             question=selected_question,
             question_number=question_number
         )
 
-    def begin_quiz(self, quiz: Quiz) -> dict:
+    def begin_quiz(self, quiz: Quiz) -> PreparedQuestion:
         return self.prepare_quiz_question_document(quiz, 0)
 
     def new_session_id(self):
@@ -61,11 +68,22 @@ class Quizzology:
     def get_log_messages(self):
         return self.session_store.get_all()
 
+    class RecordedAnswer(NamedTuple):
+        quiz: Quiz
+        title: str
+        question_number: int
+        correct: bool
+        confirmation: str
+        selection: str
+        incorrect_answers: int
+        next_question_number: int
+        session_id: str
+
     def record_answer_and_get_status(self,
                                      question_number: int,
                                      quiz: Quiz,
                                      selection: str,
-                                     session_id: str) -> Box:
+                                     session_id: str) -> RecordedAnswer:
         question = quiz.question_by_number(question_number)
         correct = question.is_correct_answer(selection)
 
@@ -76,7 +94,7 @@ class Quizzology:
         next_question_number = quiz.next_question_number(question_number) \
             if correct\
             else None
-        return Box(
+        return Quizzology.RecordedAnswer(
             quiz=quiz,
             title=quiz.title,
             question_number=question_number,
