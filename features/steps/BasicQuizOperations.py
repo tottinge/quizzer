@@ -65,13 +65,7 @@ def step_impl(context: Context, quiz_name: str):
 
 @then('the "{quiz_name}" quiz is in-progress')
 def step_impl(context: Context, quiz_name: str):
-    # Dictionary for selecting cats quiz contains cats quiz
-    # first_question: Quizzology.PreparedQuestion = context.current_question
     first_question = current_question(context)
-    assert (
-            first_question is not None
-            and first_question.quiz.name == quiz_name
-    )
     assert_that(first_question, not_none())
     assert_that(first_question.quiz.name, equal_to(quiz_name))
 

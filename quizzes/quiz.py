@@ -61,5 +61,5 @@ class Quiz:
         return dict(
             title = self.title,
             name = self.name,
-            questions = [q.to_dict() for q in self.questions]
+            questions = [q._asdict() for q in self.questions]
         )

@@ -1,7 +1,5 @@
 from typing import NamedTuple
 
-from box import Box
-
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
