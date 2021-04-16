@@ -49,14 +49,14 @@ def get_static_file(filename):
 @get('/quizzes/<quiz_name>')
 @view("quiz_question")
 def start_quizzing(quiz_name):
-    return quizzology.begin_quiz(quizzology.get_quiz_by_name(quiz_name))
+    return quizzology.begin_quiz(quizzology.get_quiz_by_name(quiz_name))._asdict()
 
 
 @get('/quizzes/<quiz_name>/<question_number:int>')
 @view("quiz_question")
 def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
-    return Quizzology.prepare_quiz_question_document(doc, question_number)
+    return Quizzology.prepare_quiz_question_document(doc, question_number)._asdict()
 
 
 @post('/quizzes/<quiz_name>/<question_number:int>')

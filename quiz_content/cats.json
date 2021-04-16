@@ -5,6 +5,7 @@
     {
       "question": "Which cat is sleeping in the window?",
       "answer": "Gray",
+      "confirmation": "Gray is obsessed with looking out the window.",
       "decoys": [
         "Phydeaux",
         "Jack",
@@ -32,6 +33,7 @@
     {
       "question": "Who is a trash panda?",
       "answer": "Gray",
+      "confirmation": "He just can't resist chicken leftovers",
       "decoys": [
         "Phydeaux",
         "Jack",
@@ -41,6 +43,7 @@
     {
       "question": "Which cat lived in the 70s?",
       "answer": "Phydeaux",
+      "confirmation": "He was Margaret's favorite cat, after 'prince' went wrong",
       "decoys": [
         "Gray",
         "Jack",
