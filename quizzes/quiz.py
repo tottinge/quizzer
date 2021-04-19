@@ -1,9 +1,14 @@
 """ doc string """
+from dataclasses import dataclass, field, asdict
+
 from quizzes.question import Question
 
-
+@dataclass
 class Quiz:
     """ questions to ask, with answers, and decoy answers"""
+    title: str
+    name: str
+    questions: list[Question] = field(default_factory=list)
 
     @classmethod
     def from_json(cls, json_document):
@@ -16,11 +21,6 @@ class Quiz:
                 for q in json_document.get('questions', [])
             ]
         )
-
-    def __init__(self, title='', name='', questions=None):
-        self.title = title
-        self.name = name
-        self.questions = questions if questions else []
 
     def has_questions(self):
         return len(self.questions) > 0
@@ -57,9 +57,3 @@ class Quiz:
             else None
         )
 
-    def to_dict(self):
-        return dict(
-            title = self.title,
-            name = self.name,
-            questions = [q._asdict() for q in self.questions]
-        )

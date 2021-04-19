@@ -1,5 +1,6 @@
 import json
 import os
+from dataclasses import asdict
 
 from behave import *
 # use_step_matcher("re")
@@ -90,7 +91,7 @@ def save_quiz(context: Context, quiz: Quiz):
     dir_name = context.temporary_directory.name
     filename = os.path.join(dir_name, quiz.name + ".json")
     with open(filename, "w") as output:
-        json.dump(quiz.to_dict(), output)
+        json.dump(asdict(quiz), output)
 
 
 @when('the student answers "{answer}"')

@@ -1,11 +1,12 @@
+from dataclasses import dataclass, field
 from typing import NamedTuple
 
-
-class Question(NamedTuple):
+@dataclass
+class Question():
     question: str
     answer: str
-    decoys: list[str] = []
-    resources: list[list[str]] = []
+    decoys: list[str] = field(default_factory=list)
+    resources: list[list[str]] = field(default_factory=list)
     confirmation: str = ''
 
     @staticmethod
