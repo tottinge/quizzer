@@ -41,3 +41,4 @@ class BaseUrlTest(TestCase):
         dev_quiz_link = browser.find_element_by_partial_link_text('evelopment')
         for link in [cats_quiz_link, html_quiz_link, dev_quiz_link]:
             assert_that(link, is_not(None))
+        # link.click() follows the link
