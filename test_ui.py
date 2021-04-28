@@ -1,11 +1,12 @@
 import os
-from unittest import TestCase, skip
+import sys
+from unittest import TestCase, skip, skipIf
 
 from hamcrest import *
 from selenium import webdriver
 
 
-@skip("This isn't to be run on the CI/CD pipeline")
+@skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
