@@ -37,3 +37,6 @@ jobs:
     - name: Test with behave
       run: |
         behave -t "~wip"
+    - name: Report Environment
+      run: |
+        uname -v
