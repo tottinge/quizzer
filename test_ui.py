@@ -36,9 +36,7 @@ class BaseUrlTest(TestCase):
 
     def test_quiz_links_exist(self):
         browser = self.browser
-        cats_quiz_link = browser.find_element_by_link_text('Cats Quiz')
-        html_quiz_link = browser.find_element_by_link_text('Basics of HTML')
-        dev_quiz_link = browser.find_element_by_partial_link_text('evelopment')
-        for link in [cats_quiz_link, html_quiz_link, dev_quiz_link]:
-            assert_that(link, is_not(None))
+        browser.find_element_by_link_text('Cats Quiz')
+        browser.find_element_by_link_text('Basics of HTML')
+        browser.find_element_by_partial_link_text('evelopment')
         # link.click() follows the link

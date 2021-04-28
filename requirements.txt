@@ -4,3 +4,4 @@ python-box
 tinydb
 behave
 pyhamcrest
+selenium
