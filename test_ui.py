@@ -1,5 +1,6 @@
 import os
 import sys
+from subprocess import Popen
 from unittest import TestCase, skip, skipIf
 
 from hamcrest import *
@@ -11,10 +12,14 @@ class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
     """
-    base_url = "https://sample-fun-with-programming.herokuapp.com/"
+    base_url = "http://0.0.0.0:4000/"
 
     @classmethod
     def setUpClass(cls):
+        cls.active_server = Popen(
+            ["./venv/bin/python main.py"],
+            shell=True,
+        )
         os.environ['PATH'] = os.environ['PATH'] + os.pathsep + './webdrivers'
         cls.browser = webdriver.Chrome()
 
@@ -24,6 +29,7 @@ class BaseUrlTest(TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.browser.quit()
+        cls.active_server.terminate()
 
     def test_title_exists(self):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
