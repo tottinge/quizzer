@@ -33,10 +33,10 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        pytest tests
     - name: Test with behave
       run: |
         behave -t "~wip"
-    - name: Report Environment
+    - name: UI Tests
       run: |
-        uname -v
+        pytest ui_tests
