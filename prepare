@@ -3,5 +3,6 @@
 git pull &&
   pip install -qr requirements.txt &&
   pip install -qr devtools.txt &&
-  pytest &&
-  behave -t "~wip"
+  pytest tests &&
+  behave -t "~wip" &&
+  pytest ui_tests

@@ -6,6 +6,7 @@ from unittest import TestCase, skip, skipIf
 import pytest
 from hamcrest import *
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 
 @skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
@@ -17,14 +18,27 @@ class BaseUrlTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.launch_quizzology()
+        cls.launch_selenium_chrome()
+
+    @classmethod
+    def launch_selenium_chrome(cls):
+        if (sys.platform == 'darwin'):
+            os.environ['PATH'] = (
+                    os.environ['PATH'] + os.pathsep + './webdrivers'
+            )
+        # How/whether to set driver path for github?
+        options = Options()
+        options.add_argument('--headless')
+        cls.browser = webdriver.Chrome(options=options)
+
+    @classmethod
+    def launch_quizzology(cls):
         cls.active_server = Popen(
             ["./venv/bin/python main.py"],
             shell=True,
-            env={"QUIZ_PORT":"4444"}
+            env={"QUIZ_PORT": "4444"}
         )
-        if (sys.platform == 'darwin'):
-            os.environ['PATH'] = os.environ['PATH'] + os.pathsep + './webdrivers'
-        cls.browser = webdriver.Chrome()
 
     def setUp(self):
         self.browser.get(self.base_url)
