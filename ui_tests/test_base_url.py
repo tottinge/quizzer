@@ -8,6 +8,7 @@ from hamcrest import *
 from selenium import webdriver
 
 
+@skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
