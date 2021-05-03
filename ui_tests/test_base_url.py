@@ -8,8 +8,6 @@ from hamcrest import *
 from selenium import webdriver
 
 
-@skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
-@skipIf("RUN_UI" not in os.environ, "You didn't ask to run the UI tests")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
@@ -23,7 +21,8 @@ class BaseUrlTest(TestCase):
             shell=True,
             env={"QUIZ_PORT":"4444"}
         )
-        os.environ['PATH'] = os.environ['PATH'] + os.pathsep + './webdrivers'
+        if (sys.platform == 'darwin'):
+            os.environ['PATH'] = os.environ['PATH'] + os.pathsep + './webdrivers'
         cls.browser = webdriver.Chrome()
 
     def setUp(self):
