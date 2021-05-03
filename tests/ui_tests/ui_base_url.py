@@ -3,22 +3,25 @@ import sys
 from subprocess import Popen
 from unittest import TestCase, skip, skipIf
 
+import pytest
 from hamcrest import *
 from selenium import webdriver
 
 
 @skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
+@skipIf("RUN_UI" not in os.environ, "You didn't ask to run the UI tests")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
     """
-    base_url = "http://0.0.0.0:4000/"
+    base_url = "http://0.0.0.0:4444/"
 
     @classmethod
     def setUpClass(cls):
         cls.active_server = Popen(
             ["./venv/bin/python main.py"],
             shell=True,
+            env={"QUIZ_PORT":"4444"}
         )
         os.environ['PATH'] = os.environ['PATH'] + os.pathsep + './webdrivers'
         cls.browser = webdriver.Chrome()
