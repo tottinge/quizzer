@@ -3,18 +3,19 @@ import sys
 from subprocess import Popen
 from unittest import TestCase, skipIf
 
-from hamcrest import *
+from hamcrest import assert_that, equal_to_ignoring_case
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.webdriver import WebDriver
 
 
-@skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
+# @skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
     """
-    browser = None
-    app = None
+    browser: WebDriver = None
+    app: Popen[str] = None
     base_url = "http://0.0.0.0:4444/"
 
     @classmethod
@@ -34,9 +35,12 @@ class BaseUrlTest(TestCase):
         return webdriver.Chrome(options=options)
 
     @staticmethod
-    def launch_quizzology():
-        popen: Popen[str] = Popen(["./venv/bin/python main.py"], shell=True, env={"QUIZ_PORT": "4444"})
-        return popen
+    def launch_quizzology() -> Popen[str]:
+        """
+        launch the quizzology application
+        """
+        python = "./venv/bin/python" if os.path.isdir('./venv') else "python"
+        return Popen([python, "main.py"], env={"QUIZ_PORT": "4444"})
 
     def setUp(self):
         self.browser.get(self.base_url)
