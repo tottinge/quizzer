@@ -1,7 +1,7 @@
 import os
 import sys
 from subprocess import Popen
-from unittest import TestCase, skipIf
+from unittest import TestCase
 
 from hamcrest import assert_that, equal_to_ignoring_case
 from selenium import webdriver
@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 
-# @skipIf(sys.platform != "darwin", "This isn't to be run on the CI/CD pipeline")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
@@ -29,7 +28,6 @@ class BaseUrlTest(TestCase):
             os.environ['PATH'] = (
                     os.environ['PATH'] + os.pathsep + './webdrivers'
             )
-        # How/whether to set driver path for github?
         options = Options()
         options.add_argument('--headless')
         return webdriver.Chrome(options=options)
