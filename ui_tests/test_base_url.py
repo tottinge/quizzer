@@ -40,7 +40,7 @@ class BaseUrlTest(TestCase):
         launch the quizzology application
         """
         python = "./venv/bin/python" if os.path.isdir('./venv') else "python"
-        return Popen([python, "main.py"], env={"QUIZ_PORT": "4444"})
+        return Popen([python, "main.py"], env={ **os.environ, "QUIZ_PORT":"4444" })
 
     def setUp(self):
         self.browser.get(self.base_url)
