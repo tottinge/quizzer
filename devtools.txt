@@ -2,3 +2,4 @@ MacFSEvents
 sniffer
 behave
 pytest
+pylint
