@@ -1,9 +1,8 @@
 import os
 import sys
 from subprocess import Popen
-from unittest import TestCase, skip, skipIf
+from unittest import TestCase, skipIf
 
-import pytest
 from hamcrest import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -14,31 +13,30 @@ class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
     """
+    browser = None
+    app = None
     base_url = "http://0.0.0.0:4444/"
 
     @classmethod
     def setUpClass(cls):
-        cls.launch_quizzology()
-        cls.launch_selenium_chrome()
+        cls.app = cls.launch_quizzology()
+        cls.browser = cls.launch_selenium_chrome()
 
-    @classmethod
-    def launch_selenium_chrome(cls):
-        if (sys.platform == 'darwin'):
+    @staticmethod
+    def launch_selenium_chrome():
+        if sys.platform == 'darwin':
             os.environ['PATH'] = (
                     os.environ['PATH'] + os.pathsep + './webdrivers'
             )
         # How/whether to set driver path for github?
         options = Options()
         options.add_argument('--headless')
-        cls.browser = webdriver.Chrome(options=options)
+        return webdriver.Chrome(options=options)
 
-    @classmethod
-    def launch_quizzology(cls):
-        cls.active_server = Popen(
-            ["./venv/bin/python main.py"],
-            shell=True,
-            env={"QUIZ_PORT": "4444"}
-        )
+    @staticmethod
+    def launch_quizzology():
+        popen: Popen[str] = Popen(["./venv/bin/python main.py"], shell=True, env={"QUIZ_PORT": "4444"})
+        return popen
 
     def setUp(self):
         self.browser.get(self.base_url)
@@ -46,7 +44,7 @@ class BaseUrlTest(TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.browser.quit()
-        cls.active_server.terminate()
+        cls.app.terminate()
 
     def test_title_exists(self):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
