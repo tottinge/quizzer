@@ -9,7 +9,7 @@
 <body>
     <header>
         <h1 id="title" class="page-title ">
-            <a href="/">
+            <a href="/" id="return_link">
             <img src="/favicon.ico"
                  hspace="5"
                  align="left"

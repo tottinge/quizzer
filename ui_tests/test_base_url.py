@@ -3,7 +3,7 @@ import sys
 from subprocess import Popen
 from unittest import TestCase
 
-from hamcrest import assert_that, equal_to_ignoring_case
+from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -30,6 +30,10 @@ class BaseUrlTest(TestCase):
             )
         options = Options()
         options.add_argument('--headless')
+        size_desktop = '1920,1200'
+        size_mobile_galaxy_s5 = '360,640'
+        size_mobile_iphone_X = '375,812'
+        options.add_argument('--window-size=%s' % size_mobile_galaxy_s5)
         return webdriver.Chrome(options=options)
 
     @staticmethod
@@ -42,6 +46,15 @@ class BaseUrlTest(TestCase):
 
     def setUp(self):
         self.browser.get(self.base_url)
+        self.take_screenshot("home_page.png")
+
+    def take_screenshot(self, screenshot_name):
+        screenshot_dir = "./logs/screenshots"
+        if not os.path.isdir(screenshot_dir):
+            os.makedirs(screenshot_dir)
+        filename = os.path.join(screenshot_dir, screenshot_name)
+        saved = self.browser.save_screenshot(filename)
+        assert_that(saved, equal_to(True))
 
     @classmethod
     def tearDownClass(cls):
@@ -52,11 +65,9 @@ class BaseUrlTest(TestCase):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
 
     def test_return_link_exists(self):
-        # Todo: make back-link testable
-        # Here is an example of a problem - we didn't give any way to identify the
-        # return link under the lightbulb image. We need to fix this to make it
-        # testable
-        pass
+        link = self.browser.find_element_by_id('return_link')
+        href_value = link.get_attribute('href')
+        assert_that(href_value, equal_to(self.base_url))
 
     def test_quiz_links_exist(self):
         browser = self.browser
