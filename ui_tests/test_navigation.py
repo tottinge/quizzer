@@ -30,6 +30,9 @@ class TestNavigation(TestCase):
         cls.browser.quit()
         cls.app.terminate()
 
+    def test_select_a_quiz(self):
+        links = self.browser.find_element_by_tag_name('a')
+        pass
 
 if __name__ == '__main__':
     unittest.main()

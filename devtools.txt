@@ -3,3 +3,4 @@ sniffer
 behave
 pytest
 pylint
+coverage
