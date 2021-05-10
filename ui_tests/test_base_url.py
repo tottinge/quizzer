@@ -18,7 +18,7 @@ class BaseUrlTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.app = launch_quizzology()
+        cls.app = launch_quizzology(4444)
         cls.browser = launch_selenium_chrome()
 
     def setUp(self):

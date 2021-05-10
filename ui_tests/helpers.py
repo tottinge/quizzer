@@ -16,12 +16,13 @@ def take_screenshot(browser, screenshot_name):
     assert_that(saved, equal_to(True))
 
 
-def launch_quizzology() -> Popen[str]:
+def launch_quizzology(port) -> Popen[str]:
     """
     launch the quizzology application
+    :param port:
     """
     python = "./venv/bin/python" if os.path.isdir('./venv') else "python"
-    return Popen([python, "main.py"], env={ **os.environ, "QUIZ_PORT":"4444" })
+    return Popen([python, "main.py"], env={**os.environ, "QUIZ_PORT": str(port)})
 
 
 def launch_selenium_chrome():
