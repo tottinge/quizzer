@@ -67,4 +67,4 @@ class QuizStore:
             return None
 
     def shutdown(self):
-        pass
+        logger.critical("quiz_store shutting down")

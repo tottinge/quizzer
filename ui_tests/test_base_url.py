@@ -1,11 +1,12 @@
 from subprocess import Popen
+from time import sleep
 from unittest import TestCase
 
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
-    launch_selenium_chrome
+    launch_selenium_chrome, get_likely_port
 
 
 class BaseUrlTest(TestCase):
@@ -14,11 +15,13 @@ class BaseUrlTest(TestCase):
     """
     browser: WebDriver = None
     app: Popen[str] = None
-    base_url = "http://0.0.0.0:4444/"
+    base_url: str = ""
 
     @classmethod
     def setUpClass(cls):
-        cls.app = launch_quizzology(4444)
+        port_number = get_likely_port()
+        cls.base_url = f"http://0.0.0.0:{port_number}/"
+        cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome()
 
     def setUp(self):
@@ -29,7 +32,6 @@ class BaseUrlTest(TestCase):
     def tearDownClass(cls):
         cls.browser.quit()
         cls.app.terminate()
-        cls.app.wait()
 
 
     def test_title_exists(self):

@@ -1,7 +1,10 @@
+import logging
 from datetime import datetime
 
+import tinydb
 from tinydb import Query
 
+logger = logging.getLogger(__name__)
 
 class AnswerEntry:
     """
@@ -54,7 +57,7 @@ class SessionStore:
 
     def __init__(self, storage=None):
         self.recorded_answers = []
-        self.storage = storage
+        self.storage : tinydb.TinyDB = storage
 
     @staticmethod
     def get_new_session_id():
@@ -127,4 +130,6 @@ class SessionStore:
         return AnswerEntry.from_dict(records[0])
 
     def shutdown(self):
-        pass
+        logger.critical("Session store: shutting down")
+        self.storage.close()
+

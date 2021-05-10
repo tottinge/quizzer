@@ -1,5 +1,6 @@
 import os
 import sys
+from socket import socket
 from subprocess import Popen
 
 from hamcrest import assert_that, equal_to
@@ -22,7 +23,13 @@ def launch_quizzology(port) -> Popen[str]:
     :param port:
     """
     python = "./venv/bin/python" if os.path.isdir('./venv') else "python"
-    return Popen([python, "main.py"], env={**os.environ, "QUIZ_PORT": str(port)})
+    return Popen([python, "main.py"],
+                 env={**os.environ, "QUIZ_PORT": str(port)})
+
+
+size_desktop = '1920,1200'
+size_mobile_iphone_X = '375,812'
+size_mobile_galaxy_s5 = '360,640'
 
 
 def launch_selenium_chrome():
@@ -32,8 +39,18 @@ def launch_selenium_chrome():
         )
     options = Options()
     options.add_argument('--headless')
-    size_desktop = '1920,1200'
-    size_mobile_galaxy_s5 = '360,640'
-    size_mobile_iphone_X = '375,812'
     options.add_argument('--window-size=%s' % size_mobile_galaxy_s5)
     return webdriver.Chrome(options=options)
+
+
+def get_likely_port() -> int:
+    """
+    This isn't guaranteed to work, but it has the system pick an available
+    port, then closes the socket and returns the port.
+    Because it closes the socket, the system MAY HAVE ALREADY REUSED IT
+    """
+    junk_socket = socket()
+    junk_socket.bind(('0.0.0.0', 0))
+    _, chosen_port = junk_socket.getsockname()
+    junk_socket.close()
+    return chosen_port

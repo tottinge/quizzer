@@ -5,7 +5,7 @@ from logging import getLogger
 
 import bottle
 from bottle import (
-    route, run, view, request, post, get, response, static_file, redirect
+    run, view, request, response, static_file, redirect, Bottle
 )
 from tinydb import TinyDB
 
@@ -15,7 +15,6 @@ from quizzology import Quizzology, SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
 
 REMOTE_ADDR = 'REMOTE_ADDR'
-
 FORWARDED_FOR = "HTTP_X_FORWARDED_FOR"
 
 quizzology = Quizzology()
@@ -23,9 +22,11 @@ quizzology = Quizzology()
 logger = getLogger(__name__)
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 
+app: Bottle = bottle.Bottle()
 
-@route('/')
-@route('/quizzes')
+
+@app.route('/')
+@app.route('/quizzes')
 def menu_of_quizzes(title="Quizzology"):
     quizzology.begin_session(response)
     summaries = quizzology.get_quiz_summaries()
@@ -37,25 +38,25 @@ def render_menu_of_quizzes(title, choices):
     return dict(title=title, choices=choices)
 
 
-@route('/favicon.ico')
+@app.route('/favicon.ico')
 def get_favicon():
     return redirect("/static/favicon.ico")
 
 
-@route('/static/<filename>')
+@app.route('/static/<filename>')
 def get_static_file(filename):
     root_path = os.environ.get('STATIC_PATH', './static/')
     return static_file(filename, root=root_path)
 
 
-@get('/quizzes/<quiz_name>')
+@app.get('/quizzes/<quiz_name>')
 @view("quiz_question")
 def start_quizzing(quiz_name):
     return quizzology.begin_quiz(
         quizzology.get_quiz_by_name(quiz_name))._asdict()
 
 
-@get('/quizzes/<quiz_name>/<question_number:int>')
+@app.get('/quizzes/<quiz_name>/<question_number:int>')
 @view("quiz_question")
 def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
@@ -63,7 +64,7 @@ def ask_question(quiz_name, question_number) -> dict:
                                                      question_number)._asdict()
 
 
-@post('/quizzes/<quiz_name>/<question_number:int>')
+@app.post('/quizzes/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
     quiz = quizzology.get_quiz_by_name(quiz_name)
@@ -88,7 +89,7 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
     return {**results._asdict(), **additions}
 
 
-@get("/me")
+@app.get("/me")
 def show_me():
     # Display information about the session environment
     # return request.environ.get('REMOTE_ADDR')
@@ -111,7 +112,7 @@ def show_me():
     )
 
 
-@get("/cookies")
+@app.get("/cookies")
 def cookie_explorer():
     """Junk method for exploring cookies. Delete at will."""
     result = "".join(
@@ -119,7 +120,7 @@ def cookie_explorer():
     return result
 
 
-@get("/session")
+@app.get("/session")
 def show_session():
     from string import Template
     template = Template(
@@ -152,7 +153,7 @@ def main():
     quizzology.set_quiz_store(store)
     quizzology.set_session_store(prepare_session_store())
     host_name, port_number = get_endpoint_address()
-    run(host=host_name, port=port_number, reloader=True, debug=True)
+    run(app, host=host_name, port=port_number, reloader=True, debug=True)
 
 
 def get_endpoint_address() -> tuple[str, int]:
@@ -169,10 +170,11 @@ def prepare_session_store() -> SessionStore:
     return SessionStore(TinyDB(PATH_TO_LOG_DB))
 
 
-def shutdown():
+def shutdown(signum, frame):
+    logger.critical(f'Received shutdown signal {signum}')
     quizzology.shutdown()
-    app: bottle.Bottle = bottle.app
-    app.close()
+    app.close()  # Apparently doesn't close port?
+    exit(0)
 
 
 signal.signal(signal.SIGTERM, shutdown)
