@@ -125,3 +125,6 @@ class SessionStore:
             & (criteria.question_number == question_number)
         )
         return AnswerEntry.from_dict(records[0])
+
+    def shutdown(self):
+        pass

@@ -108,3 +108,8 @@ class Quizzology:
                                      question_number):
         return self.session_store.get_log_message(session_id, quiz_name,
                                                   question_number)
+
+    def shutdown(self):
+        self.session_store.shutdown()
+        self.quiz_store.shutdown()
+

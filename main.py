@@ -1,7 +1,9 @@
 """ Whee. This is the main routine!"""
 import os
+import signal
 from logging import getLogger
 
+import bottle
 from bottle import (
     route, run, view, request, post, get, response, static_file, redirect
 )
@@ -164,6 +166,12 @@ def prepare_session_store() -> SessionStore:
         os.makedirs(path)
     return SessionStore(TinyDB(PATH_TO_LOG_DB))
 
+def shutdown():
+    quizzology.shutdown()
+    app: bottle.Bottle = bottle.app
+    app.close()
+
+signal.signal(signal.SIGTERM, shutdown)
 
 if __name__ == '__main__':
     main()

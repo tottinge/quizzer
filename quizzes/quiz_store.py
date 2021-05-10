@@ -65,3 +65,6 @@ class QuizStore:
         except JSONDecodeError as err:
             logger.error(f"Not valid JSON: {filename}. {err}")
             return None
+
+    def shutdown(self):
+        pass

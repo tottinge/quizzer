@@ -29,6 +29,8 @@ class BaseUrlTest(TestCase):
     def tearDownClass(cls):
         cls.browser.quit()
         cls.app.terminate()
+        cls.app.wait()
+
 
     def test_title_exists(self):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
