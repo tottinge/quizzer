@@ -32,13 +32,14 @@ size_mobile_iphone_X = '375,812'
 size_mobile_galaxy_s5 = '360,640'
 
 
-def launch_selenium_chrome():
+def launch_selenium_chrome(headless):
     if sys.platform == 'darwin':
         os.environ['PATH'] = (
                 os.environ['PATH'] + os.pathsep + './webdrivers'
         )
     options = Options()
-    options.add_argument('--headless')
+    if headless:
+        options.add_argument('--headless')
     options.add_argument('--window-size=%s' % size_mobile_galaxy_s5)
     return webdriver.Chrome(options=options)
 

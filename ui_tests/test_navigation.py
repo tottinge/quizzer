@@ -4,6 +4,9 @@ from unittest import TestCase
 
 from hamcrest import assert_that, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.expected_conditions import title_contains
+from selenium.webdriver.support.wait import WebDriverWait
 
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
     get_likely_port
@@ -22,7 +25,7 @@ class TestNavigation(TestCase):
         port_number = get_likely_port()
         cls.base_url = f"http://0.0.0.0:{port_number}"
         cls.app = launch_quizzology(port_number)
-        cls.browser = launch_selenium_chrome()
+        cls.browser = launch_selenium_chrome(headless=True)
 
 
     @classmethod
@@ -35,14 +38,19 @@ class TestNavigation(TestCase):
         browser.get(self.base_url)
         link = browser.find_element_by_link_text('Cats Quiz')
         link.click()
+        self.wait_for_page_titled("Cats")
         assert_that(browser.title, equal_to("Cats Quiz"))
-        # Here is the fun part. How do we wait for the page to load?
-        # WebDriverWait(browser, 2).until(
-        #     expected_conditions.presence_of_element_located((title_contains, 'Cats'))
-        # )
+
+    def test_answer_a_question(self):
+        browser = self.browser
+        browser.get(self.base_url + "/quizzes/catsquiz")
 
 
-
+    def wait_for_page_titled(self, page_title):
+        "Helper method for title-based waits"
+        WebDriverWait(self.browser, 2).until(
+            expected_conditions.title_contains(page_title)
+        )
 
 
 if __name__ == '__main__':

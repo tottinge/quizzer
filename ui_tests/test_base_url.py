@@ -22,7 +22,7 @@ class BaseUrlTest(TestCase):
         port_number = get_likely_port()
         cls.base_url = f"http://0.0.0.0:{port_number}/"
         cls.app = launch_quizzology(port_number)
-        cls.browser = launch_selenium_chrome()
+        cls.browser = launch_selenium_chrome(headless=True)
 
     def setUp(self):
         self.browser.get(self.base_url)
