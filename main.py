@@ -1,4 +1,16 @@
-""" Whee. This is the main routine!"""
+""" 
+main.py - start and run the Bottle-based quizzology application.py
+
+Uses environment variables:
+* STATIC_PATH: location of static resources (default './static/')
+* 'QUIZ_HOST' IP address the Bottle server will bind to (default '0.0.0.0')
+* 'PORT' port set by HEROKU server (default '4000')
+* 'QUIZ_PORT', port used by quizzology (default: see 'PORT')
+
+Main doesn't take any command line parameters, and launches a web server
+that serves up quizzes and tracks answers.
+
+"""
 import os
 import signal
 from logging import getLogger
@@ -14,8 +26,6 @@ from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
 
-REMOTE_ADDR = 'REMOTE_ADDR'
-FORWARDED_FOR = "HTTP_X_FORWARDED_FOR"
 
 quizzology = Quizzology()
 
@@ -91,8 +101,14 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
 
 @app.get("/me")
 def show_me():
-    # Display information about the session environment
-    # return request.environ.get('REMOTE_ADDR')
+    """ 
+    Test endpoint: this routine will display information about the 
+    session environment. It's probably not recommended for production
+    use - it's hard to say what opportunities it leaves hackers.
+    """
+    REMOTE_ADDR = 'REMOTE_ADDR'
+    FORWARDED_FOR = "HTTP_X_FORWARDED_FOR"
+
     fwd_for = request.environ.get(FORWARDED_FOR,
                                   "not listed in HTTP_X-forwarded")
     remote = request.environ.get(REMOTE_ADDR, "not listed in remote addr")
@@ -114,7 +130,11 @@ def show_me():
 
 @app.get("/cookies")
 def cookie_explorer():
-    """Junk method for exploring cookies. Delete at will."""
+    """
+    Junk method for exploring cookies; not part of quizzology proper, 
+    only used by authors for peeking into the world of the server and
+    understanding how cookies work.
+    """
     result = "".join(
         f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
     return result
@@ -122,6 +142,9 @@ def cookie_explorer():
 
 @app.get("/session")
 def show_session():
+    """
+    Show session logs: for troubleshooting.
+    """
     from string import Template
     template = Template(
         "$timestamp $session_id\t"
