@@ -171,6 +171,7 @@ def prepare_session_store() -> SessionStore:
 
 
 def shutdown(signum, frame):
+    """This is the shutdown code"""
     logger.critical(f'Received shutdown signal {signum}')
     quizzology.shutdown()
     app.close()  # Apparently doesn't close port?
