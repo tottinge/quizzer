@@ -3,7 +3,7 @@
 <section class="w3-panel">
     % if correct:
         <div id="confirmation" class="w3-pale-green w3-container">
-            <p>Your Answer <em>{{selection}}</em> is correct</p>
+            <p>Your answer <em>{{selection}}</em> is correct</p>
             <p>{{confirmation}}</p>
         </div>
         % if next_url:

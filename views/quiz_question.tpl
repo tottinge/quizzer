@@ -19,7 +19,7 @@
         <br/>
     </section>
     <br/>
-    <button class="w3-btn w3-teal w3-round">Check Answer</button>
+    <button class="w3-btn w3-teal w3-round" id="submit_answer">Check Answer</button>
 </form>
 
 % if question.resources:
