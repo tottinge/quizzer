@@ -37,7 +37,10 @@ app: Bottle = bottle.Bottle()
 
 @app.route('/')
 @app.route('/quizzes')
-def menu_of_quizzes(title="Quizzology"):
+def menu_of_quizzes(title: str ="Quizzology"):
+    """
+    Display links to selectable quizzes from quiz store
+    """
     quizzology.begin_session(response)
     summaries = quizzology.get_quiz_summaries()
     return render_menu_of_quizzes(title, summaries)
