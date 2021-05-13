@@ -33,15 +33,23 @@ size_mobile_galaxy_s5 = '360,640'
 
 
 def launch_selenium_chrome(headless: bool):
-    if sys.platform == 'darwin':
-        os.environ['PATH'] = (
-                os.environ['PATH'] + os.pathsep + './webdrivers'
-        )
+    setup_path_for_dev_test()
+
     options = Options()
     if headless:
         options.add_argument('--headless')
     options.add_argument('--window-size=%s' % size_mobile_galaxy_s5)
     return webdriver.Chrome(options=options)
+
+
+def setup_path_for_dev_test():
+    if sys.platform == 'darwin':
+        old_path = os.environ['PATH']
+        directory = os.environ.get('IDE_PROJECT_ROOTS', '.')
+        driver_path = os.path.join(directory, 'webdrivers')
+        if os.path.isdir(driver_path) :
+            if driver_path not in old_path.split(os.pathsep):
+                os.environ['PATH'] = old_path + os.pathsep + driver_path
 
 
 def get_likely_port() -> int:
