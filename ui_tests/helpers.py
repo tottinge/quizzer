@@ -32,7 +32,7 @@ size_mobile_iphone_X = '375,812'
 size_mobile_galaxy_s5 = '360,640'
 
 
-def launch_selenium_chrome(headless):
+def launch_selenium_chrome(headless: bool):
     if sys.platform == 'darwin':
         os.environ['PATH'] = (
                 os.environ['PATH'] + os.pathsep + './webdrivers'
