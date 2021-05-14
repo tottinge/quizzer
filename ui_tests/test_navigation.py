@@ -38,16 +38,30 @@ class TestNavigation(TestCase):
         self.wait_for_page_titled("Cats")
         assert_that(self.browser.title, equal_to("Cats Quiz"))
 
-    def test_answer_a_question(self):
+    def test_answer_a_question_correctly_and_get_confirmation(self):
         self.get_page(self.base_url + "/quizzes/catsquiz")
         self.select_value("Gray")
         self.submit_answer()
-        self.wait_for_confirmation()
-        text = self.browser.find_element_by_id('confirmation').text
+        self.wait_for_confirmation('confirm_correct')
+        text = self.browser.find_element_by_id('confirm_correct').text
         assert_that(
             text,
             string_contains_in_order('Your answer', 'is correct')
         )
+
+    def test_answer_a_question_incorrectly_and_get_badNews(self):
+        self.get_page(self.base_url + "/quizzes/catsquiz")
+        self.select_value("Fluffybutt")
+        self.submit_answer()
+        self.wait_for_confirmation("confirm_incorrect")
+        text = self.browser.find_element_by_id('confirm_incorrect').text
+        assert_that(
+            text,
+            string_contains_in_order('Your answer', "is not what we're looking for")
+        )
+
+    # Complete perfectly
+    # complete imperfectly
 
     def get_page(self, url):
         self.browser.get(url)
@@ -56,8 +70,8 @@ class TestNavigation(TestCase):
         link = self.browser.find_element_by_link_text(link_text)
         link.click()
 
-    def wait_for_confirmation(self):
-        self.wait_for_element_with_id("confirmation")
+    def wait_for_confirmation(self, id):
+        self.wait_for_element_with_id(id)
 
     def submit_answer(self):
         self.click_on_element_with_id('submit_answer')
@@ -75,7 +89,6 @@ class TestNavigation(TestCase):
         )
 
     def wait_for_page_titled(self, page_title):
-        "Helper method for title-based waits"
         WebDriverWait(self.browser, timeout=2, poll_frequency=0.25).until(
             condition.title_contains(page_title)
         )

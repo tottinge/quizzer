@@ -2,7 +2,7 @@
 % include('sub_progress.tpl')
 <section class="w3-panel">
     % if correct:
-        <div id="confirmation" class="w3-pale-green w3-container">
+        <div id="confirm_correct" class="w3-pale-green w3-container">
             <p>Your answer <em>{{selection}}</em> is correct</p>
             <p>{{confirmation}}</p>
         </div>
@@ -18,7 +18,7 @@
             <a class="w3-btn w3-teal w3-round" href="/" id="go_home">Rock On</a>
         % end
     % else:
-        <p class="w3-container w3-pale-red">Your answer <em>"{{selection}}"</em> is not what we're looking for.</p>
+        <p class="w3-container w3-pale-red" id="confirm_incorrect">Your answer <em>"{{selection}}"</em> is not what we're looking for.</p>
         <a class="w3-btn w3-teal w3-round" href="{{return_url}}" id="try_again">Try Again</a>
     % end
 </section>

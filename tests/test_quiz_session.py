@@ -62,7 +62,7 @@ class TestSession(unittest.TestCase):
             doc.body.find("a", id="try_again"),
             "Should have no try_again link when correct answer given."
         )
-        confirmation_tag = doc.body.find("div", id="confirmation")
+        confirmation_tag = doc.body.find("div", id="confirm_correct")
         self.assertIn(self.question.confirmation, confirmation_tag.text)
 
     def test_offers_next_question_if_any_exist(self):
