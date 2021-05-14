@@ -2,7 +2,7 @@ import unittest
 from subprocess import Popen
 from unittest import TestCase
 
-from hamcrest import assert_that, equal_to, string_contains_in_order
+from hamcrest import assert_that, equal_to, contains_string
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as condition
@@ -44,10 +44,7 @@ class TestNavigation(TestCase):
         self.submit_answer()
         self.wait_for_confirmation('confirm_correct')
         text = self.browser.find_element_by_id('confirm_correct').text
-        assert_that(
-            text,
-            string_contains_in_order('Your answer', 'is correct')
-        )
+        assert_that(text, contains_string('is correct'))
 
     def test_answer_a_question_incorrectly_and_get_badNews(self):
         self.get_page("/quizzes/catsquiz")
@@ -55,10 +52,7 @@ class TestNavigation(TestCase):
         self.submit_answer()
         self.wait_for_confirmation("confirm_incorrect")
         text = self.browser.find_element_by_id('confirm_incorrect').text
-        assert_that(
-            text,
-            string_contains_in_order('Your answer', "is not what we're looking for")
-        )
+        assert_that(text, contains_string("not what we're looking for"))
 
     # Complete perfectly
     # complete imperfectly
@@ -70,8 +64,8 @@ class TestNavigation(TestCase):
         link = self.browser.find_element_by_link_text(link_text)
         link.click()
 
-    def wait_for_confirmation(self, id):
-        self.wait_for_element_with_id(id)
+    def wait_for_confirmation(self, element_id):
+        self.wait_for_element_with_id(element_id)
 
     def submit_answer(self):
         self.click_on_element_with_id('submit_answer')
@@ -79,8 +73,8 @@ class TestNavigation(TestCase):
     def click_on_element_with_id(self, element_id: str):
         self.browser.find_element_by_id(element_id).click()
 
-    def select_value(self, input: str):
-        self.browser.find_element_by_xpath(f'//input[@value="{input}"]').click()
+    def select_value(self, value: str):
+        self.browser.find_element_by_xpath(f'//input[@value="{value}"]').click()
 
     def wait_for_element_with_id(self, element_id):
         WebDriverWait(self.browser, timeout=2).until(
