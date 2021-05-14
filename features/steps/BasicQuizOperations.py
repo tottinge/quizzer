@@ -2,7 +2,7 @@ import json
 import os
 from dataclasses import asdict
 
-from behave import *
+from behave import (given, when, then, step)
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
@@ -123,8 +123,11 @@ def step_impl(context: Context, how: str):
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
     question_number = context.recent_answer.question_number
-    log: AnswerEntry = quizzology.get_log_message_for_question(session_id, quiz_name, 
-                                                               question_number)
+    log: AnswerEntry = quizzology.get_log_message_for_question(
+        session_id,
+        quiz_name,
+        question_number
+    )
     user_choice = log.selection
     expected = (how == "correctly")
     assert_that(log.is_correct, equal_to(expected),

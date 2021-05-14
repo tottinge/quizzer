@@ -1,3 +1,11 @@
+"""
+test_navigation.py
+
+A series of UI tests to ensure that basic behaviors of navigating the
+quiz app are not broken for quiz-takers.
+"""
+
+
 import unittest
 from subprocess import Popen
 from unittest import TestCase
