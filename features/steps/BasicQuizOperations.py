@@ -134,3 +134,13 @@ def step_impl(context: Context, how: str):
 @step("the confirmation message is delivered")
 def step_impl(context: Context):
     assert_that(context.recent_answer.confirmation, is_not(empty()))
+
+
+@given("we have a question {question}")
+def step_impl(context, question):
+    """
+    :type context: behave.runner.Context
+    :type question: str
+    """
+    pass
+    # raise NotImplementedError(u'STEP: Given we have a question <question>')

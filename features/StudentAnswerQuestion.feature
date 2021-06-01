@@ -1,4 +1,6 @@
 # Created by wpreid at 4/20/21
+
+@PRD_1.2.3
 Feature: Answer Questions
   # Enter feature description here
 
@@ -43,3 +45,15 @@ Feature: Answer Questions
     When the student answers "3"
     Then the log shows the question was answered badly
 
+  @future
+#  Scenario Outline: Answering multiple questions
+#    Given we have a question <question>
+#    And we have a confirmation message <confirmation>
+#    When the Student provides the answer <answer>
+#    Then the answer is confirmed as <judgement>
+#    And the confirmation message <confirmation> is delivered
+#
+#    Examples:
+#      | question                       | answer | judgement | confirmation                                                                 |
+#      | How many feet on a normal cat? | 4      | correct         |All cats are 4-legged (quadripedal) animals                                  |
+#      | Do cats eat meat?              | yes    | correct         |Cats are obligate carnivores, meaning that they need to eat meat to survive. |
