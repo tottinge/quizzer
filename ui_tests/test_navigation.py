@@ -33,13 +33,13 @@ class TestNavigation(TestCase):
         cls.app.terminate()
 
     def test_select_a_quiz(self):
-        self.get_page(self.base_url)
+        self.get_page("")
         self.click_link('Cats Quiz')
         self.wait_for_page_titled("Cats")
         assert_that(self.browser.title, equal_to("Cats Quiz"))
 
     def test_answer_a_question_correctly_and_get_confirmation(self):
-        self.get_page(self.base_url + "/quizzes/catsquiz")
+        self.get_page("/quizzes/catsquiz")
         self.select_value("Gray")
         self.submit_answer()
         self.wait_for_confirmation('confirm_correct')
@@ -50,7 +50,7 @@ class TestNavigation(TestCase):
         )
 
     def test_answer_a_question_incorrectly_and_get_badNews(self):
-        self.get_page(self.base_url + "/quizzes/catsquiz")
+        self.get_page("/quizzes/catsquiz")
         self.select_value("Fluffybutt")
         self.submit_answer()
         self.wait_for_confirmation("confirm_incorrect")
@@ -63,8 +63,8 @@ class TestNavigation(TestCase):
     # Complete perfectly
     # complete imperfectly
 
-    def get_page(self, url):
-        self.browser.get(url)
+    def get_page(self, relative_page):
+        self.browser.get(self.base_url + relative_page)
 
     def click_link(self, link_text):
         link = self.browser.find_element_by_link_text(link_text)
