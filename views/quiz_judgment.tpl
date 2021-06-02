@@ -10,11 +10,14 @@
             <a class="w3-btn w3-teal w3-round" href={{next_url}} id="next_question">Next Question</a>
         % else:
             <p>You have completed this quiz!</p>
+            <div id="quiz_performance">
             %if incorrect_answers == 0:
                 <p>You answered perfectly. Well done, you!</p>
             %else:
                 <p>You answered incorrectly only {{incorrect_answers}} times.</p>
             %end
+            </div>
+
             <a class="w3-btn w3-teal w3-round" href="/" id="go_home">Rock On</a>
         % end
     % else:

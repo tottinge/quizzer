@@ -11,6 +11,7 @@ from subprocess import Popen
 from unittest import TestCase
 
 from hamcrest import assert_that, equal_to, contains_string
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as condition
@@ -47,6 +48,7 @@ class TestNavigation(TestCase):
         assert_that(self.browser.title, equal_to("Cats Quiz"))
 
     def test_answer_a_question_correctly_and_get_confirmation(self):
+        self.reset_session()
         self.get_page("/quizzes/catsquiz")
         self.select_value("Gray")
         self.submit_answer()
@@ -55,6 +57,7 @@ class TestNavigation(TestCase):
         assert_that(text, contains_string('is correct'))
 
     def test_answer_a_question_incorrectly_and_get_badNews(self):
+        self.reset_session()
         self.get_page("/quizzes/catsquiz")
         self.select_value("Fluffybutt")
         self.submit_answer()
@@ -63,13 +66,22 @@ class TestNavigation(TestCase):
         assert_that(text, contains_string("not what we're looking for"))
 
     def test_complete_a_quiz_perfectly(self):
+        self.reset_session()
         self.get_page("/quizzes/catsquiz")
-        #ToDo
-        # for answer in ["Gray","Jack","Fluffybutt","Gray","Phydeaux"]:
-        #     self.select_value(answer)
-        #     self.submit_answer()
-        #     self.wait_for_confirmation('confirm_correct')
-        #     self.click_on_element_with_id("next_question")
+        for answer in ["Gray","Jack","Fluffybutt","Gray","Phydeaux"]:
+            self.wait_for_page_titled("Cats") # Don't jump the gun.
+            self.select_value(answer)
+            self.submit_answer()
+            self.wait_for_confirmation('confirm_correct')
+            try:
+                self.click_link('Next Question') # appears until last question
+            except NoSuchElementException as err:
+                pass
+        text = text = self.browser.find_element_by_id('quiz_performance').text
+        assert_that(text, contains_string("perfectly"))
+
+    def reset_session(self):
+        self.get_page("")
 
     # Complete perfectly
     # complete imperfectly
