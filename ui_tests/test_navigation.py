@@ -62,6 +62,15 @@ class TestNavigation(TestCase):
         text = self.browser.find_element_by_id('confirm_incorrect').text
         assert_that(text, contains_string("not what we're looking for"))
 
+    def test_complete_a_quiz_perfectly(self):
+        self.get_page("/quizzes/catsquiz")
+        #ToDo
+        # for answer in ["Gray","Jack","Fluffybutt","Gray","Phydeaux"]:
+        #     self.select_value(answer)
+        #     self.submit_answer()
+        #     self.wait_for_confirmation('confirm_correct')
+        #     self.click_on_element_with_id("next_question")
+
     # Complete perfectly
     # complete imperfectly
 
