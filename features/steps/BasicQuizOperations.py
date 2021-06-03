@@ -109,6 +109,11 @@ def step_impl(context: Context):
     assert_that(context.recent_answer.correct, f"Answer should be correct")
 
 
+@step("the confirmation message is delivered")
+def step_impl(context: Context):
+    assert_that(context.recent_answer.confirmation, is_not(empty()))
+
+
 @step('the next question is "{question_text}"')
 def step_impl(context: Context, question_text: str):
     quiz: Quiz = context.recent_answer.quiz
@@ -133,10 +138,6 @@ def step_impl(context: Context, how: str):
     assert_that(log.is_correct, equal_to(expected),
                 f"User said '{user_choice}', which is answered {how}")
 
-
-@step("the confirmation message is delivered")
-def step_impl(context: Context):
-    assert_that(context.recent_answer.confirmation, is_not(empty()))
 
 
 @given("we have a question {question}")

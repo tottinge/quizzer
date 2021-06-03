@@ -6,46 +6,41 @@ Feature: Answer Questions
 
   Background:
     Given a student starts quizzology
+    And we have a quiz called "cats" with questions
+    | question                       | answer | confirmation                                                                 |
+    | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
+    | Do cats eat meat?              | yes    | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
+    And the student selects the quiz called "cats"
+    And the first "cats" question is displayed
 
   @finished
   Scenario: Student answers first question correctly in two question quiz
-    Given we have a quiz called "cats" with questions
-      | question                       | answer |
-      | How many feet on a normal cat? | 4      |
-      | Do cats eat meat?              | yes    |
-    And the student selects the quiz called "cats"
-    And the first "cats" question is displayed
     When the student answers "4"
     Then the answer is confirmed as correct
-    And the next question is "Do cats eat meat?"
-    And the log shows the question was answered correctly
-
-
-  @finished
-  Scenario: Student's correct answer is confirmed
-    Given we have a quiz called "cats" with questions
-      | question                       | answer | confirmation                                                                 |
-      | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
-      | Do cats eat meat?              | yes    | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
-    And the student selects the quiz called "cats"
-    And the first "cats" question is displayed
-    When the student answers "4"
-    Then the log shows the question was answered correctly
     And the confirmation message is delivered
-
+    And the log shows the question was answered correctly
+    And the next question is "Do cats eat meat?"
 
   @finished
   Scenario: Student answers first question incorrectly
-    Given we have a quiz called "cats" with questions
-      | question                       | answer |
-      | How many feet on a normal cat? | 4      |
-      | Do cats eat meat?              | yes    |
-    And the student selects the quiz called "cats"
-    And the first "cats" question is displayed
     When the student answers "3"
     Then the log shows the question was answered badly
+    # And we cannot go to the next question
+    # But we can return to the question to try again
 
   @future
+  Scenario: We complete a quiz perfectly
+    When we have given the answers:
+    | answer |
+    | 4      |
+    | yes    |
+    Then we have completed the quiz
+    And no incorrect answers were given
+    And there is no next question
+    And we are not invited to retry
+    And we are told to rock on
+
+#  @future
 #  Scenario Outline: Answering multiple questions
 #    Given we have a question <question>
 #    And we have a confirmation message <confirmation>
@@ -55,5 +50,5 @@ Feature: Answer Questions
 #
 #    Examples:
 #      | question                       | answer | judgement | confirmation                                                                 |
-#      | How many feet on a normal cat? | 4      | correct         |All cats are 4-legged (quadripedal) animals                                  |
-#      | Do cats eat meat?              | yes    | correct         |Cats are obligate carnivores, meaning that they need to eat meat to survive. |
+#      | How many feet on a normal cat? | 4      | correct   | All cats are 4-legged (quadripedal) animals                                  |
+#      | Do cats eat meat?              | yes    | correct   | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
