@@ -69,15 +69,17 @@ class TestNavigation(TestCase):
         self.reset_session()
         self.get_page("/quizzes/catsquiz")
         for answer in ["Gray","Jack","Fluffybutt","Gray","Phydeaux"]:
-            self.wait_for_page_titled("Cats") # Don't jump the gun.
+
             self.select_value(answer)
             self.submit_answer()
             self.wait_for_confirmation('confirm_correct')
-            try:
-                self.click_link('Next Question') # appears until last question
-            except NoSuchElementException as err:
-                pass
-        text = text = self.browser.find_element_by_id('quiz_performance').text
+
+            next_tags = self.browser.find_elements_by_link_text('Next Question')
+            if next_tags:
+                next_tags[0].click()
+                self.wait_for_page_titled("Cats") # Don't jump the gun.
+
+        text = self.browser.find_element_by_id('quiz_performance').text
         assert_that(text, contains_string("perfectly"))
 
     def reset_session(self):
