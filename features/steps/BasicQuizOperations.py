@@ -154,14 +154,19 @@ def step_impl(context, question):
 def step_impl(context: Context):
     print("Headings=" + context.table.headings[0])
     for row in context.table:
-        for answer in row:
-            print(answer)
-            question = current_question(context)
-            recent_answer = context.quizzology.record_answer_and_get_status(
-                question_number=question.question_number,
-                quiz=question.quiz,
-                selection=answer,
-                session_id=None)
-            new_question = recent_answer.quiz.question_by_number(recent_answer.question_number)
-            context.recent_answer = recent_answer
+        answer = row['answer']
+        question = current_question(context)
+        recent_answer = context.quizzology.record_answer_and_get_status(
+            question_number=question.question_number,
+            quiz=question.quiz,
+            selection=answer,
+            session_id=None)
+        context.recent_answer = recent_answer
+
+        next_q_number = recent_answer.next_question_number
+        if next_q_number:
+            new_question = context.quizzology.prepare_quiz_question_document(
+                recent_answer.quiz,
+                recent_answer.next_question_number
+            )
             context.current_question = new_question
