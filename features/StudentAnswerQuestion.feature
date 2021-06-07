@@ -30,15 +30,14 @@ Feature: Answer Questions
 
   @future
   Scenario: We complete a quiz perfectly
-    When we have given the answers:
+    When the student provides these answers
     | answer |
     | 4      |
     | yes    |
-    Then we have completed the quiz
-    And no incorrect answers were given
-    And there is no next question
-    And we are not invited to retry
-    And we are told to rock on
+#    Then we have completed the quiz
+#    And no incorrect answers were given
+#    And there is no next question
+#    And we are not invited to retry
 
 #  @future
 #  Scenario Outline: Answering multiple questions

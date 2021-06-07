@@ -148,3 +148,20 @@ def step_impl(context, question):
     """
     pass
     # raise NotImplementedError(u'STEP: Given we have a question <question>')
+
+
+@when("the student provides these answers")
+def step_impl(context: Context):
+    print("Headings=" + context.table.headings[0])
+    for row in context.table:
+        for answer in row:
+            print(answer)
+            question = current_question(context)
+            recent_answer = context.quizzology.record_answer_and_get_status(
+                question_number=question.question_number,
+                quiz=question.quiz,
+                selection=answer,
+                session_id=None)
+            new_question = recent_answer.quiz.question_by_number(recent_answer.question_number)
+            context.recent_answer = recent_answer
+            context.current_question = new_question
