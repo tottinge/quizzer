@@ -152,7 +152,6 @@ def step_impl(context, question):
 
 @when("the student provides these answers")
 def step_impl(context: Context):
-    print("Headings=" + context.table.headings[0])
     for row in context.table:
         answer = row['answer']
         question = current_question(context)
@@ -170,3 +169,12 @@ def step_impl(context: Context):
                 recent_answer.next_question_number
             )
             context.current_question = new_question
+
+
+@then("we have completed the quiz")
+def step_impl(context: Context):
+    previous_question = current_question(context)
+    quiz = previous_question.quiz
+    previous_number = quiz.last_question_number()
+    assert_that("result should be", equal_to("fail"))
+    assert_that(previous_number, equal_to(quiz.last_question_number()))

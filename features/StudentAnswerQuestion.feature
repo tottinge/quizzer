@@ -10,6 +10,7 @@ Feature: Answer Questions
     | question                       | answer | confirmation                                                                 |
     | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
     | Do cats eat meat?              | yes    | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
+    | Is this the 3rd question?      | Yes    | We only wrote three                                                          |
     And the student selects the quiz called "cats"
     And the first "cats" question is displayed
 
@@ -33,8 +34,7 @@ Feature: Answer Questions
     When the student provides these answers
     | answer |
     | 4      |
-    | yes    |
-#    Then we have completed the quiz
+    Then we have completed the quiz
 #    And no incorrect answers were given
 #    And there is no next question
 #    And we are not invited to retry
