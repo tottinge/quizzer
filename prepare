@@ -4,5 +4,5 @@ git pull &&
   pip install -qr requirements.txt &&
   pip install -qr devtools.txt &&
   pytest tests &&
-  behave -t "~wip" &&
+  behave -t "not @wip" &&
   pytest ui_tests
