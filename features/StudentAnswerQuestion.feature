@@ -7,10 +7,10 @@ Feature: Answer Questions
   Background:
     Given a student starts quizzology
     And we have a quiz called "cats" with questions
-    | question                       | answer | confirmation                                                                 |
-    | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
-    | Do cats eat meat?              | yes    | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
-    | Is this the 3rd question?      | Yes    | We only wrote three                                                          |
+      | question                       | answer | confirmation                                                                 |
+      | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
+      | Do cats eat meat?              | yes    | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
+      | Is this the 3rd question?      | yes    | We only wrote three                                                          |
     And the student selects the quiz called "cats"
     And the first "cats" question is displayed
 
@@ -29,11 +29,13 @@ Feature: Answer Questions
     # And we cannot go to the next question
     # But we can return to the question to try again
 
-  @future
+  @wip
   Scenario: We complete a quiz perfectly
     When the student provides these answers
-    | answer |
-    | 4      |
+      | answer |
+      | 4      |
+      | yes    |
+      | yes    |
     Then we have completed the quiz
 #    And no incorrect answers were given
 #    And there is no next question

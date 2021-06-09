@@ -6,7 +6,7 @@ from behave import (given, when, then, step)
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
 from behave.runner import Context
-from hamcrest import assert_that, equal_to, not_none, is_not, empty
+from hamcrest import assert_that, equal_to, not_none, is_not, empty, none, is_
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
@@ -162,8 +162,8 @@ def step_impl(context: Context):
             session_id=None)
         context.recent_answer = recent_answer
 
-        next_q_number = recent_answer.next_question_number
-        if next_q_number:
+        more_questions = recent_answer.next_question_number
+        if more_questions:
             new_question = context.quizzology.prepare_quiz_question_document(
                 recent_answer.quiz,
                 recent_answer.next_question_number
@@ -173,8 +173,4 @@ def step_impl(context: Context):
 
 @then("we have completed the quiz")
 def step_impl(context: Context):
-    previous_question = current_question(context)
-    quiz = previous_question.quiz
-    previous_number = quiz.last_question_number()
-    assert_that("result should be", equal_to("fail"))
-    assert_that(previous_number, equal_to(quiz.last_question_number()))
+    assert_that(context.recent_answer.quiz_is_finished(), is_(True))

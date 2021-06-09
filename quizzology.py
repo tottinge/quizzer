@@ -80,6 +80,10 @@ class Quizzology:
         next_question_number: int
         session_id: str
 
+        def quiz_is_finished(self):
+            return (self.question_number == self.quiz.last_question_number()
+                    and self.correct)
+
     def record_answer_and_get_status(self,
                                      question_number: int,
                                      quiz: Quiz,
