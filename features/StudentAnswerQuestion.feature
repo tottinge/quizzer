@@ -29,7 +29,7 @@ Feature: Answer Questions
     # And we cannot go to the next question
     # But we can return to the question to try again
 
-  @wip
+  @finished
   Scenario: We complete a quiz perfectly
     When the student provides these answers
       | answer |
@@ -37,9 +37,7 @@ Feature: Answer Questions
       | yes    |
       | yes    |
     Then we have completed the quiz
-#    And no incorrect answers were given
-#    And there is no next question
-#    And we are not invited to retry
+    And no incorrect answers were given
 
 #  @future
 #  Scenario Outline: Answering multiple questions
