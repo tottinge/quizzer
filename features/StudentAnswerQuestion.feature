@@ -41,11 +41,11 @@ Feature: Answer Questions
   @wip
   Scenario: We complete a quiz with a wrong answer
     When the student provides these answers
-      | answer   |
-      | 4        |
-      | hairball |
-      | yes      |
-      | yes      |
+      | answer   | Expected  |
+      | 4        | right     |
+      | hairball | wrong     |
+      | yes      | corrected |
+      | yes      | right     |
     Then we have completed the quiz
     And 1 incorrect answer was given
 
