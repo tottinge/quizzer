@@ -153,13 +153,20 @@ def step_impl(context, question):
 @when("the student provides these answers")
 def step_impl(context: Context):
     for row in context.table:
-        answer = row['answer']
+        answer,expected = row['answer'],row.get('expected','right')
+
         question = current_question(context)
-        recent_answer = context.quizzology.record_answer_and_get_status(
-            question_number=question.question_number,
-            quiz=question.quiz,
-            selection=answer,
-            session_id=None)
+        recent_answer: Quizzology.RecordedAnswer = \
+            context.quizzology.record_answer_and_get_status(
+                question_number=question.question_number,
+                quiz=question.quiz,
+                selection=answer,
+                session_id=None
+            )
+        if expected in 'wrong':
+            assert_that(recent_answer.correct, is_(False))
+        else:
+            assert_that(recent_answer.correct, is_(True))
         context.recent_answer = recent_answer
 
         more_questions = recent_answer.next_question_number

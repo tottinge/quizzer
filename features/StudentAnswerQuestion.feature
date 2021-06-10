@@ -38,10 +38,10 @@ Feature: Answer Questions
     Then we have completed the quiz
     And no incorrect answers were given
 
-  @wip
+  @finished
   Scenario: We complete a quiz with a wrong answer
     When the student provides these answers
-      | answer   | Expected  |
+      | answer   | expected  |
       | 4        | right     |
       | hairball | wrong     |
       | yes      | corrected |
