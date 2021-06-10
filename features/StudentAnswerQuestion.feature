@@ -26,7 +26,7 @@ Feature: Answer Questions
   Scenario: Student answers first question incorrectly
     When the student answers "3"
     Then the log shows the question was answered badly
-     And we cannot go to the next question
+    And we cannot go to the next question
 
   @finished
   Scenario: We complete a quiz perfectly
@@ -37,6 +37,18 @@ Feature: Answer Questions
       | yes    |
     Then we have completed the quiz
     And no incorrect answers were given
+
+  @wip
+  Scenario: We complete a quiz with a wrong answer
+    When the student provides these answers
+      | answer   |
+      | 4        |
+      | hairball |
+      | yes      |
+      | yes      |
+    Then we have completed the quiz
+    And 1 incorrect answer was given
+
 
 #  @future
 #  Scenario Outline: Answering multiple questions

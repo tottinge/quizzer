@@ -190,3 +190,9 @@ def step_impl(context: Context):
 def step_impl(context: Context):
     recent_answer: Quizzology.RecordedAnswer = context.recent_answer
     assert_that(recent_answer.next_question_number, none())
+
+
+@step("{oopses:d} incorrect answer was given")
+def step_impl(context: Context, oopses: int):
+    recent_answer: Quizzology.RecordedAnswer = context.recent_answer
+    assert_that(oopses, equal_to(recent_answer.incorrect_answers))
