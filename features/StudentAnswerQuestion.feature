@@ -27,7 +27,6 @@ Feature: Answer Questions
     When the student answers "3"
     Then the log shows the question was answered badly
      And we cannot go to the next question
-    # But we can return to the question to try again
 
   @finished
   Scenario: We complete a quiz perfectly
