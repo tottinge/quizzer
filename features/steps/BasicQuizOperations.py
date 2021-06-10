@@ -173,7 +173,8 @@ def step_impl(context: Context):
 
 @then("we have completed the quiz")
 def step_impl(context: Context):
-    assert_that(context.recent_answer.quiz_is_finished(), is_(True))
+    recent_answer: Quizzology.RecordedAnswer = context.recent_answer
+    assert_that(recent_answer.quiz_is_finished(), is_(True))
 
 
 @step("no incorrect answers were given")
@@ -183,3 +184,9 @@ def step_impl(context: Context):
     quiz_name = context.recent_answer.quiz.name
     wrong_answers = session_store.number_of_incorrect_answers(session_id,quiz_name)
     assert_that(wrong_answers, equal_to(0))
+
+
+@step("we cannot go to the next question")
+def step_impl(context: Context):
+    recent_answer: Quizzology.RecordedAnswer = context.recent_answer
+    assert_that(recent_answer.next_question_number, none())

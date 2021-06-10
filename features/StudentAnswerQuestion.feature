@@ -26,7 +26,7 @@ Feature: Answer Questions
   Scenario: Student answers first question incorrectly
     When the student answers "3"
     Then the log shows the question was answered badly
-    # And we cannot go to the next question
+     And we cannot go to the next question
     # But we can return to the question to try again
 
   @finished
