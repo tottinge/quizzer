@@ -1,6 +1,6 @@
 from subprocess import Popen
 from time import sleep
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
     launch_selenium_chrome, get_likely_port
 
-
+@skip("this takes too long")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images

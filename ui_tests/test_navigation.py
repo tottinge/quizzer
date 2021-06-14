@@ -8,10 +8,9 @@ quiz app are not broken for quiz-takers.
 
 import unittest
 from subprocess import Popen
-from unittest import TestCase
+from unittest import TestCase, skip
 
 from hamcrest import assert_that, equal_to, contains_string
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as condition
@@ -20,7 +19,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
     get_likely_port
 
-
+@skip("ui tests are so slow")
 class TestNavigation(TestCase):
     """
     TODO: Configure url/port to use local or docker images
