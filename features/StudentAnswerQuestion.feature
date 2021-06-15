@@ -48,17 +48,3 @@ Feature: Answer Questions
       | yes      | right     |
     Then we have completed the quiz
     And 1 incorrect answer was given
-
-
-#  @future
-#  Scenario Outline: Answering multiple questions
-#    Given we have a question <question>
-#    And we have a confirmation message <confirmation>
-#    When the Student provides the answer <answer>
-#    Then the answer is confirmed as <judgement>
-#    And the confirmation message <confirmation> is delivered
-#
-#    Examples:
-#      | question                       | answer | judgement | confirmation                                                                 |
-#      | How many feet on a normal cat? | 4      | correct   | All cats are 4-legged (quadripedal) animals                                  |
-#      | Do cats eat meat?              | yes    | correct   | Cats are obligate carnivores, meaning that they need to eat meat to survive. |

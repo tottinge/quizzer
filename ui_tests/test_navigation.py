@@ -19,7 +19,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
     get_likely_port
 
-@skip("ui tests are so slow")
 class TestNavigation(TestCase):
     """
     TODO: Configure url/port to use local or docker images

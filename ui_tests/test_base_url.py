@@ -8,7 +8,6 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
     launch_selenium_chrome, get_likely_port
 
-@skip("this takes too long")
 class BaseUrlTest(TestCase):
     """
     TODO: Configure url/port to use local or docker images
