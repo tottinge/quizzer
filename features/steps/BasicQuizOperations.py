@@ -49,12 +49,14 @@ def step_impl(context: Context, quiz_name: str):
     quiz = Quiz(title=quiz_name, name=quiz_name, questions=questions)
     save_quiz(context, quiz)
 
+
 def current_question(context: Context) -> Quizzology.PreparedQuestion:
     """
     Establishes the type of the current_question object to aid the
     IDE
     """
     return context.current_question
+
 
 @step('the student selects the quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
@@ -139,7 +141,6 @@ def step_impl(context: Context, how: str):
                 f"User said '{user_choice}', which is answered {how}")
 
 
-
 @given("we have a question {question}")
 def step_impl(context, question):
     """
@@ -153,7 +154,7 @@ def step_impl(context, question):
 @when("the student provides these answers")
 def step_impl(context: Context):
     for row in context.table:
-        answer,expected = row['answer'],row.get('expected','right')
+        answer, expected = row['answer'], row.get('expected', 'right')
 
         question = current_question(context)
         recent_answer: Quizzology.RecordedAnswer = \
@@ -189,7 +190,8 @@ def step_impl(context: Context):
     session_store: SessionStore = context.quizzology.session_store
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
-    wrong_answers = session_store.number_of_incorrect_answers(session_id,quiz_name)
+    wrong_answers = session_store.number_of_incorrect_answers(session_id,
+                                                              quiz_name)
     assert_that(wrong_answers, equal_to(0))
 
 

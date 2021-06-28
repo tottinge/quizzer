@@ -46,11 +46,12 @@ class TestSession(unittest.TestCase):
         self.assertIn(str(correct), result)
         self.assertIn(timestamp, result)
 
-
     def test_render_judgment_incorrect_answer(self):
         markup = render_judgment(self.quiz, 0, "")
         doc = BeautifulSoup(markup, "html.parser")
-        self.assertIn("not what we're looking for", doc.text)
+
+        clean_text = ' '.join(doc.text.split())
+        self.assertIn("not what we're looking for", clean_text)
         self.assertIsNotNone(doc.body.find("a", id="try_again"),
                              "Should be a try_again link")
 
@@ -66,7 +67,8 @@ class TestSession(unittest.TestCase):
         self.assertIn(self.question.confirmation, confirmation_tag.text)
 
     def test_offers_next_question_if_any_exist(self):
-        second_question = Question(question="Second", decoys=[], answer="answer")
+        second_question = Question(question="Second", decoys=[],
+                                   answer="answer")
         quiz = Quiz(
             title='2q',
             name='Test2Questions',
@@ -83,7 +85,6 @@ class TestSession(unittest.TestCase):
         expected_question_number = quiz.next_question_number(0)
         expected_url = main.url_for(quiz, expected_question_number)
         self.assertEqual(expected_url, next_page_anchor['href'])
-
 
     def test_no_next_url_offered_if_no_more_questions_exist(self):
         markup = render_judgment(self.quiz, 0, "the truth")

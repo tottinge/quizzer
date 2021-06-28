@@ -3,8 +3,6 @@ from unittest import TestCase
 from bottle import template
 from bs4 import BeautifulSoup
 
-from main import render_menu_of_quizzes
-
 doomed_QUIZ_STORE = None
 
 

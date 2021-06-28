@@ -1,7 +1,7 @@
 % rebase('skeleton.tpl', title=quiz.title)
 % include('sub_progress.tpl')
 
-<form class="w3-container" action="/quizzes/{{quiz.name}}/{{question_number}}" method="POST">
+<form action="/quizzes/{{quiz.name}}/{{question_number}}" class="w3-container" method="POST">
     % from random import shuffle
     % choices = [*question.decoys,question.answer]
     % shuffle(choices)
@@ -10,7 +10,7 @@
         <h3 class="w3-panel w3-teal w3-card-4 question-asked">{{question.question}}</h3>
         % for choice in choices:
         <div class="form-choice">
-            <input type='radio' class="w3-radio" name='answer' id='{{choice}}' value='{{choice}}'/>
+            <input class="w3-radio" id='{{choice}}' name='answer' type='radio' value='{{choice}}'/>
             <label for='{{choice}}'>
                 {{choice}}
             </label>
@@ -27,11 +27,11 @@
     <button class="w3-button w3-round w3-light-gray">Additional Resources</button>
     <section class="w3-dropdown-content w3-bar-block w3-border" id="resources">
         % for (text, url) in question.resources:
-            <a class="w3-button w3-bar-item"
-               href="{{ url }}"
-               target="_blank"
-               rel="noreferrer noopener">{{ text }}
-            </a>
+        <a class="w3-button w3-bar-item"
+           href="{{ url }}"
+           rel="noreferrer noopener"
+           target="_blank">{{ text }}
+        </a>
         % end
     </section>
 </div>

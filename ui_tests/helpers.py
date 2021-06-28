@@ -47,7 +47,7 @@ def setup_path_for_dev_test():
         old_path = os.environ['PATH']
         directory = os.environ.get('IDE_PROJECT_ROOTS', '.')
         driver_path = os.path.join(directory, 'webdrivers')
-        if os.path.isdir(driver_path) :
+        if os.path.isdir(driver_path):
             if driver_path not in old_path.split(os.pathsep):
                 os.environ['PATH'] = old_path + os.pathsep + driver_path
 

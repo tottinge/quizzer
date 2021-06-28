@@ -1,38 +1,44 @@
 {
-    "name": "Devquiz",
-    "title":"Development Practice Quiz",
-    "questions":[
-        { 
-           "question": "Are radio buttons a better choice than regular buttons?",
-           "answer": "It Depends",
-           "decoys": [
-              "Sure",
-              "Nope"
-            ],
-          "resources": [
-            ["Radio Buttons", "https://www.w3schools.com/tags/att_input_type_radio.asp"],
-            ["Regular Buttons", "https://www.w3schools.com/tags/tag_button.asp"]
-          ]
-        },
-
-        {
-           "question":"When should you write a unit test?",
-           "answer": "First, as a way to express the desired behavior",
-           "decoys":[
-              "Never, they are a waste of time",
-              "After implementing the code, to make sure it works",
-              "Only if the solution is really complicated"
-           ],
-          "resources": [
-            ["The Three Rules of TDD", "https://www.w3schools.com/tags/att_input_type_radio.asp"]
-          ]
-        },
-
-        {
-            "question": "What if all questions are empty?",
-            "answer": "",
-            "decoys": []
-        }
-
-    ]
+  "name": "Devquiz",
+  "title": "Development Practice Quiz",
+  "questions": [
+    {
+      "question": "Are radio buttons a better choice than regular buttons?",
+      "answer": "It Depends",
+      "decoys": [
+        "Sure",
+        "Nope"
+      ],
+      "resources": [
+        [
+          "Radio Buttons",
+          "https://www.w3schools.com/tags/att_input_type_radio.asp"
+        ],
+        [
+          "Regular Buttons",
+          "https://www.w3schools.com/tags/tag_button.asp"
+        ]
+      ]
+    },
+    {
+      "question": "When should you write a unit test?",
+      "answer": "First, as a way to express the desired behavior",
+      "decoys": [
+        "Never, they are a waste of time",
+        "After implementing the code, to make sure it works",
+        "Only if the solution is really complicated"
+      ],
+      "resources": [
+        [
+          "The Three Rules of TDD",
+          "https://www.w3schools.com/tags/att_input_type_radio.asp"
+        ]
+      ]
+    },
+    {
+      "question": "What if all questions are empty?",
+      "answer": "",
+      "decoys": []
+    }
+  ]
 }

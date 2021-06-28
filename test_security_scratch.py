@@ -1,8 +1,8 @@
 import unittest
 from unittest import skip
 
-from hamcrest import assert_that, is_, is_not
 import bottle
+from hamcrest import assert_that, is_, is_not
 
 
 def check(user, pw):

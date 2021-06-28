@@ -1,12 +1,12 @@
 from subprocess import Popen
-from time import sleep
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
     launch_selenium_chrome, get_likely_port
+
 
 class BaseUrlTest(TestCase):
     """
@@ -32,7 +32,6 @@ class BaseUrlTest(TestCase):
         cls.browser.quit()
         cls.app.terminate()
 
-
     def test_title_exists(self):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
 
@@ -46,5 +45,3 @@ class BaseUrlTest(TestCase):
         browser.find_element_by_link_text('Cats Quiz')
         browser.find_element_by_link_text('Basics of HTML')
         browser.find_element_by_partial_link_text('evelopment')
-
-

@@ -6,13 +6,15 @@ from tinydb import Query
 
 logger = logging.getLogger(__name__)
 
+
 class AnswerEntry:
     """
     Record an answer given to a question in a test session.
     Whole-value class allows for evolution of records without breaking existing code.
     """
 
-    def __init__(self, session_id, quiz_name, question_number, selection, is_correct, timestamp=None):
+    def __init__(self, session_id, quiz_name, question_number, selection,
+                 is_correct, timestamp=None):
         self.session_id = session_id
         self.quiz_name = quiz_name
         self.question_number = question_number
@@ -57,15 +59,17 @@ class SessionStore:
 
     def __init__(self, storage=None):
         self.recorded_answers = []
-        self.storage : tinydb.TinyDB = storage
+        self.storage: tinydb.TinyDB = storage
 
     @staticmethod
     def get_new_session_id():
         import uuid
         return str(uuid.uuid4())
 
-    def record_answer(self, session_id, quiz_name, question_number, selection, is_correct, timestamp=None):
-        record = AnswerEntry(session_id, quiz_name, question_number, selection, is_correct, timestamp)
+    def record_answer(self, session_id, quiz_name, question_number, selection,
+                      is_correct, timestamp=None):
+        record = AnswerEntry(session_id, quiz_name, question_number, selection,
+                             is_correct, timestamp)
         self.storage.insert(record.as_dict())
 
     def perfect_answers(self, session_id, quiz_name):
@@ -114,13 +118,15 @@ class SessionStore:
         records = self.storage.search(criteria.session_id == target_session)
         answers = [AnswerEntry.from_dict(x) for x in records]
         total = {(a.quiz_name, a.question_number) for a in answers}
-        bad = {(a.quiz_name, a.question_number) for a in answers if not a.is_correct}
+        bad = {(a.quiz_name, a.question_number) for a in answers if
+               not a.is_correct}
         return total.difference(bad)
 
     def get_all(self):
         return self.storage.all()
 
-    def get_log_message(self, session_id, quiz_name, question_number)->AnswerEntry:
+    def get_log_message(self, session_id, quiz_name,
+                        question_number) -> AnswerEntry:
         criteria = Query()
         records = self.storage.search(
             (criteria.session_id == session_id)
@@ -132,4 +138,3 @@ class SessionStore:
     def shutdown(self):
         logger.critical("Session store: shutting down")
         self.storage.close()
-

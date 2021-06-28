@@ -3,9 +3,9 @@ import unittest.mock
 from bottle import template
 from bs4 import BeautifulSoup
 
-from quizzology import Quizzology
 from quizzes.question import Question
 from quizzes.quiz import Quiz
+from quizzology import Quizzology
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -32,10 +32,11 @@ class TestQuizRendering(unittest.TestCase):
             title="no resources at all",
             name="resourceless_test",
             questions=[
-                Question(question="Why no resources?", decoys=["Who knows?"], answer="I'm lazy")
+                Question(question="Why no resources?", decoys=["Who knows?"],
+                         answer="I'm lazy")
             ]
         )
-        document = Quizzology.prepare_quiz_question_document(document,0)
+        document = Quizzology.prepare_quiz_question_document(document, 0)
         html = template('quiz_question', document._asdict())
         page = BeautifulSoup(html, 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
@@ -71,9 +72,11 @@ class TestQuizRendering(unittest.TestCase):
             title=title,
             name=name,
             questions=[
-                Question(question=question, decoys=decoys, answer=answer, resources=resources or [])
+                Question(question=question, decoys=decoys, answer=answer,
+                         resources=resources or [])
             ]
         )
-        question_document = Quizzology.prepare_quiz_question_document(document,0)
+        question_document = Quizzology.prepare_quiz_question_document(document,
+                                                                      0)
         markup = template('quiz_question', question_document._asdict())
         return BeautifulSoup(markup, "html.parser")

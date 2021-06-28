@@ -98,7 +98,7 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
 
     # Todo: Figure out how to use the session middleware
     # app.session['answer'] = results.selection, results.correct
-    
+
     go_next = results.next_question_number
     additions = dict(
         next_url=url_for(quiz, go_next) if go_next else None,
@@ -166,9 +166,9 @@ def show_session():
     ]
     beaker_session = [
         f"<p>{key}, {value}</p>\n"
-        for (key,value) in app.session
+        for (key, value) in app.session
     ] if app.session else 'none'
-    beaker_section = '<div>Beaker: ' + "".join(beaker_session)+"</div>"
+    beaker_section = '<div>Beaker: ' + "".join(beaker_session) + "</div>"
 
     return "<br>".join(text_answers) + beaker_section
 

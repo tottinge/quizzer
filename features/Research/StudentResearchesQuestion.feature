@@ -13,10 +13,10 @@ Feature: Student Researchs A Question
 
   @future
   Scenario: Student researches topic
-    I have a lovely bunch of coconuts
+  I have a lovely bunch of coconuts
 
     Given we have a quiz called "cats" with questions
-      | question                       | answer | 
+      | question                       | answer |
       | How many feet on a normal cat? | 4      |
 #    And associated research text
 #      """ slklkslsakdflkjsdf

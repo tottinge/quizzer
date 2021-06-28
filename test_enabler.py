@@ -13,6 +13,7 @@ class TestWithPycharmCorrectly(unittest.TestCase):
 
     This joy brought to you from IntelliJ
     """
+
     def test_nothing(self):
         pass
 

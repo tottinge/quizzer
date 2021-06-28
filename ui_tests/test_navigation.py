@@ -5,10 +5,9 @@ A series of UI tests to ensure that basic behaviors of navigating the
 quiz app are not broken for quiz-takers.
 """
 
-
 import unittest
 from subprocess import Popen
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from hamcrest import assert_that, equal_to, contains_string
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -18,6 +17,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
     get_likely_port
+
 
 class TestNavigation(TestCase):
     """
@@ -66,7 +66,7 @@ class TestNavigation(TestCase):
     def test_complete_a_quiz_perfectly(self):
         self.reset_session()
         self.get_page("/quizzes/catsquiz")
-        for answer in ["Gray","Jack","Fluffybutt","Gray","Phydeaux"]:
+        for answer in ["Gray", "Jack", "Fluffybutt", "Gray", "Phydeaux"]:
 
             self.select_value(answer)
             self.submit_answer()
@@ -75,7 +75,7 @@ class TestNavigation(TestCase):
             next_tags = self.browser.find_elements_by_link_text('Next Question')
             if next_tags:
                 next_tags[0].click()
-                self.wait_for_page_titled("Cats") # Don't jump the gun.
+                self.wait_for_page_titled("Cats")  # Don't jump the gun.
 
         text = self.browser.find_element_by_id('quiz_performance').text
         assert_that(text, contains_string("perfectly"))

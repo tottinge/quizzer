@@ -2,13 +2,13 @@
 
 
 <section>
-<h2 class="w3-teal w3-panel">Quizzes Available:</h2>
-<div class="w3-container w3-ul w3-hoverable">
-    % for (name, description, filename) in choices:
+    <h2 class="w3-teal w3-panel">Quizzes Available:</h2>
+    <div class="w3-container w3-ul w3-hoverable">
+        % for (name, description, filename) in choices:
         <a class="quiz_selection w3-button w3-border w3-mobile w3-cell" href="/quizzes/{{name}}">
             {{ description }}
         </a>
-    % end
-</div>
+        % end
+    </div>
 </section>
 

@@ -2,25 +2,25 @@
 <html>
 <head>
     <title>{{ title }}</title>
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
 </head>
 
 <body>
-    <header>
-        <h1 id="title" class="page-title ">
-            <a href="/" id="return_link">
-            <img src="/favicon.ico"
+<header>
+    <h1 class="page-title " id="title">
+        <a href="/" id="return_link">
+            <img align="left"
                  hspace="5"
-                 align="left"
+                 src="/favicon.ico"
                  style="height:1.1em;"
             />
-            </a>
-            {{title}}
-        </h1>
-    </header>
+        </a>
+        {{title}}
+    </h1>
+</header>
 
-    {{!base}}
+{{!base}}
 
 </body>
 </html>

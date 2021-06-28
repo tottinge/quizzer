@@ -2,9 +2,12 @@ import unittest
 
 from quizzes.question import Question
 
+
 class TestQuiz(unittest.TestCase):
     def setUp(self):
-        self.question = Question(question='whatever', decoys=['falsehood', 'foolishness'], answer='the truth')
+        self.question = Question(question='whatever',
+                                 decoys=['falsehood', 'foolishness'],
+                                 answer='the truth')
 
     def test_answer_question_correctly(self):
         self.assertTrue(
@@ -16,4 +19,3 @@ class TestQuiz(unittest.TestCase):
             self.question.is_correct_answer("falsehood"),
             f"Accepted 'falsehood' where answer is {self.question.answer}"
         )
-

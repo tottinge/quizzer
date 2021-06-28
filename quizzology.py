@@ -47,7 +47,8 @@ class Quizzology:
         question_number: int
 
     @staticmethod
-    def prepare_quiz_question_document(quiz: Quiz, question_number=0) -> PreparedQuestion:
+    def prepare_quiz_question_document(quiz: Quiz,
+                                       question_number=0) -> PreparedQuestion:
         selected_question = quiz.question_by_number(question_number) \
             if quiz.has_questions() \
             else Question.from_json({})
@@ -97,7 +98,7 @@ class Quizzology:
         incorrect_answers = self.number_of_incorrect_answers(quiz.name,
                                                              session_id)
         next_question_number = quiz.next_question_number(question_number) \
-            if correct\
+            if correct \
             else None
         return Quizzology.RecordedAnswer(
             quiz=quiz,
@@ -119,4 +120,3 @@ class Quizzology:
     def shutdown(self):
         self.session_store.shutdown()
         self.quiz_store.shutdown()
-

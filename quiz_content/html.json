@@ -1,7 +1,7 @@
 {
   "name": "html",
-  "title":"HTML Quiz",
-  "questions":[
+  "title": "HTML Quiz",
+  "questions": [
     {
       "question": "What does HTML stand for?",
       "answer": "Hyper Text Markup Language",
@@ -11,7 +11,10 @@
         "Home Tool Markup Language"
       ],
       "resources": [
-        ["HTML Wikipedia", "https://en.wikipedia.org/wiki/HTML"]
+        [
+          "HTML Wikipedia",
+          "https://en.wikipedia.org/wiki/HTML"
+        ]
       ]
     },
     {
@@ -24,7 +27,10 @@
         "Microsoft"
       ],
       "resources": [
-        ["W3","https://en.wikipedia.org/wiki/World_Wide_Web_Consortium"]
+        [
+          "W3",
+          "https://en.wikipedia.org/wiki/World_Wide_Web_Consortium"
+        ]
       ]
     },
     {
@@ -37,7 +43,10 @@
         "<head>"
       ],
       "resources": [
-        ["HTML Headings", "https://www.w3schools.com/html/html_headings.asp"]
+        [
+          "HTML Headings",
+          "https://www.w3schools.com/html/html_headings.asp"
+        ]
       ]
     }
   ]

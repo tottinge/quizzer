@@ -1,7 +1,8 @@
 """ doc string """
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 
 from quizzes.question import Question
+
 
 @dataclass
 class Quiz:
@@ -56,4 +57,3 @@ class Quiz:
             if likely_next <= self.last_question_number()
             else None
         )
-
