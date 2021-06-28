@@ -17,7 +17,7 @@ from logging import getLogger
 
 import bottle
 from bottle import (
-    run, view, request, response, static_file, redirect, Bottle
+    run, view, request, response, static_file, redirect
 )
 from tinydb import TinyDB
 
@@ -26,18 +26,19 @@ from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
 
-
 quizzology = Quizzology()
 
 logger = getLogger(__name__)
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 
-app: Bottle = bottle.Bottle()
+from beaker import middleware
+
+app = middleware.SessionMiddleware(bottle.app(), {})
 
 
-@app.route('/')
-@app.route('/quizzes')
-def menu_of_quizzes(title: str ="Quizzology"):
+@bottle.route('/')
+@bottle.route('/quizzes')
+def menu_of_quizzes(title: str = "Quizzology"):
     """
     Display links to selectable quizzes from quiz store
     """
@@ -51,25 +52,25 @@ def render_menu_of_quizzes(title, choices):
     return dict(title=title, choices=choices)
 
 
-@app.route('/favicon.ico')
+@bottle.route('/favicon.ico')
 def get_favicon():
     return redirect("/static/favicon.ico")
 
 
-@app.route('/static/<filename>')
+@bottle.route('/static/<filename>')
 def get_static_file(filename):
     root_path = os.environ.get('STATIC_PATH', './static/')
     return static_file(filename, root=root_path)
 
 
-@app.get('/quizzes/<quiz_name>')
+@bottle.get('/quizzes/<quiz_name>')
 @view("quiz_question")
 def start_quizzing(quiz_name):
     return quizzology.begin_quiz(
         quizzology.get_quiz_by_name(quiz_name))._asdict()
 
 
-@app.get('/quizzes/<quiz_name>/<question_number:int>')
+@bottle.get('/quizzes/<quiz_name>/<question_number:int>')
 @view("quiz_question")
 def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
@@ -77,7 +78,7 @@ def ask_question(quiz_name, question_number) -> dict:
                                                      question_number)._asdict()
 
 
-@app.post('/quizzes/<quiz_name>/<question_number:int>')
+@bottle.post('/quizzes/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
     selection = request.forms.get('answer')
     quiz = quizzology.get_quiz_by_name(quiz_name)
@@ -94,6 +95,10 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
     results = quizzology.record_answer_and_get_status(
         question_number, quiz, selection, session_id
     )
+
+    # Todo: Figure out how to use the session middleware
+    # app.session['answer'] = results.selection, results.correct
+    
     go_next = results.next_question_number
     additions = dict(
         next_url=url_for(quiz, go_next) if go_next else None,
@@ -102,7 +107,7 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
     return {**results._asdict(), **additions}
 
 
-@app.get("/me")
+@bottle.get("/me")
 def show_me():
     """ 
     Test endpoint: this routine will display information about the 
@@ -131,7 +136,7 @@ def show_me():
     )
 
 
-@app.get("/cookies")
+@bottle.get("/cookies")
 def cookie_explorer():
     """
     Junk method for exploring cookies; not part of quizzology proper, 
@@ -143,7 +148,7 @@ def cookie_explorer():
     return result
 
 
-@app.get("/session")
+@bottle.get("/session")
 def show_session():
     """
     Show session logs: for troubleshooting.
@@ -159,7 +164,13 @@ def show_session():
         template.substitute(answer)
         for answer in quizzology.get_log_messages()
     ]
-    return "<br>".join(text_answers)
+    beaker_session = [
+        f"<p>{key}, {value}</p>\n"
+        for (key,value) in app.session
+    ] if app.session else 'none'
+    beaker_section = '<div>Beaker: ' + "".join(beaker_session)+"</div>"
+
+    return "<br>".join(text_answers) + beaker_section
 
 
 def get_client_session_id(request, response) -> str:
@@ -200,7 +211,6 @@ def shutdown(signum, frame):
     """This is the shutdown code"""
     logger.critical(f'Received shutdown signal {signum}')
     quizzology.shutdown()
-    app.close()  # Apparently doesn't close port?
     exit(0)
 
 

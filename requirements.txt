@@ -6,3 +6,4 @@ behave
 pyhamcrest
 selenium
 bottle-cork
+beaker
