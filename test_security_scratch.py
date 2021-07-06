@@ -8,7 +8,7 @@ def check(user, password):
     print(f"User is :{user}, password is:{password}")
     global poo
     poo = user, password
-    return True  # ANYTHING GOES!!!!
+    return user == "Jack"  # ANYTHING GOES!!!!
 
 
 app = bottle.app()
