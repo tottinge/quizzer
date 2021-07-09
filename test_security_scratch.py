@@ -1,4 +1,5 @@
 import unittest
+from unittest import skip
 
 import bottle
 from hamcrest import assert_that, is_, is_not
@@ -43,7 +44,7 @@ class MyTestCase(unittest.TestCase):
             assert_that(x.status_code, is_(401))  # Access Denied
         pass
 
-    # @skip("This one isn't ripe yet")
+    @skip("This one isn't ripe yet")
     def test_valid_credentials(self):
         from boddle import boddle
         with boddle(params=dict(name='tim', password='Password1!')):

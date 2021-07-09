@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>{{ title }}</title>
     <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet"/>
