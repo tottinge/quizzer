@@ -19,7 +19,5 @@ class MyTestCase(unittest.TestCase):
         assert_that(form, not_none())
 
 
-
-
 if __name__ == '__main__':
     unittest.main()
