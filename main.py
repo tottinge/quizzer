@@ -77,13 +77,15 @@ def ask_question(quiz_name, question_number) -> dict:
     return Quizzology.prepare_quiz_question_document(doc,
                                                      question_number)._asdict()
 
+
 @bottle.route('/edit')
 @view('quiz_authoring_form')
 def do_nothing_interesting():
     return {
-        'quiz':Quiz('name', 'title'),
-        'title':"ignore me i'm new"
+        'quiz': Quiz('name', 'title'),
+        'title': "ignore me i'm new"
     }
+
 
 @bottle.post('/quizzes/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
