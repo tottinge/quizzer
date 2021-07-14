@@ -30,8 +30,11 @@ class StaticFormVerification(unittest.TestCase):
 
     def test_form_has_fields(self):
         form = self.dom.form
-        assert_that(form.find('input', id='quiz_name'), not_none())
-        assert_that(form.find('input', id='quiz_title'), not_none())
+        self.should_have_input(form, 'quiz_name')
+        self.should_have_input(form, 'quiz_title')
+
+    def should_have_input(self, form, temp):
+        assert_that(form.find('input', id=temp), not_none())
 
 
 if __name__ == '__main__':
