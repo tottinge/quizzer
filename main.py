@@ -195,8 +195,7 @@ def drop_client_session_id(response):
 
 
 def main():
-    store = QuizStore()
-    quizzology.set_quiz_store(store)
+    quizzology.set_quiz_store(QuizStore())
     quizzology.set_session_store(prepare_session_store())
     host_name, port_number = get_endpoint_address()
     run(app, host=host_name, port=port_number, reloader=True, debug=True)
@@ -217,7 +216,6 @@ def prepare_session_store() -> SessionStore:
 
 
 def shutdown(signum, frame):
-    """This is the shutdown code"""
     logger.critical(f'Received shutdown signal {signum}')
     quizzology.shutdown()
     exit(0)
