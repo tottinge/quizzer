@@ -7,3 +7,4 @@ pyhamcrest
 selenium
 bottle-cork
 beaker
+WebTest

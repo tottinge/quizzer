@@ -34,7 +34,7 @@ PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 from beaker import middleware
 
 app = middleware.SessionMiddleware(bottle.app(), {})
-
+# app = bottle.app()
 
 @bottle.route('/')
 @bottle.route('/quizzes')
@@ -195,10 +195,14 @@ def drop_client_session_id(response):
 
 
 def main():
-    quizzology.set_quiz_store(QuizStore())
-    quizzology.set_session_store(prepare_session_store())
+    setup_quizzology()
     host_name, port_number = get_endpoint_address()
     run(app, host=host_name, port=port_number, reloader=True, debug=True)
+
+
+def setup_quizzology():
+    quizzology.set_quiz_store(QuizStore())
+    quizzology.set_session_store(prepare_session_store())
 
 
 def get_endpoint_address() -> tuple[str, int]:
