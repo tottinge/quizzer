@@ -42,6 +42,7 @@ class StaticFormVerification(unittest.TestCase):
     def test_form_has_submit_button(self):
         button = self.dom.form.find('input', type='submit', id='save_changes')
         assert_that(button, not_none())
+        assert_that(button['value'], is_("Save"))
 
 
 
