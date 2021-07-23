@@ -12,12 +12,12 @@ Don't look at it as a finished product, but a starting point for doing fun stuff
 
 In the works:
 
-* Create a CI pipeline
-* Create a cloud deploy
 * Create some kind of identity so our results and other people's results aren't all mixed together
 * Remember past sessions, so we can re-quiz on quizzes and questions from past
 * Keep track of questions that we've missed most, and refresh on those
 * Make it look less awful
 
+
+Chrome drivers are available at https://chromedriver.chromium.org/downloads 
 
 
