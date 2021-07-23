@@ -6,4 +6,6 @@
 
     <label for="quiz_title">Title</label>
     <input type="text" id="quiz_title" value="{{quiz.title}}">
+
+    <input type="submit" id="save_changes" value="Save">
 </form>
