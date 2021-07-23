@@ -83,7 +83,7 @@ def ask_question(quiz_name, question_number) -> dict:
 def do_nothing_interesting():
     return {
         'quiz': Quiz('name', 'title'),
-        'title': "ignore me i'm new"
+        'title': "Edit Quiz"
     }
 
 
