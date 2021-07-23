@@ -42,14 +42,14 @@ class TestQuizRendering(unittest.TestCase):
         self.assertIsNone(page.find("section", id="resources"))
 
     def test_resource_link_appear_in_resource_section(self):
-        resource = "Google That", "http://www.google.com"
+        resource = "Google That", "https://www.google.com"
         page = self.render(resources=[resource])
         actual = self.getResourceAnchorsFromPage(page)
         self.assertSetEqual({resource}, actual)
 
     def test_resource_multiple_links(self):
         resources = [
-            ("Google That", "http://www.google.com"),
+            ("Google That", "https://www.google.com"),
             ("Let Me", "https://lmgtfy.app/?q=calligraphy")
         ]
         page = self.render(resources=resources)
@@ -66,7 +66,7 @@ class TestQuizRendering(unittest.TestCase):
 
     @staticmethod
     def render(title="_", name="quiz_name", question="?",
-               decoys=["True", "False"], answer="True",
+               decoys=("True", "False"), answer="True",
                resources=None):
         document = Quiz(
             title=title,

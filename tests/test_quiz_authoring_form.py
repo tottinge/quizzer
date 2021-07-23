@@ -15,7 +15,7 @@ class StaticFormVerification(unittest.TestCase):
         cls.page_title = 'Edit Quiz'
         cls.html = template('quiz_authoring_form.tpl', {
             'title': cls.page_title,
-            'quiz':cls.quiz
+            'quiz': cls.quiz
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 
@@ -43,7 +43,6 @@ class StaticFormVerification(unittest.TestCase):
         button = self.dom.form.find('input', type='submit', id='save_changes')
         assert_that(button, not_none())
         assert_that(button['value'], is_("Save"))
-
 
 
 if __name__ == '__main__':

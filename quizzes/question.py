@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Question():
+class Question:
     question: str
     answer: str
     decoys: list[str] = field(default_factory=list)
