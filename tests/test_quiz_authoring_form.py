@@ -39,8 +39,6 @@ class StaticFormVerification(unittest.TestCase):
         assert_that(title_input, not_none())
         assert_that(title_input['value'], is_(self.quiz.title))
 
-    def should_have_input(self, form, temp):
-        assert_that(form.find('input', id=temp), not_none())
 
 
 if __name__ == '__main__':

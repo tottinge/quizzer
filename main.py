@@ -82,7 +82,7 @@ def ask_question(quiz_name, question_number) -> dict:
 @view('quiz_authoring_form')
 def do_nothing_interesting():
     return {
-        'quiz': Quiz('name', 'title'),
+        'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz"
     }
 

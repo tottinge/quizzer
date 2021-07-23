@@ -7,8 +7,8 @@ from quizzes.question import Question
 @dataclass
 class Quiz:
     """ questions to ask, with answers, and decoy answers"""
-    title: str
     name: str
+    title: str
     questions: list[Question] = field(default_factory=list)
 
     @classmethod
