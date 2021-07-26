@@ -78,13 +78,17 @@ def ask_question(quiz_name, question_number) -> dict:
                                                      question_number)._asdict()
 
 
-@bottle.route('/edit')
+@bottle.get('/edit')
 @view('quiz_authoring_form')
 def do_nothing_interesting():
     return {
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz"
     }
+
+@bottle.post('/edit')
+def just_looking_move_along():
+    return {}
 
 
 @bottle.post('/quizzes/<quiz_name>/<question_number:int>')
