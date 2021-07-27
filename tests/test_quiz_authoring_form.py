@@ -45,5 +45,6 @@ class StaticFormVerification(unittest.TestCase):
         assert_that(button['value'], is_("Save"))
 
 
+
 if __name__ == '__main__':
     unittest.main()
