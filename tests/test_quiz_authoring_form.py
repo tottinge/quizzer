@@ -1,5 +1,6 @@
 import unittest
 
+import bs4.element
 from bottle import template
 from bs4 import BeautifulSoup
 from hamcrest import assert_that, contains_string, not_none, is_
@@ -40,11 +41,9 @@ class StaticFormVerification(unittest.TestCase):
         assert_that(title_input['value'], is_(self.quiz.title))
 
     def test_form_has_submit_button(self):
-        button = self.dom.form.find('input', type='submit', id='save_changes')
+        button:bs4.element.Tag = self.dom.form.find('button', type='submit', id='save_changes')
         assert_that(button, not_none())
-        assert_that(button['value'], is_("Save"))
-
-
+        assert_that(button.text, is_("Save"))
 
 if __name__ == '__main__':
     unittest.main()

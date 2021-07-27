@@ -7,5 +7,5 @@
     <label for="quiz_title">Title</label>
     <input type="text" id="quiz_title"  name="title" value="{{quiz.title}}">
 
-    <button id="save_changes">Save</button>
+    <button id="save_changes" type="submit">Save</button>
 </form>
