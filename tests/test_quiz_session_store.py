@@ -63,14 +63,14 @@ class SessionStoreStuff(unittest.TestCase):
         session_store.record_answer(session_2, quiz_name, 10, "selection", True)
         session_store.record_answer(session_2, quiz_name, 10, "selection", True)
 
-        self.assertEqual(1, session_store.number_of_correct_answers(session_1,
-                                                                    quiz_name))
-        self.assertEqual(1, session_store.number_of_incorrect_answers(session_1,
-                                                                      quiz_name))
-        self.assertEqual(2, session_store.number_of_correct_answers(session_2,
-                                                                    quiz_name))
-        self.assertEqual(0, session_store.number_of_incorrect_answers(session_2,
-                                                                      quiz_name))
+        correct_answers_for = session_store.number_of_correct_answers
+        incorrect_answers_for = session_store.number_of_incorrect_answers
+
+        self.assertEqual(1, correct_answers_for(session_1, quiz_name))
+        self.assertEqual(1, incorrect_answers_for(session_1, quiz_name))
+
+        self.assertEqual(2, correct_answers_for(session_2, quiz_name))
+        self.assertEqual(0, incorrect_answers_for(session_2, quiz_name))
 
     def test_questions_answered_correctly_coalesces(self):
         session_store = self.session_store
