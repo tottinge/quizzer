@@ -1,7 +1,8 @@
 import logging
+import typing
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
-from typing import List
+from typing import List, Dict
 
 import tinydb
 from tinydb import Query
@@ -45,7 +46,7 @@ class SessionStore:
                              is_correct, timestamp)
         self.storage.insert(asdict(record))
 
-    def perfect_answers(self, session_id, quiz_name):
+    def perfect_answers(self, session_id, quiz_name) -> List[AnswerEntry]:
         criteria = Query()
         records = self.storage.search(
             (criteria.session_id == session_id)
@@ -63,20 +64,20 @@ class SessionStore:
         )
         return [AnswerEntry.from_dict(x) for x in records]
 
-    def number_of_correct_answers(self, session_id, quiz_name):
+    def number_of_correct_answers(self, session_id, quiz_name) -> int:
         return len(self.perfect_answers(session_id, quiz_name))
 
-    def number_of_incorrect_answers(self, session_id, quiz_name):
+    def number_of_incorrect_answers(self, session_id, quiz_name)-> int:
         return len(self.incorrect_answers(session_id, quiz_name))
 
-    def questions_answered_incorrectly(self, target_session):
+    def questions_answered_incorrectly(self, session_id) -> Dict[str, int]:
         """
         Get a list of questions which were answered incorrectly
         at least once during a session.
         """
         criteria = Query()
         records = self.storage.search(
-            (criteria.session_id == target_session)
+            (criteria.session_id == session_id)
             & (criteria.is_correct == False)
         )
         answers = (AnswerEntry.from_dict(x) for x in records)
@@ -100,12 +101,12 @@ class SessionStore:
 
     def get_log_message(self, session_id, quiz_name,
                         question_number) -> AnswerEntry:
-        criteria = Query()
-        records = self.storage.search(
-            (criteria.session_id == session_id)
-            & (criteria.quiz_name == quiz_name)
-            & (criteria.question_number == question_number)
-        )
+        criteria = Query().fragment({
+            'session_id': session_id,
+            'quiz_name': quiz_name,
+            'question_number': question_number
+        })
+        records = self.storage.search(criteria)
         return AnswerEntry.from_dict(records[0])
 
     def shutdown(self):
