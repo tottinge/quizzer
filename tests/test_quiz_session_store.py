@@ -57,11 +57,14 @@ class SessionStoreStuff(unittest.TestCase):
         session_1 = "test_" + session_store.get_new_session_id()
         session_2 = "test_" + session_store.get_new_session_id()
 
-        session_store.record_answer(session_1, quiz_name, 10, "selection", True)
-        session_store.record_answer(session_1, quiz_name, 10, "selection",
-                                    False)
-        session_store.record_answer(session_2, quiz_name, 10, "selection", True)
-        session_store.record_answer(session_2, quiz_name, 10, "selection", True)
+        inputs = [
+            (session_1, quiz_name, 10, "selection", True),
+            (session_1, quiz_name, 10, "selection", False),
+            (session_2, quiz_name, 10, "selection", True),
+            (session_2, quiz_name, 10, "selection", True)
+        ]
+        for record in inputs:
+            session_store.record_answer(*record)
 
         correct_answers_for = session_store.number_of_correct_answers
         incorrect_answers_for = session_store.number_of_incorrect_answers
