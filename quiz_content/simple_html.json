@@ -29,34 +29,6 @@
         "set the hsize extra wide",
         "there is no way"
       ]
-    },
-    {
-      "question": "",
-      "answer": "",
-      "decoys": [
-        "",
-        ""
-      ],
-      "resources": [
-        [
-          "title",
-          "http://url/"
-        ]
-      ]
-    },
-    {
-      "question": "",
-      "answer": "",
-      "decoys": [
-        "",
-        ""
-      ],
-      "resources": [
-        [
-          "title",
-          "http://url/"
-        ]
-      ]
     }
   ]
 }
