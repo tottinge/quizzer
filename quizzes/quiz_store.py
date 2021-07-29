@@ -27,6 +27,12 @@ class QuizStore:
         return Quiz.from_json(document) if document else None
 
     @staticmethod
+    def shutdown():
+        logger.critical("quiz_store shutting down")
+
+    # -- helper methods all the rest of the way down --------
+
+    @staticmethod
     def _get_quiz_files_from_directory(directory: str) -> list:
         try:
             return [os.path.join(directory, x)
@@ -42,7 +48,7 @@ class QuizStore:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
                 yield document['name'], document['title'], quiz_filename
-            except Exception as err:
+            except json.JSONDecodeError as err:
                 logger.error(f"FAILED: {quiz_filename}: {str(err)}")
 
     @staticmethod
@@ -65,6 +71,3 @@ class QuizStore:
         except JSONDecodeError as err:
             logger.error(f"Not valid JSON: {filename}. {err}")
             return None
-
-    def shutdown(self):
-        logger.critical("quiz_store shutting down")
