@@ -1,8 +1,7 @@
 import logging
-import typing
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Tuple, Set
 
 import tinydb
 from tinydb import Query
@@ -70,7 +69,7 @@ class SessionStore:
     def number_of_incorrect_answers(self, session_id, quiz_name)-> int:
         return len(self.incorrect_answers(session_id, quiz_name))
 
-    def questions_answered_incorrectly(self, session_id) -> Dict[str, int]:
+    def questions_answered_incorrectly(self, session_id) -> Set[Tuple[str, int]]:
         """
         Get a list of questions which were answered incorrectly
         at least once during a session.
