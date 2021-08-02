@@ -16,6 +16,7 @@ from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
 from sessions.session_store import SessionStore, AnswerEntry
 
+
 @given("quizzology is running")
 def step_impl(context: Context):
     quizzology: Quizzology = Quizzology()
@@ -142,13 +143,9 @@ def step_impl(context: Context, how: str):
 
 
 @given("we have a question {question}")
-def step_impl(context, question):
-    """
-    :type context: behave.runner.Context
-    :type question: str
-    """
+def step_impl(context: Context, question: str):
     pass
-    # raise NotImplementedError(u'STEP: Given we have a question <question>')
+    # raise NotImplementedError('STEP: Given we have a question <question>')
 
 
 @when("the student provides these answers")
