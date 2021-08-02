@@ -1,11 +1,17 @@
 import json
 import os
+from dataclasses import asdict
 from json import JSONDecodeError
 from logging import getLogger
 
 from quizzes.quiz import Quiz
 
 logger = getLogger(__name__)
+
+
+def filename_for(name):
+    # ToDo sanitize the filename based on the quiz name (with unit tests!)
+    return name
 
 
 class QuizStore:
@@ -71,3 +77,10 @@ class QuizStore:
         except JSONDecodeError as err:
             logger.error(f"Not valid JSON: {filename}. {err}")
             return None
+
+    def save_quiz(self, quiz: Quiz):
+        dir_name = self.quiz_dir
+        file_name = filename_for(quiz.name)
+        filename = os.path.join(dir_name, file_name + ".json")
+        with open(filename, "w") as output:
+            json.dump(asdict(quiz), output)
