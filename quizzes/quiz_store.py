@@ -32,6 +32,13 @@ class QuizStore:
         document = self._read_quiz_document(filename)
         return Quiz.from_json(document) if document else None
 
+    def save_quiz(self, quiz: Quiz):
+        dir_name = self.quiz_dir
+        file_name = filename_for(quiz.name)
+        filename = os.path.join(dir_name, file_name + ".json")
+        with open(filename, "w") as output:
+            json.dump(asdict(quiz), output)
+
     @staticmethod
     def shutdown():
         logger.critical("quiz_store shutting down")
@@ -77,10 +84,3 @@ class QuizStore:
         except JSONDecodeError as err:
             logger.error(f"Not valid JSON: {filename}. {err}")
             return None
-
-    def save_quiz(self, quiz: Quiz):
-        dir_name = self.quiz_dir
-        file_name = filename_for(quiz.name)
-        filename = os.path.join(dir_name, file_name + ".json")
-        with open(filename, "w") as output:
-            json.dump(asdict(quiz), output)
