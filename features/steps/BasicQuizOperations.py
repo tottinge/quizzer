@@ -16,8 +16,7 @@ from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
 from sessions.session_store import SessionStore, AnswerEntry
 
-
-@given("a student starts quizzology")
+@given("quizzology is running")
 def step_impl(context: Context):
     quizzology: Quizzology = Quizzology()
     assert quizzology is not None

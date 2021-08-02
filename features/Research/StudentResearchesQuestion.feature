@@ -8,7 +8,7 @@ Feature: Student Researchs A Question
   http://www.google.com
 
   Background:
-    Given a student starts quizzology
+    Given quizzology is running
 
 
   @future

@@ -3,7 +3,7 @@ Feature: Student Initiates Quiz
   As a Student, I want to initiate a quiz, so that I can test my knowledge
 
   Background:
-    Given a student starts quizzology
+    Given quizzology is running
 
   @finished
   Scenario: Student successfully initiates Cats Quiz

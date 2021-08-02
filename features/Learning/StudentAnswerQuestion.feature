@@ -5,7 +5,7 @@ Feature: Answer Questions
   # Enter feature description here
 
   Background:
-    Given a student starts quizzology
+    Given quizzology is running
     And we have a quiz called "cats" with questions
       | question                       | answer | confirmation                                                                 |
       | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
