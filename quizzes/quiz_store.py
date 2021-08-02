@@ -3,6 +3,7 @@ import os
 from dataclasses import asdict
 from json import JSONDecodeError
 from logging import getLogger
+from typing import Optional
 
 from quizzes.quiz import Quiz
 
@@ -78,7 +79,7 @@ class QuizStore:
         filename = lookup.get(quiz_name)
         return filename
 
-    def _read_quiz_document(self, filename: str) -> dict:
+    def _read_quiz_document(self, filename: str) -> Optional[dict]:
         try:
             return self._read_quiz_doc_from_file(filename)
         except JSONDecodeError as err:
