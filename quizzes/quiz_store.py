@@ -11,8 +11,16 @@ logger = getLogger(__name__)
 
 
 def filename_for(name):
-    # ToDo sanitize the filename based on the quiz name (with unit tests!)
-    return name
+    table = str.maketrans({
+        ' ':'_',
+        '/':'-',
+        '\\':'-',
+        ':':'-',
+        '~':'-'
+
+    })
+    name = name.translate(table)
+    return name + '.json'
 
 
 class QuizStore:
