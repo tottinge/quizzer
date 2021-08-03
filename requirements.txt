@@ -7,3 +7,4 @@ selenium
 bottle-cork
 beaker
 WebTest
+sanitize-filename

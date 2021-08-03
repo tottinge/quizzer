@@ -5,22 +5,15 @@ from json import JSONDecodeError
 from logging import getLogger
 from typing import Optional
 
+from sanitize_filename import sanitize
+
 from quizzes.quiz import Quiz
 
 logger = getLogger(__name__)
 
 
 def filename_for(name):
-    table = str.maketrans({
-        ' ':'_',
-        '/':'-',
-        '\\':'-',
-        ':':'-',
-        '~':'-'
-
-    })
-    name = name.translate(table)
-    return name + '.json'
+    return sanitize(name.replace('~','-').replace(' ','_') + '.json')
 
 
 class QuizStore:
