@@ -29,12 +29,12 @@ class QuizStore:
         file_list = self._get_quiz_files_from_directory(self.quiz_dir)
         return self._get_quiz_summaries_from_file_list(file_list)
 
-    def get_quiz(self, quiz_name: str):
+    def get_quiz(self, quiz_name: str) -> Optional[Quiz]:
         filename = self._find_file_for_named_quiz(quiz_name)
         document = self._read_quiz_document(filename)
         return Quiz.from_json(document) if document else None
 
-    def save_quiz(self, quiz: Quiz):
+    def save_quiz(self, quiz: Quiz) -> None:
         dir_name = self.quiz_dir
         file_name = filename_for(quiz.name)
         filename = os.path.join(dir_name, file_name + ".json")
