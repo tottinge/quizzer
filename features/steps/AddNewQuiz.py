@@ -27,7 +27,7 @@ def step_impl(context: Context):
 
     # When the author adds a quiz with name "Test Quiz" and title "Test Title"
 
-@given('the author adds a quiz with name "Test Quiz" and title "Test Title"')
+
 @when('the author adds a quiz with name "{name}" and title "{title}"')
 def step_impl(context: Context, name: str, title: str):
     assert_that(context.temporary_directory, not_none())
@@ -98,5 +98,3 @@ def step_impl(context: Context):
 @then("the question has 2 resources")
 def step_impl(context: Context):
     raise NotImplementedError(u'STEP: Then the question has 2 resources')
-
-

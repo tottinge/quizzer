@@ -7,7 +7,7 @@ Feature: Quiz Authoring
     Given quizzology is running
 
   Scenario: Create an empty quiz
-    Given the author adds a quiz with name "Test Quiz" and title "Test Title"
+    When the author adds a quiz with name "Test Quiz" and title "Test Title"
 
     Then it should be accessible
 
