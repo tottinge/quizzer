@@ -12,9 +12,19 @@ from quizzes.quiz import Quiz
 
 logger = getLogger(__name__)
 
+defang_bad_chars = str.maketrans({
+    '~': '_',
+    ' ': '_',
+    '&': '-n-',
+    '|': '-r-',
+    '"': '',
+    "'": '',
+    ';': ''
+})
+
 
 def filename_for(name):
-    return sanitize(name.replace('~', '-').replace(' ', '_') + '.json')
+    return sanitize(name.translate(defang_bad_chars) + '.json')
 
 
 class QuizStore:
