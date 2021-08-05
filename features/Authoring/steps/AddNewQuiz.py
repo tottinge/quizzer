@@ -1,18 +1,36 @@
 from behave import *
 # use_step_matcher("re")
 from behave.runner import Context
+from hamcrest import assert_that, not_none
+from tinydb import TinyDB
+from tinydb.storages import MemoryStorage
 
 from quizzes.quiz import Quiz
+from quizzes.quiz_store import QuizStore
+from quizzology import Quizzology
+from sessions.session_store import SessionStore
 
+
+# @given("quizzology is running")
+# def step_impl(context: Context):
+#     quizzology: Quizzology = Quizzology()
+#     assert quizzology is not None
+#     quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
+#     session_store = SessionStore(TinyDB(storage=MemoryStorage))
+#     quizzology.set_session_store(session_store)
+#     context.quizzology = quizzology
 
 @step("decoys are")
 def step_impl(context: Context):
     only_row = context.table.row[0]
     context.decoys = [value.strip() for value in only_row.cells]
 
+    # When the author adds a quiz with name "Test Quiz" and title "Test Title"
 
-@when('the author adds a quiz with name "{name} and title "{title}"')
+@given('the author adds a quiz with name "Test Quiz" and title "Test Title"')
+@when('the author adds a quiz with name "{name}" and title "{title}"')
 def step_impl(context: Context, name: str, title: str):
+    assert_that(context.temporary_directory, not_none())
     quiz = Quiz(name, title)
     context.quiz = quiz
     raise NotImplementedError("No way to save a quiz yet")
@@ -80,3 +98,5 @@ def step_impl(context: Context):
 @then("the question has 2 resources")
 def step_impl(context: Context):
     raise NotImplementedError(u'STEP: Then the question has 2 resources')
+
+
