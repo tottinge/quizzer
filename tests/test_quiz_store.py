@@ -41,6 +41,7 @@ class QuizStoreTest(unittest.TestCase):
     @patch('main.QuizStore.get_quiz_summaries')
     @patch('builtins.open')
     @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
+    # ToDo: this test needs a rewrite.
     def test_json_file_invalid(self, summaries_mock, *_):
         summaries_mock.return_value = [
             ('nonesuch', 'no title', 'nonesuch.json'), ]
