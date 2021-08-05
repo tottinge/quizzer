@@ -1,5 +1,6 @@
 import json
 import os
+import typing
 from dataclasses import asdict
 from json import JSONDecodeError
 from logging import getLogger
@@ -13,7 +14,7 @@ logger = getLogger(__name__)
 
 
 def filename_for(name):
-    return sanitize(name.replace('~','-').replace(' ','_') + '.json')
+    return sanitize(name.replace('~', '-').replace(' ', '_') + '.json')
 
 
 class QuizStore:
@@ -25,7 +26,7 @@ class QuizStore:
     def __init__(self, dir_name='quiz_content'):
         self.quiz_dir = dir_name
 
-    def get_quiz_summaries(self) -> list:
+    def get_quiz_summaries(self) -> typing.Iterable:
         file_list = self._get_quiz_files_from_directory(self.quiz_dir)
         return self._get_quiz_summaries_from_file_list(file_list)
 
@@ -49,7 +50,7 @@ class QuizStore:
             return QuizStore.SaveQuizResult(
                 id=filename,
                 success=True,
-                message = f'saved quiz to {filename}'
+                message=f'saved quiz to {filename}'
             )
         except OSError as error:
             return QuizStore.SaveQuizResult(
@@ -75,7 +76,8 @@ class QuizStore:
             logger.error(f"Reading quiz directory: {error}")
             return []
 
-    def _get_quiz_summaries_from_file_list(self, quiz_file_paths) -> list:
+    def _get_quiz_summaries_from_file_list(self,
+                                           quiz_file_paths) -> typing.Iterable:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)

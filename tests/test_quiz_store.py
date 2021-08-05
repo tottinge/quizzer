@@ -2,8 +2,7 @@ import unittest
 from json import JSONDecodeError
 from unittest.mock import patch, mock_open
 
-import hamcrest
-from hamcrest import assert_that, contains_inanyorder, is_
+from hamcrest import assert_that, is_
 
 from quizzes.quiz_store import QuizStore, logger
 
@@ -50,35 +49,33 @@ class QuizStoreTest(unittest.TestCase):
 
     def test_get_a_list_of_test_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.json']):
-            expected = "q/a.json", "q/b.json"
+            expected = ["q/a.json", "q/b.json"]
             store = QuizStore()
-            self.assertSetEqual(
-                set(expected),
-                set(store._get_quiz_files_from_directory("q"))
-            )
+            actual = sorted(store._get_quiz_files_from_directory("q"))
+            assert_that(actual, is_(expected))
 
     def test_get_test_files_ignores_non_json_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.txt']):
             expected = {"q/a.json"}
             store = QuizStore()
-            self.assertSetEqual(
-                expected,
-                set(store._get_quiz_files_from_directory("q"))
+            assert_that(
+                set(store._get_quiz_files_from_directory("q")),
+                is_(expected)
             )
 
     def test_get_summary_handles_empty_lists(self):
         store = QuizStore()
         actual = store._get_quiz_summaries_from_file_list([])
-        self.assertEqual([], list(actual))
+        assert_that(list(actual), is_([]))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):
         store = QuizStore()
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
-            expected = {('pass', 'a test that passes', 'd/pass.json')}
+            expected = [('pass', 'a test that passes', 'd/pass.json')]
             actual = store._get_quiz_summaries_from_file_list(['d/pass.json'])
-            self.assertSetEqual(set(expected), set(actual))
+            assert_that(list(actual), is_(expected))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_multiple_summary(self):
@@ -88,12 +85,11 @@ class QuizStoreTest(unittest.TestCase):
             ('dogs', 'explore the canine world', 'd/dogs.json')
         ]
         filenames = [path for (_, _, path) in expected]
-        json_docs = [dict(name=name, title=title) for (name, title, _) in
-                     expected]
-
+        json_docs = [dict(name=name, title=title)
+                     for (name, title, _) in expected]
         with patch("json.load", side_effect=json_docs):
             actual = store._get_quiz_summaries_from_file_list(filenames)
-            self.assertSetEqual(set(expected), set(actual))
+            assert_that(list(actual), is_(expected))
 
     # Test for empty quiz list
     # Test for no questions in file
