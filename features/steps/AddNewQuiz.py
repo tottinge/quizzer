@@ -1,7 +1,7 @@
 from behave import *
 # use_step_matcher("re")
 from behave.runner import Context
-from hamcrest import assert_that, not_none
+from hamcrest import assert_that, not_none, is_
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
@@ -33,7 +33,9 @@ def step_impl(context: Context, name: str, title: str):
     assert_that(context.temporary_directory, not_none())
     quiz = Quiz(name, title)
     context.quiz = quiz
-    raise NotImplementedError("No way to save a quiz yet")
+    model: Quizzology = context.quizzology
+    result = model.quiz_store.save_quiz(quiz)
+    assert_that(result.success, is_(True))
 
 
 @then("it should exist")

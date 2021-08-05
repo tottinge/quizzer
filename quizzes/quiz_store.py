@@ -3,7 +3,7 @@ import os
 from dataclasses import asdict
 from json import JSONDecodeError
 from logging import getLogger
-from typing import Optional
+from typing import Optional, NamedTuple
 
 from sanitize_filename import sanitize
 
@@ -34,12 +34,29 @@ class QuizStore:
         document = self._read_quiz_document(filename)
         return Quiz.from_json(document) if document else None
 
-    def save_quiz(self, quiz: Quiz) -> None:
+    class SaveQuizResult(NamedTuple):
+        id: str
+        success: bool
+        message: str
+
+    def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
         dir_name = self.quiz_dir
         file_name = filename_for(quiz.name)
         filename = os.path.join(dir_name, file_name + ".json")
-        with open(filename, "w") as output:
-            json.dump(asdict(quiz), output)
+        try:
+            with open(filename, "w") as output:
+                json.dump(asdict(quiz), output)
+            return QuizStore.SaveQuizResult(
+                id=filename,
+                success=True,
+                message = f'saved quiz to {filename}'
+            )
+        except OSError as error:
+            return QuizStore.SaveQuizResult(
+                id=filename,
+                success=False,
+                message=error.strerror
+            )
 
     @staticmethod
     def shutdown():
