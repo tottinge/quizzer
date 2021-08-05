@@ -2,6 +2,9 @@ import unittest
 from json import JSONDecodeError
 from unittest.mock import patch, mock_open
 
+import hamcrest
+from hamcrest import assert_that, contains_inanyorder, is_
+
 from quizzes.quiz_store import QuizStore, logger
 
 
@@ -12,8 +15,8 @@ class QuizStoreTest(unittest.TestCase):
     def test_it_gets_a_summary_of_test(self, *_):
         store = QuizStore()
         expected = {('name', 'a title', 'quiz_content/a.json')}
-        actual = store.get_quiz_summaries()
-        self.assertSetEqual(expected, set(actual))
+        actual = set(store.get_quiz_summaries())
+        assert_that(actual, is_(expected))
 
     @patch('main.QuizStore.get_quiz_summaries', return_value=[
         ('Testquiz', None, 'quiz_content/a.json')
@@ -24,7 +27,7 @@ class QuizStoreTest(unittest.TestCase):
         store = QuizStore()
         test_quiz = 'Testquiz'
         actual = store.get_quiz(test_quiz)
-        self.assertEqual(test_quiz, actual.name)
+        assert_that(actual.name, is_(test_quiz))
 
     @patch('os.listdir', side_effect=FileNotFoundError('boo'))
     def test_returns_empty_list_and_log_exception_if_no_quiz_dir(self, _):
