@@ -8,7 +8,6 @@ Feature: Quiz Authoring
 
   Scenario: Create an empty quiz
     When the author adds a quiz with name "Test Quiz" and title "Test Title"
-
     Then it should be accessible
 
 

@@ -4,7 +4,8 @@ Feature: Edit Quiz
   # Enter feature description here
 
   Background:
-    Given there is a quiz with name "Test Quiz"
+    Given quizzology is running
+    And there is a quiz with name "Test Quiz"
 
   Scenario: Add the first question to a quiz
     Given there is a quiz named "empty" with 0 questions

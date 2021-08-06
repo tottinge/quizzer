@@ -1,24 +1,12 @@
 from behave import *
 # use_step_matcher("re")
 from behave.runner import Context
-from hamcrest import assert_that, not_none, is_
-from tinydb import TinyDB
-from tinydb.storages import MemoryStorage
+from hamcrest import assert_that, not_none, is_, has_item, is_in
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
-from sessions.session_store import SessionStore
 
-
-# @given("quizzology is running")
-# def step_impl(context: Context):
-#     quizzology: Quizzology = Quizzology()
-#     assert quizzology is not None
-#     quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
-#     session_store = SessionStore(TinyDB(storage=MemoryStorage))
-#     quizzology.set_session_store(session_store)
-#     context.quizzology = quizzology
 
 @step("decoys are")
 def step_impl(context: Context):
@@ -38,16 +26,23 @@ def step_impl(context: Context, name: str, title: str):
     assert_that(result.success, is_(True))
 
 
-@then("it should exist")
+@then("it should be accessible")
 def step_impl(context: Context):
-    raise NotImplementedError(u'STEP: Then it should exist')
+    app: Quizzology = context.quizzology
+    names = [x[0] for x in app.quiz_store.get_quiz_summaries()]
+    assert_that(names, has_item(context.quiz.name))
+    assert_that(context.quiz.name, is_in(names))
 
 
 @given('there is a quiz named "{name}" with {questions} questions')
 @given('there is a quiz named "{name}" with {questions} question')
 def step_impl(context: Context, name, questions):
-    quiz = Quiz(name=name, title=name, questions=[])
-    raise NotImplementedError("Quiz store can't create")
+    if questions == 0:
+        questions = []
+    quiz = Quiz(name=name, title=name, questions=questions)
+    store: QuizStore = context.quizzology.quiz_store
+    result = store.save_quiz(quiz)
+    assert_that(result.success, is_(True))
 
 
 @when('the author adds a question "{question_text}"')
