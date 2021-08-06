@@ -1,7 +1,10 @@
-# Created by wpreid at 7/29/21
-@future
 Feature: Quiz Authoring
-  # Enter feature description here
+  The author should be able to create a quiz from scratch,
+  duplicate an existing quiz, or load a quiz from a JSON
+  file.
+  If authoring is easy, it's more likely that the quiz app
+  will be used, compared to the hassle of editing json files
+  directly.
 
   Background:
     Given quizzology is running
