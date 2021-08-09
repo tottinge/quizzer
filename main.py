@@ -63,6 +63,7 @@ def get_static_file(filename):
     return static_file(filename, root=root_path)
 
 
+# noinspection PyProtectedMember
 @bottle.get('/quizzes/<quiz_name>')
 @view("quiz_question")
 def start_quizzing(quiz_name):
@@ -74,6 +75,7 @@ def start_quizzing(quiz_name):
 @view("quiz_question")
 def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
+    # noinspection PyProtectedMember
     return Quizzology.prepare_quiz_question_document(doc,
                                                      question_number)._asdict()
 

@@ -1,5 +1,6 @@
 % rebase('skeleton.tpl', title=title)
 
+<!--suppress HtmlUnknownTarget, HtmlUnknownTarget -->
 <form id="quiz_edit" action="/edit" method="POST">
     <label for="quiz_name">Name</label>
     <input type="text" id="quiz_name" name="name" value="{{quiz.name}}">

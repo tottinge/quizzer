@@ -1,5 +1,6 @@
 % rebase('skeleton.tpl', title=title)
 % include('sub_progress.tpl')
+<!--suppress HtmlUnknownTarget, HtmlUnknownTarget -->
 <section class="w3-panel">
     % if correct:
     <div class="w3-pale-green w3-container" id="confirm_correct">
@@ -7,6 +8,7 @@
         <p>{{confirmation}}</p>
     </div>
     % if next_url:
+    <!--suppress HtmlUnknownTarget -->
     <a class="w3-btn w3-teal w3-round" href={{next_url}} id="next_question">Next Question</a>
     % else:
     <p>You have completed this quiz!</p>
@@ -23,6 +25,7 @@
     % else:
     <p class="w3-container w3-pale-red" id="confirm_incorrect">Your answer <em>"{{selection}}</em> is not what we're
         looking for.</p>
+    <!--suppress HtmlUnknownTarget -->
     <a class="w3-btn w3-teal w3-round" href="{{return_url}}" id="try_again">Try Again</a>
     % end
 </section>

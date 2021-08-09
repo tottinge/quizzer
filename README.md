@@ -7,7 +7,7 @@ Monitoring (we need a unified dashboard or tool):
 * [Heroku](https://dashboard.heroku.com/apps/sample-fun-with-programming/activity)
 
 
-Currently Quizzology is a slow-coding target. We work on it a very little bit at a time, and constantly refer to the
+Currently, Quizzology is a slow-coding target. We work on it a bit at a time, and constantly refer to the
 charter except when there is some shiny idea we want to chase.
 
 We started pretty much architecture and design free. 
@@ -17,7 +17,7 @@ refactoring, evolutionary design, and minimalism.
 
 Don't look at it as a finished product, but a starting point for doing fun stuff.
 * We've added W3.CSS and some HTML5, probably more than we originally intended.
-* We made a heroku app out of this, with github actions for CI
+* We made a heroku app out of this, with GitHub actions for CI
 * We started using type hints to enable better IDE support.
 * We've added TinyDB and are transitioning to MongoDB in short order
 * We got interested in selenium and wrote selenium tests of some basic features.

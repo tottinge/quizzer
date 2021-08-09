@@ -1,6 +1,6 @@
 # Created by wpreid at 5/12/21
 @JIRA_DEX-111
-Feature: Student Researchs A Question
+Feature: Student Researches A Question
   As a Student,
   I want to use the resources provided on a question
   so that I can learn more

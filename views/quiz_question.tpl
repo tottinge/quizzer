@@ -1,6 +1,7 @@
 % rebase('skeleton.tpl', title=quiz.title)
 % include('sub_progress.tpl')
 
+<!--suppress HtmlUnknownTarget, HtmlUnknownTarget, HtmlUnknownTarget -->mlUnknownTarget -->mlUnknownTarget -->
 <form action="/quizzes/{{quiz.name}}/{{question_number}}" class="w3-container" method="POST">
     % from random import shuffle
     % choices = [*question.decoys,question.answer]
@@ -26,7 +27,8 @@
 <div class="w3-panel w3-dropdown-hover">
     <button class="w3-button w3-round w3-light-gray">Additional Resources</button>
     <section class="w3-dropdown-content w3-bar-block w3-border" id="resources">
-        % for (text, url) in question.resources:
+        % for (text<!--suppress HtmlUnknownTarget -->
+        , url) in question.resources:
         <a class="w3-button w3-bar-item"
            href="{{ url }}"
            rel="noreferrer noopener"
