@@ -1,7 +1,9 @@
+from typing import List
+
 from behave import *
 # use_step_matcher("re")
 from behave.runner import Context
-from hamcrest import assert_that, not_none, is_, has_item, is_in
+from hamcrest import assert_that, not_none, is_, has_item, is_in, equal_to
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
@@ -29,9 +31,9 @@ def step_impl(context: Context, name: str, title: str):
 @then("it should be accessible")
 def step_impl(context: Context):
     app: Quizzology = context.quizzology
-    names = [x[0] for x in app.quiz_store.get_quiz_summaries()]
-    assert_that(names, has_item(context.quiz.name))
-    assert_that(context.quiz.name, is_in(names))
+    defined_quiz_names: List[str] = [summary.name
+                        for summary in app.quiz_store.get_quiz_summaries()]
+    assert_that(context.quiz.name, is_in(defined_quiz_names))
 
 
 @given('there is a quiz named "{name}" with {questions} questions')

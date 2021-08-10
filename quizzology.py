@@ -1,8 +1,8 @@
-from typing import NamedTuple
+from typing import NamedTuple, Iterable
 
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
+from quizzes.quiz_store import QuizStore, QuizSummary
 from sessions.session_store import SessionStore
 
 SESSION_COOKIE_ID = "qz_current_quiz"
@@ -18,7 +18,7 @@ class Quizzology:
     def set_session_store(self, session_store: SessionStore):
         self.session_store = session_store
 
-    def get_quiz_summaries(self) -> list:
+    def get_quiz_summaries(self) -> Iterable[QuizSummary]:
         return self.quiz_store.get_quiz_summaries()
 
     def get_quiz_by_name(self, quiz_name: str) -> Quiz:

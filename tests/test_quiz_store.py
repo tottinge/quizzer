@@ -4,7 +4,7 @@ from unittest.mock import patch, mock_open
 
 from hamcrest import assert_that, is_
 
-from quizzes.quiz_store import QuizStore, logger
+from quizzes.quiz_store import QuizStore, logger, QuizSummary
 
 
 class QuizStoreTest(unittest.TestCase):
@@ -13,7 +13,7 @@ class QuizStoreTest(unittest.TestCase):
     @patch('json.load', return_value=dict(name="name", title="a title"))
     def test_it_gets_a_summary_of_test(self, *_):
         store = QuizStore()
-        expected = {('name', 'a title', 'quiz_content/a.json')}
+        expected = {QuizSummary('name', 'a title', 'quiz_content/a.json')}
         actual = set(store.get_quiz_summaries())
         assert_that(actual, is_(expected))
 

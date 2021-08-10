@@ -26,6 +26,10 @@ defang_bad_chars = str.maketrans({
 def filename_for(name):
     return sanitize(name.translate(defang_bad_chars) + '.json')
 
+class QuizSummary(NamedTuple):
+    name: str
+    title: str
+    id: str
 
 class QuizStore:
     """ For consideration
@@ -36,7 +40,7 @@ class QuizStore:
     def __init__(self, dir_name='quiz_content'):
         self.quiz_dir = dir_name
 
-    def get_quiz_summaries(self) -> typing.Iterable:
+    def get_quiz_summaries(self) -> typing.Iterable[QuizSummary]:
         file_list = self._get_quiz_files_from_directory(self.quiz_dir)
         return self._get_quiz_summaries_from_file_list(file_list)
 
@@ -86,12 +90,15 @@ class QuizStore:
             logger.error(f"Reading quiz directory: {error}")
             return []
 
+    # ToDo: Create a NamedTuple for the summaries
     def _get_quiz_summaries_from_file_list(self,
                                            quiz_file_paths) -> typing.Iterable:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
-                yield document['name'], document['title'], quiz_filename
+                yield QuizSummary(document['name'],
+                                  document['title'],
+                                  quiz_filename)
             except json.JSONDecodeError as err:
                 logger.error(f"FAILED: {quiz_filename}: {str(err)}")
 
@@ -102,8 +109,8 @@ class QuizStore:
 
     def _find_file_for_named_quiz(self, quiz_name: str) -> str:
         lookup = {
-            name: filename
-            for (name, _, filename)
+            summary.name: summary.id
+            for summary
             in self.get_quiz_summaries()
         }
         filename = lookup.get(quiz_name)
