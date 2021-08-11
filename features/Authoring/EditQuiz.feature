@@ -9,15 +9,25 @@ Feature: Edit Quiz
 
   Scenario: Add the first question to a quiz
     Given there is a quiz named "empty" with 0 questions
-    When the author adds a question "Is there a question here?"
-    * the answer is "Not Yet"
-    * decoys are
-      | Yes | No | Unsure |
-    * confirmation is "There is one to come which will be added"
-    Then there is one question in "empty"
+
+    And a question is created
+      | question     | Are the tomatoes ripe?                       |
+      | answer       | Not yet                                      |
+      | confirmation | Tomatoes ripen in their own time. Be patient |
+    * with decoys
+      | always     |
+      | never      |
+    * with resources:
+      | http://google.com         | Try google!                            |
+      | http://stackoverflow.com/ | try someone else's answer              |
+      | http://facebook.com/      | use conspiracy theories and falsehoods |
+
+    When the author adds the question
+
+    Then there is 1 question in "empty"
     And the first question has
       | Decoys | Resources |
-      | 3      | 2         |
+      | 3      | 0         |
 
   Scenario: Author adds resources to a question
     Given there is a quiz named "populated" with 1 question
