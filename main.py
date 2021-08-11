@@ -13,7 +13,7 @@ that serves up quizzes and tracks answers.
 """
 import os
 import signal
-from logging import getLogger
+from logging import getLogger, Logger
 
 import bottle
 from bottle import (
@@ -28,7 +28,7 @@ from sessions.session_store import SessionStore
 
 quizzology = Quizzology()
 
-logger = getLogger(__name__)
+logger: Logger = getLogger(__name__)
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 
 from beaker import middleware
