@@ -1,10 +1,9 @@
 import json
 import os
-import typing
 from dataclasses import asdict
 from json import JSONDecodeError
 from logging import getLogger
-from typing import Optional, NamedTuple
+from typing import Optional, NamedTuple, Iterable
 
 from sanitize_filename import sanitize
 
@@ -26,10 +25,12 @@ defang_bad_chars = str.maketrans({
 def filename_for(name):
     return sanitize(name.translate(defang_bad_chars) + '.json')
 
+
 class QuizSummary(NamedTuple):
     name: str
     title: str
     id: str
+
 
 class QuizStore:
     """ For consideration
@@ -40,7 +41,7 @@ class QuizStore:
     def __init__(self, dir_name='quiz_content'):
         self.quiz_dir = dir_name
 
-    def get_quiz_summaries(self) -> typing.Iterable[QuizSummary]:
+    def get_quiz_summaries(self) -> Iterable[QuizSummary]:
         file_list = self._get_quiz_files_from_directory(self.quiz_dir)
         return self._get_quiz_summaries_from_file_list(file_list)
 
@@ -91,14 +92,14 @@ class QuizStore:
             return []
 
     # ToDo: Create a NamedTuple for the summaries
-    def _get_quiz_summaries_from_file_list(self,
-                                           quiz_file_paths) -> typing.Iterable:
+    def _get_quiz_summaries_from_file_list(self, quiz_file_paths) -> Iterable[
+        QuizSummary]:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
-                yield QuizSummary(document['name'],
-                                  document['title'],
-                                  quiz_filename)
+                summary = QuizSummary(document['name'], document['title'],
+                                      quiz_filename)
+                yield summary
             except json.JSONDecodeError as err:
                 logger.error(f"FAILED: {quiz_filename}: {str(err)}")
 

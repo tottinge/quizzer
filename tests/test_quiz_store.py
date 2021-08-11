@@ -18,7 +18,7 @@ class QuizStoreTest(unittest.TestCase):
         assert_that(actual, is_(expected))
 
     @patch('main.QuizStore.get_quiz_summaries', return_value=[
-        ('Testquiz', None, 'quiz_content/a.json')
+        QuizSummary('Testquiz', None, 'quiz_content/a.json')
     ])
     @patch('main.QuizStore._read_quiz_doc_from_file',
            return_value=dict(name='Testquiz'))
@@ -42,7 +42,7 @@ class QuizStoreTest(unittest.TestCase):
     @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
     def test_json_file_invalid(self, summaries_mock, *_):
         summaries_mock.return_value = [
-            ('nonesuch', 'no title', 'nonesuch.json'), ]
+            QuizSummary('nonesuch', 'no title', 'nonesuch.json'), ]
         store = QuizStore()
         quiz = store.get_quiz('nonesuch')
         assert_that(quiz, is_(None))
@@ -73,7 +73,7 @@ class QuizStoreTest(unittest.TestCase):
         store = QuizStore()
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
-            expected = [('pass', 'a test that passes', 'd/pass.json')]
+            expected = [QuizSummary('pass', 'a test that passes', 'd/pass.json')]
             actual = store._get_quiz_summaries_from_file_list(['d/pass.json'])
             assert_that(list(actual), is_(expected))
 
@@ -81,8 +81,8 @@ class QuizStoreTest(unittest.TestCase):
     def test_get_summary_returns_multiple_summary(self):
         store = QuizStore()
         expected = [
-            ('cats', 'a tests about felines', 'd/cats.json'),
-            ('dogs', 'explore the canine world', 'd/dogs.json')
+            QuizSummary('cats', 'a tests about felines', 'd/cats.json'),
+            QuizSummary('dogs', 'explore the canine world', 'd/dogs.json')
         ]
         filenames = [path for (_, _, path) in expected]
         json_docs = [dict(name=name, title=title)
