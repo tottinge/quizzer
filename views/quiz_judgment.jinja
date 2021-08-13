@@ -1,0 +1,41 @@
+<!-- First attempt at converting to jinja2 from SimpleTemplateEngine
+ -- We'll need to have a title block and a content block in our master doc.
+ -- Pycharm definitely understands the Jinja2 template rather than STE.
+-->
+
+{% extends('skeleton.tpl') %} <!-- won't work yet, needs to be jinja skeleton -->
+{% block title %}{{ title }}{% endblock %} <!-- we don't pass values to included bits, we have blocks -->
+
+{% block content %}
+{% include('sub_progress.tpl') %}
+<section class="w3-panel">
+
+    {% if correct %}
+        <div class="w3-pale-green w3-container" id="confirm_correct">
+            <p>Your answer <em>{{selection}}</em> is correct</p>
+            <p>{{confirmation}}</p>
+        </div>
+        {% if next_url %}
+            <a class="w3-btn w3-teal w3-round" href={{next_url}} id="next_question">Next Question</a>
+        {% else %}
+            <p>You have completed this quiz!</p>
+            <div id="quiz_performance">
+                {% if incorrect_answers == 0 %}
+                <p>You answered perfectly. Well done, you!</p>
+                {% else %}
+                <p>You answered incorrectly only {{incorrect_answers}} times.</p>
+                {% endif %}
+            </div>
+
+            <a class="w3-btn w3-teal w3-round" href="/" id="go_home">Rock On</a>
+        {% endif %}
+
+    {% else %}
+
+        <p class="w3-container w3-pale-red" id="confirm_incorrect">Your answer <em>"{{selection}}</em> is not what we're
+            looking for.</p>
+        <a class="w3-btn w3-teal w3-round" href="{{return_url}}" id="try_again">Try Again</a>
+
+    {% endif %}
+</section>
+{%  endblock %}
