@@ -36,17 +36,6 @@ def step_impl(context: Context):
     assert_that(context.quiz.name, is_in(defined_quiz_names))
 
 
-@given('there is a quiz named "{name}" with {questions} questions')
-@given('there is a quiz named "{name}" with {questions} question')
-def step_impl(context: Context, name, questions):
-    if questions == 0:
-        questions = []
-    quiz = Quiz(name=name, title=name, questions=questions)
-    store: QuizStore = context.quizzology.quiz_store
-    result = store.save_quiz(quiz)
-    assert_that(result.success, is_(True))
-
-
 @when('the author adds a question "{question_text}"')
 def step_impl(context: Context, question_text):
     raise NotImplementedError(

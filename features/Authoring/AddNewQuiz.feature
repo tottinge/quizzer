@@ -9,6 +9,7 @@ Feature: Quiz Authoring
   Background:
     Given quizzology is running
 
+  @finished
   Scenario: Create an empty quiz
     When the author adds a quiz with name "Test Quiz" and title "Test Title"
     Then it should be accessible

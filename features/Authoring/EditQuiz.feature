@@ -5,29 +5,32 @@ Feature: Edit Quiz
 
   Background:
     Given quizzology is running
-    And there is a quiz with name "Test Quiz"
+    And there is a quiz with name "quiz2edit"
+
+  Scenario: Add a simple question to an empty quiz
+    When a question is added
+      | Field        | Value                                        |
+      | question     | Are the tomatoes ripe?                       |
+      | answer       | Not yet                                      |
+      | confirmation | Tomatoes ripen in their own time. Be patient |
+    Then there is 1 question in "quiz2edit"
 
   Scenario: Add the first question to a quiz
-    Given there is a quiz named "empty" with 0 questions
-
-    And a question is created
+    When a question is created
       | question     | Are the tomatoes ripe?                       |
       | answer       | Not yet                                      |
       | confirmation | Tomatoes ripen in their own time. Be patient |
     * with decoys
-      | always     |
-      | never      |
-    * with resources:
+      | always |
+      | never  |
+    * with resources
       | http://google.com         | Try google!                            |
       | http://stackoverflow.com/ | try someone else's answer              |
       | http://facebook.com/      | use conspiracy theories and falsehoods |
-
-    When the author adds the question
-
-    Then there is 1 question in "empty"
+    Then there is 1 question in "quiz2edit"
     And the first question has
       | Decoys | Resources |
-      | 3      | 0         |
+      | 2      | 3         |
 
   Scenario: Author adds resources to a question
     Given there is a quiz named "populated" with 1 question

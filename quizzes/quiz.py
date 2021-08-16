@@ -26,7 +26,7 @@ class Quiz:
     def has_questions(self):
         return len(self.questions) > 0
 
-    def number_of_questions(self):
+    def number_of_questions(self) -> int:
         return len(self.questions)
 
     def question_by_number(self, number: int) -> Question:
@@ -57,3 +57,6 @@ class Quiz:
             if likely_next <= self.last_question_number()
             else None
         )
+
+    def add_question(self, question):
+        self.questions.append(question)
