@@ -21,6 +21,7 @@ from bottle import (
 )
 from tinydb import TinyDB
 
+import apps
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
@@ -34,6 +35,9 @@ PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
 from beaker import middleware
 
 app = middleware.SessionMiddleware(bottle.app(), {})
+
+from apps.author import app as authoring_app
+bottle.mount('/author/', authoring_app)
 # app = bottle.app()
 
 @bottle.route('/')

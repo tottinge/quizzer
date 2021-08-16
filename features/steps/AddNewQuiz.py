@@ -20,7 +20,6 @@ def step_impl(context: Context):
 
 @when('the author adds a quiz with name "{name}" and title "{title}"')
 def step_impl(context: Context, name: str, title: str):
-    assert_that(context.temporary_directory, not_none())
     quiz = Quiz(name, title)
     context.quiz = quiz
     model: Quizzology = context.quizzology
