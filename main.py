@@ -16,44 +16,27 @@ import signal
 from logging import getLogger, Logger
 
 import bottle
+from beaker import middleware
 from bottle import (
     run, view, request, response, static_file, redirect
 )
-from tinydb import TinyDB
 
-import apps
+from apps.author import app as authoring_app
+from apps.study import app as quizzing_app, quizzology
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology, SESSION_COOKIE_ID
-from sessions.session_store import SessionStore
-
-quizzology = Quizzology()
 
 logger: Logger = getLogger(__name__)
-PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
-
-from beaker import middleware
 
 app = middleware.SessionMiddleware(bottle.app(), {})
 
-from apps.author import app as authoring_app
-bottle.mount('/author/', authoring_app)
-# app = bottle.app()
+bottle.mount('/author', authoring_app)
+bottle.mount('/study', quizzing_app)
+
 
 @bottle.route('/')
-@bottle.route('/quizzes')
-def menu_of_quizzes(title: str = "Quizzology"):
-    """
-    Display links to selectable quizzes from quiz store
-    """
-    quizzology.begin_session(response)
-    summaries = quizzology.get_quiz_summaries()
-    return render_menu_of_quizzes(title, summaries)
-
-
-@view("quiz_selection")
-def render_menu_of_quizzes(title, choices):
-    return dict(title=title, choices=choices)
+def menu_of_quizzes():
+    redirect('/study')
 
 
 @bottle.route('/favicon.ico')
@@ -91,6 +74,7 @@ def do_nothing_interesting():
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz"
     }
+
 
 @bottle.post('/edit')
 def just_looking_move_along():
@@ -133,15 +117,15 @@ def show_me():
     session environment. It's probably not recommended for production
     use - it's hard to say what opportunities it leaves hackers.
     """
-    REMOTE_ADDR = 'REMOTE_ADDR'
-    FORWARDED_FOR = "HTTP_X_FORWARDED_FOR"
+    remote_addr_header = 'REMOTE_ADDR'
+    x_forward_header = "HTTP_X_FORWARDED_FOR"
 
-    fwd_for = request.environ.get(FORWARDED_FOR,
+    fwd_for = request.environ.get(x_forward_header,
                                   "not listed in HTTP_X-forwarded")
-    remote = request.environ.get(REMOTE_ADDR, "not listed in remote addr")
-    last_fwd_addr = request.environ.get(FORWARDED_FOR, "").split(" ")[-1]
+    remote = request.environ.get(remote_addr_header, "not listed in remote addr")
+    last_fwd_addr = request.environ.get(x_forward_header, "").split(" ")[-1]
     who_are_you = last_fwd_addr \
-                  or request.environ.get(REMOTE_ADDR) \
+                  or request.environ.get(remote_addr_header) \
                   or "a ninja"
     print("Remote route", request.remote_route)
     env_vars = (f"<span>{key}: {value}</span><br>"
@@ -205,14 +189,8 @@ def drop_client_session_id(response):
 
 
 def main():
-    setup_quizzology()
     host_name, port_number = get_endpoint_address()
     run(app, host=host_name, port=port_number, reloader=True, debug=True)
-
-
-def setup_quizzology():
-    quizzology.set_quiz_store(QuizStore())
-    quizzology.set_session_store(prepare_session_store())
 
 
 def get_endpoint_address() -> tuple[str, int]:
@@ -220,13 +198,6 @@ def get_endpoint_address() -> tuple[str, int]:
     heroku_port = os.environ.get('PORT', '4000')
     port_number = int(os.environ.get('QUIZ_PORT', heroku_port))
     return host_name, port_number
-
-
-def prepare_session_store() -> SessionStore:
-    path = os.path.dirname(PATH_TO_LOG_DB)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    return SessionStore(TinyDB(PATH_TO_LOG_DB))
 
 
 def shutdown(signum, frame):

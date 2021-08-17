@@ -1,6 +1,6 @@
 import unittest
 from json import JSONDecodeError
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, MagicMock
 
 from hamcrest import assert_that, is_
 
@@ -17,15 +17,18 @@ class QuizStoreTest(unittest.TestCase):
         actual = set(store.get_quiz_summaries())
         assert_that(actual, is_(expected))
 
-    @patch('main.QuizStore.get_quiz_summaries', return_value=[
-        QuizSummary('Testquiz', None, 'quiz_content/a.json')
-    ])
-    @patch('main.QuizStore._read_quiz_doc_from_file',
-           return_value=dict(name='Testquiz'))
     def test_it_retrieves_a_quiz(self, *_):
         store = QuizStore()
         test_quiz = 'Testquiz'
+        store.get_quiz_summaries = MagicMock(return_value=[
+            QuizSummary('Testquiz', None, 'quiz_content/a.json')
+        ])
+        store._read_quiz_doc_from_file = MagicMock(
+            return_value=dict(name='Testquiz')
+        )
+
         actual = store.get_quiz(test_quiz)
+
         assert_that(actual.name, is_(test_quiz))
 
     @patch('os.listdir', side_effect=FileNotFoundError('boo'))
@@ -37,13 +40,13 @@ class QuizStoreTest(unittest.TestCase):
             self.assertEqual([], returned_summaries)
             logger.error.assert_called_with("Reading quiz directory: boo")
 
-    @patch('main.QuizStore.get_quiz_summaries')
     @patch('builtins.open')
     @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
     def test_json_file_invalid(self, summaries_mock, *_):
-        summaries_mock.return_value = [
-            QuizSummary('nonesuch', 'no title', 'nonesuch.json'), ]
         store = QuizStore()
+        store.get_quiz_summaries = MagicMock(return_value = [
+            QuizSummary('nonesuch', 'no title', 'nonesuch.json'),
+        ])
         quiz = store.get_quiz('nonesuch')
         assert_that(quiz, is_(None))
 
@@ -73,7 +76,8 @@ class QuizStoreTest(unittest.TestCase):
         store = QuizStore()
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
-            expected = [QuizSummary('pass', 'a test that passes', 'd/pass.json')]
+            expected = [
+                QuizSummary('pass', 'a test that passes', 'd/pass.json')]
             actual = store._get_quiz_summaries_from_file_list(['d/pass.json'])
             assert_that(list(actual), is_(expected))
 
