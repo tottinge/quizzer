@@ -2,7 +2,7 @@ import unittest
 
 from bottle import LocalRequest, LocalResponse
 
-from main import get_client_session_id, drop_client_session_id
+from sessions.session_id import drop_client_session_id, get_client_session_id
 from quizzology import SESSION_COOKIE_ID
 
 

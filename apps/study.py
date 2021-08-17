@@ -58,3 +58,5 @@ def ask_question(quiz_name, question_number) -> dict:
 
 def url_for(quiz: Quiz, question_number: int):
     return f"/study/{quiz.name}/{question_number}"
+
+

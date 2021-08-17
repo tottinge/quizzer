@@ -24,7 +24,7 @@ from bottle import (
 from apps.author import app as authoring_app
 from apps.study import app as quizzing_app, quizzology, url_for
 from quizzes.quiz import Quiz
-from quizzology import Quizzology, SESSION_COOKIE_ID
+from sessions.session_id import get_client_session_id
 
 logger: Logger = getLogger(__name__)
 
@@ -159,18 +159,6 @@ def show_session():
     beaker_section = '<div>Beaker: ' + "".join(beaker_session) + "</div>"
 
     return "<br>".join(text_answers) + beaker_section
-
-
-def get_client_session_id(request, response) -> str:
-    session_id = request.get_cookie(SESSION_COOKIE_ID)
-    if not session_id:
-        session_id = quizzology.new_session_id()
-        response.set_cookie(SESSION_COOKIE_ID, session_id, path="/")
-    return session_id
-
-
-def drop_client_session_id(response):
-    response.delete_cookie(SESSION_COOKIE_ID, path="/")
 
 
 def main():
