@@ -22,7 +22,7 @@ from bottle import (
 )
 
 from apps.author import app as authoring_app
-from apps.study import app as quizzing_app, quizzology
+from apps.study import app as quizzing_app, quizzology, url_for
 from quizzes.quiz import Quiz
 from quizzology import Quizzology, SESSION_COOKIE_ID
 
@@ -78,9 +78,6 @@ def check_answer(quiz_name, question_number):
     quiz = quizzology.get_quiz_by_name(quiz_name)
     return render_judgment(quiz, question_number, selection)
 
-
-def url_for(quiz: Quiz, question_number: int):
-    return f"/study/{quiz.name}/{question_number}"
 
 
 @view("quiz_judgment")

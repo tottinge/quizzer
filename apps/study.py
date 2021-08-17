@@ -3,6 +3,7 @@ import os
 from bottle import Bottle, response, view
 from tinydb import TinyDB
 
+from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from quizzology import Quizzology
 from sessions.session_store import SessionStore
@@ -43,6 +44,7 @@ def menu_of_quizzes(title: str = "Quizzology"):
 def render_menu_of_quizzes(title, choices):
     return dict(title=title, choices=choices)
 
+
 @app.get('/<quiz_name>/<question_number:int>')
 @view("quiz_question")
 def ask_question(quiz_name, question_number) -> dict:
@@ -53,3 +55,6 @@ def ask_question(quiz_name, question_number) -> dict:
         question_number
     )._asdict()
 
+
+def url_for(quiz: Quiz, question_number: int):
+    return f"/study/{quiz.name}/{question_number}"
