@@ -99,9 +99,6 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
         question_number, quiz, selection, session_id
     )
 
-    # Todo: Figure out how to use the session middleware
-    # app.session['answer'] = results.selection, results.correct
-
     go_next = results.next_question_number
     additions = dict(
         next_url=url_for(quiz, go_next) if go_next else None,
