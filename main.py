@@ -66,7 +66,6 @@ def check_answer(quiz_name, question_number):
     return render_judgment(quiz, question_number, selection)
 
 
-
 @view("quiz_judgment")
 def render_judgment(quiz: Quiz, question_number: int, selection: str):
     session_id = get_client_session_id(request, response)
@@ -94,7 +93,8 @@ def show_me():
 
     fwd_for = request.environ.get(x_forward_header,
                                   "not listed in HTTP_X-forwarded")
-    remote = request.environ.get(remote_addr_header, "not listed in remote addr")
+    remote = request.environ.get(remote_addr_header,
+                                 "not listed in remote addr")
     last_fwd_addr = request.environ.get(x_forward_header, "").split(" ")[-1]
     who_are_you = last_fwd_addr \
                   or request.environ.get(remote_addr_header) \
