@@ -42,3 +42,14 @@ def menu_of_quizzes(title: str = "Quizzology"):
 @view("quiz_selection")
 def render_menu_of_quizzes(title, choices):
     return dict(title=title, choices=choices)
+
+@app.get('/<quiz_name>/<question_number:int>')
+@view("quiz_question")
+def ask_question(quiz_name, question_number) -> dict:
+    doc = quizzology.get_quiz_by_name(quiz_name)
+    # noinspection PyProtectedMember
+    return Quizzology.prepare_quiz_question_document(
+        doc,
+        question_number
+    )._asdict()
+

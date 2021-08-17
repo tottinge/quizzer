@@ -58,15 +58,6 @@ def start_quizzing(quiz_name):
         quizzology.get_quiz_by_name(quiz_name))._asdict()
 
 
-@bottle.get('/quizzes/<quiz_name>/<question_number:int>')
-@view("quiz_question")
-def ask_question(quiz_name, question_number) -> dict:
-    doc = quizzology.get_quiz_by_name(quiz_name)
-    # noinspection PyProtectedMember
-    return Quizzology.prepare_quiz_question_document(doc,
-                                                     question_number)._asdict()
-
-
 @bottle.get('/edit')
 @view('quiz_authoring_form')
 def do_nothing_interesting():
@@ -89,7 +80,7 @@ def check_answer(quiz_name, question_number):
 
 
 def url_for(quiz: Quiz, question_number: int):
-    return f"/quizzes/{quiz.name}/{question_number}"
+    return f"/study/{quiz.name}/{question_number}"
 
 
 @view("quiz_judgment")
