@@ -1,4 +1,4 @@
-from quizzology import SESSION_COOKIE_ID
+from studycontroller import SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
 
 

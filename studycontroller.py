@@ -8,7 +8,7 @@ from sessions.session_store import SessionStore
 SESSION_COOKIE_ID = "qz_current_quiz"
 
 
-class Quizzology:
+class StudyController:
     quiz_store = None
     session_store = None
 
@@ -52,7 +52,7 @@ class Quizzology:
         selected_question = quiz.question_by_number(question_number) \
             if quiz.has_questions() \
             else Question.from_json({})
-        return Quizzology.PreparedQuestion(
+        return StudyController.PreparedQuestion(
             quiz=quiz,
             question=selected_question,
             question_number=question_number
@@ -100,7 +100,7 @@ class Quizzology:
         next_question_number = quiz.next_question_number(question_number) \
             if correct \
             else None
-        return Quizzology.RecordedAnswer(
+        return StudyController.RecordedAnswer(
             quiz=quiz,
             title=quiz.title,
             question_number=question_number,

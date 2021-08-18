@@ -18,6 +18,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
     get_likely_port
 
+CATS_QUIZ = "/study/catsquiz"
+
 
 class TestNavigation(TestCase):
     """
@@ -47,7 +49,7 @@ class TestNavigation(TestCase):
 
     def test_answer_a_question_correctly_and_get_confirmation(self):
         self.reset_session()
-        self.get_page("/study/catsquiz")
+        self.get_page(CATS_QUIZ)
         self.select_value("Gray")
         self.submit_answer()
         self.wait_for_confirmation('confirm_correct')
@@ -56,7 +58,7 @@ class TestNavigation(TestCase):
 
     def test_answer_a_question_incorrectly_and_get_badNews(self):
         self.reset_session()
-        self.get_page("/study/catsquiz")
+        self.get_page(CATS_QUIZ)
         self.select_value("Fluffybutt")
         self.submit_answer()
         self.wait_for_confirmation("confirm_incorrect")
@@ -65,7 +67,7 @@ class TestNavigation(TestCase):
 
     def test_complete_a_quiz_perfectly(self):
         self.reset_session()
-        self.get_page("/study/catsquiz")
+        self.get_page(CATS_QUIZ)
         for answer in ["Gray", "Jack", "Fluffybutt", "Gray", "Phydeaux"]:
 
             self.select_value(answer)

@@ -13,13 +13,13 @@ from tinydb.storages import MemoryStorage
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from quizzology import Quizzology
+from studycontroller import StudyController
 from sessions.session_store import SessionStore, AnswerEntry
 
 
 @given("quizzology is running")
 def step_impl(context: Context):
-    quizzology: Quizzology = Quizzology()
+    quizzology: StudyController = StudyController()
     assert quizzology is not None
     quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
@@ -50,7 +50,7 @@ def step_impl(context: Context, quiz_name: str):
     save_quiz(context, quiz)
 
 
-def current_question(context: Context) -> Quizzology.PreparedQuestion:
+def current_question(context: Context) -> StudyController.PreparedQuestion:
     """
     Establishes the type of the current_question object to aid the
     IDE
@@ -127,7 +127,7 @@ def step_impl(context: Context, question_text: str):
 
 @step("the log shows the question was answered {how}")
 def step_impl(context: Context, how: str):
-    quizzology: Quizzology = context.quizzology
+    quizzology: StudyController = context.quizzology
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
     question_number = context.recent_answer.question_number
@@ -154,7 +154,7 @@ def step_impl(context: Context):
         answer, expected = row['answer'], row.get('expected', 'right')
 
         question = current_question(context)
-        recent_answer: Quizzology.RecordedAnswer = \
+        recent_answer: StudyController.RecordedAnswer = \
             context.quizzology.record_answer_and_get_status(
                 question_number=question.question_number,
                 quiz=question.quiz,
@@ -178,7 +178,7 @@ def step_impl(context: Context):
 
 @then("we have completed the quiz")
 def step_impl(context: Context):
-    recent_answer: Quizzology.RecordedAnswer = context.recent_answer
+    recent_answer: StudyController.RecordedAnswer = context.recent_answer
     assert_that(recent_answer.quiz_is_finished(), is_(True))
 
 
@@ -194,11 +194,11 @@ def step_impl(context: Context):
 
 @step("we cannot go to the next question")
 def step_impl(context: Context):
-    recent_answer: Quizzology.RecordedAnswer = context.recent_answer
+    recent_answer: StudyController.RecordedAnswer = context.recent_answer
     assert_that(recent_answer.next_question_number, none())
 
 
 @step("{oopses:d} incorrect answer was given")
 def step_impl(context: Context, oopses: int):
-    recent_answer: Quizzology.RecordedAnswer = context.recent_answer
+    recent_answer: StudyController.RecordedAnswer = context.recent_answer
     assert_that(oopses, equal_to(recent_answer.incorrect_answers))

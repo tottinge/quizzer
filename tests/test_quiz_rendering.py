@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from quizzology import Quizzology
+from studycontroller import StudyController
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -36,7 +36,7 @@ class TestQuizRendering(unittest.TestCase):
                          answer="I'm lazy")
             ]
         )
-        document = Quizzology.prepare_quiz_question_document(document, 0)
+        document = StudyController.prepare_quiz_question_document(document, 0)
         html = template('quiz_question', document._asdict())
         page = BeautifulSoup(html, 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
@@ -76,7 +76,7 @@ class TestQuizRendering(unittest.TestCase):
                          resources=resources or [])
             ]
         )
-        question_document = Quizzology.prepare_quiz_question_document(document,
-                                                                      0)
+        question_document = StudyController.prepare_quiz_question_document(document,
+                                                                           0)
         markup = template('quiz_question', question_document._asdict())
         return BeautifulSoup(markup, "html.parser")

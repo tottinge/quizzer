@@ -7,7 +7,7 @@ from hamcrest import assert_that, not_none, is_, has_item, is_in, equal_to
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from quizzology import Quizzology
+from studycontroller import StudyController
 
 
 @step("decoys are")
@@ -22,14 +22,14 @@ def step_impl(context: Context):
 def step_impl(context: Context, name: str, title: str):
     quiz = Quiz(name, title)
     context.quiz = quiz
-    model: Quizzology = context.quizzology
+    model: StudyController = context.quizzology
     result = model.quiz_store.save_quiz(quiz)
     assert_that(result.success, is_(True))
 
 
 @then("it should be accessible")
 def step_impl(context: Context):
-    app: Quizzology = context.quizzology
+    app: StudyController = context.quizzology
     defined_quiz_names: List[str] = [summary.name
                         for summary in app.quiz_store.get_quiz_summaries()]
     assert_that(context.quiz.name, is_in(defined_quiz_names))

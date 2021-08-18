@@ -5,11 +5,11 @@ from tinydb import TinyDB
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from quizzology import Quizzology
+from studycontroller import StudyController
 from sessions.session_id import get_client_session_id
 from sessions.session_store import SessionStore
 
-quizzology = Quizzology()
+quizzology = StudyController()
 
 
 def setup_quizzology():
@@ -59,7 +59,7 @@ def get_quiz_first_question(quiz_name: str):
 def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
     # noinspection PyProtectedMember
-    return Quizzology.prepare_quiz_question_document(
+    return StudyController.prepare_quiz_question_document(
         doc,
         question_number
     )._asdict()
