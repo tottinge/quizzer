@@ -1,7 +1,7 @@
 % rebase('skeleton.tpl', title=quiz.title)
 % include('sub_progress.tpl')
 
-<form action="/quizzes/{{quiz.name}}/{{question_number}}" class="w3-container" method="POST">
+<form action="/study/{{quiz.name}}/{{question_number}}" class="w3-container" method="POST">
     % from random import shuffle
     % choices = [*question.decoys,question.answer]
     % shuffle(choices)

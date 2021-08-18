@@ -18,13 +18,11 @@ from logging import getLogger, Logger
 import bottle
 from beaker import middleware
 from bottle import (
-    run, view, request, response, static_file, redirect
+    run, view, request, static_file, redirect
 )
 
 from apps.author import app as authoring_app
-from apps.study import app as quizzing_app, quizzology, url_for
-from quizzes.quiz import Quiz
-from sessions.session_id import get_client_session_id
+from apps.study import app as quizzing_app, quizzology
 
 logger: Logger = getLogger(__name__)
 
@@ -52,33 +50,8 @@ def get_static_file(filename):
 
 # noinspection PyProtectedMember
 @bottle.get('/quizzes/<quiz_name>')
-@view("quiz_question")
 def start_quizzing(quiz_name):
-    return quizzology.begin_quiz(
-        quizzology.get_quiz_by_name(quiz_name)
-    )._asdict()
-
-
-@bottle.post('/quizzes/<quiz_name>/<question_number:int>')
-def check_answer(quiz_name, question_number):
-    selection = request.forms.get('answer')
-    quiz = quizzology.get_quiz_by_name(quiz_name)
-    return render_judgment(quiz, question_number, selection)
-
-
-@view("quiz_judgment")
-def render_judgment(quiz: Quiz, question_number: int, selection: str):
-    session_id = get_client_session_id(request, response)
-    results = quizzology.record_answer_and_get_status(
-        question_number, quiz, selection, session_id
-    )
-
-    go_next = results.next_question_number
-    additions = dict(
-        next_url=url_for(quiz, go_next) if go_next else None,
-        return_url=url_for(quiz, question_number)
-    )
-    return {**results._asdict(), **additions}
+    redirect(f'/study/{quiz_name}')
 
 
 @bottle.get("/me")

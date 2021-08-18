@@ -5,9 +5,7 @@ from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
 import main
-from main import (
-    render_judgment
-)
+from apps.study import render_judgment, url_for
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from sessions.session_store import SessionStore
@@ -67,8 +65,11 @@ class TestSession(unittest.TestCase):
         self.assertIn(self.question.confirmation, confirmation_tag.text)
 
     def test_offers_next_question_if_any_exist(self):
-        second_question = Question(question="Second", decoys=[],
-                                   answer="answer")
+        second_question = Question(
+            question="Second",
+            decoys=[],
+            answer="answer"
+        )
         quiz = Quiz(
             title='2q',
             name='Test2Questions',
@@ -83,7 +84,7 @@ class TestSession(unittest.TestCase):
                              "Should have next_question link.")
 
         expected_question_number = quiz.next_question_number(0)
-        expected_url = main.url_for(quiz, expected_question_number)
+        expected_url = url_for(quiz, expected_question_number)
         self.assertEqual(expected_url, next_page_anchor['href'])
 
     def test_no_next_url_offered_if_no_more_questions_exist(self):

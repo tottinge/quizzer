@@ -24,8 +24,8 @@ class TestQuizSelection(TestCase):
         menu_items = page.body.find_all('a', class_='quiz_selection')
         actual = [(b['href'], b.text.strip()) for b in menu_items]
         expected = {
-            ('/quizzes/a', 'a test'),
-            ('/quizzes/b', 'b test')}
+            ('/study/a', 'a test'),
+            ('/study/b', 'b test')}
         self.assertSetEqual(expected, set(actual))
 
     def render(self, title, choices):
