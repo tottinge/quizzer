@@ -48,12 +48,6 @@ def get_static_file(filename):
     return static_file(filename, root=root_path)
 
 
-# noinspection PyProtectedMember
-@bottle.get('/quizzes/<quiz_name>')
-def start_quizzing(quiz_name):
-    redirect(f'/study/{quiz_name}')
-
-
 @bottle.get("/me")
 def show_me():
     """ 
