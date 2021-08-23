@@ -13,14 +13,14 @@ from bottle import view
 from quizzes.quiz import Quiz
 
 app = bottle.Bottle()
+app.resources.add_path("./apps/authoring/")
 
-
-@app.route('quiz')
+@app.route('/quiz')
 def quiz_list():
     return "Quiz list"
 
 
-@bottle.get('/edit')
+@app.get('/edit')
 @view('quiz_authoring_form')
 def do_nothing_interesting():
     return {
@@ -29,6 +29,6 @@ def do_nothing_interesting():
     }
 
 
-@bottle.post('/edit')
+@app.post('/edit')
 def just_looking_move_along():
     return {}

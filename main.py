@@ -18,10 +18,10 @@ from logging import getLogger, Logger
 import bottle
 from beaker import middleware
 from bottle import (
-    run, view, request, static_file, redirect
+    run, request, static_file, redirect
 )
 
-from apps.author import app as authoring_app
+from apps.authoring.author import app as authoring_app
 from apps.study import app as quizzing_app, quizzology
 
 logger: Logger = getLogger(__name__)
@@ -39,10 +39,14 @@ def menu_of_quizzes():
 
 @bottle.route('/favicon.ico')
 def get_favicon():
-    return redirect("/static/favicon.ico")
+    return get_static_file('favicon.ico')
 
 
 @bottle.route('/static/<filename>')
+def retrieve_file(filename):
+    return get_static_file(filename)
+
+
 def get_static_file(filename):
     root_path = os.environ.get('STATIC_PATH', './static/')
     return static_file(filename, root=root_path)
@@ -117,7 +121,13 @@ def show_session():
 
 def main():
     host_name, port_number = get_endpoint_address()
-    run(app, host=host_name, port=port_number, reloader=True, debug=True)
+    run(
+        app,
+        host=host_name,
+        port=port_number,
+        reloader=True,
+        debug=True
+    )
 
 
 def get_endpoint_address() -> tuple[str, int]:
