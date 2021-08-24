@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from apps.study.study import LOOKUP_PATH
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from studycontroller import StudyController
+from apps.study.studycontroller import StudyController
 
 
 class TestQuizRendering(unittest.TestCase):

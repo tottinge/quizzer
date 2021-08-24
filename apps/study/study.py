@@ -6,7 +6,7 @@ from tinydb import TinyDB
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from studycontroller import StudyController
+from .studycontroller import StudyController
 from sessions.session_id import get_client_session_id
 from sessions.session_store import SessionStore
 

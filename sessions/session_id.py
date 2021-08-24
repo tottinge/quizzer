@@ -1,4 +1,4 @@
-from studycontroller import SESSION_COOKIE_ID
+from apps.study.studycontroller import SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
 
 
