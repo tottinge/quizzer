@@ -85,8 +85,8 @@ def step_impl(context: Context, quiz_name: str):
 
 def save_quiz(context: Context, quiz: Quiz):
     """
-    This is done in the test helpers because authoring is not a feature
-    of quizzology so far. When there is a proper authoring system, we will
+    This is done in the test helpers because author is not a feature
+    of quizzology so far. When there is a proper author system, we will
     want to use its features rather than a test helper, so that we stop
     being data-structure-aware here.
     """

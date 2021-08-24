@@ -14,7 +14,7 @@ class StaticFormVerification(unittest.TestCase):
     def setUpClass(cls):
         cls.quiz = Quiz(name="test_quiz", title="This is a test quiz")
         cls.page_title = 'Edit Quiz'
-        cls.html = template('apps/authoring/views/quiz_authoring_form.tpl', {
+        cls.html = template('apps/author/views/quiz_authoring_form.tpl', {
             'title': cls.page_title,
             'quiz': cls.quiz
         })

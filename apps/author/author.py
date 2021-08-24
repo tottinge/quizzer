@@ -1,5 +1,5 @@
 """
-Endpoint/app for authoring a quiz.
+Endpoint/app for author a quiz.
 We should define this RESTfully,
    quiz > list of quizzes
    quiz/<quizname>  whole quiz
@@ -13,7 +13,7 @@ from bottle import view
 from quizzes.quiz import Quiz
 
 app = bottle.Bottle()
-app.resources.add_path("./apps/authoring/views")
+app.resources.add_path("./apps/author/views")
 
 
 @app.route('/quiz')
@@ -21,7 +21,7 @@ def quiz_list():
     return "<h1>Quiz list</h1>"
 
 
-LOCAL_PATHS = ['./apps/authoring/views', *bottle.TEMPLATE_PATH]
+LOCAL_PATHS = ['./apps/author/views', *bottle.TEMPLATE_PATH]
 
 
 @app.get('/edit')

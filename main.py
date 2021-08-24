@@ -21,7 +21,7 @@ from bottle import (
     run, request, static_file, redirect
 )
 
-from apps.authoring.author import app as authoring_app
+from apps.author.author import app as authoring_app
 from apps.studying.study import app as quizzing_app, quizzology
 
 logger: Logger = getLogger(__name__)
