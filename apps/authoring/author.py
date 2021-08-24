@@ -13,15 +13,19 @@ from bottle import view
 from quizzes.quiz import Quiz
 
 app = bottle.Bottle()
-app.resources.add_path("./apps/authoring/")
+app.resources.add_path("./apps/authoring/views")
+
 
 @app.route('/quiz')
 def quiz_list():
-    return "Quiz list"
+    return "<h1>Quiz list</h1>"
+
+
+LOCAL_PATHS = ['./apps/authoring/views', *bottle.TEMPLATE_PATH]
 
 
 @app.get('/edit')
-@view('quiz_authoring_form')
+@view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def do_nothing_interesting():
     return {
         'quiz': Quiz(name='name', title='title'),
