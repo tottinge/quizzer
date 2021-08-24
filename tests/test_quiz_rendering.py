@@ -3,7 +3,7 @@ import unittest.mock
 from bottle import template
 from bs4 import BeautifulSoup
 
-from apps.studying.study import LOOKUP_PATH
+from apps.study.study import LOOKUP_PATH
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from studycontroller import StudyController

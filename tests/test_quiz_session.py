@@ -5,7 +5,7 @@ from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
 import main
-from apps.studying.study import render_judgment, url_for
+from apps.study.study import render_judgment, url_for
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from sessions.session_store import SessionStore

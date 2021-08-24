@@ -12,7 +12,7 @@ from sessions.session_store import SessionStore
 
 quizzology = StudyController()
 
-LOOKUP_PATH = [ './apps/studying/views', *bottle.TEMPLATE_PATH]
+LOOKUP_PATH = [ './apps/study/views', *bottle.TEMPLATE_PATH]
 
 def setup_quizzology():
     quizzology.set_quiz_store(QuizStore())
