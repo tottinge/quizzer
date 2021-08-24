@@ -1,5 +1,6 @@
 import os
 
+import bottle
 from bottle import Bottle, response, view, request
 from tinydb import TinyDB
 
@@ -11,6 +12,7 @@ from sessions.session_store import SessionStore
 
 quizzology = StudyController()
 
+LOOKUP_PATH = [ './apps/studying/views', *bottle.TEMPLATE_PATH]
 
 def setup_quizzology():
     quizzology.set_quiz_store(QuizStore())
@@ -41,7 +43,7 @@ def menu_of_quizzes(title: str = "Quizzology"):
     return render_menu_of_quizzes(title, summaries)
 
 
-@view("quiz_selection")
+@view("quiz_selection", template_lookup=LOOKUP_PATH)
 def render_menu_of_quizzes(title, choices):
     return dict(title=title, choices=choices)
 

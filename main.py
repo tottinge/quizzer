@@ -22,7 +22,7 @@ from bottle import (
 )
 
 from apps.authoring.author import app as authoring_app
-from apps.study import app as quizzing_app, quizzology
+from apps.studying.study import app as quizzing_app, quizzology
 
 logger: Logger = getLogger(__name__)
 

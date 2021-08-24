@@ -29,5 +29,7 @@ class TestQuizSelection(TestCase):
         self.assertSetEqual(expected, set(actual))
 
     def render(self, title, choices):
-        markup = template("quiz_selection", dict(title=title, choices=choices))
+        markup = template("quiz_selection",
+                          dict(title=title, choices=choices),
+                          template_lookup=['./views','./apps/studying/views'])
         return BeautifulSoup(markup, "html.parser")
