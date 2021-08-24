@@ -78,7 +78,7 @@ def check_answer(quiz_name, question_number):
     return render_judgment(quiz, question_number, selection)
 
 
-@view("quiz_judgment")
+@view("quiz_judgment",  template_lookup=LOOKUP_PATH)
 def render_judgment(quiz: Quiz, question_number: int, selection: str):
     session_id = get_client_session_id(request, response)
     results = quizzology.record_answer_and_get_status(
