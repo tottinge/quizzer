@@ -3,6 +3,7 @@ import unittest.mock
 from bottle import template
 from bs4 import BeautifulSoup
 
+from apps.studying.study import LOOKUP_PATH
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from studycontroller import StudyController
@@ -37,7 +38,11 @@ class TestQuizRendering(unittest.TestCase):
             ]
         )
         document = StudyController.prepare_quiz_question_document(document, 0)
-        html = template('quiz_question', document._asdict())
+        html = template(
+            'quiz_question',
+            document._asdict(),
+            template_lookup=LOOKUP_PATH
+        )
         page = BeautifulSoup(html, 'html.parser')
         self.assertIsNone(page.find("section", id="resources"))
 
@@ -78,5 +83,9 @@ class TestQuizRendering(unittest.TestCase):
         )
         question_document = StudyController.prepare_quiz_question_document(document,
                                                                            0)
-        markup = template('quiz_question', question_document._asdict())
+        markup = template(
+            'quiz_question',
+            question_document._asdict(),
+            template_lookup = LOOKUP_PATH
+        )
         return BeautifulSoup(markup, "html.parser")
