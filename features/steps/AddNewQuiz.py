@@ -7,7 +7,7 @@ from hamcrest import assert_that, not_none, is_, has_item, is_in, equal_to
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from studycontroller import StudyController
+from apps.study.studycontroller import StudyController
 
 
 @step("decoys are")

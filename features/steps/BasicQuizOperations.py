@@ -13,7 +13,7 @@ from tinydb.storages import MemoryStorage
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from studycontroller import StudyController
+from apps.study.studycontroller import StudyController
 from sessions.session_store import SessionStore, AnswerEntry
 
 
