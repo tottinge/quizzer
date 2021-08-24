@@ -49,7 +49,7 @@ def render_menu_of_quizzes(title, choices):
 
 
 @app.get('/<quiz_name>')
-@view("quiz_question")
+@view("quiz_question",  template_lookup=LOOKUP_PATH)
 def get_quiz_first_question(quiz_name: str):
     return quizzology.begin_quiz(
         quizzology.get_quiz_by_name(quiz_name)
@@ -57,7 +57,7 @@ def get_quiz_first_question(quiz_name: str):
 
 
 @app.get('/<quiz_name>/<question_number:int>')
-@view("quiz_question")
+@view("quiz_question",  template_lookup=LOOKUP_PATH)
 def ask_question(quiz_name, question_number) -> dict:
     doc = quizzology.get_quiz_by_name(quiz_name)
     # noinspection PyProtectedMember
