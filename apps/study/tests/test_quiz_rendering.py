@@ -4,9 +4,9 @@ from bottle import template
 from bs4 import BeautifulSoup
 
 from apps.study.study import LOOKUP_PATH
+from apps.study.studycontroller import StudyController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from apps.study.studycontroller import StudyController
 
 
 class TestQuizRendering(unittest.TestCase):
@@ -81,11 +81,12 @@ class TestQuizRendering(unittest.TestCase):
                          resources=resources or [])
             ]
         )
-        question_document = StudyController.prepare_quiz_question_document(document,
-                                                                           0)
+        question_document = StudyController.prepare_quiz_question_document(
+            quiz=document, question_number=0
+        )
         markup = template(
             'quiz_question',
             question_document._asdict(),
-            template_lookup = LOOKUP_PATH
+            template_lookup=LOOKUP_PATH
         )
         return BeautifulSoup(markup, "html.parser")

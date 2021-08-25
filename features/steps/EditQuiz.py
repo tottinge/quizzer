@@ -21,7 +21,10 @@ def step_impl(context: Context, name):
 
 @when("a question is added")
 def step_impl(context: Context):
-    table_values = dict((row['Field'], row['Value']) for row in context.table.rows)
+    table_values = dict(
+        (row['Field'], row['Value'])
+        for row in context.table.rows
+    )
     text = table_values.get('question')
     answer = table_values.get('answer')
     confirmation = table_values.get('confirmation')
@@ -32,7 +35,7 @@ def step_impl(context: Context):
     store.save_quiz(quiz)
 
 
-#ToDo - Should we be using the QuizStore or context to retrieve the quiz
+# ToDo - Should we be using the QuizStore or context to retrieve the quiz
 #  Should we be reaching all the way into the QuizStore??
 @then('there is {count} question in "{quiz_name}"')
 def step_impl(context: Context, count: str, quiz_name: str):

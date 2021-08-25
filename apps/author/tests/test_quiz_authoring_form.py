@@ -41,9 +41,12 @@ class StaticFormVerification(unittest.TestCase):
         assert_that(title_input['value'], is_(self.quiz.title))
 
     def test_form_has_submit_button(self):
-        button:bs4.element.Tag = self.dom.form.find('button', type='submit', id='save_changes')
+        button: bs4.element.Tag = self.dom.form.find(
+            'button', type='submit', id='save_changes'
+        )
         assert_that(button, not_none())
         assert_that(button.text, is_("Save"))
+
 
 if __name__ == '__main__':
     unittest.main()

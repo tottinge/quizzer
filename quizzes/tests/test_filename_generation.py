@@ -1,7 +1,6 @@
 import unittest
 
-from hamcrest import assert_that, is_, contains_exactly, contains_string, not_, \
-    all_of
+from hamcrest import (assert_that, is_, contains_string, not_)
 
 from quizzes.quiz_store import filename_for
 

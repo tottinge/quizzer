@@ -67,9 +67,11 @@ def show_me():
     remote = request.environ.get(remote_addr_header,
                                  "not listed in remote addr")
     last_fwd_addr = request.environ.get(x_forward_header, "").split(" ")[-1]
-    who_are_you = last_fwd_addr \
-                  or request.environ.get(remote_addr_header) \
-                  or "a ninja"
+    who_are_you = (
+            last_fwd_addr
+            or request.environ.get(remote_addr_header)
+            or "a ninja"
+    )
     print("Remote route", request.remote_route)
     env_vars = (f"<span>{key}: {value}</span><br>"
                 for (key, value) in

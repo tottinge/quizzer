@@ -92,8 +92,8 @@ class QuizStore:
             return []
 
     # ToDo: Create a NamedTuple for the summaries
-    def _get_quiz_summaries_from_file_list(self, quiz_file_paths) -> Iterable[
-        QuizSummary]:
+    def _get_quiz_summaries_from_file_list(self, quiz_file_paths) \
+            -> Iterable[QuizSummary]:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)

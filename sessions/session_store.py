@@ -66,7 +66,7 @@ class SessionStore:
     def number_of_correct_answers(self, session_id, quiz_name) -> int:
         return len(self.perfect_answers(session_id, quiz_name))
 
-    def number_of_incorrect_answers(self, session_id, quiz_name)-> int:
+    def number_of_incorrect_answers(self, session_id, quiz_name) -> int:
         return len(self.incorrect_answers(session_id, quiz_name))
 
     def questions_answered_incorrectly(self, session_id) -> Set[Tuple[str, int]]:

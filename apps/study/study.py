@@ -12,7 +12,8 @@ from sessions.session_store import SessionStore
 
 quizzology = StudyController()
 
-LOOKUP_PATH = [ './apps/study/views', *bottle.TEMPLATE_PATH]
+LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
+
 
 def setup_quizzology():
     quizzology.set_quiz_store(QuizStore())
@@ -51,6 +52,7 @@ def render_menu_of_quizzes(title, choices):
 @app.get('/<quiz_name>')
 @view("quiz_question",  template_lookup=LOOKUP_PATH)
 def get_quiz_first_question(quiz_name: str):
+    # noinspection PyProtectedMember
     return quizzology.begin_quiz(
         quizzology.get_quiz_by_name(quiz_name)
     )._asdict()
@@ -89,4 +91,5 @@ def render_judgment(quiz: Quiz, question_number: int, selection: str):
         next_url=url_for(quiz, go_next) if go_next else None,
         return_url=url_for(quiz, question_number)
     )
+    # noinspection PyProtectedMember
     return {**results._asdict(), **additions}

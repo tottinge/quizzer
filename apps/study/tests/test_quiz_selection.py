@@ -12,9 +12,10 @@ class TestQuizSelection(TestCase):
         title = "Page Title"
         soup = self.render(title=title, choices=[])
         found = soup.head.title.string
-        self.assertIn(title, found,
-                      f"Did not find '{title}' as page title, found '{found}' instead"
-                      )
+        self.assertIn(
+            title, found,
+            f"Did not find '{title}' as page title, found '{found}' instead"
+        )
 
     def test_renders_menu_with_links_to_quizzes(self):
         page = self.render("_", choices=[
@@ -29,7 +30,9 @@ class TestQuizSelection(TestCase):
         self.assertSetEqual(expected, set(actual))
 
     def render(self, title, choices):
-        markup = template("quiz_selection",
-                          dict(title=title, choices=choices),
-                          template_lookup=['./views','./apps/study/views'])
+        markup = template(
+            "quiz_selection",
+            dict(title=title, choices=choices),
+            template_lookup=['./views', './apps/study/views']
+        )
         return BeautifulSoup(markup, "html.parser")

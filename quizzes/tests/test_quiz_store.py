@@ -21,7 +21,7 @@ class QuizStoreTest(unittest.TestCase):
         store = QuizStore()
         test_quiz = 'Testquiz'
         store.get_quiz_summaries = MagicMock(return_value=[
-            QuizSummary('Testquiz', None, 'quiz_content/a.json')
+            QuizSummary('Testquiz', '', 'quiz_content/a.json')
         ])
         store._read_quiz_doc_from_file = MagicMock(
             return_value=dict(name='Testquiz')
@@ -42,9 +42,9 @@ class QuizStoreTest(unittest.TestCase):
 
     @patch('builtins.open')
     @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
-    def test_json_file_invalid(self, summaries_mock, *_):
+    def test_json_file_invalid(self, *_):
         store = QuizStore()
-        store.get_quiz_summaries = MagicMock(return_value = [
+        store.get_quiz_summaries = MagicMock(return_value=[
             QuizSummary('nonesuch', 'no title', 'nonesuch.json'),
         ])
         quiz = store.get_quiz('nonesuch')

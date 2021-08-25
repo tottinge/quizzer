@@ -13,7 +13,6 @@ class QuickerUITests(TestCase):
         x = TestApp(app)
         response: TestResponse = x.get('/study')
         assert_that(response.status_code, is_(200))
-        x = response.body
         dom = BeautifulSoup(response.body, 'html.parser')
         assert_that(dom.head.title.text, contains_string("Quizzology"))
 

@@ -3,11 +3,10 @@ from typing import List
 from behave import *
 # use_step_matcher("re")
 from behave.runner import Context
-from hamcrest import assert_that, not_none, is_, has_item, is_in, equal_to
+from hamcrest import assert_that, is_, is_in
 
-from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
 from apps.study.studycontroller import StudyController
+from quizzes.quiz import Quiz
 
 
 @step("decoys are")
@@ -30,8 +29,10 @@ def step_impl(context: Context, name: str, title: str):
 @then("it should be accessible")
 def step_impl(context: Context):
     app: StudyController = context.quizzology
-    defined_quiz_names: List[str] = [summary.name
-                        for summary in app.quiz_store.get_quiz_summaries()]
+    defined_quiz_names: List[str] = [
+        summary.name
+        for summary in app.quiz_store.get_quiz_summaries()
+    ]
     assert_that(context.quiz.name, is_in(defined_quiz_names))
 
 
