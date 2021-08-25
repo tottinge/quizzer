@@ -1,5 +1,6 @@
-from apps.study.studycontroller import SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
+
+SESSION_COOKIE_ID = "qz_current_quiz"
 
 
 def drop_client_session_id(response):

@@ -3,9 +3,8 @@ from typing import NamedTuple, Iterable
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore, QuizSummary
+from sessions.session_id import SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
-
-SESSION_COOKIE_ID = "qz_current_quiz"
 
 
 class StudyController:
