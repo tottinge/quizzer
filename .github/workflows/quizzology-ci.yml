@@ -20,10 +20,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9.6
-      - name: Double-check default python version
-        run: |
-          which python
-          python --version
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -37,10 +33,10 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
-          pytest --ignore=ui_tests --ignore=venv
+          pytest --ignore=ui_tests
       - name: Test with behave
         run: |
           behave -t "not (@wip or @future)"
-      - name: UI Tests
+      - name: Test with Selenium
         run: |
           pytest ui_tests
