@@ -1,6 +1,7 @@
 MacFSEvents
 sniffer
 behave
+behave-html-formatter
 pytest
 pylint
 coverage
