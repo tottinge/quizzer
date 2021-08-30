@@ -85,17 +85,9 @@ def step_impl(context: Context, quiz_name: str):
 
 
 def save_quiz(context: Context, quiz: Quiz):
-    """
-    This is done in the test helpers because author is not a feature
-    of quizzology so far. When there is a proper author system, we will
-    want to use its features rather than a test helper, so that we stop
-    being data-structure-aware here.
-    """
-    dir_name = context.temporary_directory.name
-    filename = os.path.join(dir_name, quiz.name + ".json")
-    with open(filename, "w") as output:
-        json.dump(asdict(quiz), output)
-    # ToDo Call the QuizStore save_quiz function rather than ^^^
+    quiz_store: QuizStore = context.study_controller.quiz_store
+    result = quiz_store.save_quiz(quiz)
+    assert_that(result.success, is_(True))
 
 
 @when('the student answers "{answer}"')
