@@ -16,7 +16,6 @@ import signal
 from logging import getLogger, Logger
 
 import bottle
-from beaker import middleware
 from bottle import (
     run, request, static_file, redirect
 )
@@ -25,8 +24,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app, quizzology
 
 logger: Logger = getLogger(__name__)
-
-app = middleware.SessionMiddleware(bottle.app(), {})
+app = bottle.app()
 
 bottle.mount('/author', authoring_app)
 bottle.mount('/study', quizzing_app)
@@ -112,13 +110,7 @@ def show_session():
         template.substitute(answer)
         for answer in quizzology.get_log_messages()
     ]
-    beaker_session = [
-        f"<p>{key}, {value}</p>\n"
-        for (key, value) in app.session
-    ] if app.session else 'none'
-    beaker_section = '<div>Beaker: ' + "".join(beaker_session) + "</div>"
-
-    return "<br>".join(text_answers) + beaker_section
+    return "<br>".join(text_answers)
 
 
 def main():
