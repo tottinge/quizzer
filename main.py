@@ -26,21 +26,21 @@ from apps.study.study import app as quizzing_app, quizzology
 logger: Logger = getLogger(__name__)
 app = bottle.app()
 
-bottle.mount('/author', authoring_app)
-bottle.mount('/study', quizzing_app)
+app.mount('/author', authoring_app)
+app.mount('/study', quizzing_app)
 
 
-@bottle.route('/')
+@app.route('/')
 def menu_of_quizzes():
     redirect('/study')
 
 
-@bottle.route('/favicon.ico')
+@app.route('/favicon.ico')
 def get_favicon():
     return get_static_file('favicon.ico')
 
 
-@bottle.route('/static/<filename>')
+@app.route('/static/<filename>')
 def retrieve_file(filename):
     return get_static_file(filename)
 
@@ -50,7 +50,7 @@ def get_static_file(filename):
     return static_file(filename, root=root_path)
 
 
-@bottle.get("/me")
+@app.get("/me")
 def show_me():
     """ 
     Test endpoint: this routine will display information about the 
@@ -82,7 +82,7 @@ def show_me():
     )
 
 
-@bottle.get("/cookies")
+@app.get("/cookies")
 def cookie_explorer():
     """
     Junk method for exploring cookies; not part of quizzology proper, 
@@ -94,7 +94,7 @@ def cookie_explorer():
     return result
 
 
-@bottle.get("/session")
+@app.get("/session")
 def show_session():
     """
     Show session logs: for troubleshooting.
