@@ -13,7 +13,7 @@ from sessions.session_store import SessionStore
 
 class TestSession(unittest.TestCase):
     def setUp(self):
-        main.quizzology.set_session_store(
+        main.study_controller.set_session_store(
             SessionStore(TinyDB(storage=MemoryStorage)))
         self.question = Question(
             question='whatever',
@@ -34,8 +34,8 @@ class TestSession(unittest.TestCase):
         user_answer = "selection"
         correct = True
         timestamp = "TODAY"
-        main.quizzology.record_answer(session_id, name, question, user_answer,
-                                      correct, timestamp)
+        main.study_controller.record_answer(session_id, name, question, user_answer,
+                                            correct, timestamp)
         result = main.show_session()
         self.assertIn(session_id, result)
         self.assertIn(name, result)

@@ -21,7 +21,7 @@ from bottle import (
 )
 
 from apps.author.author import app as authoring_app
-from apps.study.study import app as quizzing_app, quizzology
+from apps.study.study import app as quizzing_app, study_controller
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
@@ -108,7 +108,7 @@ def show_session():
     )
     text_answers = [
         template.substitute(answer)
-        for answer in quizzology.get_log_messages()
+        for answer in study_controller.get_log_messages()
     ]
     return "<br>".join(text_answers)
 
@@ -133,7 +133,7 @@ def get_endpoint_address() -> tuple[str, int]:
 
 def shutdown(signum, frame):
     logger.critical(f'Received shutdown signal {signum}')
-    quizzology.shutdown()
+    study_controller.shutdown()
     exit(0)
 
 

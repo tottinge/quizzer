@@ -19,10 +19,12 @@ from sessions.session_store import SessionStore, AnswerEntry
 
 @given("quizzology is running")
 def step_impl(context: Context):
-    study_controller: StudyController = StudyController()
-    assert study_controller is not None
-    study_controller.set_quiz_store(QuizStore(context.temporary_directory.name))
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
+    quiz_store = QuizStore(context.temporary_directory.name)
+
+    # Todo: Remove global dependency on study_controller
+    study_controller: StudyController = StudyController()
+    study_controller.set_quiz_store(quiz_store)
     study_controller.set_session_store(session_store)
     context.quizzology = study_controller
     context.study_controller = study_controller
