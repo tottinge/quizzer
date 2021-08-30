@@ -19,12 +19,13 @@ from sessions.session_store import SessionStore, AnswerEntry
 
 @given("quizzology is running")
 def step_impl(context: Context):
-    quizzology: StudyController = StudyController()
-    assert quizzology is not None
-    quizzology.set_quiz_store(QuizStore(context.temporary_directory.name))
+    study_controller: StudyController = StudyController()
+    assert study_controller is not None
+    study_controller.set_quiz_store(QuizStore(context.temporary_directory.name))
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
-    quizzology.set_session_store(session_store)
-    context.quizzology = quizzology
+    study_controller.set_session_store(session_store)
+    context.quizzology = study_controller
+    context.study_controller = study_controller
 
 
 @step('we have a quiz called "{quiz_name}"')
@@ -60,9 +61,9 @@ def current_question(context: Context) -> StudyController.PreparedQuestion:
 
 @step('the student selects the quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
-    quizzology = context.quizzology
-    quiz = quizzology.get_quiz_by_name(quiz_name)
-    context.current_question = quizzology.begin_quiz(quiz)
+    study_controller: StudyController = context.study_controller
+    quiz = study_controller.get_quiz_by_name(quiz_name)
+    context.current_question = study_controller.begin_quiz(quiz)
     assert_that(context.current_question.quiz, equal_to(quiz))
 
 
@@ -100,7 +101,7 @@ def save_quiz(context: Context, quiz: Quiz):
 @when('the student answers "{answer}"')
 def step_impl(context: Context, answer: str):
     question = current_question(context)
-    context.recent_answer = context.quizzology.record_answer_and_get_status(
+    context.recent_answer = context.study_controller.record_answer_and_get_status(
         question_number=question.question_number,
         quiz=question.quiz,
         selection=answer,
@@ -127,11 +128,11 @@ def step_impl(context: Context, question_text: str):
 
 @step("the log shows the question was answered {how}")
 def step_impl(context: Context, how: str):
-    quizzology: StudyController = context.quizzology
+    study_controller: StudyController = context.study_controller
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
     question_number = context.recent_answer.question_number
-    log: AnswerEntry = quizzology.get_log_message_for_question(
+    log: AnswerEntry = study_controller.get_log_message_for_question(
         session_id,
         quiz_name,
         question_number
@@ -155,7 +156,7 @@ def step_impl(context: Context):
 
         question = current_question(context)
         recent_answer: StudyController.RecordedAnswer = \
-            context.quizzology.record_answer_and_get_status(
+            context.study_controller.record_answer_and_get_status(
                 question_number=question.question_number,
                 quiz=question.quiz,
                 selection=answer,
@@ -169,7 +170,7 @@ def step_impl(context: Context):
 
         more_questions = recent_answer.next_question_number
         if more_questions:
-            new_question = context.quizzology.prepare_quiz_question_document(
+            new_question = context.study_controller.prepare_quiz_question_document(
                 recent_answer.quiz,
                 recent_answer.next_question_number
             )
@@ -184,7 +185,7 @@ def step_impl(context: Context):
 
 @step("no incorrect answers were given")
 def step_impl(context: Context):
-    session_store: SessionStore = context.quizzology.session_store
+    session_store: SessionStore = context.study_controller.session_store
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
     wrong_answers = session_store.number_of_incorrect_answers(session_id,
