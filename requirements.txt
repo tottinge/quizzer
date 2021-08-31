@@ -1,10 +1,10 @@
 bottle==0.12.19
 bs4==0.0.1
 tinydb==4.5.1
+sanitize-filename
+
 behave
+behave-html-formatter
 pyhamcrest
 selenium
-bottle-cork
-beaker
 WebTest
-sanitize-filename

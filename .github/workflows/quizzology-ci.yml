@@ -36,7 +36,7 @@ jobs:
           pytest --ignore=ui_tests
       - name: Test with behave
         run: |
-          behave -t "not (@wip or @future)" -f html -o behave-report.html
+          behave -t ~@wip -t ~@future -f html -o behave-report.html
       - name: Test with Selenium
         run: |
           pytest ui_tests
