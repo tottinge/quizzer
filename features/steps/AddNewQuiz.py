@@ -21,14 +21,14 @@ def step_impl(context: Context):
 def step_impl(context: Context, name: str, title: str):
     quiz = Quiz(name, title)
     context.quiz = quiz
-    model: StudyController = context.quizzology
+    model: StudyController = context.study_controller
     result = model.quiz_store.save_quiz(quiz)
     assert_that(result.success, is_(True))
 
 
 @then("it should be accessible")
 def step_impl(context: Context):
-    app: StudyController = context.quizzology
+    app: StudyController = context.study_controller
     defined_quiz_names: List[str] = [
         summary.name
         for summary in app.quiz_store.get_quiz_summaries()

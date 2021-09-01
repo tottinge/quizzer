@@ -13,7 +13,7 @@ from quizzes.quiz_store import QuizStore
 @given('there is a quiz with name "{name}"')
 def step_impl(context: Context, name):
     quiz = Quiz(name=name, title=f"Title For Quiz Named {name}")
-    store: QuizStore = context.quizzology.quiz_store
+    store: QuizStore = context.study_controller.quiz_store
     result = store.save_quiz(quiz)
     assert_that(result.success, is_(True))
     context.quiz = quiz
@@ -31,7 +31,7 @@ def step_impl(context: Context):
     question = Question(text, answer, confirmation=confirmation)
     quiz: Quiz = context.quiz
     quiz.add_question(question)
-    store: QuizStore = context.quizzology.quiz_store
+    store: QuizStore = context.study_controller.quiz_store
     store.save_quiz(quiz)
 
 
@@ -39,7 +39,7 @@ def step_impl(context: Context):
 #  Should we be reaching all the way into the QuizStore??
 @then('there is {count} question in "{quiz_name}"')
 def step_impl(context: Context, count: str, quiz_name: str):
-    store: QuizStore = context.quizzology.quiz_store
+    store: QuizStore = context.study_controller.quiz_store
     quiz: Quiz = store.get_quiz(quiz_name)
     # quiz: Quiz = context.quiz
     assert_that(quiz.name, equal_to(quiz_name))
