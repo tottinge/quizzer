@@ -26,7 +26,6 @@ def step_impl(context: Context):
     study_controller: StudyController = StudyController()
     study_controller.set_quiz_store(quiz_store)
     study_controller.set_session_store(session_store)
-    context.quizzology = study_controller
     context.study_controller = study_controller
 
 

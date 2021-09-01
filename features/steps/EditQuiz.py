@@ -41,7 +41,6 @@ def step_impl(context: Context):
 def step_impl(context: Context, count: str, quiz_name: str):
     store: QuizStore = context.study_controller.quiz_store
     quiz: Quiz = store.get_quiz(quiz_name)
-    # quiz: Quiz = context.quiz
     assert_that(quiz.name, equal_to(quiz_name))
     assert_that(int(count), is_(quiz.number_of_questions()))
 
