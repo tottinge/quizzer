@@ -1,10 +1,11 @@
 import logging
+import os
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from typing import List, Tuple, Set
 
 import tinydb
-from tinydb import Query
+from tinydb import Query, TinyDB
 
 logger = logging.getLogger(__name__)
 
@@ -111,3 +112,13 @@ class SessionStore:
     def shutdown(self):
         logger.critical("Session store: shutting down")
         self.storage.close()
+
+
+PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
+
+
+def prepare_session_store() -> SessionStore:
+    path = os.path.dirname(PATH_TO_LOG_DB)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return SessionStore(TinyDB(PATH_TO_LOG_DB))

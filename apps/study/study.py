@@ -1,13 +1,10 @@
-import os
-
 import bottle
 from bottle import Bottle, response, view, request
-from tinydb import TinyDB
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from sessions.session_id import get_client_session_id
-from sessions.session_store import SessionStore
+from sessions.session_store import prepare_session_store
 from shared.quizzology import Quizzology
 from .studycontroller import StudyController
 
@@ -20,16 +17,6 @@ def setup_quizzology() -> Quizzology:
         session_store=prepare_session_store(),
         quiz_store=QuizStore()
     )
-
-
-PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
-
-
-def prepare_session_store() -> SessionStore:
-    path = os.path.dirname(PATH_TO_LOG_DB)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    return SessionStore(TinyDB(PATH_TO_LOG_DB))
 
 
 ############################################################
