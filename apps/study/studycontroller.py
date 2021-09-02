@@ -5,11 +5,29 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore, QuizSummary
 from sessions.session_id import SESSION_COOKIE_ID
 from sessions.session_store import SessionStore
+from shared.quizzology import Quizzology
 
 
 class StudyController:
-    quiz_store = None
-    session_store = None
+    @property
+    def session_store(self):
+        return self.quizzology.session_store
+
+    @session_store.setter
+    def session_store(self, new_store):
+        # Todo: this should not exist
+        self.quizzology.session_store = new_store
+
+    @property
+    def quiz_store(self):
+        return self.quizzology.quiz_store
+
+    @quiz_store.setter
+    def quiz_store(self, new_store):
+        self.quizzology.quiz_store = new_store
+
+    def __init__(self, quizzology: Quizzology):
+        self.quizzology = quizzology
 
     def set_quiz_store(self, new_store: QuizStore):
         self.quiz_store = new_store

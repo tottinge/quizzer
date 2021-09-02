@@ -6,18 +6,20 @@ from tinydb import TinyDB
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from .studycontroller import StudyController
 from sessions.session_id import get_client_session_id
 from sessions.session_store import SessionStore
-
-study_controller = StudyController()
-
-LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
+from shared.quizzology import Quizzology
+from .studycontroller import StudyController
 
 
-def setup_quizzology():
-    study_controller.set_quiz_store(QuizStore())
-    study_controller.set_session_store(prepare_session_store())
+############################################################
+# TODO: Find this stuff a proper place to exist
+############################################################
+def setup_quizzology() -> Quizzology:
+    return Quizzology(
+        session_store=prepare_session_store(),
+        quiz_store=QuizStore()
+    )
 
 
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
@@ -30,7 +32,14 @@ def prepare_session_store() -> SessionStore:
     return SessionStore(TinyDB(PATH_TO_LOG_DB))
 
 
-setup_quizzology()
+############################################################
+
+
+quizzology = setup_quizzology()
+study_controller = StudyController(quizzology)
+
+LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
+
 app = Bottle()
 
 
@@ -50,7 +59,7 @@ def render_menu_of_quizzes(title, choices):
 
 
 @app.get('/<quiz_name>')
-@view("quiz_question",  template_lookup=LOOKUP_PATH)
+@view("quiz_question", template_lookup=LOOKUP_PATH)
 def get_quiz_first_question(quiz_name: str):
     # noinspection PyProtectedMember
     return study_controller.begin_quiz(
@@ -59,7 +68,7 @@ def get_quiz_first_question(quiz_name: str):
 
 
 @app.get('/<quiz_name>/<question_number:int>')
-@view("quiz_question",  template_lookup=LOOKUP_PATH)
+@view("quiz_question", template_lookup=LOOKUP_PATH)
 def ask_question(quiz_name, question_number) -> dict:
     doc = study_controller.get_quiz_by_name(quiz_name)
     # noinspection PyProtectedMember
@@ -80,7 +89,7 @@ def check_answer(quiz_name, question_number):
     return render_judgment(quiz, question_number, selection)
 
 
-@view("quiz_judgment",  template_lookup=LOOKUP_PATH)
+@view("quiz_judgment", template_lookup=LOOKUP_PATH)
 def render_judgment(quiz: Quiz, question_number: int, selection: str):
     session_id = get_client_session_id(request, response)
     results = study_controller.record_answer_and_get_status(

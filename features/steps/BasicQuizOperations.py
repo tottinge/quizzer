@@ -1,7 +1,3 @@
-import json
-import os
-from dataclasses import asdict
-
 from behave import (given, when, then, step)
 # use_step_matcher("re")
 # @step('we have a quiz called "(.*)"')
@@ -15,6 +11,7 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from apps.study.studycontroller import StudyController
 from sessions.session_store import SessionStore, AnswerEntry
+from shared.quizzology import Quizzology
 
 
 @given("quizzology is running")
@@ -22,8 +19,10 @@ def step_impl(context: Context):
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
     quiz_store = QuizStore(context.temporary_directory.name)
 
+    quizzology = Quizzology(quiz_store, session_store)
+
     # Todo: Remove global dependency on study_controller
-    study_controller: StudyController = StudyController()
+    study_controller: StudyController = StudyController(quizzology)
     study_controller.set_quiz_store(quiz_store)
     study_controller.set_session_store(session_store)
     context.study_controller = study_controller
