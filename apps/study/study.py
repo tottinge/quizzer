@@ -2,27 +2,11 @@ import bottle
 from bottle import Bottle, response, view, request
 
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
 from sessions.session_id import get_client_session_id
-from sessions.session_store import prepare_session_store
 from shared.quizzology import Quizzology
 from .studycontroller import StudyController
 
-
-############################################################
-# TODO: Find this stuff a proper place to exist
-############################################################
-def setup_quizzology() -> Quizzology:
-    return Quizzology(
-        session_store=prepare_session_store(),
-        quiz_store=QuizStore()
-    )
-
-
-############################################################
-
-
-quizzology = setup_quizzology()
+quizzology = Quizzology()
 study_controller = StudyController(quizzology)
 
 LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
