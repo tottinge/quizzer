@@ -12,6 +12,7 @@ from sessions.session_store import SessionStore
 
 
 class TestSession(unittest.TestCase):
+    # ToDo: Fix this next!
     def setUp(self):
         main.study_controller.set_session_store(
             SessionStore(TinyDB(storage=MemoryStorage)))

@@ -23,8 +23,6 @@ def step_impl(context: Context):
 
     # Todo: Remove global dependency on study_controller
     study_controller: StudyController = StudyController(quizzology)
-    study_controller.set_quiz_store(quiz_store)
-    study_controller.set_session_store(session_store)
     context.study_controller = study_controller
 
 
