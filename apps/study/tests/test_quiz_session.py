@@ -4,18 +4,21 @@ from bs4 import BeautifulSoup
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
-import main
-from apps.study.study import render_judgment, url_for
+import apps
+from apps.study.study import render_judgment, url_for, use_this_quizzology
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from sessions.session_store import SessionStore
+from shared.quizzology import Quizzology
 
 
 class TestSession(unittest.TestCase):
     # ToDo: Fix this next!
     def setUp(self):
-        main.study_controller.set_session_store(
-            SessionStore(TinyDB(storage=MemoryStorage)))
+        session_store = SessionStore(TinyDB(storage=MemoryStorage))
+        quizzology = Quizzology(session_store=session_store)
+        use_this_quizzology(quizzology)
+
         self.question = Question(
             question='whatever',
             decoys=['falsehood', 'foolishness'],
@@ -29,12 +32,14 @@ class TestSession(unittest.TestCase):
         )
 
     def test_answer_appears_in_session_page(self):
+        import main
         session_id = "id"
         name = "quiz_name"
         question = 222
         user_answer = "selection"
         correct = True
         timestamp = "TODAY"
+        main.study_controller = apps.study.study.study_controller
         main.study_controller.record_answer(session_id, name, question, user_answer,
                                             correct, timestamp)
         result = main.show_session()

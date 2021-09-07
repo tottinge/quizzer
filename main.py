@@ -22,6 +22,7 @@ from bottle import (
 
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app, study_controller
+from shared.quizzology import Quizzology
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
@@ -114,6 +115,10 @@ def show_session():
 
 
 def main():
+    from apps.study.study import use_this_quizzology as study_use
+    quizzology = Quizzology()
+    study_use(quizzology)
+
     host_name, port_number = get_endpoint_address()
     run(
         app,

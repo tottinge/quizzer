@@ -1,3 +1,5 @@
+from typing import Optional
+
 import bottle
 from bottle import Bottle, response, view, request
 
@@ -6,8 +8,13 @@ from sessions.session_id import get_client_session_id
 from shared.quizzology import Quizzology
 from .studycontroller import StudyController
 
-quizzology = Quizzology()
-study_controller = StudyController(quizzology)
+study_controller: Optional[StudyController] = None
+
+
+def use_this_quizzology(quizzology: Quizzology):
+    global study_controller
+    study_controller = StudyController(quizzology)
+
 
 LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
 
