@@ -13,11 +13,8 @@ from shared.quizzology import Quizzology
 
 
 class TestSession(unittest.TestCase):
-    # ToDo: Fix this next!
     def setUp(self):
-        session_store = SessionStore(TinyDB(storage=MemoryStorage))
-        quizzology = Quizzology(session_store=session_store)
-        use_this_quizzology(quizzology)
+        use_this_quizzology(self.context_with_in_memory_session_store())
 
         self.question = Question(
             question='whatever',
@@ -30,6 +27,10 @@ class TestSession(unittest.TestCase):
             name='TestSessionQuiz',
             questions=[self.question]
         )
+
+    def context_with_in_memory_session_store(self):
+        return Quizzology(session_store=(
+            SessionStore(TinyDB(storage=MemoryStorage))))
 
     def test_answer_appears_in_session_page(self):
         import main

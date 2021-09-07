@@ -5,7 +5,6 @@ from hamcrest import assert_that, is_, contains_string
 from webtest import TestApp, TestResponse
 
 from apps.study import study
-from apps.study.study import study_controller
 from main import app
 from shared.quizzology import Quizzology
 
