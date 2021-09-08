@@ -27,6 +27,10 @@ from shared.quizzology import Quizzology
 logger: Logger = getLogger(__name__)
 app = bottle.app()
 
+from apps.study.study import use_this_quizzology as study_use
+quizzology = Quizzology()
+study_use(quizzology)
+
 app.mount('/author', authoring_app)
 app.mount('/study', quizzing_app)
 
@@ -115,10 +119,6 @@ def show_session():
 
 
 def main():
-    from apps.study.study import use_this_quizzology as study_use
-    quizzology = Quizzology()
-    study_use(quizzology)
-
     host_name, port_number = get_endpoint_address()
     run(
         app,
