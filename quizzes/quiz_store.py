@@ -74,9 +74,6 @@ class QuizStore:
                 message=error.strerror
             )
 
-    @staticmethod
-    def shutdown():
-        logger.critical("quiz_store shutting down")
 
     # -- helper methods all the rest of the way down --------
 

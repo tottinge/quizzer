@@ -109,9 +109,6 @@ class SessionStore:
         records = self.storage.search(criteria)
         return AnswerEntry.from_dict(records[0])
 
-    def shutdown(self):
-        logger.critical("Session store: shutting down")
-        self.storage.close()
 
 
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?

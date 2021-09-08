@@ -136,13 +136,5 @@ def get_endpoint_address() -> tuple[str, int]:
     return host_name, port_number
 
 
-def shutdown(signum, frame):
-    logger.critical(f'Received shutdown signal {signum}')
-    study_controller.shutdown()
-    exit(0)
-
-
-signal.signal(signal.SIGTERM, shutdown)
-
 if __name__ == '__main__':
     main()
