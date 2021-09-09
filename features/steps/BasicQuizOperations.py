@@ -175,10 +175,11 @@ def step_impl(context: Context):
 
 @step("no incorrect answers were given")
 def step_impl(context: Context):
-    session_store: SessionStore = context.study_controller.session_store
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
-    wrong_answers = session_store.number_of_incorrect_answers(session_id,
+
+    study_controller: StudyController = context.study_controller
+    wrong_answers = study_controller.number_of_incorrect_answers(session_id,
                                                               quiz_name)
     assert_that(wrong_answers, equal_to(0))
 

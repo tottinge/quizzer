@@ -2,22 +2,19 @@ from typing import NamedTuple, Iterable
 
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore, QuizSummary
+from quizzes.quiz_store import QuizSummary
 from sessions.session_id import SESSION_COOKIE_ID
-from sessions.session_store import SessionStore
 from shared.quizzology import Quizzology
 
 
 class StudyController:
 
+    #------- DOOMED -----
     # Todo: properties for quizzology members should be unnecessary
-    @property
-    def session_store(self):
-        return self.quizzology.session_store
-
     @property
     def quiz_store(self):
         return self.quizzology.quiz_store
+    #------ DOOMED ------
 
     def __init__(self, quizzology: Quizzology):
         self.quizzology = quizzology
@@ -35,16 +32,15 @@ class StudyController:
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
                       correct, timestamp):
-        self.session_store.record_answer(session_id, quiz_name,
-                                         question_number,
-                                         selection,
-                                         correct,
-                                         timestamp)
+        self.quizzology.session_store.record_answer(session_id, quiz_name,
+                                                    question_number,
+                                                    selection,
+                                                    correct,
+                                                    timestamp)
 
-    def number_of_incorrect_answers(self, quiz_name, session_id):
-        return self.session_store.number_of_incorrect_answers(
-            session_id,
-            quiz_name)
+    def number_of_incorrect_answers(self, session_id, quiz_name):
+        session_store = self.quizzology.session_store
+        return session_store.number_of_incorrect_answers(session_id, quiz_name)
 
     class PreparedQuestion(NamedTuple):
         quiz: Quiz
@@ -70,10 +66,10 @@ class StudyController:
         )
 
     def new_session_id(self):
-        return self.session_store.get_new_session_id()
+        return self.quizzology.session_store.get_new_session_id()
 
     def get_log_messages(self):
-        return self.session_store.get_all()
+        return self.quizzology.session_store.get_all()
 
     class RecordedAnswer(NamedTuple):
         quiz: Quiz
@@ -100,8 +96,8 @@ class StudyController:
 
         self.record_answer(session_id, quiz.name, question_number, selection,
                            correct, None)
-        incorrect_answers = self.number_of_incorrect_answers(quiz.name,
-                                                             session_id)
+        incorrect_answers = self.number_of_incorrect_answers(session_id,
+                                                             quiz.name)
         next_question_number = quiz.next_question_number(question_number) \
             if correct \
             else None
@@ -119,6 +115,6 @@ class StudyController:
 
     def get_log_message_for_question(self, session_id, quiz_name,
                                      question_number):
-        return self.session_store.get_log_message(session_id, quiz_name,
-                                                  question_number)
+        return self.quizzology.session_store.get_log_message(session_id, quiz_name,
+                                                             question_number)
 
