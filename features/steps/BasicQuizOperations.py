@@ -20,6 +20,7 @@ def step_impl(context: Context):
     quiz_store = QuizStore(context.temporary_directory.name)
 
     quizzology = Quizzology(quiz_store, session_store)
+    context.quizzology = quizzology  # Todo - this is temporary?
 
     # Todo: Remove global dependency on study_controller
     study_controller: StudyController = StudyController(quizzology)
@@ -85,7 +86,7 @@ def step_impl(context: Context, quiz_name: str):
 
 
 def save_quiz(context: Context, quiz: Quiz):
-    quiz_store: QuizStore = context.study_controller.quiz_store
+    quiz_store: QuizStore = context.quizzology.quiz_store
     result = quiz_store.save_quiz(quiz)
     assert_that(result.success, is_(True))
 
