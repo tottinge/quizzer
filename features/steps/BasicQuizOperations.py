@@ -25,6 +25,8 @@ def step_impl(context: Context):
     study_controller: StudyController = StudyController(quizzology)
     context.study_controller = study_controller
 
+    # authoring_controller: AuthoringController = AuthoringController(quizzology)
+    # context.authoring_controller = authoring_controller
 
 @step('we have a quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
