@@ -1,14 +1,14 @@
 import unittest
 
-from apps.author import author_controller
+from apps.author.author_controller import AuthorController
+from shared.quizzology import Quizzology
 
 
 class MyTestCase(unittest.TestCase):
     def create_new_quiz(self):
-        new_quiz = author_controller.create_new_quiz(
-            name='testcreation',
-            title="test"
-        )
+        quizzology = Quizzology()
+        x = AuthorController(quizzology)
+        pass
 
 
 if __name__ == '__main__':

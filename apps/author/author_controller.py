@@ -1,5 +1,8 @@
 from quizzes.quiz import Quiz
+from shared.quizzology import Quizzology
 
 
-def create_new_quiz() -> Quiz:
-    pass
+class AuthorController:
+
+    def __init__(self, quizzology: Quizzology):
+        self.quizzology = quizzology
