@@ -9,22 +9,14 @@ from shared.quizzology import Quizzology
 
 class StudyController:
 
-    #------- DOOMED -----
-    # Todo: properties for quizzology members should be unnecessary
-    @property
-    def quiz_store(self):
-        return self.quizzology.quiz_store
-    #------ DOOMED ------
-
     def __init__(self, quizzology: Quizzology):
         self.quizzology = quizzology
 
-
     def get_quiz_summaries(self) -> Iterable[QuizSummary]:
-        return self.quiz_store.get_quiz_summaries()
+        return self.quizzology.quiz_store.get_quiz_summaries()
 
     def get_quiz_by_name(self, quiz_name: str) -> Quiz:
-        return self.quiz_store.get_quiz(quiz_name)
+        return self.quizzology.quiz_store.get_quiz(quiz_name)
 
     @staticmethod
     def begin_session(http_response):
