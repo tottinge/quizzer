@@ -20,9 +20,9 @@ def step_impl(context: Context):
     quiz_store = QuizStore(context.temporary_directory.name)
 
     quizzology = Quizzology(quiz_store, session_store)
-    context.quizzology = quizzology  # Todo - this is temporary?
+    # Todo - Should only use controllers for step implementations
+    context.quizzology = quizzology
 
-    # Todo: Remove global dependency on study_controller
     study_controller: StudyController = StudyController(quizzology)
     context.study_controller = study_controller
 

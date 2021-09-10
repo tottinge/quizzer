@@ -35,12 +35,11 @@ def step_impl(context: Context):
     store.save_quiz(quiz)
 
 
-# ToDo - Should we be using the QuizStore or context to retrieve the quiz
-#  Should we be reaching all the way into the QuizStore??
+# ToDo - This should be using the author_controller
 @then('there is {count} question in "{quiz_name}"')
 def step_impl(context: Context, count: str, quiz_name: str):
-    store: QuizStore = context.quizzology.quiz_store
-    quiz: Quiz = store.get_quiz(quiz_name)
+    quiz_store: QuizStore = context.quizzology.quiz_store
+    quiz: Quiz = quiz_store.get_quiz(quiz_name)
     assert_that(quiz.name, equal_to(quiz_name))
     assert_that(int(count), is_(quiz.number_of_questions()))
 

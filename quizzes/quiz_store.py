@@ -88,7 +88,6 @@ class QuizStore:
             logger.error(f"Reading quiz directory: {error}")
             return []
 
-    # ToDo: Create a NamedTuple for the summaries
     def _get_quiz_summaries_from_file_list(self, quiz_file_paths) \
             -> Iterable[QuizSummary]:
         for quiz_filename in quiz_file_paths:
