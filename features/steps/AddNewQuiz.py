@@ -1,13 +1,10 @@
-from typing import List
-
 from behave import *
 # use_step_matcher("re")
 from behave.runner import Context
-from hamcrest import assert_that, is_, is_in
+from hamcrest import assert_that, is_
 
-from apps.study.studycontroller import StudyController
+from apps.author.author_controller import AuthorController
 from quizzes.quiz import Quiz
-from shared.quizzology import Quizzology
 
 
 @step("decoys are")
@@ -20,21 +17,16 @@ def step_impl(context: Context):
 
 @when('the author adds a quiz with name "{name}" and title "{title}"')
 def step_impl(context: Context, name: str, title: str):
-    quiz = Quiz(name, title)
-    context.quiz = quiz
-    quizzology: Quizzology = context.quizzology
-    result = quizzology.quiz_store.save_quiz(quiz)
-    assert_that(result.success, is_(True))
+    quiz = Quiz(name=name, title=title)
+    controller: AuthorController = context.author_controller
+    result = controller.save(quiz)
+    assert_that(result, is_(True))
 
 
-@then("it should be accessible")
-def step_impl(context: Context):
-    quizzology: Quizzology = context.quizzology
-    defined_quiz_names: List[str] = [
-        summary.name
-        for summary in quizzology.quiz_store.get_quiz_summaries()
-    ]
-    assert_that(context.quiz.name, is_in(defined_quiz_names))
+@then('"{quiz_name}" should be accessible')
+def step_impl(context: Context, quiz_name: str):
+    controller: AuthorController = context.author_controller
+    assert_that(controller.quiz_exists(quiz_name), is_(True))
 
 
 @when('the author adds a question "{question_text}"')

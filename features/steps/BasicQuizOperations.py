@@ -6,6 +6,7 @@ from hamcrest import assert_that, equal_to, not_none, is_not, empty, none, is_
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
+from apps.author.author_controller import AuthorController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
@@ -26,8 +27,8 @@ def step_impl(context: Context):
     study_controller: StudyController = StudyController(quizzology)
     context.study_controller = study_controller
 
-    # authoring_controller: AuthoringController = AuthoringController(quizzology)
-    # context.authoring_controller = authoring_controller
+    author_controller: AuthorController = AuthorController(quizzology)
+    context.author_controller = author_controller
 
 @step('we have a quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):

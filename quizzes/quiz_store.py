@@ -58,7 +58,7 @@ class QuizStore:
     def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
         dir_name = self.quiz_dir
         file_name = filename_for(quiz.name)
-        filename = os.path.join(dir_name, file_name + ".json")
+        filename = os.path.join(dir_name, file_name)
         try:
             with open(filename, "w") as output:
                 json.dump(asdict(quiz), output)
@@ -74,6 +74,9 @@ class QuizStore:
                 message=error.strerror
             )
 
+    def exists(self, quiz_name: str) -> bool:
+        found_file_name = self._find_file_for_named_quiz(quiz_name)
+        return found_file_name is not None
 
     # -- helper methods all the rest of the way down --------
 

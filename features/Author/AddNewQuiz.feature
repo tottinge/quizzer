@@ -12,7 +12,7 @@ Feature: Quiz Authoring
   @finished
   Scenario: Create an empty quiz
     When the author adds a quiz with name "Test Quiz" and title "Test Title"
-    Then it should be accessible
+    Then "Test Quiz" should be accessible
 
 
 
