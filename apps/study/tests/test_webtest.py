@@ -12,9 +12,15 @@ from shared.quizzology import Quizzology
 class QuickerUITests(TestCase):
 
     def test_firstTry(self):
+        """
+        This is a PoC
+
+        We're looking for ways to speed up our UI tests,
+        and this way we cut out the web server and browser
+        """
         study.use_this_quizzology(Quizzology())
-        x = TestApp(app)
-        response: TestResponse = x.get('/study')
+        toTest = TestApp(app)
+        response: TestResponse = toTest.get('/study')
         assert_that(response.status_code, is_(200))
         dom = BeautifulSoup(response.body, 'html.parser')
         assert_that(dom.head.title.text, contains_string("Quizzology"))
