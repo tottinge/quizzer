@@ -9,6 +9,7 @@ from tinydb import Query, TinyDB
 
 logger = logging.getLogger(__name__)
 
+#ToDo: The SessionStore stuff should be made part of the Study app
 
 @dataclass
 class AnswerEntry:
