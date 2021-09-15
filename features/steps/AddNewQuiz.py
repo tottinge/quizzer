@@ -20,7 +20,7 @@ def step_impl(context: Context, name: str, title: str):
     quiz = Quiz(name=name, title=title)
     controller: AuthorController = context.author_controller
     result = controller.save(quiz)
-    assert_that(result, is_(True))
+    assert_that(result.success, is_(True))
 
 
 @then('"{quiz_name}" should be accessible')
