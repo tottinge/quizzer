@@ -12,12 +12,14 @@ from shared.quizzology import Quizzology
 class TestAuthorController(unittest.TestCase):
     def test_create_new_quiz(self):
         with tempfile.TemporaryDirectory() as name:
-            quiz_store = QuizStore(dir_name=name)
-            quizzology = Quizzology(quiz_store=quiz_store)
+            quizzology = Quizzology(quiz_store=QuizStore(dir_name=name))
             api = AuthorController(quizzology)
             quiz = Quiz(name="test quiz", title="New Test Quiz")
             result = api.save(quiz)
-            assert_that(result.success, is_(True))
+            assert_that(result.success, is_(True),
+                        f"Couldn't save '{quiz.name}': {result.message}")
+            assert_that(api.quiz_exists(quiz.name), is_(True),
+                        f"Didn't find newly-created '{quiz.name}'")
 
 
 if __name__ == '__main__':
