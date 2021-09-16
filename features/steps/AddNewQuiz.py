@@ -26,7 +26,8 @@ def step_impl(context: Context, name: str, title: str):
 @then('"{quiz_name}" should be accessible')
 def step_impl(context: Context, quiz_name: str):
     controller: AuthorController = context.author_controller
-    assert_that(controller.quiz_exists(quiz_name), is_(True))
+    assert_that(controller.quiz_exists(quiz_name), is_(True),
+        f"Cannot access newly-created '{quiz_name}'")
 
 
 @when('the author adds a question "{question_text}"')

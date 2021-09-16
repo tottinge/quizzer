@@ -1,4 +1,3 @@
-from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
 from shared.quizzology import Quizzology
 
@@ -9,9 +8,7 @@ class AuthorController:
         self.quizzology = quizzology
 
     def save(self, quiz) -> QuizStore.SaveQuizResult:
-        result: QuizStore.SaveQuizResult = self.quizzology.quiz_store.save_quiz(quiz)
-        return result
+        return self.quizzology.quiz_store.save_quiz(quiz)
 
-    def quiz_exists(self, quiz_name):
-        store: QuizStore = self.quizzology.quiz_store
-        return store.exists(quiz_name)
+    def quiz_exists(self, quiz_name) -> bool:
+        return self.quizzology.quiz_store.exists(quiz_name)
