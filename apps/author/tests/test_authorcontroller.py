@@ -11,7 +11,7 @@ from shared.quizzology import Quizzology
 
 
 class TestAuthorController(unittest.TestCase):
-    def test_create_new_quiz_chicagoSchool(self):
+    def test_create_new_quiz(self):
         with tempfile.TemporaryDirectory() as name:
             quizzology = Quizzology(quiz_store=QuizStore(dir_name=name))
             api = AuthorController(quizzology)
@@ -24,17 +24,22 @@ class TestAuthorController(unittest.TestCase):
             assert_that(api.quiz_exists(quiz.name), is_(True),
                         f"Didn't find newly-created '{quiz.name}'")
 
-    def test_create_new_quiz_londonSchool(self):
-        mock_store = Mock()
-        quizzology = Quizzology(mock_store)
-        api = AuthorController(quizzology)
+
+class LondonSchoolTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.mock_store = Mock()
+        quizzology = Quizzology(self.mock_store)
+        self.api = AuthorController(quizzology)
+
+    def test_create_new_quiz(self):
         quiz = Quiz(name="test quiz", title="New Test Quiz")
+        self.api.save(quiz)
+        self.mock_store.save_quiz.assert_called_once_with(quiz)
 
-        api.save(quiz)
+    def test_get_quiz(self):
+        self.api.get_quiz("quiz name")
+        self.mock_store.get_quiz.assert_called_once_with("quiz name")
 
-        mock_store.save_quiz.assert_called_once_with(quiz)
-
-        
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,6 +2,7 @@ from behave import *
 from behave.runner import Context
 from hamcrest import is_, assert_that, equal_to
 
+from apps.author.author_controller import AuthorController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
@@ -35,11 +36,10 @@ def step_impl(context: Context):
     store.save_quiz(quiz)
 
 
-# ToDo - This should be using the author_controller
 @then('there is {count} question in "{quiz_name}"')
 def step_impl(context: Context, count: str, quiz_name: str):
-    quiz_store: QuizStore = context.quizzology.quiz_store
-    quiz: Quiz = quiz_store.get_quiz(quiz_name)
+    api: AuthorController = context.author_controller
+    quiz = api.get_quiz(quiz_name)
     assert_that(quiz.name, equal_to(quiz_name))
     assert_that(int(count), is_(quiz.number_of_questions()))
 
