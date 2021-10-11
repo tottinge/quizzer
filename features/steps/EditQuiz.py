@@ -14,8 +14,8 @@ from quizzes.quiz_store import QuizStore
 @given('there is a quiz with name "{name}"')
 def step_impl(context: Context, name):
     quiz = Quiz(name=name, title=f"Title For Quiz Named {name}")
-    store: QuizStore = context.quizzology.quiz_store
-    result = store.save_quiz(quiz)
+    controller: AuthorController = context.author_controller
+    result = controller.save(quiz)
     assert_that(result.success, is_(True))
     context.quiz = quiz
 
@@ -32,8 +32,9 @@ def step_impl(context: Context):
     question = Question(text, answer, confirmation=confirmation)
     quiz: Quiz = context.quiz
     quiz.add_question(question)
-    store: QuizStore = context.quizzology.quiz_store
-    store.save_quiz(quiz)
+    controller: AuthorController = context.author_controller
+    result = controller.save(quiz)
+    assert_that(result.success, is_(True))
 
 
 @then('there is {count} question in "{quiz_name}"')

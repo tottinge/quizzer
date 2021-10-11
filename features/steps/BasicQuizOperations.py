@@ -7,10 +7,10 @@ from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
 from apps.author.author_controller import AuthorController
+from apps.study.studycontroller import StudyController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from apps.study.studycontroller import StudyController
 from sessions.session_store import SessionStore, AnswerEntry
 from shared.quizzology import Quizzology
 
@@ -19,16 +19,14 @@ from shared.quizzology import Quizzology
 def step_impl(context: Context):
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
     quiz_store = QuizStore(context.temporary_directory.name)
-
     quizzology = Quizzology(quiz_store, session_store)
-    # Todo - Should only use controllers for step implementations
-    context.quizzology = quizzology
 
     study_controller: StudyController = StudyController(quizzology)
     context.study_controller = study_controller
 
     author_controller: AuthorController = AuthorController(quizzology)
     context.author_controller = author_controller
+
 
 @step('we have a quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
@@ -87,8 +85,8 @@ def step_impl(context: Context, quiz_name: str):
 
 
 def save_quiz(context: Context, quiz: Quiz):
-    quiz_store: QuizStore = context.quizzology.quiz_store
-    result = quiz_store.save_quiz(quiz)
+    controller: AuthorController = context.author_controller
+    result = controller.save(quiz)
     assert_that(result.success, is_(True))
 
 
@@ -184,7 +182,7 @@ def step_impl(context: Context):
 
     study_controller: StudyController = context.study_controller
     wrong_answers = study_controller.number_of_incorrect_answers(session_id,
-                                                              quiz_name)
+                                                                 quiz_name)
     assert_that(wrong_answers, equal_to(0))
 
 
