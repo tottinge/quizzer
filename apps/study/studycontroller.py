@@ -57,9 +57,6 @@ class StudyController:
             quiz.first_question_number()
         )
 
-    def new_session_id(self):
-        return self.quizzology.session_store.get_new_session_id()
-
     def get_log_messages(self):
         return self.quizzology.session_store.get_all()
 
