@@ -11,7 +11,7 @@ from apps.study.studycontroller import StudyController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizStore
-from sessions.session_store import SessionStore, AnswerEntry
+from apps.study.session_store import SessionStore, AnswerEntry
 from shared.quizzology import Quizzology
 
 

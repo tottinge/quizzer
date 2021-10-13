@@ -3,7 +3,7 @@ import unittest
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
-from sessions.session_store import SessionStore
+from apps.study.session_store import SessionStore
 
 
 class SessionStoreStuff(unittest.TestCase):
@@ -14,7 +14,7 @@ class SessionStoreStuff(unittest.TestCase):
     def test_record_correct_answer(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_id = 'test_' + session_store.get_new_session_id()
+        session_id = 'test_session'
 
         session_store.record_answer(session_id, quiz_name, 10, 'selection',
                                     True)
@@ -32,7 +32,7 @@ class SessionStoreStuff(unittest.TestCase):
     def test_record_incorrect_answer(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_id = 'test_' + session_store.get_new_session_id()
+        session_id = 'test_session'
 
         session_store.record_answer(session_id, quiz_name, 0, 'selection',
                                     False)
@@ -47,15 +47,12 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertEqual(quiz_name, record.quiz_name)
         self.assertEqual(False, record.is_correct)
 
-    def test_get_new_session_id(self):
-        session_store = self.session_store
-        self.assertIsNotNone(session_store.get_new_session_id())
 
     def test_recorded_answers_are_unique_within_session(self):
         session_store = self.session_store
         quiz_name = "quiz_name"
-        session_1 = "test_" + session_store.get_new_session_id()
-        session_2 = "test_" + session_store.get_new_session_id()
+        session_1 = "test_session_1"
+        session_2 = "test_session_2"
 
         inputs = [
             (session_1, quiz_name, 10, "selection", True),

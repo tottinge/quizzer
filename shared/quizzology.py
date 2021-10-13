@@ -1,5 +1,5 @@
 from quizzes.quiz_store import QuizStore
-from sessions.session_store import SessionStore, prepare_session_store
+from apps.study.session_store import SessionStore, prepare_session_store
 
 
 class Quizzology:

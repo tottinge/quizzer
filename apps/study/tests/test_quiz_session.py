@@ -8,7 +8,7 @@ import apps
 from apps.study.study import render_judgment, url_for, use_this_quizzology
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from sessions.session_store import SessionStore
+from apps.study.session_store import SessionStore
 from shared.quizzology import Quizzology
 
 

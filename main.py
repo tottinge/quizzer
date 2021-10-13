@@ -12,7 +12,6 @@ that serves up quizzes and tracks answers.
 
 """
 import os
-import signal
 from logging import getLogger, Logger
 
 import bottle
@@ -21,13 +20,14 @@ from bottle import (
 )
 
 from apps.author.author import app as authoring_app
-from apps.study.study import app as quizzing_app, study_controller
+from apps.study.study import app as quizzing_app
 from shared.quizzology import Quizzology
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
 
 from apps.study.study import use_this_quizzology as study_use
+
 quizzology = Quizzology()
 study_use(quizzology)
 
@@ -111,6 +111,7 @@ def show_session():
         "$is_correct\t"
         "'$selection'"
     )
+    from apps.study.study import study_controller
     text_answers = [
         template.substitute(answer)
         for answer in study_controller.get_log_messages()

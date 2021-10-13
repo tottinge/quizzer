@@ -9,7 +9,6 @@ from tinydb import Query, TinyDB
 
 logger = logging.getLogger(__name__)
 
-#ToDo: The SessionStore stuff should be made part of the Study app
 
 @dataclass
 class AnswerEntry:
@@ -33,11 +32,6 @@ class SessionStore:
     def __init__(self, storage=None):
         self.recorded_answers = []
         self.storage: tinydb.TinyDB = storage
-
-    @staticmethod
-    def get_new_session_id():
-        import uuid
-        return str(uuid.uuid4())
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
                       is_correct, timestamp=None):
@@ -71,7 +65,8 @@ class SessionStore:
     def number_of_incorrect_answers(self, session_id, quiz_name) -> int:
         return len(self.incorrect_answers(session_id, quiz_name))
 
-    def questions_answered_incorrectly(self, session_id) -> Set[Tuple[str, int]]:
+    def questions_answered_incorrectly(self, session_id) -> Set[
+        Tuple[str, int]]:
         """
         Get a list of questions which were answered incorrectly
         at least once during a session.
@@ -109,7 +104,6 @@ class SessionStore:
         })
         records = self.storage.search(criteria)
         return AnswerEntry.from_dict(records[0])
-
 
 
 PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?

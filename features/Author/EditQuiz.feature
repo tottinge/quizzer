@@ -41,7 +41,6 @@ Feature: Edit Quiz
     Then the question has 2 resources
 
 
-
   # Delete questions
   # Delete the quiz
   # change the title
