@@ -22,6 +22,7 @@ from bottle import (
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from shared.quizzology import Quizzology
+from apps.study.study import study_controller
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
