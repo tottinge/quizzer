@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim-bullseye
 ENV QUIZ_HOST=0.0.0.0
 ENV QUIZ_PORT=80
 ADD . /app
