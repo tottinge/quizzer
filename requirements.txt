@@ -8,3 +8,4 @@ behave-html-formatter
 pyhamcrest
 selenium
 WebTest
+gunicorn

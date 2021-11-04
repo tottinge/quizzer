@@ -126,6 +126,7 @@ def main():
         app,
         host=host_name,
         port=port_number,
+        server='gunicorn',
         reloader=True,
         debug=True
     )
