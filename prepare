@@ -2,8 +2,8 @@
 
 git pull &&
   pip install --upgrade pip &&
-  pip install -qr requirements.txt &&
-  pip install -qr devtools.txt &&
+  pip install --upgrade -qr requirements.txt &&
+  pip install --upgrade -qr devtools.txt &&
   pytest --ignore=ui_tests &&
   behave -t "not @wip" &&
   pytest ui_tests

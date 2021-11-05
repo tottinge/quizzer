@@ -1,6 +1,6 @@
 bottle==0.12.19
 bs4==0.0.1
-tinydb==4.5.1
+tinydb==4.5.2
 sanitize-filename
 
 behave
