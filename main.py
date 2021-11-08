@@ -12,11 +12,12 @@ that serves up quizzes and tracks answers.
 
 """
 import os
+from http import HTTPStatus
 from logging import getLogger, Logger
 
 import bottle
 from bottle import (
-    run, request, static_file, redirect
+    run, request, static_file, redirect, response
 )
 
 from apps.author.author import app as authoring_app
@@ -34,6 +35,16 @@ study_use(quizzology)
 
 app.mount('/author', authoring_app)
 app.mount('/study', quizzing_app)
+
+@app.route('/crappy')
+def crappy():
+    # return a 401
+    if not request.auth:
+        raise bottle.HTTPResponse('Could not verify', 401, {
+            'WWW-Authenticate': 'Basic realm="Login Required"'})
+    user, password = request.auth
+    print(f'User={user} and Password={password}')
+    return 'Hello World'
 
 
 @app.route('/')
