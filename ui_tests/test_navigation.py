@@ -53,7 +53,7 @@ class TestNavigation(TestCase):
         self.select_value("Gray")
         self.submit_answer()
         self.wait_for_confirmation('confirm_correct')
-        text = self.browser.find_element_by_id('confirm_correct').text
+        text = self.browser.find_element(By.ID, 'confirm_correct').text
         assert_that(text, contains_string('is correct'))
 
     def test_answer_a_question_incorrectly_and_get_badNews(self):
@@ -62,7 +62,7 @@ class TestNavigation(TestCase):
         self.select_value("Fluffybutt")
         self.submit_answer()
         self.wait_for_confirmation("confirm_incorrect")
-        text = self.browser.find_element_by_id('confirm_incorrect').text
+        text = self.browser.find_element(By.ID, 'confirm_incorrect').text
         assert_that(text, contains_string("not what we're looking for"))
 
     def test_complete_a_quiz_perfectly(self):
@@ -74,12 +74,12 @@ class TestNavigation(TestCase):
             self.submit_answer()
             self.wait_for_confirmation('confirm_correct')
 
-            next_tags = self.browser.find_elements_by_link_text('Next Question')
+            next_tags = self.browser.find_elements(By.LINK_TEXT, 'Next Question')
             if next_tags:
                 next_tags[0].click()
                 self.wait_for_page_titled("Cats")  # Don't jump the gun.
 
-        text = self.browser.find_element_by_id('quiz_performance').text
+        text = self.browser.find_element(By.ID, 'quiz_performance').text
         assert_that(text, contains_string("perfectly"))
 
     def reset_session(self):
@@ -92,7 +92,7 @@ class TestNavigation(TestCase):
         self.browser.get(self.base_url + relative_page)
 
     def click_link(self, link_text):
-        link = self.browser.find_element_by_link_text(link_text)
+        link = self.browser.find_element(By.LINK_TEXT, link_text)
         link.click()
 
     def wait_for_confirmation(self, element_id):
@@ -102,10 +102,10 @@ class TestNavigation(TestCase):
         self.click_on_element_with_id('submit_answer')
 
     def click_on_element_with_id(self, element_id: str):
-        self.browser.find_element_by_id(element_id).click()
+        self.browser.find_element(By.ID, element_id).click()
 
     def select_value(self, value: str):
-        self.browser.find_element_by_xpath(f'//input[@value="{value}"]').click()
+        self.browser.find_element(By.XPATH, f'//input[@value="{value}"]').click()
 
     def wait_for_element_with_id(self, element_id):
         WebDriverWait(self.browser, timeout=2).until(

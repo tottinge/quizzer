@@ -3,6 +3,7 @@ from unittest import TestCase
 
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.common.by import By
 
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
     launch_selenium_chrome, get_likely_port
@@ -36,12 +37,12 @@ class BaseUrlTest(TestCase):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
 
     def test_return_link_exists(self):
-        link = self.browser.find_element_by_id('return_link')
+        link = self.browser.find_element(By.ID, 'return_link')
         href_value = link.get_attribute('href')
         assert_that(href_value, equal_to(self.base_url))
 
     def test_quiz_links_exist(self):
         browser = self.browser
-        browser.find_element_by_link_text('Cats Quiz')
-        browser.find_element_by_link_text('Basics of HTML')
-        browser.find_element_by_partial_link_text('evelopment')
+        browser.find_element(By.LINK_TEXT, "Cats Quiz")
+        browser.find_element(By.LINK_TEXT, 'Basics of HTML')
+        browser.find_element(By.PARTIAL_LINK_TEXT, 'evelopment')
