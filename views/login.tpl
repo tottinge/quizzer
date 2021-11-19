@@ -1,12 +1,13 @@
 % rebase('skeleton.tpl', title=title)
-<form action="/auth" class="w3-container" method="POST">
-
-    <section class="w3-card w3-container">
+<form method="POST" action="/auth" class="w3-container" >
+    <p>
         <label for='user_name'>User Name</label>
-        <input type="text" name="user_name" required>
+        <input class="w3-input w3-border" type="text" placeholder="Enter Username" name="user_name" required>
+    </p>
+    <p>
         <label for='password'>Password</label>
-        <input type="password" name="password" required>
-    </section>
-    <br/>
+        <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="password" required>
+    </p>
+
     <button class="w3-btn w3-teal w3-round" id="login" type="submit">Login</button>
 </form>

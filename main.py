@@ -49,7 +49,7 @@ def crappy():
 @app.route('/login')
 @bottle.view("login")
 def login():
-    return {"title": "Who are you"}
+    return {"title": "Who are you?"}
 # ToDo: Pick up here and do the following:
 # Add the /Auth route
 # Figure out https
