@@ -43,13 +43,17 @@ def launch_selenium_chrome(headless: bool):
 
 
 def setup_path_for_dev_test():
-    if sys.platform == 'darwin':
-        old_path = os.environ['PATH']
-        directory = os.environ.get('IDE_PROJECT_ROOTS', '.')
-        driver_path = os.path.join(directory, 'webdrivers')
-        if os.path.isdir(driver_path):
-            if driver_path not in old_path.split(os.pathsep):
-                os.environ['PATH'] = old_path + os.pathsep + driver_path
+    project_root = os.environ.get('IDE_PROJECT_ROOTS', '.')
+    chrome_driver_path = os.path.join(project_root, 'webdrivers', sys.platform)
+    if os.path.isdir(chrome_driver_path):
+        path_env_value = os.environ['PATH']
+        path_seperator = os.pathsep
+        path_list = path_env_value.split(path_seperator)
+        if chrome_driver_path not in path_list:
+            path_list.append(chrome_driver_path)
+            os.environ['PATH'] = path_seperator.join(path_list)
+
+
 
 
 def get_likely_port() -> int:
