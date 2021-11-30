@@ -1,4 +1,3 @@
-MacFSEvents
 sniffer
 pytest
 pylint
