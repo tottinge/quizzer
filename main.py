@@ -51,9 +51,12 @@ def crappy():
 def login():
     return {"title": "Who are you?"}
 # ToDo: Pick up here and do the following:
-# Add the /Auth route
 # Figure out https
 # redirect / to /login
+
+@app.post('/auth')
+def authentication():
+    return "HELLO!"
 
 @app.route('/')
 def menu_of_quizzes():
