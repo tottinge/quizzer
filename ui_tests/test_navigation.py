@@ -34,7 +34,8 @@ class TestNavigation(TestCase):
         port_number = get_likely_port()
         cls.base_url = f"http://0.0.0.0:{port_number}"
         cls.app = launch_quizzology(port_number)
-        cls.browser = launch_selenium_chrome(headless=True)
+        # cls.browser = launch_selenium_chrome(headless=True)
+        cls.browser = launch_selenium_chrome(headless=False)
 
     @classmethod
     def tearDownClass(cls):
@@ -42,7 +43,7 @@ class TestNavigation(TestCase):
         cls.app.terminate()
 
     def test_select_a_quiz(self):
-        self.get_page("")
+        self.get_page("/study")
         self.click_link('Cats Quiz')
         self.wait_for_page_titled("Cats")
         assert_that(self.browser.title, equal_to("Cats Quiz"))
@@ -83,7 +84,7 @@ class TestNavigation(TestCase):
         assert_that(text, contains_string("perfectly"))
 
     def reset_session(self):
-        self.get_page("")
+        self.get_page("/study")
 
     # Complete perfectly
     # complete imperfectly

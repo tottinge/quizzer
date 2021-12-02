@@ -49,18 +49,22 @@ def crappy():
 @app.route('/login')
 @bottle.view("login")
 def login():
+    # TODO - if we have authentication already, go to study or author apps
     return {"title": "Who are you?"}
+
 # ToDo: Pick up here and do the following:
 # Figure out https
-# redirect / to /login
 
 @app.post('/auth')
 def authentication():
-    return "HELLO!"
+    user_name = request.forms.get('user_name')
+    password = request.forms.get('password')
+    # Todo: we have the data, now authenticate!
+    redirect('/study')
 
 @app.route('/')
 def menu_of_quizzes():
-    redirect('/study')
+    redirect('/login')
 
 
 @app.route('/favicon.ico')

@@ -1,6 +1,7 @@
 from subprocess import Popen
 from unittest import TestCase
 
+import hamcrest
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
@@ -25,7 +26,7 @@ class BaseUrlTest(TestCase):
         cls.browser = launch_selenium_chrome(headless=True)
 
     def setUp(self):
-        self.browser.get(self.base_url)
+        self.browser.get(self.base_url + "study")
         take_screenshot(self.browser, "home_page.png")
 
     @classmethod
