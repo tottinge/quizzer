@@ -34,8 +34,8 @@ class TestNavigation(TestCase):
         port_number = get_likely_port()
         cls.base_url = f"http://0.0.0.0:{port_number}"
         cls.app = launch_quizzology(port_number)
-        # cls.browser = launch_selenium_chrome(headless=True)
-        cls.browser = launch_selenium_chrome(headless=False)
+        cls.browser = launch_selenium_chrome(headless=True)
+        # cls.browser = launch_selenium_chrome(headless=False)
 
     @classmethod
     def tearDownClass(cls):
