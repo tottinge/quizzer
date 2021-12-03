@@ -35,7 +35,6 @@ class TestNavigation(TestCase):
         cls.base_url = f"http://0.0.0.0:{port_number}"
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
-        # cls.browser = launch_selenium_chrome(headless=False)
 
     @classmethod
     def tearDownClass(cls):
@@ -75,7 +74,8 @@ class TestNavigation(TestCase):
             self.submit_answer()
             self.wait_for_confirmation('confirm_correct')
 
-            next_tags = self.browser.find_elements(By.LINK_TEXT, 'Next Question')
+            link_text = 'Next Question'
+            next_tags = self.browser.find_elements(By.LINK_TEXT, link_text)
             if next_tags:
                 next_tags[0].click()
                 self.wait_for_page_titled("Cats")  # Don't jump the gun.
@@ -86,7 +86,6 @@ class TestNavigation(TestCase):
     def reset_session(self):
         self.get_page("/study")
 
-    # Complete perfectly
     # complete imperfectly
 
     def get_page(self, relative_page):
@@ -106,7 +105,8 @@ class TestNavigation(TestCase):
         self.browser.find_element(By.ID, element_id).click()
 
     def select_value(self, value: str):
-        self.browser.find_element(By.XPATH, f'//input[@value="{value}"]').click()
+        selector = f'//input[@value="{value}"]'
+        self.browser.find_element(By.XPATH, selector).click()
 
     def wait_for_element_with_id(self, element_id):
         WebDriverWait(self.browser, timeout=2).until(
