@@ -49,7 +49,6 @@ def crappy():
 @app.route('/login')
 @bottle.view("login")
 def login():
-    # TODO - if we have authentication already, go to study or author apps
     return {"title": "Who are you?"}
 
 # ToDo: Pick up here and do the following:
@@ -57,10 +56,26 @@ def login():
 
 @app.post('/auth')
 def authentication():
+
     user_name = request.forms.get('user_name')
     password = request.forms.get('password')
     # Todo: we have the data, now authenticate!
+    user = authenticate(user_name, password)
+    # TODO - if we have authentication already, go to study or author apps
+    if user['type'] == 'author':
+        redirect('/author/edit')
     redirect('/study')
+
+def authenticate(user_name: str, password: str):
+    users = [
+        dict(user_name="perry", password="passme", type="author"),
+        dict(user_name="tottinge", password="passme", type="student")
+    ]
+    found = [profile for profile in users if profile['user_name'] == user_name];
+    if not found:
+        return dict(user_name="guest", type="student")
+    else:
+        return found[0]
 
 @app.route('/')
 def menu_of_quizzes():
