@@ -24,6 +24,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from shared.quizzology import Quizzology
 from apps.study.study import study_controller
+from secrets import compare_digest
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
@@ -48,20 +49,20 @@ def crappy():
 
 @app.route('/login')
 @bottle.view("login")
-def login():
-    return {"title": "Who are you?"}
+def login(flash=""):
+    return {"title": "Who are you?", "flash":flash}
 
 # ToDo: Pick up here and do the following:
 # Figure out https
 
 @app.post('/auth')
 def authentication():
-
     user_name = request.forms.get('user_name')
     password = request.forms.get('password')
-    # Todo: we have the data, now authenticate!
     user = authenticate(user_name, password)
-    # TODO - if we have authentication already, go to study or author apps
+    if not user:
+        return login("Your credentials did not match any on file.")
+    # TODO: Add a JWT so we know we're authenticated later
     if user['type'] == 'author':
         redirect('/author/edit')
     redirect('/study')
@@ -74,8 +75,9 @@ def authenticate(user_name: str, password: str):
     found = [profile for profile in users if profile['user_name'] == user_name];
     if not found:
         return dict(user_name="guest", type="student")
-    else:
+    if compare_digest(password, found[0]["password"]):
         return found[0]
+    return None
 
 @app.route('/')
 def menu_of_quizzes():

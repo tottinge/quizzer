@@ -8,6 +8,9 @@
         <label for='password'>Password</label>
         <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="password" required>
     </p>
+    % if flash:
+        <section id="flash" class="w3-panel w3-red"> {{ flash }}</section>
+    % end
 
     <button class="w3-btn w3-teal w3-round" id="login" type="submit">Login</button>
 </form>
