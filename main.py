@@ -12,30 +12,29 @@ that serves up quizzes and tracks answers.
 
 """
 import os
-from http import HTTPStatus
 from logging import getLogger, Logger
+from secrets import compare_digest
 
 import bottle
 from bottle import (
-    run, request, static_file, redirect, response
+    run, request, static_file, redirect
 )
 
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from shared.quizzology import Quizzology
-from apps.study.study import study_controller
-from secrets import compare_digest
+from apps.study.study import use_this_quizzology as study_use
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
 
-from apps.study.study import use_this_quizzology as study_use
 
 quizzology = Quizzology()
 study_use(quizzology)
 
 app.mount('/author', authoring_app)
 app.mount('/study', quizzing_app)
+
 
 @app.route('/crappy')
 def crappy():
@@ -47,10 +46,12 @@ def crappy():
     print(f'User={user} and Password={password}')
     return 'Hello World'
 
+
 @app.route('/login')
 @bottle.view("login")
 def login(flash=""):
-    return {"title": "Who are you?", "flash":flash}
+    return {"title": "Who are you?", "flash": flash}
+
 
 # ToDo: Pick up here and do the following:
 # Figure out https
@@ -67,17 +68,19 @@ def authentication():
         redirect('/author/edit')
     redirect('/study')
 
+
 def authenticate(user_name: str, password: str):
     users = [
         dict(user_name="perry", password="passme", type="author"),
         dict(user_name="tottinge", password="passme", type="student")
     ]
-    found = [profile for profile in users if profile['user_name'] == user_name];
+    found = [profile for profile in users if profile['user_name'] == user_name]
     if not found:
         return dict(user_name="guest", type="student")
     if compare_digest(password, found[0]["password"]):
         return found[0]
     return None
+
 
 @app.route('/')
 def menu_of_quizzes():
