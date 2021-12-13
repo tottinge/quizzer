@@ -12,22 +12,25 @@ that serves up quizzes and tracks answers.
 
 """
 import os
+from datetime import datetime, timedelta
 from logging import getLogger, Logger
 from secrets import compare_digest
 
 import bottle
+import jwt
 from bottle import (
     run, request, static_file, redirect
 )
 
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
-from shared.quizzology import Quizzology
 from apps.study.study import use_this_quizzology as study_use
+from shared.quizzology import Quizzology
+
+SECRET_KEY = 'hardcoded_nonsense'
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
-
 
 quizzology = Quizzology()
 study_use(quizzology)
@@ -58,15 +61,41 @@ def login(flash=""):
 
 @app.post('/auth')
 def authentication():
+    # TODO: Our set_headers don't seem to work, fix them!!!
+    bottle.response.set_header("Poopypants", "Present!")
     user_name = request.forms.get('user_name')
     password = request.forms.get('password')
     user = authenticate(user_name, password)
     if not user:
         return login("Your credentials did not match any on file.")
     # TODO: Add a JWT so we know we're authenticated later
+    bottle.response.set_header("Authorization", make_bearer_token(user))
+
+    redirect('/check_token')
+
     if user['type'] == 'author':
         redirect('/author/edit')
     redirect('/study')
+
+
+@app.route('/check_token')
+def check_token():
+    return "\n".join(f'<div>{header}</div>' for header in request.headers)
+
+
+def make_bearer_token(user):
+    expiry: datetime = datetime.utcnow() + timedelta(hours=8)
+
+    payload = user.copy()
+    if 'password' in payload:
+        del payload['password']
+    payload['sub'] = user['user_name']
+    payload['exp'] = expiry
+    payload['iat'] = datetime.utcnow()
+
+    # TODO: manage the secret insted of braodcasting it via github to heroku
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    return f"Bearer {token}"
 
 
 def authenticate(user_name: str, password: str):
