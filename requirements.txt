@@ -9,3 +9,4 @@ pyhamcrest
 selenium
 WebTest
 gunicorn
+pyjwt
