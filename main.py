@@ -47,7 +47,7 @@ def crappy():
             'WWW-Authenticate': 'Basic realm="Login Required"'})
     user, password = request.auth
     print(f'User={user} and Password={password}')
-    return 'Hello World'
+    redirect('/check_token')
 
 
 @app.route('/login')
@@ -69,18 +69,21 @@ def authentication():
     if not user:
         return login("Your credentials did not match any on file.")
     # TODO: Add a JWT so we know we're authenticated later
-    bottle.response.set_header("Authorization", make_bearer_token(user))
+    token = make_bearer_token(user)
+    bottle.response.set_header("Authorization", f"Bearer {token}")
+    # return token
 
     redirect('/check_token')
-
-    if user['type'] == 'author':
-        redirect('/author/edit')
-    redirect('/study')
+    #
+    # if user['type'] == 'author':
+    #     redirect('/author/edit')
+    # redirect('/study')
 
 
 @app.route('/check_token')
 def check_token():
-    return "\n".join(f'<div>{header}</div>' for header in request.headers)
+    return "\n".join(f'<div>{key}:{value}</div>'
+                     for (key, value) in request.headers.items())
 
 
 def make_bearer_token(user):
@@ -95,7 +98,7 @@ def make_bearer_token(user):
 
     # TODO: manage the secret insted of braodcasting it via github to heroku
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-    return f"Bearer {token}"
+    return token
 
 
 def authenticate(user_name: str, password: str):
