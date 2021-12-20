@@ -66,17 +66,10 @@ def authentication():
     user = authenticate(user_name, password)
     if not user:
         return login("Your credentials did not match any on file.")
-    # TODO: Add a JWT so we know we're authenticated later
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
-    # return token
-
     redirect('/example_checked_page')
-    #
-    # if user['type'] == 'author':
-    #     redirect('/author/edit')
-    # redirect('/study')
 
 
 @app.route('/example_checked_page')
@@ -87,9 +80,10 @@ def example_checked_page():
         try:
             data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             role = data.get('type', 'guest')
+            name = data.get('user_name')
             if role != 'author':
-                return "NO NON AUTHORS ALLOWED YOU LOSER"
-            return "Welcome, honored author. Speak friend, and enter!"
+                return f"Hey {name}, NO {role} ALLOWED!"
+            return f"Welcome, honored author {name}. Speak friend, and enter!"
         except:
             return "Token is dead. Sorry. RIP poor token."
     return "nope"
@@ -213,7 +207,7 @@ def main():
         app,
         host=host_name,
         port=port_number,
-        server='gunicorn',
+        server='auto',
         reloader=True,
         debug=True
     )
