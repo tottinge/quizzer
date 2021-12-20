@@ -47,7 +47,7 @@ def crappy():
             'WWW-Authenticate': 'Basic realm="Login Required"'})
     user, password = request.auth
     print(f'User={user} and Password={password}')
-    redirect('/check_token')
+    redirect('/example_checked_page')
 
 
 @app.route('/login')
@@ -61,29 +61,38 @@ def login(flash=""):
 
 @app.post('/auth')
 def authentication():
-    # TODO: Our set_headers don't seem to work, fix them!!!
-    bottle.response.set_header("Poopypants", "Present!")
     user_name = request.forms.get('user_name')
     password = request.forms.get('password')
     user = authenticate(user_name, password)
     if not user:
         return login("Your credentials did not match any on file.")
     # TODO: Add a JWT so we know we're authenticated later
-    token = make_bearer_token(user)
-    bottle.response.set_header("Authorization", f"Bearer {token}")
+    bottle.response.set_cookie('Authorization',
+                               f"Bearer {make_bearer_token(user)}",
+                               httponly=True)
     # return token
 
-    redirect('/check_token')
+    redirect('/example_checked_page')
     #
     # if user['type'] == 'author':
     #     redirect('/author/edit')
     # redirect('/study')
 
 
-@app.route('/check_token')
-def check_token():
-    return "\n".join(f'<div>{key}:{value}</div>'
-                     for (key, value) in request.headers.items())
+@app.route('/example_checked_page')
+# @allow('guest', 'author', 'student')  TODO: Make this decorator!
+def example_checked_page():
+    if value := request.get_cookie('Authorization'):
+        _, token = value.split(' ')
+        try:
+            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            role = data.get('type', 'guest')
+            if role != 'author':
+                return "NO NON AUTHORS ALLOWED YOU LOSER"
+            return "Welcome, honored author. Speak friend, and enter!"
+        except:
+            return "Token is dead. Sorry. RIP poor token."
+    return "nope"
 
 
 def make_bearer_token(user):
@@ -108,7 +117,7 @@ def authenticate(user_name: str, password: str):
     ]
     found = [profile for profile in users if profile['user_name'] == user_name]
     if not found:
-        return dict(user_name="guest", type="student")
+        return dict(user_name=user_name, type="guest")
     if compare_digest(password, found[0]["password"]):
         return found[0]
     return None
