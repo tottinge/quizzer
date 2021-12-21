@@ -54,7 +54,9 @@ def crappy():
 @app.route('/login')
 @bottle.view("login")
 def login(flash=""):
+    # todo: should have a fwd-to page (for token expiry)
     return {"title": "Who are you?", "flash": flash}
+
 
 
 # ToDo: Pick up here and do the following:
@@ -70,7 +72,7 @@ def authentication():
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
-    redirect('/example_checked_page')
+    redirect('/example_checked_page') # Todo - change landing page
 
 
 def require_roles(*required_roles):
@@ -197,7 +199,7 @@ def cookie_explorer():
 
 
 @app.get("/session")
-@require_roles('student', 'author')
+# @require_roles('student', 'author')
 def show_session():
     """
     Show session logs: for troubleshooting.
