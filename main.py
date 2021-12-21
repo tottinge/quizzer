@@ -21,6 +21,7 @@ import jwt
 from bottle import (
     run, request, static_file, redirect
 )
+from jwt import ExpiredSignatureError, DecodeError
 
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
@@ -72,32 +73,46 @@ def authentication():
     redirect('/example_checked_page')
 
 
+def require_roles(*required_roles):
+    """Decorator function factory, captures roles"""
+    required_roles = required_roles or ['guest']
+
+    def inner_wrapper(wrapped_function):
+        "Wrapper generator for route or  function that will be restricted"
+
+        def decorator(*args, **kwargs):
+            "check authorization before actually calling route function"
+            _, token = request.get_cookie('Authorization').split()
+            try:
+                user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+                role = user_data.get('type', 'guest')
+                if role not in required_roles:
+                    name = user_data.get('user_name')
+                    return login(f'Sorry, {name}, you are just a {role}')
+                return wrapped_function(*args, **kwargs)
+            except ExpiredSignatureError:
+                return login('Your session has expired')
+            except DecodeError:
+                redirect('/login')
+
+        return decorator
+    return inner_wrapper
+
+
 @app.route('/example_checked_page')
-# @allow('guest', 'author', 'student')  TODO: Make this decorator!
+@require_roles('author', 'student')
 def example_checked_page():
-    if value := request.get_cookie('Authorization'):
-        _, token = value.split(' ')
-        try:
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            role = data.get('type', 'guest')
-            name = data.get('user_name')
-            if role != 'author':
-                return f"Hey {name}, NO {role} ALLOWED!"
-            return f"Welcome, honored author {name}. Speak friend, and enter!"
-        except:
-            return "Token is dead. Sorry. RIP poor token."
-    return "nope"
+    return "Welcome!"
 
 
 def make_bearer_token(user):
-    expiry: datetime = datetime.utcnow() + timedelta(hours=8)
-
-    payload = user.copy()
-    if 'password' in payload:
-        del payload['password']
-    payload['sub'] = user['user_name']
-    payload['exp'] = expiry
-    payload['iat'] = datetime.utcnow()
+    claims = dict(
+        sub=user['user_name'],
+        exp=(datetime.utcnow() + timedelta(hours=2)),
+        iat=datetime.utcnow()
+    )
+    user_data = {k: v for k, v in user.items() if k != 'password'}
+    payload = {**user_data, **claims}
 
     # TODO: manage the secret insted of braodcasting it via github to heroku
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
@@ -182,6 +197,7 @@ def cookie_explorer():
 
 
 @app.get("/session")
+@require_roles('student', 'author')
 def show_session():
     """
     Show session logs: for troubleshooting.
@@ -223,11 +239,11 @@ def get_endpoint_address() -> tuple[str, int]:
 if __name__ == '__main__':
     main()
 
-# Require user to authenticate (a form with a POST w/user name & pw)
-# When they authenticate, we create and store a JWT
+# Require user to authenticate (a form with a POST w/user name & pw) ✓
+# When they authenticate, we create and store a JWT ✓
 # We decorate the routes that need authentication
 # Magic happens ...
-# If authenticated (where is tht stored?) it enters the route
-# if not authenticated, it redirects to the login screen?
-# We need to know user/password/role, etc.
+# If authenticated (where is tht stored?) it enters the route ✓
+# if not authenticated, it redirects to the login screen? ✓
+# We need to know user/password/role, etc. ✓
 # { userid, password, [author|student|?] role, friendly name?, ? }
