@@ -104,6 +104,8 @@ class StudyController:
 
     def get_log_message_for_question(self, session_id, quiz_name,
                                      question_number):
-        return self.quizzology.session_store.get_log_message(session_id, quiz_name,
-                                                             question_number)
-
+        return self.quizzology.session_store.get_log_message(
+            session_id,
+            quiz_name,
+            question_number
+        )

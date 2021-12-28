@@ -58,7 +58,6 @@ def login(flash=""):
     return {"title": "Who are you?", "flash": flash}
 
 
-
 # ToDo: Pick up here and do the following:
 # Figure out https
 
@@ -72,7 +71,7 @@ def authentication():
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
-    redirect('/example_checked_page') # Todo - change landing page
+    redirect('/example_checked_page')  # Todo - change landing page
 
 
 def require_roles(*required_roles):
@@ -84,21 +83,29 @@ def require_roles(*required_roles):
 
         def decorator(*args, **kwargs):
             "check authorization before actually calling route function"
-            _, token = request.get_cookie('Authorization').split()
             try:
+                token = get_authorization_token()
                 user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
                 role = user_data.get('type', 'guest')
                 if role not in required_roles:
                     name = user_data.get('user_name')
                     return login(f'Sorry, {name}, you are just a {role}')
                 return wrapped_function(*args, **kwargs)
+            except AttributeError:
+                return login('You must be logged in to access this page')
             except ExpiredSignatureError:
                 return login('Your session has expired')
             except DecodeError:
                 redirect('/login')
 
         return decorator
+
     return inner_wrapper
+
+
+def get_authorization_token():
+    _, token = request.get_cookie('Authorization').split()
+    return token
 
 
 @app.route('/example_checked_page')
@@ -199,7 +206,7 @@ def cookie_explorer():
 
 
 @app.get("/session")
-# @require_roles('student', 'author')
+@require_roles('student', 'author')
 def show_session():
     """
     Show session logs: for troubleshooting.

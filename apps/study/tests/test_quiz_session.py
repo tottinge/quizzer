@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from bs4 import BeautifulSoup
 from tinydb import TinyDB
@@ -28,6 +29,7 @@ class TestSession(unittest.TestCase):
             questions=[self.question]
         )
 
+
     def context_with_in_memory_session_store(self):
         return Quizzology(session_store=(
             SessionStore(TinyDB(storage=MemoryStorage))))
@@ -43,13 +45,17 @@ class TestSession(unittest.TestCase):
         main.study_controller = apps.study.study.study_controller
         main.study_controller.record_answer(session_id, name, question, user_answer,
                                             correct, timestamp)
-        result = main.show_session()
-        self.assertIn(session_id, result)
-        self.assertIn(name, result)
-        self.assertIn(str(question), result)
-        self.assertIn(user_answer, result)
-        self.assertIn(str(correct), result)
-        self.assertIn(timestamp, result)
+
+        token = main.make_bearer_token(dict(user_name='test', type='author'))
+        with patch.object(main, 'get_authorization_token', return_value=token):
+            result = main.show_session()
+
+            self.assertIn(session_id, result)
+            self.assertIn(name, result)
+            self.assertIn(str(question), result)
+            self.assertIn(user_answer, result)
+            self.assertIn(str(correct), result)
+            self.assertIn(timestamp, result)
 
     def test_render_judgment_incorrect_answer(self):
         markup = render_judgment(self.quiz, 0, "")
