@@ -113,7 +113,7 @@ def get_authorization_token():
 def example_checked_page():
     return "Welcome!"
 
-
+# TODO: Move make_bearer_token, authenticate, require_roles outside of main
 def make_bearer_token(user):
     claims = dict(
         sub=user['user_name'],

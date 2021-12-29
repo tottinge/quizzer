@@ -12,6 +12,8 @@ from quizzes.quiz import Quiz
 from apps.study.session_store import SessionStore
 from shared.quizzology import Quizzology
 
+import main
+
 
 class TestSession(unittest.TestCase):
     def setUp(self):
@@ -35,7 +37,6 @@ class TestSession(unittest.TestCase):
             SessionStore(TinyDB(storage=MemoryStorage))))
 
     def test_answer_appears_in_session_page(self):
-        import main
         session_id = "id"
         name = "quiz_name"
         question = 222
@@ -46,8 +47,7 @@ class TestSession(unittest.TestCase):
         main.study_controller.record_answer(session_id, name, question, user_answer,
                                             correct, timestamp)
 
-        token = main.make_bearer_token(dict(user_name='test', type='author'))
-        with patch.object(main, 'get_authorization_token', return_value=token):
+        with self.authorization_as('author', 'test'):
             result = main.show_session()
 
             self.assertIn(session_id, result)
@@ -56,6 +56,12 @@ class TestSession(unittest.TestCase):
             self.assertIn(user_answer, result)
             self.assertIn(str(correct), result)
             self.assertIn(timestamp, result)
+
+    def authorization_as(self, role, user_name):
+        token = main.make_bearer_token(dict(user_name=user_name, type=role))
+        patch_object = patch.object(main, 'get_authorization_token',
+                                    return_value=token)
+        return patch_object
 
     def test_render_judgment_incorrect_answer(self):
         markup = render_judgment(self.quiz, 0, "")
