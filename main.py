@@ -71,7 +71,8 @@ def authentication():
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
-    redirect('/example_checked_page')  # Todo - change landing page
+    destination = request.forms.get('destination')
+    redirect(destination)  # Todo - change landing page
 
 
 def require_roles(*required_roles):
@@ -115,9 +116,10 @@ def example_checked_page():
 
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
 def make_bearer_token(user):
+    time_to_live = timedelta(hours=2)
     claims = dict(
         sub=user['user_name'],
-        exp=(datetime.utcnow() + timedelta(hours=2)),
+        exp=(datetime.utcnow() + time_to_live),
         iat=datetime.utcnow()
     )
     user_data = {k: v for k, v in user.items() if k != 'password'}
