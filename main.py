@@ -40,17 +40,6 @@ app.mount('/author', authoring_app)
 app.mount('/study', quizzing_app)
 
 
-@app.route('/crappy')
-def crappy():
-    # return a 401
-    if not request.auth:
-        raise bottle.HTTPResponse('Could not verify', 401, {
-            'WWW-Authenticate': 'Basic realm="Login Required"'})
-    user, password = request.auth
-    print(f'User={user} and Password={password}')
-    redirect('/example_checked_page')
-
-
 @app.route('/login')
 @bottle.view("login")
 def login(flash="", destination="/study"):
@@ -119,7 +108,7 @@ def example_checked_page():
 
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
 def make_bearer_token(user):
-    time_to_live = timedelta(seconds=20)
+    time_to_live = timedelta(hours=4)
     claims = dict(
         sub=user['user_name'],
         exp=(datetime.utcnow() + time_to_live),
