@@ -53,9 +53,11 @@ def crappy():
 
 @app.route('/login')
 @bottle.view("login")
-def login(flash=""):
+def login(flash="", destination="/study"):
     # todo: should have a fwd-to page (for token expiry)
-    return {"title": "Who are you?", "flash": flash}
+    return {"title": "Who are you?",
+            "flash": flash,
+            "destination": destination}
 
 
 # ToDo: Pick up here and do the following:
@@ -95,7 +97,8 @@ def require_roles(*required_roles):
             except AttributeError:
                 return login('You must be logged in to access this page')
             except ExpiredSignatureError:
-                return login('Your session has expired')
+                return login(flash='Your session has expired',
+                             destination=request.path)
             except DecodeError:
                 redirect('/login')
 
@@ -116,7 +119,7 @@ def example_checked_page():
 
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
 def make_bearer_token(user):
-    time_to_live = timedelta(hours=2)
+    time_to_live = timedelta(seconds=20)
     claims = dict(
         sub=user['user_name'],
         exp=(datetime.utcnow() + time_to_live),
