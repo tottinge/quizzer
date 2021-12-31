@@ -6,13 +6,12 @@ from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
 import apps
+import main
+from apps.study.session_store import SessionStore
 from apps.study.study import render_judgment, url_for, use_this_quizzology
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from apps.study.session_store import SessionStore
 from shared.quizzology import Quizzology
-
-import main
 
 
 class TestSession(unittest.TestCase):
@@ -31,7 +30,6 @@ class TestSession(unittest.TestCase):
             questions=[self.question]
         )
 
-
     def context_with_in_memory_session_store(self):
         return Quizzology(session_store=(
             SessionStore(TinyDB(storage=MemoryStorage))))
@@ -43,9 +41,9 @@ class TestSession(unittest.TestCase):
         user_answer = "selection"
         correct = True
         timestamp = "TODAY"
-        main.study_controller = apps.study.study.study_controller
-        main.study_controller.record_answer(session_id, name, question, user_answer,
-                                            correct, timestamp)
+        study_controller = apps.study.study.study_controller
+        study_controller.record_answer(session_id, name, question, user_answer,
+                                       correct, timestamp)
 
         with self.authorization_as('author', 'test'):
             result = main.show_session()
