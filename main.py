@@ -62,6 +62,9 @@ def authentication():
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
+    bottle.response.set_cookie('quizzology-user',
+                               f"{user_name}, {user['role']}"
+                               )
     destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
 
@@ -78,7 +81,7 @@ def require_roles(*required_roles):
             try:
                 token = get_authorization_token()
                 user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-                role = user_data.get('type', 'guest')
+                role = user_data.get('role', 'guest')
                 if role not in required_roles:
                     name = user_data.get('user_name')
                     return login(f'Sorry, {name}, you are just a {role}')
@@ -124,12 +127,12 @@ def make_bearer_token(user):
 
 def authenticate(user_name: str, password: str):
     users = [
-        dict(user_name="perry", password="passme", type="author"),
-        dict(user_name="tottinge", password="passme", type="student")
+        dict(user_name="perry", password="passme", role="author"),
+        dict(user_name="tottinge", password="passme", role="student")
     ]
     found = [profile for profile in users if profile['user_name'] == user_name]
     if not found:
-        return dict(user_name=user_name, type="guest")
+        return dict(user_name=user_name, role="guest")
     if compare_digest(password, found[0]["password"]):
         return found[0]
     return None
