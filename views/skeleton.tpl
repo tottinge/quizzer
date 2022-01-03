@@ -19,6 +19,7 @@
         </a>
         {{title}}
     </h1>
+    <!-- todo: get role, name from cookies and present here -->
 </header>
 
 {{!base}}
