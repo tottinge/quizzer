@@ -56,7 +56,7 @@ class TestSession(unittest.TestCase):
             self.assertIn(timestamp, result)
 
     def authorization_as(self, role, user_name):
-        token = main.make_bearer_token(dict(user_name=user_name, type=role))
+        token = main.make_bearer_token(dict(user_name=user_name, role=role))
         patch_object = patch.object(main, 'get_authorization_token',
                                     return_value=token)
         return patch_object
