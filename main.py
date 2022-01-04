@@ -49,8 +49,7 @@ def login(flash="", destination="/study"):
             "destination": destination}
 
 
-# ToDo: Pick up here and do the following:
-# Figure out https
+# ToDo: Figure out https
 
 @app.post('/auth')
 def authentication():
@@ -68,7 +67,7 @@ def authentication():
     destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
 
-
+# TODO: Create a data class to store user info
 def require_roles(*required_roles):
     """Decorator function factory, captures roles"""
     required_roles = required_roles or ['guest']
