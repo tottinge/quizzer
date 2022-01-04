@@ -20,8 +20,29 @@
         </a>
         {{title}}
     </h1>
-    <p id="user_name">default text</p>
+    <p>Hi, <span id="user_name">default text</span>, you <span id="user_role">default role</span></p>
 </header>
+
+    <script>
+
+        const desired = document.cookie.split(';').filter(function(x){
+            console.log(`value is [${x}]`);
+            const [name,value] = x.split('=');
+            console.log(`name is [${name}]`)
+            return name === 'quizzology-user'}
+        ).pop()
+
+        console.log("Desired is ["+desired+"]");
+        const [key,value] = desired.split('=');
+        console.log(`value is [${value}]`)
+        const trimmed = value.replace(/"/g,'')
+        console.log(`value is trimmed to [${trimmed}]`)
+        const [name,role] = trimmed.split(' ');
+        console.log(`name: [${name}], role: [${role}]`)
+
+        document.getElementById('user_name').innerText = name;
+        document.getElementById('user_role').innerText = role;
+    </script>
 
 {{!base}}
 
