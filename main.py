@@ -61,9 +61,8 @@ def authentication():
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
-    bottle.response.set_cookie('quizzology-user',
-                               f"{user_name} {user['role']}"
-                               )
+    bottle.response.set_cookie('qz-user-name', user['user_name'])
+    bottle.response.set_cookie('qz-user-role', user['role'])
     destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
 
