@@ -118,17 +118,20 @@ def make_bearer_token(user):
     user_data = {k: v for k, v in user.items() if k != 'password'}
     payload = {**user_data, **claims}
 
-    # TODO: manage the secret insted of braodcasting it via github to heroku
+    # TODO: manage the secret instead of braodcasting it via github to heroku
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token
 
 
 def authenticate(user_name: str, password: str):
+    # TODO: Move the user credential list out into secure storage
     users = [
         dict(user_name="perry", password="passme", role="author"),
         dict(user_name="tottinge", password="passme", role="student")
     ]
+    # TODO: Move the user lookup into a function of it's own
     found = [profile for profile in users if profile['user_name'] == user_name]
+
     if not found:
         return dict(user_name=user_name, role="guest")
     if compare_digest(password, found[0]["password"]):
