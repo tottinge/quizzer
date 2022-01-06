@@ -8,8 +8,8 @@
 </head>
 
 <body>
-<header>
-    <h1 class="page-title " id="title">
+<header class="w3-display-container">
+    <h1 class="page-title" id="title">
         <a href="/" id="return_link">
             <img align="left"
                  hspace="5"
@@ -20,7 +20,9 @@
         </a>
         {{title}}
     </h1>
-    <p>Hi, <span id="user_name">default text</span>, you <span id="user_role">default role</span></p>
+    <span class="w3-display-right">
+        <span id="user_name">default text</span> (<span id="user_role">default role</span>)
+    </span>
 </header>
 
     <script>
