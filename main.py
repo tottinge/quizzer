@@ -43,7 +43,6 @@ app.mount('/study', quizzing_app)
 @app.route('/login')
 @bottle.view("login")
 def login(flash="", destination="/study"):
-    # todo: should have a fwd-to page (for token expiry)
     return {"title": "Who are you?",
             "flash": flash,
             "destination": destination}
@@ -82,7 +81,10 @@ def require_roles(*required_roles):
                 role = user_data.get('role', 'guest')
                 if role not in required_roles:
                     name = user_data.get('user_name')
-                    return login(f'Sorry, {name}, you are just a {role}')
+                    return login(
+                        f'Sorry, {name}, you are just a {role}',
+                        destination=request.path
+                    )
                 return wrapped_function(*args, **kwargs)
             except AttributeError:
                 return login('You must be logged in to access this page')
@@ -124,19 +126,23 @@ def make_bearer_token(user):
 
 
 def authenticate(user_name: str, password: str):
-    # TODO: Move the user credential list out into secure storage
-    users = [
-        dict(user_name="perry", password="passme", role="author"),
-        dict(user_name="tottinge", password="passme", role="student")
-    ]
-    # TODO: Move the user lookup into a function of it's own
-    found = [profile for profile in users if profile['user_name'] == user_name]
-
+    found = find_user_by_name(user_name)
     if not found:
         return dict(user_name=user_name, role="guest")
     if compare_digest(password, found[0]["password"]):
         return found[0]
     return None
+
+
+def find_user_by_name(user_name):
+    # TODO: Move the user credential list out into secure storage
+    users = [
+        dict(user_name="perry", password="passme", role="author"),
+        dict(user_name="tottinge", password="passme", role="student")
+    ]
+    return [profile
+            for profile in users
+            if profile['user_name'] == user_name]
 
 
 @app.route('/')
