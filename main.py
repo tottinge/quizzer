@@ -137,14 +137,14 @@ def authenticate(user_name: str, password: str):
     return None
 
 def create_user(user_name: str, role: str, password: str):
-    # TODO: this didn't produce the output we expected.
     user_file_name = './security/users.json'
     users = []
     with open(user_file_name) as users_file:
         users = json.load(users_file)
         exists = any(user for user in users if user['user_name'] == user_name)
         if not exists:
-            users += dict(user_name=user_name, password=password, role=role)
+            new_user = dict(user_name=user_name, password=password, role=role)
+            users.append(new_user)
     with open(user_file_name, "w") as user_file:
         json.dump(users, user_file)
 

@@ -9,7 +9,9 @@
     "password": "passme",
     "role": "student"
   },
-  "user_name",
-  "password",
-  "role"
+  {
+    "user_name": "test_student",
+    "password": "testme",
+    "role": "student"
+  }
 ]
