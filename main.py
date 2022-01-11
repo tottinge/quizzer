@@ -11,6 +11,7 @@ Main doesn't take any command line parameters, and launches a web server
 that serves up quizzes and tracks answers.
 
 """
+import json
 import os
 from datetime import datetime, timedelta
 from logging import getLogger, Logger
@@ -65,6 +66,7 @@ def authentication():
     destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
 
+
 # TODO: Create a data class to store user info
 def require_roles(*required_roles):
     """Decorator function factory, captures roles"""
@@ -109,6 +111,7 @@ def get_authorization_token():
 def example_checked_page():
     return "Welcome!"
 
+
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
 def make_bearer_token(user):
     time_to_live = timedelta(hours=4)
@@ -135,14 +138,11 @@ def authenticate(user_name: str, password: str):
 
 
 def find_user_by_name(user_name):
-    # TODO: Move the user credential list out into secure storage
-    users = [
-        dict(user_name="perry", password="passme", role="author"),
-        dict(user_name="tottinge", password="passme", role="student")
-    ]
-    return [profile
-            for profile in users
-            if profile['user_name'] == user_name]
+    with open('./security/users.json') as users_file:
+        users = json.load(users_file)
+        return [profile
+                for profile in users
+                if profile['user_name'] == user_name]
 
 
 @app.route('/')
