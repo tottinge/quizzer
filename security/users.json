@@ -8,5 +8,8 @@
     "user_name": "tottinge",
     "password": "passme",
     "role": "student"
-  }
+  },
+  "user_name",
+  "password",
+  "role"
 ]
