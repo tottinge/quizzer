@@ -13,6 +13,5 @@ def step_impl(context: Context, user_id: str, password: str):
     #   redirect to read a different user file we wrote in advance
     #   mock the reading of the user file (json.load)
     #   mock find_user_by_name
-    create_user(user_id, role='student', password=password)
-    raise NotImplementedError(
-        u'STEP: Given a student "test_student" exists with password "testme"')
+    create_user(user_id, role='student', password=password,
+                user_dir_name=context.temporary_directory.name)

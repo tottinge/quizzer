@@ -136,8 +136,8 @@ def authenticate(user_name: str, password: str):
         return found[0]
     return None
 
-def create_user(user_name: str, role: str, password: str):
-    user_file_name = './security/users.json'
+def create_user(user_name: str, role: str, password: str, user_dir_name: str = './security/'):
+    user_file_name = os.path.join(user_dir_name, 'users.json')
     users = []
     with open(user_file_name) as users_file:
         users = json.load(users_file)

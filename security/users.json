@@ -1,17 +1,1 @@
-[
-  {
-    "user_name": "perry",
-    "password": "passme",
-    "role": "author"
-  },
-  {
-    "user_name": "tottinge",
-    "password": "passme",
-    "role": "student"
-  },
-  {
-    "user_name": "test_student",
-    "password": "testme",
-    "role": "student"
-  }
-]
+[{"user_name": "perry", "password": "passme", "role": "author"}, {"user_name": "tottinge", "password": "passme", "role": "student"}, {"user_name": "test_student", "password": "testme", "role": "student"}]
