@@ -1,7 +1,7 @@
 import hamcrest
 from behave import *
 from behave.runner import Context
-from hamcrest import assert_that, not_none, equal_to
+from hamcrest import assert_that, not_none, equal_to, none, is_
 
 from main import create_user, authenticate
 
@@ -29,3 +29,9 @@ def step_impl(context: Context, user_id:str):
     user:dict = context.authenticated_user
     assert_that(user, not_none())
     assert_that(user['user_name'], equal_to(user_id))
+
+
+@then('"{user_id}" is not authenticated')
+def step_impl(context: Context, user_id: str):
+    user:dict = context.authenticated_user
+    assert_that(user, is_(None))
