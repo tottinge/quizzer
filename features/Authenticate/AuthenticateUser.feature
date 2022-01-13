@@ -7,9 +7,10 @@ Feature: Authenticate User
   Scenario: Simple Student Login Success
     Given a student "test_student" exists with password "testme"
     When "test_student" logs in with password "testme"
-    Then the session is directed to a non-login page
+    Then "test_student" is authenticated
 
   Scenario: Simple Student Login Failure
     Given a student "test_student" exists with password "testme"
     When "test_student" logs in with password "wrong"
+    Then the login is successful
     Then the session is directed to the login page

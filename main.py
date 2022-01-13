@@ -16,6 +16,7 @@ import os
 from datetime import datetime, timedelta
 from logging import getLogger, Logger
 from secrets import compare_digest
+from typing import List, Dict, Optional
 
 import bottle
 import jwt
@@ -52,7 +53,7 @@ def login(flash="", destination="/study"):
 # ToDo: Figure out https
 
 @app.post('/auth')
-def authentication():
+def authentication_endpoint():
     user_name = request.forms.get('user_name')
     password = request.forms.get('password')
     user = authenticate(user_name, password)
@@ -128,7 +129,7 @@ def make_bearer_token(user):
     return token
 
 
-def authenticate(user_name: str, password: str):
+def authenticate(user_name: str, password: str) -> Optional[dict]:
     found = find_user_by_name(user_name)
     if not found:
         return dict(user_name=user_name, role="guest")
@@ -136,17 +137,31 @@ def authenticate(user_name: str, password: str):
         return found[0]
     return None
 
-def create_user(user_name: str, role: str, password: str, user_dir_name: str = './security/'):
+
+def create_user(user_name: str, password: str, role: str,
+                user_dir_name: str = './security/'):
     user_file_name = os.path.join(user_dir_name, 'users.json')
-    users = []
-    with open(user_file_name) as users_file:
-        users = json.load(users_file)
-        exists = any(user for user in users if user['user_name'] == user_name)
-        if not exists:
-            new_user = dict(user_name=user_name, password=password, role=role)
-            users.append(new_user)
+    users = read_users(user_file_name)
+
+    exists = any(user for user in users if user['user_name'] == user_name)
+    if not exists:
+        new_user = dict(user_name=user_name, password=password, role=role)
+        users.append(new_user)
+
+    write_users(user_file_name, users)
+
+
+def write_users(user_file_name, users):
     with open(user_file_name, "w") as user_file:
         json.dump(users, user_file)
+
+
+def read_users(user_file_name: str) -> List[Dict]:
+    try:
+        with open(user_file_name) as users_file:
+            return json.load(users_file)
+    except FileNotFoundError:
+        return []
 
 
 def find_user_by_name(user_name):
