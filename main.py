@@ -164,8 +164,13 @@ def read_users(user_file_name: str) -> List[Dict]:
         return []
 
 
-def find_user_by_name(user_name):
-    with open('./security/users.json') as users_file:
+def find_user_by_name(user_name: str,
+                      user_dir_name: str = './security/') -> List[Dict]:
+
+    user_file_name = os.path.join(user_dir_name, 'users.json')
+    if not os.path.exists(user_file_name):
+        return []
+    with open(user_file_name) as users_file:
         users = json.load(users_file)
         return [profile
                 for profile in users

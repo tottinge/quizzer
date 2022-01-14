@@ -1,9 +1,9 @@
 import hamcrest
 from behave import *
 from behave.runner import Context
-from hamcrest import assert_that, not_none, equal_to, none, is_
+from hamcrest import assert_that, not_none, equal_to, none, is_, empty
 
-from main import create_user, authenticate
+from main import create_user, authenticate, find_user_by_name
 
 
 @given('a student "{user_id}" exists with password "{password}"')
@@ -41,3 +41,10 @@ def step_impl(context: Context, user_id: str):
 def step_impl(context: Context, role: str):
     user:dict = context.authenticated_user
     assert_that(user["role"], is_(role))
+
+
+@given('user "{user_id}" does not exist')
+def step_impl(context: Context, user_id: str):
+    found = find_user_by_name(user_name=user_id,
+                              user_dir_name=context.temporary_directory.name)
+    assert_that(found, is_([]))

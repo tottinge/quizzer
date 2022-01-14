@@ -16,8 +16,8 @@ Feature: Authenticate User
     Then "test_student" is not authenticated
 
   @wip
-  Scenario: Unknown person logs in and is assigned guest status
+  Scenario: Unknown person logs in and is assigned guest role
     Given user "fred" does not exist
     When "fred" logs in with password "wrong"
-    Then "fred" is not authenticated
+    Then "fred" is authenticated
     And the assigned role is "guest"
