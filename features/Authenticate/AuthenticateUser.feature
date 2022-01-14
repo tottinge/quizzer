@@ -8,8 +8,16 @@ Feature: Authenticate User
     Given a student "test_student" exists with password "testme"
     When "test_student" logs in with password "testme"
     Then "test_student" is authenticated
+    And the assigned role is "student"
 
   Scenario: Simple Student Login Failure
     Given a student "test_student" exists with password "testme"
     When "test_student" logs in with password "wrong"
     Then "test_student" is not authenticated
+
+  @wip
+  Scenario: Unknown person logs in and is assigned guest status
+    Given user "fred" does not exist
+    When "fred" logs in with password "wrong"
+    Then "fred" is not authenticated
+    And the assigned role is "guest"

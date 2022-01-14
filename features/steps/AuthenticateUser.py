@@ -35,3 +35,9 @@ def step_impl(context: Context, user_id:str):
 def step_impl(context: Context, user_id: str):
     user:dict = context.authenticated_user
     assert_that(user, is_(None))
+
+
+@step('the assigned role is "{role}"')
+def step_impl(context: Context, role: str):
+    user:dict = context.authenticated_user
+    assert_that(user["role"], is_(role))
