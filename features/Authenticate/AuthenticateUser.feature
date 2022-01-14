@@ -15,7 +15,6 @@ Feature: Authenticate User
     When "test_student" logs in with password "wrong"
     Then "test_student" is not authenticated
 
-  @wip
   Scenario: Unknown person logs in and is assigned guest role
     Given user "fred" does not exist
     When "fred" logs in with password "wrong"
