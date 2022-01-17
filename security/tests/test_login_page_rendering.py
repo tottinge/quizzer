@@ -1,19 +1,19 @@
 import unittest
+from typing import Optional
 
-import hamcrest
 from bottle import template
 from bs4 import BeautifulSoup
-from hamcrest import assert_that, empty, contains_string, is_not
+from hamcrest import assert_that, empty, contains_string, is_not, is_
 
 
 class MyTestCase(unittest.TestCase):
     def render_the_form(self, page_title='Login', flash='', destination=''):
-        self.html = template('views/login.tpl', {
+        html = template('views/login.tpl', {
             "title": page_title,
             "flash": flash,
             "destination": destination
         })
-        return BeautifulSoup(self.html, "html.parser")
+        return BeautifulSoup(html, "html.parser")
 
     def test_title_appears_in_body(self):
         page_title = 'blah'
@@ -35,9 +35,14 @@ class MyTestCase(unittest.TestCase):
         [flash] = flash_sections
         assert_that(flash.text, contains_string(message))
 
-
-    def test_destination_passed_through(self):
-        pass
+    def test_destination_passed_through_hidden_field(self):
+        expected_destination = "/go/here/after/login"
+        dom: BeautifulSoup = self.render_the_form(
+            destination=expected_destination)
+        destination: Optional[BeautifulSoup]
+        destination = dom.body.form.find(name="input", attrs={"name": "booboo"})
+        assert_that(destination, is_not(None))
+        assert_that(destination['value'], is_(expected_destination))
 
 
 if __name__ == '__main__':
