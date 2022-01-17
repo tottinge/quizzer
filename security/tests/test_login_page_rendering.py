@@ -1,23 +1,43 @@
 import unittest
 
+import hamcrest
 from bottle import template
 from bs4 import BeautifulSoup
+from hamcrest import assert_that, empty, contains_string, is_not
 
 
 class MyTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, True)  # add assertion here
-
-    @classmethod
-    def setUpClass(cls):
-        cls.page_title = 'Edit Quiz'
-        cls.html = template('views/login.tpl', {
-            "title": "Who are you?",
-            "flash": "flash",
-            "destination": "destination"
+    def render_the_form(self, page_title='Login', flash='', destination=''):
+        self.html = template('views/login.tpl', {
+            "title": page_title,
+            "flash": flash,
+            "destination": destination
         })
+        return BeautifulSoup(self.html, "html.parser")
 
-        cls.dom = BeautifulSoup(cls.html, "html.parser")
+    def test_title_appears_in_body(self):
+        page_title = 'blah'
+        dom: BeautifulSoup = self.render_the_form(page_title=page_title)
+        [title_tag_in_body] = dom.body.select("h1", class_="page-title")
+        self.assertIn(page_title, str(title_tag_in_body))
+
+    def test_flash_not_displayed_when_absent(self):
+        dom: BeautifulSoup = self.render_the_form(flash='')
+        flash_sections = dom.body.select("section", id="flash")
+        assert_that(flash_sections, empty())
+
+    def test_flash_displayed_if_present(self):
+        omgflash = 'OMGFLASH'
+        dom: BeautifulSoup = self.render_the_form(flash=omgflash)
+        flash_sections = dom.body.select("section", id="flash")
+        assert_that(flash_sections, is_not(empty()))
+        flash: BeautifulSoup
+        [flash] = flash_sections
+        assert_that(flash.text, contains_string(omgflash))
+
+
+    def test_destination_passed_through(self):
+        pass
 
 
 if __name__ == '__main__':
