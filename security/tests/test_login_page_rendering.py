@@ -40,7 +40,7 @@ class MyTestCase(unittest.TestCase):
         dom: BeautifulSoup = self.render_the_form(
             destination=expected_destination)
         destination: Optional[BeautifulSoup]
-        destination = dom.body.form.find(name="input", attrs={"name": "booboo"})
+        destination = dom.body.form.find(name="input", attrs={"name": "destination"})
         assert_that(destination, is_not(None))
         assert_that(destination['value'], is_(expected_destination))
 
