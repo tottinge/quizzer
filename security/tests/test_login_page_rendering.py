@@ -27,13 +27,13 @@ class MyTestCase(unittest.TestCase):
         assert_that(flash_sections, empty())
 
     def test_flash_displayed_if_present(self):
-        omgflash = 'OMGFLASH'
-        dom: BeautifulSoup = self.render_the_form(flash=omgflash)
+        message = 'OMGFLASH'
+        dom: BeautifulSoup = self.render_the_form(flash=message)
         flash_sections = dom.body.select("section", id="flash")
         assert_that(flash_sections, is_not(empty()))
         flash: BeautifulSoup
         [flash] = flash_sections
-        assert_that(flash.text, contains_string(omgflash))
+        assert_that(flash.text, contains_string(message))
 
 
     def test_destination_passed_through(self):
