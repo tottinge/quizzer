@@ -16,7 +16,7 @@ import os
 from datetime import datetime, timedelta
 from logging import getLogger, Logger
 from secrets import compare_digest
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, NamedTuple
 
 import bottle
 import jwt
@@ -138,17 +138,14 @@ def authenticate(user_name: str, password: str) -> Optional[dict]:
     return None
 
 
-def create_user(user_name: str, password: str, role: str,
-                user_dir_name: str = './security/'):
-    user_file_name = os.path.join(user_dir_name, 'users.json')
-    users = read_users(user_file_name)
+class User(NamedTuple):
+    user_name: str
+    password: str
+    role: str
 
-    exists = any(user for user in users if user['user_name'] == user_name)
-    if not exists:
-        new_user = dict(user_name=user_name, password=password, role=role)
-        users.append(new_user)
-
-    write_users(user_file_name, users)
+    @staticmethod
+    def from_dict(cls, data: dict):
+        return cls(**data)
 
 
 def write_users(user_file_name, users):
@@ -156,25 +153,37 @@ def write_users(user_file_name, users):
         json.dump(users, user_file)
 
 
-def read_users(user_file_name: str) -> List[Dict]:
+def read_users(user_file_name: str) -> List[User]:
     try:
         with open(user_file_name) as users_file:
-            return json.load(users_file)
+            return json.load(users_file, object_hook=User.from_dict)
     except FileNotFoundError:
         return []
 
 
+def create_user(user_name: str, password: str, role: str,
+                user_dir_name: str = './security/'):
+    user_file_name = os.path.join(user_dir_name, 'users.json')
+    users = read_users(user_file_name)
+
+    exists = any(user for user in users if user['user_name'] == user_name)
+    if not exists:
+        new_user = User(user_name=user_name, password=password, role=role)
+        users.append(new_user)
+
+    write_users(user_file_name, users)
+
+
 def find_user_by_name(user_name: str,
                       user_dir_name: str = './security/') -> List[Dict]:
-
     user_file_name = os.path.join(user_dir_name, 'users.json')
     if not os.path.exists(user_file_name):
         return []
     with open(user_file_name) as users_file:
-        users = json.load(users_file)
+        users = json.load(users_file, object_hook=User.from_dict) # NEW!
         return [profile
                 for profile in users
-                if profile['user_name'] == user_name]
+                if profile.user_name == user_name]
 
 
 @app.route('/')
