@@ -28,7 +28,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from shared.quizzology import Quizzology
-from shared.user import find_user_by_name
+from shared.user import find_user_by_name, User
 
 SECRET_KEY = 'hardcoded_nonsense'
 
@@ -68,7 +68,6 @@ def authentication_endpoint():
     redirect(destination)  # Todo - change landing page
 
 
-# TODO: Create a data class to store user info
 def require_roles(*required_roles):
     """Decorator function factory, captures roles"""
     required_roles = required_roles or ['guest']
@@ -129,13 +128,14 @@ def make_bearer_token(user):
     return token
 
 
-def authenticate(user_name: str, password: str) -> Optional[dict]:
-    found = find_user_by_name(user_name)
-    if not found:
-        return dict(user_name=user_name, role="guest")
-    if compare_digest(password, found[0]["password"]):
-        return found[0]
-    return None
+def authenticate(user_name: str, password: str) -> Optional[User]:
+    try:
+        [found] = find_user_by_name(user_name)
+        if compare_digest(password, found.password):
+            return found
+        return None
+    except ValueError:
+        return User(user_name=user_name, role="guest", password="")
 
 
 @app.route('/')
