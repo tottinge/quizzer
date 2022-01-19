@@ -16,7 +16,7 @@ import os
 from datetime import datetime, timedelta
 from logging import getLogger, Logger
 from secrets import compare_digest
-from typing import List, Dict, Optional, NamedTuple
+from typing import List, Optional, NamedTuple
 
 import bottle
 import jwt
@@ -29,6 +29,9 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from shared.quizzology import Quizzology
+
+DEFAULT_USER_FILE_PATH = './security/'
+USER_FILE_NAME = 'users.json'
 
 SECRET_KEY = 'hardcoded_nonsense'
 
@@ -162,28 +165,24 @@ def read_users(user_file_name: str) -> List[User]:
 
 
 def create_user(user_name: str, password: str, role: str,
-                user_dir_name: str = './security/'):
-    user_file_name = os.path.join(user_dir_name, 'users.json')
+                user_dir_name: str = DEFAULT_USER_FILE_PATH):
+    user_file_name = os.path.join(user_dir_name, USER_FILE_NAME)
     users = read_users(user_file_name)
-
-    exists = any(user for user in users if user['user_name'] == user_name)
+    exists = any(user for user in users if user.user_name == user_name)
     if not exists:
         new_user = User(user_name=user_name, password=password, role=role)
         users.append(new_user)
-
     write_users(user_file_name, users)
 
 
 def find_user_by_name(user_name: str,
-                      user_dir_name: str = './security/') -> List[Dict]:
-    user_file_name = os.path.join(user_dir_name, 'users.json')
-    if not os.path.exists(user_file_name):
-        return []
-    with open(user_file_name) as users_file:
-        users = json.load(users_file, object_hook=User.from_dict) # NEW!
-        return [profile
-                for profile in users
-                if profile.user_name == user_name]
+                      user_dir_name: str = DEFAULT_USER_FILE_PATH
+                      ) -> List[User]:
+    user_file_name = os.path.join(user_dir_name, USER_FILE_NAME)
+    users = read_users(user_file_name)
+    return [profile
+            for profile in users
+            if profile.user_name == user_name]
 
 
 @app.route('/')
