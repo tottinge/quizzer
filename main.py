@@ -11,12 +11,11 @@ Main doesn't take any command line parameters, and launches a web server
 that serves up quizzes and tracks answers.
 
 """
-import json
 import os
 from datetime import datetime, timedelta
 from logging import getLogger, Logger
 from secrets import compare_digest
-from typing import List, Optional, NamedTuple
+from typing import Optional
 
 import bottle
 import jwt
@@ -29,9 +28,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from shared.quizzology import Quizzology
-
-DEFAULT_USER_FILE_PATH = './security/'
-USER_FILE_NAME = 'users.json'
+from shared.user import find_user_by_name
 
 SECRET_KEY = 'hardcoded_nonsense'
 
@@ -139,50 +136,6 @@ def authenticate(user_name: str, password: str) -> Optional[dict]:
     if compare_digest(password, found[0]["password"]):
         return found[0]
     return None
-
-
-class User(NamedTuple):
-    user_name: str
-    password: str
-    role: str
-
-    @staticmethod
-    def from_dict(cls, data: dict):
-        return cls(**data)
-
-
-def write_users(user_file_name, users):
-    with open(user_file_name, "w") as user_file:
-        json.dump(users, user_file)
-
-
-def read_users(user_file_name: str) -> List[User]:
-    try:
-        with open(user_file_name) as users_file:
-            return json.load(users_file, object_hook=User.from_dict)
-    except FileNotFoundError:
-        return []
-
-
-def create_user(user_name: str, password: str, role: str,
-                user_dir_name: str = DEFAULT_USER_FILE_PATH):
-    user_file_name = os.path.join(user_dir_name, USER_FILE_NAME)
-    users = read_users(user_file_name)
-    exists = any(user for user in users if user.user_name == user_name)
-    if not exists:
-        new_user = User(user_name=user_name, password=password, role=role)
-        users.append(new_user)
-    write_users(user_file_name, users)
-
-
-def find_user_by_name(user_name: str,
-                      user_dir_name: str = DEFAULT_USER_FILE_PATH
-                      ) -> List[User]:
-    user_file_name = os.path.join(user_dir_name, USER_FILE_NAME)
-    users = read_users(user_file_name)
-    return [profile
-            for profile in users
-            if profile.user_name == user_name]
 
 
 @app.route('/')

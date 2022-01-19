@@ -5,7 +5,8 @@ from behave import *
 from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_
 
-from main import create_user, authenticate, find_user_by_name
+from main import authenticate
+from shared.user import create_user, find_user_by_name
 
 
 class HasAUser(Protocol):
