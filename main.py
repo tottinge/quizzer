@@ -28,7 +28,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from shared.quizzology import Quizzology
-from shared.user import find_user_by_name, User
+from shared.user import find_user_by_name, User, UserDatabase
 
 SECRET_KEY = 'hardcoded_nonsense'
 
@@ -128,9 +128,10 @@ def make_bearer_token(user):
     return token
 
 
-def authenticate(user_name: str, password: str) -> Optional[User]:
+def authenticate(user_name: str, password: str, db: UserDatabase=None) -> Optional[User]:
+    db = db or UserDatabase()
     try:
-        [found] = find_user_by_name(user_name)
+        [found] = db.find_user_by_name(user_name)
         if compare_digest(password, found.password):
             return found
         return None
