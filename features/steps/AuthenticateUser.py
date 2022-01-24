@@ -6,9 +6,10 @@ from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_
 
 from main import authenticate
-from shared.user import create_user, find_user_by_name, UserDatabase, User
+from shared.user import UserDatabase, User
 
 
+# Todo: should we consolidate our Protocols?
 class HasAUser(Protocol):
     authenticated_user: Optional[User]
 
@@ -69,6 +70,6 @@ def step_impl(context: Context, role: str):
 
 @given('user "{user_id}" does not exist')
 def step_impl(context: Context, user_id: str):
-    found = find_user_by_name(user_name=user_id,
-                              user_dir_name=context.temporary_directory.name)
+    db = get_user_db(context)
+    found = db.find_user_by_name(user_name=user_id)
     assert_that(found, is_([]))

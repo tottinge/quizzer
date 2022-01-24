@@ -28,7 +28,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from shared.quizzology import Quizzology
-from shared.user import find_user_by_name, User, UserDatabase
+from shared.user import User, UserDatabase
 
 SECRET_KEY = 'hardcoded_nonsense'
 

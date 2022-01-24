@@ -27,10 +27,10 @@ class UserDatabase:
         self.path = alternate_file_path or DEFAULT_USER_FILE_PATH
         self.user_file_name = os.path.join(self.path, USER_FILE_NAME)
 
-    def write_users(self, users, alternate_file_path=None):
+    def write_users(self, users: Iterable[User], alternate_file_path: Optional[str] =None):
         chosen = alternate_file_path or self.path
         with open(chosen, "w") as user_file:
-            json.dump(users, user_file)
+            json.dump([user._asdict() for user in users], user_file)
 
     def read_users(self, user_file_name: str = None) -> List[User]:
         chosen = user_file_name or self.user_file_name
@@ -46,12 +46,12 @@ class UserDatabase:
             user_file_name = os.path.join(user_dir_name, USER_FILE_NAME)
         else:
             user_file_name = self.user_file_name
-        users = read_users(user_file_name)
+        users = self.read_users(user_file_name)
         exists = any(user for user in users if user.user_name == user_name)
         if not exists:
             new_user = User(user_name=user_name, password=password, role=role)
-            users.append(new_user._asdict())
-        write_users(user_file_name, users)
+            users.append(new_user)
+        self.write_users(users, user_file_name)
 
     def find_user_by_name(self, user_name):
         user_list = self.read_users()
@@ -60,22 +60,3 @@ class UserDatabase:
                  if profile.user_name == user_name ]
 
 
-def write_users(user_file_name, users: Iterable[User]):
-    db = UserDatabase()
-    db.write_users(users, user_file_name)
-
-def read_users(user_file_name: str = None) -> List[User]:
-    db = UserDatabase()
-    return db.read_users(user_file_name)
-
-def create_user(user_name: str, password: str, role: str,
-                user_dir_name: str = DEFAULT_USER_FILE_PATH):
-    db = UserDatabase(user_dir_name)
-    db.create_user(user_name, password, role)
-
-
-def find_user_by_name(user_name: str,
-                      user_dir_name: str = DEFAULT_USER_FILE_PATH
-                      ) -> List[User]:
-    db = UserDatabase(user_dir_name)
-    return db.find_user_by_name(user_name)
