@@ -24,10 +24,12 @@ class HasAUserDb(Protocol):
 
 OurContext = Union[HasAUser, HasATempDir, HasAUserDb, Context]
 
+
 def get_user_db(context: OurContext):
     if not hasattr(context, "user_db"):
         context.user_db = UserDatabase(context.temporary_directory.name)
     return context.user_db
+
 
 @given('a student "{user_id}" exists with password "{password}"')
 def step_impl(context: OurContext, user_id: str, password: str):
@@ -41,12 +43,12 @@ def step_impl(context: OurContext, user_id: str, password: str):
 
     db = get_user_db(context)
     db.create_user(user_id, password=password, role='student')
-    exists = db.find_user_by_name(user_id)
 
 
 @when('"{user_id}" logs in with password "{password}"')
 def step_impl(context: OurContext, user_id: str, password: str):
-    context.authenticated_user = authenticate(user_id, password, db=get_user_db(context))
+    context.authenticated_user = authenticate(user_id, password,
+                                              db=get_user_db(context))
 
 
 @then('"{user_id}" is authenticated')

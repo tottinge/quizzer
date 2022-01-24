@@ -12,6 +12,7 @@ from apps.study.study import render_judgment, url_for, use_this_quizzology
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from shared.quizzology import Quizzology
+from shared.user import User
 
 
 class TestSession(unittest.TestCase):
@@ -56,7 +57,8 @@ class TestSession(unittest.TestCase):
             self.assertIn(timestamp, result)
 
     def authorization_as(self, role, user_name):
-        token = main.make_bearer_token(dict(user_name=user_name, role=role))
+        user = User(user_name=user_name, role=role, password="")
+        token = main.make_bearer_token(user)
         patch_object = patch.object(main, 'get_authorization_token',
                                     return_value=token)
         return patch_object

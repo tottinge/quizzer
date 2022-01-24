@@ -27,7 +27,8 @@ class UserDatabase:
         self.path = alternate_file_path or DEFAULT_USER_FILE_PATH
         self.user_file_name = os.path.join(self.path, USER_FILE_NAME)
 
-    def write_users(self, users: Iterable[User], alternate_file_path: Optional[str] =None):
+    def write_users(self, users: Iterable[User],
+                    alternate_file_path: Optional[str] = None):
         chosen = alternate_file_path or self.path
         with open(chosen, "w") as user_file:
             json.dump([user._asdict() for user in users], user_file)
@@ -55,8 +56,6 @@ class UserDatabase:
 
     def find_user_by_name(self, user_name):
         user_list = self.read_users()
-        return [ profile
-                 for profile in user_list
-                 if profile.user_name == user_name ]
-
-
+        return [profile
+                for profile in user_list
+                if profile.user_name == user_name]

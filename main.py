@@ -9,7 +9,6 @@ Uses environment variables:
 
 Main doesn't take any command line parameters, and launches a web server
 that serves up quizzes and tracks answers.
-
 """
 import os
 from datetime import datetime, timedelta
@@ -62,8 +61,8 @@ def authentication_endpoint():
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)
-    bottle.response.set_cookie('qz-user-name', user['user_name'])
-    bottle.response.set_cookie('qz-user-role', user['role'])
+    bottle.response.set_cookie('qz-user-name', user.user_name)
+    bottle.response.set_cookie('qz-user-role', user.role)
     destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
 
@@ -113,14 +112,14 @@ def example_checked_page():
 
 
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
-def make_bearer_token(user):
+def make_bearer_token(user: User):
     time_to_live = timedelta(hours=4)
     claims = dict(
-        sub=user['user_name'],
+        sub=user.user_name,
         exp=(datetime.utcnow() + time_to_live),
         iat=datetime.utcnow()
     )
-    user_data = {k: v for k, v in user.items() if k != 'password'}
+    user_data = {k: v for k, v in user._asdict().items() if k != 'password'}
     payload = {**user_data, **claims}
 
     # TODO: manage the secret instead of braodcasting it via github to heroku
@@ -128,7 +127,9 @@ def make_bearer_token(user):
     return token
 
 
-def authenticate(user_name: str, password: str, db: UserDatabase=None) -> Optional[User]:
+def authenticate(user_name: str,
+                 password: str,
+                 db: UserDatabase = None) -> Optional[User]:
     db = db or UserDatabase()
     try:
         [found] = db.find_user_by_name(user_name)
