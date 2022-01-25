@@ -41,12 +41,8 @@ class UserDatabase:
         except FileNotFoundError:
             return []
 
-    def create_user(self, user_name: str, password: str, role: str,
-                    user_dir_name: Optional[str] = None):
-        if user_dir_name:
-            user_file_name = os.path.join(user_dir_name, USER_FILE_NAME)
-        else:
-            user_file_name = self.user_file_name
+    def create_user(self, user_name: str, password: str, role: str):
+        user_file_name = self.user_file_name
         users = self.read_users(user_file_name)
         exists = any(user for user in users if user.user_name == user_name)
         if not exists:

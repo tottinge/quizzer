@@ -33,13 +33,6 @@ def get_user_db(context: OurContext):
 
 @given('a student "{user_id}" exists with password "{password}"')
 def step_impl(context: OurContext, user_id: str, password: str):
-    # options:
-    #   swap out the real user file, restore after
-    #   modify the actual user file, fix it after
-    #   redirect to read a different user file we create & write from here
-    #   redirect to read a different user file we wrote in advance
-    #   mock the reading of the user file (json.load)
-    #   mock find_user_by_name
 
     db = get_user_db(context)
     db.create_user(user_id, password=password, role='student')
