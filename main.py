@@ -49,8 +49,6 @@ def login(flash="", destination="/study"):
             "destination": destination}
 
 
-# ToDo: Figure out https
-
 @app.post('/auth')
 def authentication_endpoint():
     user_name = request.forms.get('user_name')
@@ -121,8 +119,6 @@ def make_bearer_token(user: User):
     )
     user_data = {k: v for k, v in user._asdict().items() if k != 'password'}
     payload = {**user_data, **claims}
-
-    # TODO: manage the secret instead of braodcasting it via github to heroku
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
     return token
 

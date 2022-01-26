@@ -9,7 +9,6 @@ from main import authenticate
 from shared.user import UserDatabase, User
 
 
-# Todo: should we consolidate our Protocols?
 class HasAUser(Protocol):
     authenticated_user: Optional[User]
 
@@ -33,7 +32,6 @@ def get_user_db(context: OurContext):
 
 @given('a student "{user_id}" exists with password "{password}"')
 def step_impl(context: OurContext, user_id: str, password: str):
-
     db = get_user_db(context)
     db.create_user(user_id, password=password, role='student')
 
@@ -52,19 +50,19 @@ def step_impl(context: OurContext, user_id: str):
 
 
 @then('"{user_id}" is not authenticated')
-def step_impl(context: Context, user_id: str):
-    user: User = context.authenticated_user
+def step_impl(context: OurContext, user_id: str):
+    user: Optional[User] = context.authenticated_user
     assert_that(user, is_(None))
 
 
 @step('the assigned role is "{role}"')
-def step_impl(context: Context, role: str):
+def step_impl(context: OurContext, role: str):
     user: User = context.authenticated_user
     assert_that(user.role, is_(role))
 
 
 @given('user "{user_id}" does not exist')
-def step_impl(context: Context, user_id: str):
+def step_impl(context: OurContext, user_id: str):
     db = get_user_db(context)
     found = db.find_user_by_name(user_name=user_id)
     assert_that(found, is_([]))
