@@ -1,7 +1,7 @@
 from tempfile import TemporaryDirectory
 from typing import Protocol, Union, Optional
 
-from behave import *
+from behave import when, then, step, given
 from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_
 
@@ -28,7 +28,6 @@ def get_user_db(context: OurContext):
     if not hasattr(context, "user_db"):
         context.user_db = UserDatabase(context.temporary_directory.name)
     return context.user_db
-
 
 
 @when('"{user_id}" logs in with password "{password}"')

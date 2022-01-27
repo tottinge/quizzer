@@ -102,7 +102,7 @@ def step_impl(context: Context, answer: str):
 
 @then("the answer is confirmed as correct")
 def step_impl(context: Context):
-    assert_that(context.recent_answer.correct, f"Answer should be correct")
+    assert_that(context.recent_answer.correct, "Answer should be correct")
 
 
 @step("the confirmation message is delivered")
