@@ -20,3 +20,15 @@ Feature: Authenticate User
     When "fred" logs in with password "wrong"
     Then "fred" is authenticated
     And the assigned role is "guest"
+
+  Scenario: Simple Author Login Success
+    Given an author "test_author" exists with password "testme"
+    When "test_author" logs in with password "testme"
+    Then "test_author" is authenticated
+    And the assigned role is "author"
+
+  Scenario: Simple Author Login Failure
+    Given an author "test_author" exists with password "testme"
+    When "test_author" logs in with password "wrongpass"
+    Then "test_author" is not authenticated
+

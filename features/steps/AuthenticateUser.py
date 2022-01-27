@@ -66,3 +66,9 @@ def step_impl(context: OurContext, user_id: str):
     db = get_user_db(context)
     found = db.find_user_by_name(user_name=user_id)
     assert_that(found, is_([]))
+
+
+@given('an author "{user_id}" exists with password "{password}"')
+def step_impl(context: OurContext, user_id: str, password: str):
+    db = get_user_db(context)
+    db.create_user(user_id, password=password, role='author')
