@@ -30,11 +30,6 @@ def get_user_db(context: OurContext):
     return context.user_db
 
 
-@given('a student "{user_id}" exists with password "{password}"')
-def step_impl(context: OurContext, user_id: str, password: str):
-    db = get_user_db(context)
-    db.create_user(user_id, password=password, role='student')
-
 
 @when('"{user_id}" logs in with password "{password}"')
 def step_impl(context: OurContext, user_id: str, password: str):
@@ -63,12 +58,13 @@ def step_impl(context: OurContext, role: str):
 
 @given('user "{user_id}" does not exist')
 def step_impl(context: OurContext, user_id: str):
-    db = get_user_db(context)
-    found = db.find_user_by_name(user_name=user_id)
+    database = get_user_db(context)
+    found = database.find_user_by_name(user_name=user_id)
     assert_that(found, is_([]))
 
 
-@given('an author "{user_id}" exists with password "{password}"')
-def step_impl(context: OurContext, user_id: str, password: str):
-    db = get_user_db(context)
-    db.create_user(user_id, password=password, role='author')
+@given('a {role} "{user_id}" exists with password "{password}"')
+@given('an {role} "{user_id}" exists with password "{password}"')
+def step_impl(context: OurContext, role: str, user_id: str, password: str):
+    database = get_user_db(context)
+    database.create_user(user_id, password=password, role=role)
