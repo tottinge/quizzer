@@ -6,4 +6,9 @@ git pull &&
   pip install --upgrade -qr devtools.txt &&
   pytest --ignore=ui_tests &&
   behave -t ~@wip -t ~@future &&
-  pytest ui_tests
+  pytest ui_tests &&
+  echo ""  &&
+  echo "  ___ _   _  ___ ___ ___ ___ ___ " &&
+  echo " / __| | | |/ __/ __| __/ __/ __| " &&
+  echo " \__ \ |_| | (_| (__| _|\__ \__ \ " &&
+  echo " |___/\___/ \___\___|___|___/___/ "
