@@ -32,3 +32,10 @@ Feature: Authenticate User
     When "test_author" logs in with password "wrongpass"
     Then "test_author" is not authenticated
 
+  @WIP
+  Scenario: Authenticated user session times out
+    Given an author "test_author" exists with password "testme"
+    And the session has expired
+    When they visit a restricted page
+    Then they should be challenged to re-login
+

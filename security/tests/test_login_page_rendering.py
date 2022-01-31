@@ -39,13 +39,12 @@ class MyTestCase(unittest.TestCase):
         expected_destination = "/go/here/after/login"
         dom: BeautifulSoup = self.render_the_form(
             destination=expected_destination)
-        destination: Optional[BeautifulSoup]
-        destination = dom.body.form.find(name="input", attrs={"type":"hidden", "name": "destination"})
+        destination: Optional[BeautifulSoup] = dom.body.form.find(
+            name="input", attrs={"type": "hidden", "name": "destination"}
+        )
         assert_that(destination, is_not(None))
         assert_that(destination['value'], is_(expected_destination))
 
 
 if __name__ == '__main__':
     unittest.main()
-
-# ToDo - Add assertions for the newly rendered Login page
