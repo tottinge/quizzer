@@ -67,3 +67,11 @@ def step_impl(context: OurContext, user_id: str):
 def step_impl(context: OurContext, role: str, user_id: str, password: str):
     database = get_user_db(context)
     database.create_user(user_id, password=password, role=role)
+
+
+@step("the session has expired")
+def step_impl(context: OurContext):
+    # TODO: we don't need to authenticate... we need to create an expired
+    # bearer token and have get_authorization_token return it (mock).
+    # when we figure out how to call required_roles() we'll have it licked.
+    raise NotImplementedError("we didn't do it yet")
