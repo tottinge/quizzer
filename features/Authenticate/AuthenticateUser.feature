@@ -32,7 +32,7 @@ Feature: Authenticate User
     When "test_author" logs in with password "wrongpass"
     Then "test_author" is not authenticated
 
-  @WIP
+  @wip
   Scenario: Authenticated user session times out
     Given an author "test_author" exists with password "testme"
     And the session has expired
