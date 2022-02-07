@@ -82,3 +82,4 @@ def step_impl(context: OurContext):
 @given('an {role} "{user_id}" has logged in with password "{password}"')
 def step_impl(context: OurContext, role: str, user_id: str, password: str ):
     context.execute_steps(f'Given a {role} "{user_id}" exists with password "{password}"')
+    context.execute_steps(f'When "{user_id}" logs in with password "{password}"')
