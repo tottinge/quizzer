@@ -2,6 +2,7 @@ from tempfile import TemporaryDirectory
 from typing import Protocol, Union, Optional
 
 from behave import when, then, step, given
+from behave.model import Step
 from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_
 
@@ -30,7 +31,7 @@ def get_user_db(context: OurContext):
     return context.user_db
 
 
-@when('"{user_id}" logs in with password "{password}"')
+@step('"{user_id}" logs in with password "{password}"')
 def step_impl(context: OurContext, user_id: str, password: str):
     context.authenticated_user = authenticate(user_id, password,
                                               db=get_user_db(context))
@@ -83,5 +84,5 @@ def step_impl(context: OurContext):
 def step_impl(context: OurContext, role: str, user_id: str, password: str ):
     context.execute_steps(f"""
         Given a {role} "{user_id}" exists with password "{password}"
-        When "{user_id}" logs in with password "{password}"
+        And "{user_id}" logs in with password "{password}"
     """)
