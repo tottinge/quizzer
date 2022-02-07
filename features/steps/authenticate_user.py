@@ -1,12 +1,14 @@
 from tempfile import TemporaryDirectory
 from typing import Protocol, Union, Optional
+from unittest.mock import patch
 
 from behave import when, then, step, given
 from behave.model import Step
 from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_
 
-from main import authenticate
+import main
+from main import authenticate, make_bearer_token
 from shared.user import UserDatabase, User
 
 
@@ -72,12 +74,10 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 
 @step("the session has expired")
 def step_impl(context: OurContext):
-    # TODO: we don't need to authenticate... we need to create an expired
-    # bearer token and have get_authorization_token return it (mock).
-    # when we figure out how to call required_roles() we'll have it licked.
-
-    # token = make_bearer_token(user: User, hours_to_live: int =4)-> str:
-    raise NotImplementedError("we didn't do it yet")
+    expired_token = make_bearer_token(user=context.authenticated_user,
+                                      hours_to_live=0)
+    context.get_token_mock = patch("main.get_authorization_token",
+                                   return_value=expired_token)
 
 
 @given('an {role} "{user_id}" has logged in with password "{password}"')
