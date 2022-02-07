@@ -110,8 +110,8 @@ def example_checked_page():
 
 
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
-def make_bearer_token(user: User):
-    time_to_live = timedelta(hours=4)
+def make_bearer_token(user: User, hours_to_live: int =4)-> str:
+    time_to_live = timedelta(hours=hours_to_live)
     claims = dict(
         sub=user.user_name,
         exp=(datetime.utcnow() + time_to_live),

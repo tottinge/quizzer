@@ -34,7 +34,7 @@ Feature: Authenticate User
 
   @wip
   Scenario: Authenticated user session times out
-    Given an author "test_author" exists with password "testme"
+    Given an author "test_author" has logged in with password "testme"
     And the session has expired
     When they visit a restricted page
     Then they should be challenged to re-login

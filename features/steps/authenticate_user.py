@@ -74,4 +74,11 @@ def step_impl(context: OurContext):
     # TODO: we don't need to authenticate... we need to create an expired
     # bearer token and have get_authorization_token return it (mock).
     # when we figure out how to call required_roles() we'll have it licked.
+
+    # token = make_bearer_token(user: User, hours_to_live: int =4)-> str:
     raise NotImplementedError("we didn't do it yet")
+
+
+@given('an {role} "{user_id}" has logged in with password "{password}"')
+def step_impl(context: OurContext, role: str, user_id: str, password: str ):
+    context.execute_steps(f'Given a {role} "{user_id}" exists with password "{password}"')
