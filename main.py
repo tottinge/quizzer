@@ -1,4 +1,4 @@
-""" 
+"""
 main.py - start and run the Bottle-based quizzology application.py
 
 Uses environment variables:
@@ -51,8 +51,9 @@ def login(flash="", destination="/study"):
 
 @app.post('/auth')
 def authentication_endpoint():
-    user_name = request.forms.get('user_name')
-    password = request.forms.get('password')
+    data: bottle.FormsDict = request.forms()
+    user_name = data.get('user_name')
+    password = data.get('password')
     user = authenticate(user_name, password)
     if not user:
         return login("Your credentials did not match any on file.")
@@ -70,10 +71,10 @@ def require_roles(*required_roles):
     required_roles = required_roles or ['guest']
 
     def inner_wrapper(wrapped_function):
-        "Wrapper generator for route or  function that will be restricted"
+        """Wrapper generator for route or  function that will be restricted"""
 
         def decorator(*args, **kwargs):
-            "check authorization before actually calling route function"
+            """check authorization before actually calling route function"""
             try:
                 token = get_authorization_token()
                 user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
@@ -110,7 +111,7 @@ def example_checked_page():
 
 
 # TODO: Move make_bearer_token, authenticate, require_roles outside of main
-def make_bearer_token(user: User, hours_to_live: int =4)-> str:
+def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
     time_to_live = timedelta(hours=hours_to_live)
     claims = dict(
         sub=user.user_name,
@@ -158,8 +159,8 @@ def get_static_file(filename):
 
 @app.get("/me")
 def show_me():
-    """ 
-    Test endpoint: this routine will display information about the 
+    """
+    Test endpoint: this routine will display information about the
     session environment. It's probably not recommended for production
     use - it's hard to say what opportunities it leaves hackers.
     """
@@ -191,12 +192,13 @@ def show_me():
 @app.get("/cookies")
 def cookie_explorer():
     """
-    Junk method for exploring cookies; not part of quizzology proper, 
+    Junk method for exploring cookies; not part of quizzology proper,
     only used by authors for peeking into the world of the server and
     understanding how cookies work.
     """
+    cookies: bottle.FormsDict = request.cookies
     result = "".join(
-        f"<p>{key}: {value}</p>" for (key, value) in request.cookies.items())
+        f"<p>{key}: {value}</p>" for (key, value) in cookies.items())
     return result
 
 
