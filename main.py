@@ -62,7 +62,7 @@ def authentication_endpoint():
                                httponly=True)
     bottle.response.set_cookie('qz-user-name', user.user_name)
     bottle.response.set_cookie('qz-user-role', user.role)
-    destination = request.forms.get('destination')
+    destination = request.forms().get('destination')
     redirect(destination)  # Todo - change landing page
 
 
