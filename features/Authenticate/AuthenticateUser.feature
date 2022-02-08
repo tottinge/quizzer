@@ -32,7 +32,6 @@ Feature: Authenticate User
     When "test_author" logs in with password "wrongpass"
     Then "test_author" is not authenticated
 
-  @wip
   Scenario: Authenticated user session times out
     Given the page "/poobah" is restricted to author
     And an author "test_author" has logged in with password "testme"
