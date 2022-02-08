@@ -19,6 +19,4 @@ class TestRoutes(TestCase):
         response = self.sut.get('/study')
         assert_that(response.status_code, is_(200))
         title: BeautifulSoup = response.html.find('title')
-        assert_that(title.text, contains_string('Quizzology') )
-
-
+        assert_that(title.text, contains_string('Quizzology'))

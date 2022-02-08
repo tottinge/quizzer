@@ -243,7 +243,7 @@ def get_endpoint_address() -> tuple[str, int]:
 if __name__ == '__main__':
     main()
 
-# Require user to authenticate (a form with a POST w/user name & pw) ✓
+# Require user to authenticate (a form with a POST w/username & pw) ✓
 # When they authenticate, we create and store a JWT ✓
 # We decorate the routes that need authentication
 # Magic happens ...
