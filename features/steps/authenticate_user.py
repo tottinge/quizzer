@@ -86,3 +86,11 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str ):
         Given a {role} "{user_id}" exists with password "{password}"
         And "{user_id}" logs in with password "{password}"
     """)
+
+
+@given('the page "{pagename}" is restricted to {role}')
+def step_impl(context: OurContext, pagename: str, role: str):
+    role_decorator = main.require_roles(role)
+    protected_function = role_decorator(lambda: print("hello"))
+    context.protected_route = protected_function
+
