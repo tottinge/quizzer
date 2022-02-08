@@ -51,7 +51,7 @@ def login(flash="", destination="/study"):
 
 @app.post('/auth')
 def authentication_endpoint():
-    data: bottle.FormsDict = request.forms()
+    data: bottle.FormsDict = request.forms
     user_name = data.get('user_name')
     password = data.get('password')
     user = authenticate(user_name, password)
@@ -62,7 +62,7 @@ def authentication_endpoint():
                                httponly=True)
     bottle.response.set_cookie('qz-user-name', user.user_name)
     bottle.response.set_cookie('qz-user-role', user.role)
-    destination = request.forms().get('destination')
+    destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
 
 
