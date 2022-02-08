@@ -2,10 +2,11 @@ from tempfile import TemporaryDirectory
 from typing import Protocol, Union, Optional
 from unittest.mock import patch
 
+import bs4
 from behave import when, then, step, given
 from behave.model import Step
 from behave.runner import Context
-from hamcrest import assert_that, not_none, equal_to, is_
+from hamcrest import assert_that, not_none, equal_to, is_, contains_string
 
 import main
 from main import authenticate, make_bearer_token
@@ -75,7 +76,7 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 @step("the session has expired")
 def step_impl(context: OurContext):
     expired_token = make_bearer_token(user=context.authenticated_user,
-                                      hours_to_live=0)
+                                      hours_to_live=-1)
     context.get_token_mock = patch("main.get_authorization_token",
                                    return_value=expired_token)
 
@@ -92,5 +93,15 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str ):
 def step_impl(context: OurContext, pagename: str, role: str):
     role_decorator = main.require_roles(role)
     protected_function = role_decorator(lambda: print("hello"))
-    context.protected_route = protected_function
+    context.routes = {pagename: protected_function}
 
+
+@when('"{user}" visits "{route}"')
+def step_impl(context: OurContext, user:str, route:str):
+    context.visit_result = context.routes[route]()
+
+
+@then("they should be challenged to re-login")
+def step_impl(context: OurContext):
+    result = bs4.BeautifulSoup(context.visit_result, "html.parser")
+    assert_that(result.head.title.text, contains_string('Who are you'))
