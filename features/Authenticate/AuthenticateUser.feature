@@ -32,10 +32,26 @@ Feature: Authenticate User
     When "test_author" logs in with password "wrongpass"
     Then "test_author" is not authenticated
 
+# NULL CASES:
+#  Scenario: Logged-in user visits unrestricted page
+#  Scenario: Unauthenticated user visits unrestricted page
+  @wip
+  Scenario: Unauthenticated user visits student-restricted page
+    Given the page "/student-only" is restricted to student
+    When guest user visits "/student-only"
+    Then they should be challenged to re-login
+    And a flash message is displayed
+
+  Scenario: Student visits student-restricted page
+
+  Scenario: student visits author-restricted page
+  Scenario: author visits student-restricted page
+
+
   Scenario: Authenticated user session times out
-    Given the page "/poobah" is restricted to author
+    Given the page "/author-only" is restricted to author
     And an author "test_author" has logged in with password "testme"
     And the session has expired
-    When "test_author" visits "/poobah"
+    When "test_author" visits "/author-only"
     Then they should be challenged to re-login
 
