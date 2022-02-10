@@ -1,5 +1,5 @@
 from tempfile import TemporaryDirectory
-from typing import Protocol, Union, Optional
+from typing import Protocol, Union, Optional, Dict, Callable
 from unittest.mock import patch
 
 import bs4
@@ -24,7 +24,11 @@ class HasAUserDb(Protocol):
     user_db: Optional[UserDatabase]
 
 
-OurContext = Union[HasAUser, HasATempDir, HasAUserDb, Context]
+class HasRoutes(Protocol):
+    routes: Optional[Dict[str, Callable[[], str]]]
+
+
+OurContext = Union[HasAUser, HasATempDir, HasAUserDb, HasRoutes, Context]
 
 
 def get_user_db(context: OurContext):
@@ -121,14 +125,9 @@ def step_impl(context: OurContext):
     assert_that(result.head.title.text, contains_string('Who are you'))
 
 
-<<<<<<< HEAD
 @step("a flash message is displayed")
 def step_impl(context: OurContext):
     result = bs4.BeautifulSoup(context.visit_result, "html.parser")
     flash = result.body.find("section", id='flash')
     assert_that(flash, not_none())
-=======
-@when('guest user visits "/student-only"')
-def step_impl(context: OurContext):
-    raise NotImplementedError(u'STEP: When guest user visits "/student-only"')
->>>>>>> 3047d04 (feat: Allowed context to support multiple restricted pages per scenario)
+
