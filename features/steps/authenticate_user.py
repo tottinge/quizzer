@@ -4,7 +4,6 @@ from unittest.mock import patch
 
 import bs4
 from behave import when, then, step, given
-from behave.model import Step
 from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_, contains_string
 
@@ -82,7 +81,7 @@ def step_impl(context: OurContext):
 
 
 @given('an {role} "{user_id}" has logged in with password "{password}"')
-def step_impl(context: OurContext, role: str, user_id: str, password: str ):
+def step_impl(context: OurContext, role: str, user_id: str, password: str):
     context.execute_steps(f"""
         Given a {role} "{user_id}" exists with password "{password}"
         And "{user_id}" logs in with password "{password}"
@@ -97,11 +96,27 @@ def step_impl(context: OurContext, pagename: str, role: str):
 
 
 @when('"{user}" visits "{route}"')
-def step_impl(context: OurContext, user:str, route:str):
+def step_impl(context: OurContext, user: str, route: str):
     context.visit_result = context.routes[route]()
+
+
+@when('guest user visits "{route}"')
+def step_impl(context: OurContext, route: str):
+    role, user_name, password = None, 'nonesuch', 'nonesuch'
+    context.execute_steps(f"""
+        Given a {role} "{user_name}" exists with password "{password}"
+        when "{user_name}" visits "{route}"
+    """)
 
 
 @then("they should be challenged to re-login")
 def step_impl(context: OurContext):
     result = bs4.BeautifulSoup(context.visit_result, "html.parser")
     assert_that(result.head.title.text, contains_string('Who are you'))
+
+
+@step("a flash message is displayed")
+def step_impl(context: OurContext):
+    result = bs4.BeautifulSoup(context.visit_result, "html.parser")
+    flash = result.body.find("section", id='flash')
+    assert_that(flash, not_none())
