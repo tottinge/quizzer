@@ -92,7 +92,13 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 def step_impl(context: OurContext, pagename: str, role: str):
     role_decorator = main.require_roles(role)
     protected_function = role_decorator(lambda: print("hello"))
-    context.routes = {pagename: protected_function}
+    set_route(context, pagename, protected_function)
+
+
+def set_route(context, pagename, protected_function):
+    routes = getattr(context, 'routes', {})
+    routes[pagename] = protected_function
+    context.routes = routes
 
 
 @when('"{user}" visits "{route}"')
