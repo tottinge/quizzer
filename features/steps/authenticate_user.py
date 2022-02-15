@@ -114,8 +114,8 @@ def step_impl(context: OurContext, user: str, route: str):
 def step_impl(context: OurContext, route: str):
     role, user_name, password = None, 'nonesuch', 'nonesuch'
     context.execute_steps(f"""
-        Given a {role} "{user_name}" exists with password "{password}"
-        when "{user_name}" visits "{route}"
+        When "{user_name}" logs in with password "{password}"
+        And "{user_name}" visits "{route}"
     """)
 
 
