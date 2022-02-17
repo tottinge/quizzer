@@ -28,7 +28,13 @@ class HasRoutes(Protocol):
     routes: Optional[Dict[str, Callable[[], str]]]
 
 
-OurContext = Union[HasAUser, HasATempDir, HasAUserDb, HasRoutes, Context]
+class HasVisitResult(Protocol):
+    visit_result: Optional[str]
+
+
+OurContext = Union[
+    HasAUser, HasATempDir, HasAUserDb, HasRoutes, HasVisitResult, Context
+]
 
 
 def get_user_db(context: OurContext):
@@ -41,6 +47,11 @@ def get_user_db(context: OurContext):
 def step_impl(context: OurContext, user_id: str, password: str):
     context.authenticated_user = authenticate(user_id, password,
                                               db=get_user_db(context))
+    if context.authenticated_user:
+        token = make_bearer_token(user=context.authenticated_user)
+        context.get_token_mock = patch("main.get_authorization_token",
+                                       return_value=token)
+        context.get_token_mock.start()
 
 
 @then('"{user_id}" is authenticated')
@@ -82,6 +93,7 @@ def step_impl(context: OurContext):
                                       hours_to_live=-1)
     context.get_token_mock = patch("main.get_authorization_token",
                                    return_value=expired_token)
+    context.get_token_mock.start()
 
 
 @given('an {role} "{user_id}" has logged in with password "{password}"')
@@ -95,7 +107,7 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 @given('the page "{pagename}" is restricted to {role}')
 def step_impl(context: OurContext, pagename: str, role: str):
     role_decorator = main.require_roles(role)
-    protected_function = role_decorator(lambda: print("hello"))
+    protected_function = role_decorator(lambda: pagename)
     set_route(context, pagename, protected_function)
 
 
@@ -131,3 +143,7 @@ def step_impl(context: OurContext):
     flash = result.body.find("section", id='flash')
     assert_that(flash, not_none())
 
+
+@then('the "{page}" is visited')
+def step_impl(context: OurContext, page: str):
+    assert_that(context.visit_result, is_(page))

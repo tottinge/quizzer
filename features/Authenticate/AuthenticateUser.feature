@@ -33,18 +33,35 @@ Feature: Authenticate User
     Then "test_author" is not authenticated
 
 # NULL CASES:
+#  These are cases we discussed and decided they were not interesting
+#  enough to implement:
 #  Scenario: Logged-in user visits unrestricted page
 #  Scenario: Unauthenticated user visits unrestricted page
-  @wip
+
   Scenario: Unauthenticated user visits student-restricted page
     Given the page "/student-only" is restricted to student
     When guest user visits "/student-only"
     Then they should be challenged to re-login
     And a flash message is displayed
 
+
+  Scenario Outline: Authenticated user visits a page restricted to their role
+    Given the page "<page>" is restricted to <allowed role>
+    And an <user role> "<userid>" exists with password "<password>"
+    And "<userid>" logs in with password "<password>"
+    When "<userid>" visits "<page>"
+    Then the "<page>" is visited
+
+    Examples:
+      | page          | allowed role | user role | userid       | password |
+      | /student-only | student      | student   | test_student | testme   |
+      | /author-only  | author       | author    | test_author  | testme   |
+
+
   Scenario: Student visits student-restricted page
 
   Scenario: student visits author-restricted page
+
   Scenario: author visits student-restricted page
 
 
