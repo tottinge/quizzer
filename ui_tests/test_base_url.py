@@ -1,7 +1,6 @@
 from subprocess import Popen
 from unittest import TestCase
 
-import hamcrest
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By

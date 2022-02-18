@@ -83,20 +83,24 @@ def require_roles(*required_roles):
                     name = user_data.get('user_name')
                     return login(
                         f'Sorry, {name}, you are just a {role}',
-                        destination=request.path
+                        destination=get_request_path()
                     )
                 return wrapped_function(*args, **kwargs)
             except AttributeError:
                 return login('You must be logged in to access this page')
             except ExpiredSignatureError:
                 return login(flash='Your session has expired',
-                             destination=request.path)
+                             destination=get_request_path())
             except DecodeError:
                 redirect('/login')
 
         return decorator
 
     return inner_wrapper
+
+
+def get_request_path():
+    return request.path
 
 
 def get_authorization_token():

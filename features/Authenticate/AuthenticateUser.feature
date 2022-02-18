@@ -42,6 +42,7 @@ Feature: Authenticate User
     Given the page "/student-only" is restricted to student
     When guest user visits "/student-only"
     Then they should be challenged to re-login
+    And the destination "/student-only" is passed to the login page
     And a flash message is displayed
 
 
@@ -57,10 +58,6 @@ Feature: Authenticate User
       | /student-only | student      | student   | test_student | testme   |
       | /author-only  | author       | author    | test_author  | testme   |
 
-
-  Scenario: Student visits student-restricted page
-
-  Scenario: student visits author-restricted page
 
   Scenario: author visits student-restricted page
 

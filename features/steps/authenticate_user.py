@@ -119,6 +119,9 @@ def set_route(context, pagename, protected_function):
 
 @when('"{user}" visits "{route}"')
 def step_impl(context: OurContext, user: str, route: str):
+    mock = patch('main.get_request_path', return_value=route)
+    mock.start()
+    context.get_request_path_mock = mock
     context.visit_result = context.routes[route]()
 
 
@@ -147,3 +150,10 @@ def step_impl(context: OurContext):
 @then('the "{page}" is visited')
 def step_impl(context: OurContext, page: str):
     assert_that(context.visit_result, is_(page))
+
+
+@step('the destination "{page}" is passed to the login page')
+def step_impl(context: OurContext, page: str):
+    result = bs4.BeautifulSoup(context.visit_result, "html.parser")
+    destination = result.body.find('input', attrs={"name":"destination"})
+    assert_that(destination["value"], is_(page))
