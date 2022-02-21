@@ -46,20 +46,20 @@ Feature: Authenticate User
     And a flash message is displayed
 
 
-  Scenario Outline: Authenticated user visits a page restricted to their role
+  Scenario Outline: Authenticated user visits restricted pages
     Given the page "<page>" is restricted to <allowed role>
     And an <user role> "<userid>" exists with password "<password>"
     And "<userid>" logs in with password "<password>"
     When "<userid>" visits "<page>"
-    Then the "<page>" is visited
+    Then the "<expected page>" is visited
 
     Examples:
-      | page          | allowed role | user role | userid       | password |
-      | /student-only | student      | student   | test_student | testme   |
-      | /author-only  | author       | author    | test_author  | testme   |
-
-
-  Scenario: author visits student-restricted page
+      | page                 | allowed role    | user role | userid       | password | expected page        |
+      | student-only         | student         | student   | test_student | testme   | student-only         |
+      | author-only          | author          | author    | test_author  | testme   | author-only          |
+      | authors-and-students | author, student | student   | test_student | testme   | authors-and-students |
+      | authors-and-students | author, student | editor    | test_student | testme   | login                |
+      | student-only         | student         | author    | test_author  | testme   | login                |
 
 
   Scenario: Authenticated user session times out

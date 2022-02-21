@@ -106,7 +106,8 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 
 @given('the page "{pagename}" is restricted to {role}')
 def step_impl(context: OurContext, pagename: str, role: str):
-    role_decorator = main.require_roles(role)
+    roles = [r.strip() for r in role.split(",")]
+    role_decorator = main.require_roles(*roles)
     protected_function = role_decorator(lambda: pagename)
     set_route(context, pagename, protected_function)
 
@@ -136,6 +137,10 @@ def step_impl(context: OurContext, route: str):
 
 @then("they should be challenged to re-login")
 def step_impl(context: OurContext):
+    is_login_page(context)
+
+
+def is_login_page(context):
     result = bs4.BeautifulSoup(context.visit_result, "html.parser")
     assert_that(result.head.title.text, contains_string('Who are you'))
 
@@ -147,9 +152,12 @@ def step_impl(context: OurContext):
     assert_that(flash, not_none())
 
 
-@then('the "{page}" is visited')
-def step_impl(context: OurContext, page: str):
-    assert_that(context.visit_result, is_(page))
+@then('the "{expected_page}" is visited')
+def step_impl(context: OurContext, expected_page: str):
+    if expected_page == "login":
+        is_login_page(context)
+    else:
+        assert_that(context.visit_result, is_(expected_page))
 
 
 @step('the destination "{page}" is passed to the login page')
