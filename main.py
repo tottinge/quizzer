@@ -21,15 +21,13 @@ import jwt
 from bottle import (
     run, request, static_file, redirect
 )
-from jwt import ExpiredSignatureError, DecodeError
 
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
+from security.authz import require_roles, SECRET_KEY
 from shared.quizzology import Quizzology
 from shared.user import User, UserDatabase
-
-SECRET_KEY = 'hardcoded_nonsense'
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
@@ -64,48 +62,6 @@ def authentication_endpoint():
     bottle.response.set_cookie('qz-user-role', user.role)
     destination = request.forms.get('destination')
     redirect(destination)  # Todo - change landing page
-
-
-def require_roles(*required_roles):
-    """Decorator function factory, captures roles"""
-    required_roles = required_roles or ['guest']
-
-    def inner_wrapper(wrapped_function):
-        """Wrapper generator for route or  function that will be restricted"""
-
-        def decorator(*args, **kwargs):
-            """check authorization before actually calling route function"""
-            try:
-                token = get_authorization_token()
-                user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-                role = user_data.get('role', 'guest')
-                if role not in required_roles:
-                    name = user_data.get('user_name')
-                    return login(
-                        f'Sorry, {name}, you are just a {role}',
-                        destination=get_request_path()
-                    )
-                return wrapped_function(*args, **kwargs)
-            except AttributeError:
-                return login('You must be logged in to access this page')
-            except ExpiredSignatureError:
-                return login(flash='Your session has expired',
-                             destination=get_request_path())
-            except DecodeError:
-                redirect('/login')
-
-        return decorator
-
-    return inner_wrapper
-
-
-def get_request_path():
-    return request.path
-
-
-def get_authorization_token():
-    _, token = request.get_cookie('Authorization').split()
-    return token
 
 
 @app.route('/example_checked_page')

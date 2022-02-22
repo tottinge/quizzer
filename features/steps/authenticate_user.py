@@ -8,6 +8,7 @@ from behave.runner import Context
 from hamcrest import assert_that, not_none, equal_to, is_, contains_string
 
 import main
+import security.authz
 from main import authenticate, make_bearer_token
 from shared.user import UserDatabase, User
 
@@ -107,7 +108,7 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 @given('the page "{pagename}" is restricted to {role}')
 def step_impl(context: OurContext, pagename: str, role: str):
     roles = [r.strip() for r in role.split(",")]
-    role_decorator = main.require_roles(*roles)
+    role_decorator = security.authz.require_roles(*roles)
     protected_function = role_decorator(lambda: pagename)
     set_route(context, pagename, protected_function)
 
