@@ -4,6 +4,7 @@ from jwt import ExpiredSignatureError, DecodeError
 
 
 def login(flash="", destination="/study"):
+    # TODO - figure out urlencode so we can pass these params
     url = "/login"
     redirect(url)
 
