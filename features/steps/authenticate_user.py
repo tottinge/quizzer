@@ -5,9 +5,9 @@ from unittest.mock import patch
 import bs4
 from behave import when, then, step, given
 from behave.runner import Context
+from bottle import HTTPResponse
 from hamcrest import assert_that, not_none, equal_to, is_, contains_string
 
-import main
 import security.authz
 from main import authenticate, make_bearer_token
 from shared.user import UserDatabase, User
@@ -50,7 +50,7 @@ def step_impl(context: OurContext, user_id: str, password: str):
                                               db=get_user_db(context))
     if context.authenticated_user:
         token = make_bearer_token(user=context.authenticated_user)
-        context.get_token_mock = patch("main.get_authorization_token",
+        context.get_token_mock = patch("security.authz.get_authorization_token",
                                        return_value=token)
         context.get_token_mock.start()
 
@@ -121,11 +121,15 @@ def set_route(context, pagename, protected_function):
 
 @when('"{user}" visits "{route}"')
 def step_impl(context: OurContext, user: str, route: str):
-    mock = patch('main.get_request_path', return_value=route)
+    mock = patch('security.authz.get_request_path', return_value=route)
     mock.start()
     context.get_request_path_mock = mock
-    context.visit_result = context.routes[route]()
-
+    guarded_route = context.routes[route]
+    try:
+        context.visit_result = guarded_route()
+    except HTTPResponse as redirect:
+        context.visit_result = redirect.get_header("Location")
+        context.redirect_status = redirect.status
 
 @when('guest user visits "{route}"')
 def step_impl(context: OurContext, route: str):
@@ -142,8 +146,7 @@ def step_impl(context: OurContext):
 
 
 def is_login_page(context):
-    result = bs4.BeautifulSoup(context.visit_result, "html.parser")
-    assert_that(result.head.title.text, contains_string('Who are you'))
+    assert_that(context.visit_result, contains_string('/login'))
 
 
 @step("a flash message is displayed")

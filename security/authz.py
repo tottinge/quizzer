@@ -24,15 +24,15 @@ def require_roles(*required_roles):
                 role = user_data.get('role', 'guest')
                 if role not in required_roles:
                     name = user_data.get('user_name')
-                    return login(
+                    login(
                         f'Sorry, {name}, you are just a {role}',
                         destination=get_request_path()
                     )
                 return wrapped_function(*args, **kwargs)
             except AttributeError:
-                return login('You must be logged in to access this page')
+                login('You must be logged in to access this page')
             except ExpiredSignatureError:
-                return login(flash='Your session has expired',
+                login(flash='Your session has expired',
                              destination=get_request_path())
             except DecodeError:
                 redirect('/login')
