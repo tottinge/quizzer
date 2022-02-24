@@ -41,10 +41,12 @@ app.mount('/study', quizzing_app)
 
 @app.route('/login')
 @bottle.view("login")
-def login(flash="", destination="/study"):
-    return {"title": "Who are you?",
-            "flash": flash,
-            "destination": destination}
+def login():
+    return {
+        "title": "Who are you?",
+        "flash": request.query.get("flash", ""),
+        "destination": request.query.get("destination", "")
+    }
 
 
 @app.post('/auth')

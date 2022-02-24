@@ -1,4 +1,4 @@
-from urllib.parse import urlencode, urljoin
+from urllib.parse import urlencode
 
 import jwt
 from bottle import redirect, request
@@ -6,21 +6,19 @@ from jwt import ExpiredSignatureError, DecodeError
 
 
 def login(flash="", destination="/study"):
-    parameters, url = build_login_url(destination, flash)
-    redirect(urljoin(url, parameters))
+    request.params
+    url = build_login_url(
+        destination=destination,
+        flash=flash
+    )
+    redirect(url)
 
 
-def build_login_url(destination: str = "", flash: str = "") -> str:
-    url = "/login"
-    if not (destination or flash):
-        return url
-    additional = {}
-    if destination:
-        additional['destination'] = destination
-    if flash:
-        additional['flash'] = flash
-    parameters = urlencode(additional)
-    return f"{url}?{parameters}"
+def build_login_url(**vargs):
+    parts = ['/login']
+    if vargs:
+        parts.append(urlencode(vargs))
+    return "?".join(parts)
 
 
 def require_roles(*required_roles):
