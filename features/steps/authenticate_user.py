@@ -1,6 +1,7 @@
 from tempfile import TemporaryDirectory
 from typing import Protocol, Union, Optional, Dict, Callable
 from unittest.mock import patch
+from urllib.parse import urlparse, parse_qs
 
 import bs4
 from behave import when, then, step, given
@@ -92,7 +93,7 @@ def step_impl(context: OurContext, role: str, user_id: str, password: str):
 def step_impl(context: OurContext):
     expired_token = make_bearer_token(user=context.authenticated_user,
                                       hours_to_live=-1)
-    context.get_token_mock = patch("main.get_authorization_token",
+    context.get_token_mock = patch("security.authz.get_authorization_token",
                                    return_value=expired_token)
     context.get_token_mock.start()
 
@@ -151,8 +152,10 @@ def is_login_page(context):
 
 @step("a flash message is displayed")
 def step_impl(context: OurContext):
-    result = bs4.BeautifulSoup(context.visit_result, "html.parser")
-    flash = result.body.find("section", id='flash')
+    is_login_page(context)
+    url_parse_result = urlparse(context.visit_result)
+    query_parameters = parse_qs(url_parse_result.query)
+    [flash] = query_parameters['flash']
     assert_that(flash, not_none())
 
 
@@ -166,6 +169,9 @@ def step_impl(context: OurContext, expected_page: str):
 
 @step('the destination "{page}" is passed to the login page')
 def step_impl(context: OurContext, page: str):
-    result = bs4.BeautifulSoup(context.visit_result, "html.parser")
-    destination = result.body.find('input', attrs={"name":"destination"})
-    assert_that(destination["value"], is_(page))
+    is_login_page(context)
+    url_parse_result = urlparse(context.visit_result)
+    query_parameters = parse_qs(url_parse_result.query)
+    [destination] = query_parameters['destination']
+    assert_that(destination, is_(page))
+
