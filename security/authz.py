@@ -6,7 +6,6 @@ from jwt import ExpiredSignatureError, DecodeError
 
 
 def login(flash="", destination="/study"):
-    request.params
     url = build_login_url(
         destination=destination,
         flash=flash
