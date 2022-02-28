@@ -10,6 +10,12 @@ import main
 HOME_PAGE = '/study'
 
 
+def redirect_destination_of(response):
+    destination_url = response.headers.get('Location')
+    destination_path = urlparse(destination_url).path
+    return destination_path
+
+
 class TestLoginPage(unittest.TestCase):
     def setUp(self):
         self.app = TestApp(main.app)
@@ -23,9 +29,7 @@ class TestLoginPage(unittest.TestCase):
             'password': 'poopw',
             'destination': ''
         })
-        destination_url = response.headers.get('Location')
-        destination_path = urlparse(destination_url).path
-        assert_that(destination_path, is_(HOME_PAGE))
+        assert_that(redirect_destination_of(response), is_(HOME_PAGE))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
     def test_guest_auth_with_destination_redirects_to_destination(self):
@@ -35,9 +39,7 @@ class TestLoginPage(unittest.TestCase):
             'password': 'poopw',
             'destination': desired_page
         })
-        destination_url = response.headers.get('Location')
-        destination_path = urlparse(destination_url).path
-        assert_that(destination_path, is_(desired_page))
+        assert_that(redirect_destination_of(response), is_(desired_page))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
 
