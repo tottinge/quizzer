@@ -29,11 +29,14 @@ from security.authz import require_roles, SECRET_KEY
 from shared.quizzology import Quizzology
 from shared.user import User, UserDatabase
 
+HOME_PAGE = '/study'
+
 logger: Logger = getLogger(__name__)
 app = bottle.app()
 
 quizzology = Quizzology()
 study_use(quizzology)
+
 
 app.mount('/author', authoring_app)
 app.mount('/study', quizzing_app)
@@ -63,7 +66,7 @@ def authentication_endpoint():
     bottle.response.set_cookie('qz-user-name', user.user_name)
     bottle.response.set_cookie('qz-user-role', user.role)
     destination = request.forms.get('destination')
-    redirect(destination)  # Todo - change landing page
+    redirect(destination or HOME_PAGE)
 
 
 @app.route('/example_checked_page')
