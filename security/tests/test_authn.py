@@ -28,7 +28,6 @@ class TestLoginPage(unittest.TestCase):
         assert_that(destination_path, is_(HOME_PAGE))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
-
     def test_guest_auth_with_destination_redirects_to_destination(self):
         desired_page = '/page/I/want'
         response: TestResponse = self.app.post("/auth", {
@@ -40,6 +39,7 @@ class TestLoginPage(unittest.TestCase):
         destination_path = urlparse(destination_url).path
         assert_that(destination_path, is_(desired_page))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
+
 
 if __name__ == '__main__':
     unittest.main()
