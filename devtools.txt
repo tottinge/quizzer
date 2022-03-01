@@ -2,3 +2,4 @@ sniffer
 pytest
 pylint
 coverage
+bandit
