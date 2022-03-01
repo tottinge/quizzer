@@ -11,9 +11,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.9.6
@@ -41,4 +39,5 @@ jobs:
         run: |
           pytest ui_tests
       -name: Check security
+        run: |
           bandit --exclude ./venv -r -lll .
