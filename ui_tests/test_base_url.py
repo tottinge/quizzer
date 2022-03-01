@@ -10,9 +10,6 @@ from ui_tests.helpers import take_screenshot, launch_quizzology, \
 
 
 class BaseUrlTest(TestCase):
-    """
-    TODO: Configure url/port to use local or docker images
-    """
     browser: WebDriver = None
     app: Popen[str] = None
     base_url: str = ""

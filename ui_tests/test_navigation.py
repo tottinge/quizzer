@@ -22,9 +22,6 @@ CATS_QUIZ = "/study/catsquiz"
 
 
 class TestNavigation(TestCase):
-    """
-    TODO: Configure url/port to use local or docker images
-    """
     browser: WebDriver = None
     app: Popen[str] = None
     base_url: str = ""

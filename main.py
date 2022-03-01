@@ -11,13 +11,9 @@ Main doesn't take any command line parameters, and launches a web server
 that serves up quizzes and tracks answers.
 """
 import os
-from datetime import datetime, timedelta
 from logging import getLogger, Logger
-from secrets import compare_digest
-from typing import Optional
 
 import bottle
-import jwt
 from bottle import (
     run, request, static_file, redirect
 )
@@ -25,9 +21,9 @@ from bottle import (
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
-from security.authz import require_roles, SECRET_KEY
+from security.authn import make_bearer_token, authenticate
+from security.authz import require_roles
 from shared.quizzology import Quizzology
-from shared.user import User, UserDatabase
 
 HOME_PAGE = '/study'
 
@@ -67,39 +63,6 @@ def authentication_endpoint():
     bottle.response.set_cookie('qz-user-role', user.role)
     destination = request.forms.get('destination')
     redirect(destination or HOME_PAGE)
-
-
-@app.route('/example_checked_page')
-@require_roles('author', 'student')
-def example_checked_page():
-    return "Welcome!"
-
-
-# TODO: Move make_bearer_token, authenticate, require_roles outside of main
-def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
-    time_to_live = timedelta(hours=hours_to_live)
-    claims = dict(
-        sub=user.user_name,
-        exp=(datetime.utcnow() + time_to_live),
-        iat=datetime.utcnow()
-    )
-    user_data = {k: v for k, v in user._asdict().items() if k != 'password'}
-    payload = {**user_data, **claims}
-    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-    return token
-
-
-def authenticate(user_name: str,
-                 password: str,
-                 db: UserDatabase = None) -> Optional[User]:
-    db = db or UserDatabase()
-    try:
-        [found] = db.find_user_by_name(user_name)
-        if compare_digest(password, found.password):
-            return found
-        return None
-    except ValueError:
-        return User(user_name=user_name, role="guest", password="")
 
 
 @app.route('/')
