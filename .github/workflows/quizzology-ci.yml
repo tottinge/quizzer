@@ -38,6 +38,6 @@ jobs:
       - name: Test with Selenium
         run: |
           pytest ui_tests
-      -name: Check security
+      - name: Check security
         run: |
           bandit --exclude ./venv -r -lll .
