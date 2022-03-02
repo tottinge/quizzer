@@ -68,8 +68,9 @@ def get_likely_port() -> int:
     """
     junk_socket = socket()
     host_name = os.environ.get('QUIZ_HOST', local_ip())
+    logging.DEBUG(f"likely_port: Host name is {host_name}")
     junk_socket.bind((host_name, 0))
     _, chosen_port = junk_socket.getsockname()
     junk_socket.close()
-    logging.DEBUG(f"chosen port is {chosen_port}")
+    logging.DEBUG(f"likely_port: Chosen port is {chosen_port}")
     return chosen_port
