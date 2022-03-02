@@ -56,7 +56,9 @@ def setup_path_for_dev_test():
 
 
 def local_ip() -> str:
-    return gethostbyname(gethostname())
+    hostname = gethostname()
+    print(f"hostname is {hostname}")
+    return gethostbyname(hostname)
 
 def get_likely_port() -> int:
     """
@@ -65,7 +67,9 @@ def get_likely_port() -> int:
     Because it closes the socket, the system MAY HAVE ALREADY REUSED IT
     """
     junk_socket = socket()
-    junk_socket.bind((local_ip(), 0))
+    host_name = os.environ.get('QUIZ_HOST', local_ip())
+    junk_socket.bind(host_name, 0)
     _, chosen_port = junk_socket.getsockname()
     junk_socket.close()
+    print(f"chosen port is {chosen_port}")
     return chosen_port
