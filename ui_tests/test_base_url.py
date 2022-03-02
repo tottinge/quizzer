@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
-    launch_selenium_chrome, get_likely_port
+    launch_selenium_chrome, get_likely_port, local_ip
 
 
 class BaseUrlTest(TestCase):
@@ -17,7 +17,8 @@ class BaseUrlTest(TestCase):
     @classmethod
     def setUpClass(cls):
         port_number = get_likely_port()
-        cls.base_url = f"http://0.0.0.0:{port_number}/"
+        host = local_ip()
+        cls.base_url = f"http://{host}:{port_number}/"
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
 

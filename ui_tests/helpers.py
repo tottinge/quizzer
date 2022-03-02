@@ -57,8 +57,7 @@ def setup_path_for_dev_test():
 
 def local_ip() -> str:
     hostname = gethostname()
-    print(f"hostname is {hostname}")
-    return gethostbyname(hostname)
+    return os.environ.get('QUIZ_HOST', gethostbyname(hostname))
 
 def get_likely_port() -> int:
     """
@@ -68,7 +67,7 @@ def get_likely_port() -> int:
     """
     junk_socket = socket()
     host_name = os.environ.get('QUIZ_HOST', local_ip())
-    junk_socket.bind(host_name, 0)
+    junk_socket.bind( (host_name, 0) )
     _, chosen_port = junk_socket.getsockname()
     junk_socket.close()
     print(f"chosen port is {chosen_port}")
