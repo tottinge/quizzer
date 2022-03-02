@@ -12,6 +12,7 @@ that serves up quizzes and tracks answers.
 """
 import os
 from logging import getLogger, Logger
+from socket import gethostbyname, gethostname
 
 import bottle
 from bottle import (
@@ -32,7 +33,6 @@ app = bottle.app()
 
 quizzology = Quizzology()
 study_use(quizzology)
-
 
 app.mount('/author', authoring_app)
 app.mount('/study', quizzing_app)
@@ -163,8 +163,12 @@ def main():
     )
 
 
+def local_ip() -> str:
+    return gethostbyname(gethostname())
+
+
 def get_endpoint_address() -> tuple[str, int]:
-    host_name = os.environ.get('QUIZ_HOST', '0.0.0.0')
+    host_name = os.environ.get('QUIZ_HOST', local_ip())
     heroku_port = os.environ.get('PORT', '4000')
     port_number = int(os.environ.get('QUIZ_PORT', heroku_port))
     return host_name, port_number
