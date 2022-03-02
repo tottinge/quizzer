@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 from socket import gethostbyname, gethostname, socket
@@ -54,10 +55,10 @@ def setup_path_for_dev_test():
             os.environ['PATH'] = path_seperator.join(path_list)
 
 
-
 def local_ip() -> str:
     hostname = gethostname()
     return os.environ.get('QUIZ_HOST', gethostbyname(hostname))
+
 
 def get_likely_port() -> int:
     """
@@ -67,8 +68,8 @@ def get_likely_port() -> int:
     """
     junk_socket = socket()
     host_name = os.environ.get('QUIZ_HOST', local_ip())
-    junk_socket.bind( (host_name, 0) )
+    junk_socket.bind((host_name, 0))
     _, chosen_port = junk_socket.getsockname()
     junk_socket.close()
-    print(f"chosen port is {chosen_port}")
+    logging.DEBUG(f"chosen port is {chosen_port}")
     return chosen_port
