@@ -1,6 +1,6 @@
 import os
 import sys
-from socket import socket
+from socket import gethostbyname, gethostname, socket
 from subprocess import Popen
 
 from hamcrest import assert_that, equal_to
@@ -55,6 +55,8 @@ def setup_path_for_dev_test():
 
 
 
+def local_ip() -> str:
+    return gethostbyname(gethostname())
 
 def get_likely_port() -> int:
     """
@@ -63,7 +65,7 @@ def get_likely_port() -> int:
     Because it closes the socket, the system MAY HAVE ALREADY REUSED IT
     """
     junk_socket = socket()
-    junk_socket.bind(('0.0.0.0', 0))
+    junk_socket.bind((local_ip(), 0))
     _, chosen_port = junk_socket.getsockname()
     junk_socket.close()
     return chosen_port
