@@ -4,7 +4,7 @@ test_navigation.py
 A series of UI tests to ensure that basic behaviors of navigating the
 quiz app are not broken for quiz-takers.
 """
-
+import logging
 import unittest
 from subprocess import Popen
 from unittest import TestCase
@@ -16,10 +16,10 @@ from selenium.webdriver.support import expected_conditions as condition
 from selenium.webdriver.support.wait import WebDriverWait
 
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
-    get_likely_port
+    get_likely_port, local_ip
 
 CATS_QUIZ = "/study/catsquiz"
-
+logging.basicConfig(level=logging.DEBUG)
 
 class TestNavigation(TestCase):
     browser: WebDriver = None
@@ -29,7 +29,9 @@ class TestNavigation(TestCase):
     @classmethod
     def setUpClass(cls):
         port_number = get_likely_port()
-        cls.base_url = f"http://0.0.0.0:{port_number}"
+        host = local_ip()
+        cls.base_url = f"http://{host}:{port_number}"
+        logging.debug("base_url is {cls.base_url}")
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
 
