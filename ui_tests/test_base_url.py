@@ -11,7 +11,7 @@ from ui_tests.helpers import take_screenshot, launch_quizzology, \
 
 class BaseUrlTest(TestCase):
     browser: WebDriver = None
-    app: Popen[str] = None
+    app: Popen[str]
     base_url: str = ""
 
     @classmethod
