@@ -44,3 +44,13 @@ def step_impl(context: Context, count: str, quiz_name: str):
     assert_that(quiz.name, equal_to(quiz_name))
     assert_that(int(count), is_(quiz.number_of_questions()))
 
+
+@step("has decoys")
+def step_impl(context: Context):
+    quiz: Quiz = context.quiz
+    question: Question = quiz.first_question()
+    new_decoys = [ row['DECOYS'] for row in context.table.rows]
+    question.decoys = new_decoys
+
+
+#ToDo: Rename this file to follow python conventions

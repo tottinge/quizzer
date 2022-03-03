@@ -16,7 +16,7 @@ Feature: Quiz Authoring
 
 
 
-  # Import a JSON quiz with unique name
-  # Import a JSON quiz with duplicate name
-  # Duplicate a quiz
+  Scenario: Import a JSON quiz with unique name
+  Scenario: Import a JSON quiz with duplicate name
+  Scenario: Duplicate a quiz
 

@@ -15,15 +15,17 @@ Feature: Edit Quiz
       | confirmation | Tomatoes ripen in their own time. Be patient |
     Then there is 1 question in "quiz2edit"
 
-  Scenario: Add the first question to a quiz
-    When a question is created
+  Scenario: Add a complete question to a quiz
+    When a question is added
+      | Field        | Value                                        |
       | question     | Are the tomatoes ripe?                       |
       | answer       | Not yet                                      |
       | confirmation | Tomatoes ripen in their own time. Be patient |
-    * with decoys
+    And has decoys
+      | DECOYS |
       | always |
       | never  |
-    * with resources
+    And has resources
       | http://google.com         | Try google!                            |
       | http://stackoverflow.com/ | try someone else's answer              |
       | http://facebook.com/      | use conspiracy theories and falsehoods |
