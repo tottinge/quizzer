@@ -1,13 +1,12 @@
 from typing import Protocol, Optional, Union
 
-from behave import *
+from behave import given, when, then, step
 from behave.runner import Context
 from hamcrest import is_, assert_that, equal_to
 
 from apps.author.author_controller import AuthorController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
 
 
 # use_step_matcher("cfparse")
@@ -16,13 +15,14 @@ class HasOurStuff(Protocol):
     author_controller: Optional[AuthorController]
     quiz: Optional[Quiz]
 
-LocalContext = Union[ HasOurStuff, Context]
+
+LocalContext = Union[HasOurStuff, Context]
+
 
 @given('there is a quiz with name "{name}"')
 def step_impl(context: LocalContext, name):
     quiz = Quiz(name=name, title=f"Title For Quiz Named {name}")
-    controller: AuthorController = context.author_controller
-    result = controller.save(quiz)
+    result = context.author_controller.save(quiz)
     assert_that(result.success, is_(True))
     context.quiz = quiz
 
@@ -54,14 +54,13 @@ def step_impl(context: LocalContext, count: str, quiz_name: str):
 
 @step("has decoys")
 def step_impl(context: LocalContext):
-    quiz: Quiz = context.quiz
-    question: Question = quiz.first_question()
-    new_decoys = [ row['DECOYS'] for row in context.table.rows]
+    question: Question = context.quiz.first_question()
+    new_decoys = [row['DECOYS'] for row in context.table.rows]
     question.decoys = new_decoys
     context.author_controller.save(context.quiz)
 
 
-#ToDo: Rename this file to follow python conventions
+# ToDo: Rename this file to follow python conventions
 @step("has resources")
 def step_impl(context: LocalContext):
     question: Question = context.quiz.first_question()

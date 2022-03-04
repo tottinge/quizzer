@@ -1,5 +1,6 @@
 """ doc string """
 from dataclasses import dataclass, field
+from typing import Optional
 
 from quizzes.question import Question
 
@@ -32,7 +33,7 @@ class Quiz:
     def question_by_number(self, number: int) -> Question:
         return self.questions[number]
 
-    def first_question(self):
+    def first_question(self) -> Optional[Question]:
         return (
             self.question_by_number(self.first_question_number())
             if self.has_questions()
