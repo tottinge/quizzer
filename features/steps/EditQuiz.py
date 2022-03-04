@@ -23,7 +23,7 @@ def step_impl(context: Context, name):
 @when("a question is added")
 def step_impl(context: Context):
     table_values = dict(
-        (row['Field'], row['Value'])
+        (row['FIELD'], row['VALUE'])
         for row in context.table.rows
     )
     text = table_values.get('question')

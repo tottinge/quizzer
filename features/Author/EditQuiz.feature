@@ -9,7 +9,7 @@ Feature: Edit Quiz
 
   Scenario: Add a simple question to an empty quiz
     When a question is added
-      | Field        | Value                                        |
+      | FIELD        | VALUE                                        |
       | question     | Are the tomatoes ripe?                       |
       | answer       | Not yet                                      |
       | confirmation | Tomatoes ripen in their own time. Be patient |
@@ -17,7 +17,7 @@ Feature: Edit Quiz
 
   Scenario: Add a complete question to a quiz
     When a question is added
-      | Field        | Value                                        |
+      | FIELD        | VALUE                                        |
       | question     | Are the tomatoes ripe?                       |
       | answer       | Not yet                                      |
       | confirmation | Tomatoes ripen in their own time. Be patient |
@@ -26,6 +26,7 @@ Feature: Edit Quiz
       | always |
       | never  |
     And has resources
+      | URL                       | DESCRIPTION                            |
       | http://google.com         | Try google!                            |
       | http://stackoverflow.com/ | try someone else's answer              |
       | http://facebook.com/      | use conspiracy theories and falsehoods |
