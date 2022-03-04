@@ -1,3 +1,5 @@
+from typing import Protocol, Optional, Union
+
 from behave import *
 from behave.runner import Context
 from hamcrest import is_, assert_that, equal_to
@@ -10,9 +12,14 @@ from quizzes.quiz_store import QuizStore
 
 # use_step_matcher("cfparse")
 
+class HasOurStuff(Protocol):
+    author_controller: Optional[AuthorController]
+    quiz: Optional[Quiz]
+
+LocalContext = Union[ HasOurStuff, Context]
 
 @given('there is a quiz with name "{name}"')
-def step_impl(context: Context, name):
+def step_impl(context: LocalContext, name):
     quiz = Quiz(name=name, title=f"Title For Quiz Named {name}")
     controller: AuthorController = context.author_controller
     result = controller.save(quiz)
@@ -21,7 +28,7 @@ def step_impl(context: Context, name):
 
 
 @when("a question is added")
-def step_impl(context: Context):
+def step_impl(context: LocalContext):
     table_values = dict(
         (row['FIELD'], row['VALUE'])
         for row in context.table.rows
@@ -38,7 +45,7 @@ def step_impl(context: Context):
 
 
 @then('there is {count} question in "{quiz_name}"')
-def step_impl(context: Context, count: str, quiz_name: str):
+def step_impl(context: LocalContext, count: str, quiz_name: str):
     api: AuthorController = context.author_controller
     quiz = api.get_quiz(quiz_name)
     assert_that(quiz.name, equal_to(quiz_name))
@@ -46,7 +53,7 @@ def step_impl(context: Context, count: str, quiz_name: str):
 
 
 @step("has decoys")
-def step_impl(context: Context):
+def step_impl(context: LocalContext):
     quiz: Quiz = context.quiz
     question: Question = quiz.first_question()
     new_decoys = [ row['DECOYS'] for row in context.table.rows]
@@ -56,7 +63,7 @@ def step_impl(context: Context):
 
 #ToDo: Rename this file to follow python conventions
 @step("has resources")
-def step_impl(context: Context):
+def step_impl(context: LocalContext):
     question: Question = context.quiz.first_question()
     question.resources = [
         [row['DESCRIPTION'], row['URL']]
@@ -66,7 +73,7 @@ def step_impl(context: Context):
 
 
 @step("the first question has")
-def step_impl(context: Context):
+def step_impl(context: LocalContext):
     first_row = context.table.rows[0]
     decoy_count = int(first_row['DECOYS'])
     resource_count = int(first_row['RESOURCES'])
