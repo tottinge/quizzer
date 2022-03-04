@@ -54,3 +54,10 @@ def step_impl(context: Context):
 
 
 #ToDo: Rename this file to follow python conventions
+@step("has resources")
+def step_impl(context: Context):
+    question: Question = context.quiz.first_question()
+    question.resources = [
+        [row['DESCRIPTION'], row['URL']]
+        for row in context.table.rows
+    ]

@@ -6,6 +6,7 @@ class Question:
     question: str
     answer: str
     decoys: list[str] = field(default_factory=list)
+    # ToDo: refactor resources to be a list of dict[str,str]
     resources: list[list[str]] = field(default_factory=list)
     confirmation: str = ''
 
