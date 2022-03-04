@@ -32,7 +32,7 @@ Feature: Edit Quiz
       | http://facebook.com/      | use conspiracy theories and falsehoods |
     Then there is 1 question in "quiz2edit"
     And the first question has
-      | Decoys | Resources |
+      | DECOYS | RESOURCES |
       | 2      | 3         |
 
   Scenario: Author adds resources to a question

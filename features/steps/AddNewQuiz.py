@@ -52,11 +52,6 @@ def step_impl(context: Context, quiz_name):
     raise NotImplementedError('STEP: Then there is one question in "empty"')
 
 
-@step("the first question has")
-def step_impl(context: Context):
-    raise NotImplementedError('''STEP: And the first question has
-                              | Decoys | Resources |
-                              | 3 | 2 | ''')
 
 
 @when("the author adds resources")

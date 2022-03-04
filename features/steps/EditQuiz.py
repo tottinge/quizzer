@@ -51,6 +51,7 @@ def step_impl(context: Context):
     question: Question = quiz.first_question()
     new_decoys = [ row['DECOYS'] for row in context.table.rows]
     question.decoys = new_decoys
+    context.author_controller.save(context.quiz)
 
 
 #ToDo: Rename this file to follow python conventions
@@ -61,3 +62,18 @@ def step_impl(context: Context):
         [row['DESCRIPTION'], row['URL']]
         for row in context.table.rows
     ]
+    context.author_controller.save(context.quiz)
+
+
+@step("the first question has")
+def step_impl(context: Context):
+    first_row = context.table.rows[0]
+    decoy_count = int(first_row['DECOYS'])
+    resource_count = int(first_row['RESOURCES'])
+
+    api: AuthorController = context.author_controller
+    quiz: Quiz = api.get_quiz(context.quiz.name)
+
+    first_question: Question = quiz.first_question()
+    assert_that(len(first_question.decoys), is_(decoy_count))
+    assert_that(len(first_question.resources), is_(resource_count))
