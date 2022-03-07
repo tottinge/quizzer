@@ -60,7 +60,6 @@ def step_impl(context: LocalContext):
     context.author_controller.save(context.quiz)
 
 
-# ToDo: Rename this file to follow python conventions
 @step("has resources")
 def step_impl(context: LocalContext):
     question: Question = context.quiz.first_question()

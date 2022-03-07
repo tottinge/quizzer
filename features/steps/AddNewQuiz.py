@@ -52,24 +52,9 @@ def step_impl(context: Context, quiz_name):
     raise NotImplementedError('STEP: Then there is one question in "empty"')
 
 
-
-
 @when("the author adds resources")
 def step_impl(context: Context):
-    raise NotImplementedError('''STEP: When the author adds resources
-                              | Text | Url |
-                              | Let
-    me
-    google
-    that
-    for you | http: //
-        lmgtfy.com / |
-        | And
-    then
-    there
-    was
-    one | http: // wikipedia.com?Agatha % 20
-    Cristie | ''')
+    raise NotImplementedError('WHEN: the author adds resources')
 
 
 @then("the question has 2 resources")
