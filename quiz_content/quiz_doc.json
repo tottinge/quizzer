@@ -10,14 +10,8 @@
         "Nope"
       ],
       "resources": [
-        [
-          "Radio Buttons",
-          "https://www.w3schools.com/tags/att_input_type_radio.asp"
-        ],
-        [
-          "Regular Buttons",
-          "https://www.w3schools.com/tags/tag_button.asp"
-        ]
+        {"Radio Buttons": "https://www.w3schools.com/tags/att_input_type_radio.asp"},
+        {"Regular Buttons": "https://www.w3schools.com/tags/tag_button.asp"}
       ]
     },
     {
@@ -29,10 +23,7 @@
         "Only if the solution is really complicated"
       ],
       "resources": [
-        [
-          "The Three Rules of TDD",
-          "https://www.w3schools.com/tags/att_input_type_radio.asp"
-        ]
+        {"The Three Rules of TDD": "https://www.w3schools.com/tags/att_input_type_radio.asp"}
       ]
     },
     {
