@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Dict
 
 
 @dataclass
@@ -7,7 +8,7 @@ class Question:
     answer: str
     decoys: list[str] = field(default_factory=list)
     # ToDo: refactor resources to be a list of dict[str,str]
-    resources: list[list[str]] = field(default_factory=list)
+    resources: list[Dict[str,str]] = field(default_factory=list)
     confirmation: str = ''
 
     @staticmethod

@@ -26,12 +26,14 @@
 <div class="w3-panel w3-dropdown-hover">
     <button class="w3-button w3-round w3-light-gray">Additional Resources</button>
     <section class="w3-dropdown-content w3-bar-block w3-border" id="resources">
-        % for (text, url) in question.resources:
-        <a class="w3-button w3-bar-item"
-           href="{{ url }}"
-           rel="noreferrer noopener"
-           target="_blank">{{ text }}
-        </a>
+        % for resource in question.resources:
+            % for text, url in resource.items():
+                <a class="w3-button w3-bar-item"
+                   href="{{ url }}"
+                   rel="noreferrer noopener"
+                   target="_blank">{{ text }}
+                </a>
+            % end
         % end
     </section>
 </div>

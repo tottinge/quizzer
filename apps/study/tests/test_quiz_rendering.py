@@ -47,25 +47,25 @@ class TestQuizRendering(unittest.TestCase):
         self.assertIsNone(page.find("section", id="resources"))
 
     def test_resource_link_appear_in_resource_section(self):
-        resource = "Google That", "https://www.google.com"
+        resource = {"Google That": "https://www.google.com"}
         page = self.render(resources=[resource])
         actual = self.getResourceAnchorsFromPage(page)
-        self.assertSetEqual({resource}, actual)
+        self.assertEqual([resource], actual)
 
     def test_resource_multiple_links(self):
         resources = [
-            ("Google That", "https://www.google.com"),
-            ("Let Me", "https://lmgtfy.app/?q=calligraphy")
+            {"Google That": "https://www.google.com"},
+            {"Let Me": "https://lmgtfy.app/?q=calligraphy"}
         ]
         page = self.render(resources=resources)
         actual = self.getResourceAnchorsFromPage(page)
-        self.assertSetEqual(set(resources), actual)
+        self.assertEqual(list(resources), actual)
 
     @staticmethod
     def getResourceAnchorsFromPage(page):
         resources = page.find('section', id='resources')
-        return set(
-            (tag.text.strip(), tag['href'])
+        return list(
+            {tag.text.strip(): tag['href']}
             for tag in resources.find_all('a')
         )
 
