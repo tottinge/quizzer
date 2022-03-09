@@ -3,11 +3,16 @@
 
 <section>
     <h2 class="w3-teal w3-panel">Quizzes Available:</h2>
-    <div class="w3-container w3-ul w3-hoverable">
+    <div class="w3-container w3-hoverable">
         % for (name, description, filename) in choices:
-        <a class="quiz_selection w3-button w3-border w3-mobile w3-cell" href="/study/{{name}}">
-            {{ description }}
+        <section class="w3-panel w3-card w3-hover-shadow" >
+        <a class="quiz_selection" href="/study/{{name}}">
+            <div>
+            <p class="w3-center">{{ description }}</p>
+            </div>
         </a>
+        </section>
+
         % end
     </div>
 </section>
