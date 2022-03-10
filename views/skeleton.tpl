@@ -3,6 +3,8 @@
 <head>
     <title>{{ title }}</title>
     <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet"/>
+    <link href="/static/quizzology.css" rel="stylesheet"/>
+
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
 
 </head>

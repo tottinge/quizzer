@@ -8,7 +8,7 @@
         <section class="w3-panel w3-card w3-third w3-hover-shadow" >
         <a class="quiz_selection" href="/study/{{name}}">
             <div>
-            <p class="w3-center">{{ description }}</p>
+            <p class="w3-center w3-large">{{ description }}</p>
             </div>
         </a>
         </section>
