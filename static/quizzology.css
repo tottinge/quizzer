@@ -2,8 +2,11 @@
     /*outline: solid red;*/
     height: 150px;
     width: 200px;
+    text-decoration: none;
 }
 
 .quiz-icon {
-    width: 70px;
+    /*outline: solid green;*/
+    width: 60px;
+    horiz-align: center;
 }
