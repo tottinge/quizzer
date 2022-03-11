@@ -9,7 +9,7 @@
                 <p class="w3-container w3-center">
                     <img class="quiz-icon" src="/static/favicon.ico">
                 </p>
-                <footer class="w3-center w3-container w3-teal w3-large">{{ description }}</footer>
+                <footer class="w3-center w3-container w3-large">{{ description }}</footer>
         </a>
 
         % end
