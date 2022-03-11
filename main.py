@@ -69,7 +69,6 @@ def authentication_endpoint():
 def home_page():
     # Todo
     #  If you ARE logged in, go to /student or /author depending.
-    #  if you are not logged in:
     redirect('/login')
 
 

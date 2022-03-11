@@ -42,6 +42,10 @@ class TestLoginPage(unittest.TestCase):
         assert_that(redirect_destination_of(response), is_(desired_page))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
+    def test_unauthenticated_user_is_directed_to_login_page(self):
+        response = self.app.get("/")
+        assert_that(redirect_destination_of(response), is_("/login"))
+        assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
 if __name__ == '__main__':
     unittest.main()

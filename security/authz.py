@@ -1,3 +1,4 @@
+from typing import Dict
 from urllib.parse import urlencode
 
 import jwt
@@ -30,8 +31,7 @@ def require_roles(*required_roles):
         def decorator(*args, **kwargs):
             """check authorization before actually calling route function"""
             try:
-                token = get_authorization_token()
-                user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+                user_data = get_current_user()
                 role = user_data.get('role', 'guest')
                 if role not in required_roles:
                     name = user_data.get('user_name')
@@ -49,8 +49,13 @@ def require_roles(*required_roles):
                 redirect('/login')
 
         return decorator
-
     return inner_wrapper
+
+
+def get_current_user() -> Dict:
+    token = get_authorization_token()
+    user_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+    return user_data
 
 
 def get_request_path():
