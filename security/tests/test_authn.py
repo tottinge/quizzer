@@ -67,10 +67,10 @@ class TestLoginPage(unittest.TestCase):
         response = self.app.get("/")
         assert_that(redirect_destination_of(response), is_("/study"))
 
-    def test_root_sends_authenticated_author_to_author(self):
+    def test_root_sends_authenticated_author_to_author_home_page(self):
         self.set_auth_for("author")
         response = self.app.get("/")
-        assert_that(redirect_destination_of(response), is_("/author/edit"))
+        assert_that(redirect_destination_of(response), is_("/author"))
 
 
 

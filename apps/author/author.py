@@ -14,15 +14,18 @@ from quizzes.quiz import Quiz
 
 app = bottle.Bottle()
 app.resources.add_path("./apps/author/views")
+LOCAL_PATHS = ['./apps/author/views', *bottle.TEMPLATE_PATH]
 
+@app.route('/')
+@view('quiz_author_home', template_lookup=LOCAL_PATHS)
+def cover_page():
+    return {
+        'title':'author home page placeholder'
+    }
 
 @app.route('/quiz')
 def quiz_list():
     return "<h1>Quiz list</h1>"
-
-
-LOCAL_PATHS = ['./apps/author/views', *bottle.TEMPLATE_PATH]
-
 
 @app.get('/edit')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)

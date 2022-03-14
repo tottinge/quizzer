@@ -9,6 +9,9 @@ from quizzes.quiz import Quiz
 
 
 class StaticFormVerification(unittest.TestCase):
+    quiz: Quiz
+    page_title: str
+    html: str
 
     @classmethod
     def setUpClass(cls):

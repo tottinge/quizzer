@@ -71,7 +71,7 @@ def page_for_user(user: Dict):
     destinations={
         'guest': '/study',
         'student': '/study',
-        'author': '/author/edit'
+        'author': '/author'
     }
     return destinations[user['role']]
 
