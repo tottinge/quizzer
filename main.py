@@ -71,7 +71,7 @@ def page_for_user(user: Dict):
     destinations={
         'guest': '/study',
         'student': '/study',
-        'author': '/author'
+        'author': '/author/edit'
     }
     return destinations[user['role']]
 
@@ -80,9 +80,9 @@ def page_for_user(user: Dict):
 def home_page():
     try:
         user = get_current_user()
-        redirect(page_for_user(user))
-        # Todo
-        #  If you ARE logged in, go to /student or /author depending.
+        destination = page_for_user(user)
+        logger.info("Redirecting {user['name']} to {destination}")
+        redirect(destination)
     except AttributeError:
         redirect('/login')
     except ExpiredSignatureError:
