@@ -1,11 +1,14 @@
 import unittest
 from http import HTTPStatus
+from http.cookiejar import CookieJar
 from urllib.parse import urlparse
 
 from hamcrest import assert_that, is_
 from webtest import TestApp, TestResponse
 
 import main
+from security.authn import make_bearer_token
+from shared.user import User
 
 HOME_PAGE = '/study'
 
@@ -42,10 +45,40 @@ class TestLoginPage(unittest.TestCase):
         assert_that(redirect_destination_of(response), is_(desired_page))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
-    def test_unauthenticated_user_is_directed_to_login_page(self):
+    def test_root_sends_unauthenticated_user_to_login_page(self):
         response = self.app.get("/")
         assert_that(redirect_destination_of(response), is_("/login"))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
+
+    def test_root_sends_expired_user_to_login_page(self):
+        user = User(user_name='expired', password='', role='')
+        expired_token = make_bearer_token(user, hours_to_live=-1)
+        self.app.set_cookie('Authorization', f"Bearer {expired_token}")
+        response = self.app.get("/", )
+        assert_that(redirect_destination_of(response), is_("/login"))
+
+    def test_root_sends_authenticated_guest_to_study(self):
+        self.set_auth_for('guest')
+        response = self.app.get("/")
+        assert_that(redirect_destination_of(response), is_("/study"))
+
+    def test_root_sends_authenticated_student_to_study(self):
+        self.set_auth_for("student")
+        response = self.app.get("/")
+        assert_that(redirect_destination_of(response), is_("/study"))
+
+    def test_root_sends_authenticated_author_to_author(self):
+        self.set_auth_for("author")
+        response = self.app.get("/")
+        assert_that(redirect_destination_of(response), is_("/author"))
+
+
+
+    def set_auth_for(self, role="student"):
+        guest = User(user_name=f"test {role}", password='', role=role)
+        guest_token = make_bearer_token(guest)
+        self.app.set_cookie('Authorization', f"Bearer {guest_token}")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -13,17 +13,19 @@ that serves up quizzes and tracks answers.
 import os
 from logging import getLogger, Logger
 from socket import gethostbyname, gethostname
+from typing import Dict
 
 import bottle
 from bottle import (
     run, request, static_file, redirect
 )
+from jwt import ExpiredSignatureError
 
 from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from security.authn import make_bearer_token, authenticate
-from security.authz import require_roles
+from security.authz import require_roles, get_current_user
 from shared.quizzology import Quizzology
 
 HOME_PAGE = '/study'
@@ -65,11 +67,26 @@ def authentication_endpoint():
     redirect(destination or HOME_PAGE)
 
 
+def page_for_user(user: Dict):
+    destinations={
+        'guest': '/study',
+        'student': '/study',
+        'author': '/author'
+    }
+    return destinations[user['role']]
+
+
 @app.route('/')
 def home_page():
-    # Todo
-    #  If you ARE logged in, go to /student or /author depending.
-    redirect('/login')
+    try:
+        user = get_current_user()
+        redirect(page_for_user(user))
+        # Todo
+        #  If you ARE logged in, go to /student or /author depending.
+    except AttributeError:
+        redirect('/login')
+    except ExpiredSignatureError:
+        redirect("/login")
 
 
 @app.route('/favicon.ico')
