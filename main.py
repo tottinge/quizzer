@@ -28,7 +28,7 @@ from security.authn import make_bearer_token, authenticate
 from security.authz import require_roles, get_current_user
 from shared.quizzology import Quizzology
 
-HOME_PAGE = '/study'
+HOME_PAGE = '/'
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()

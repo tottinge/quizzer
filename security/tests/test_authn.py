@@ -10,7 +10,7 @@ import main
 from security.authn import make_bearer_token
 from shared.user import User
 
-HOME_PAGE = '/study'
+HOME_PAGE = '/'
 
 
 def redirect_destination_of(response):
