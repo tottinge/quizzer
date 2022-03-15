@@ -10,3 +10,8 @@
     width: 60px;
     horiz-align: center;
 }
+
+.quiz-nav {
+    outline: red solid;
+    text-decoration: none;
+}
