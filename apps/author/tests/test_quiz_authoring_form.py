@@ -61,8 +61,10 @@ class StaticFormVerification(unittest.TestCase):
         question = self.quiz.first_question().question
         question_section: BeautifulSoup = self.dom.body.find('section', id='questions')
         assert_that(question_section, is_(not_none()))
-        q1_dom = question_section.find("details", id="0")
-        assert_that(q1_dom.summary.text, contains_string(question))
+        form = question_section.find("details", id="0")
+        assert_that(form.summary.text, contains_string(question))
+        assert_that(form.find("input", id="q0-text"), is_(not_none()))
+
 
     def assert_tag_value_matches(self, tag_name, actual):
         name_input = self.dom.form.find('input', id=tag_name)

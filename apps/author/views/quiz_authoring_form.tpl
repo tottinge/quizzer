@@ -14,6 +14,8 @@
         % for (id,question) in enumerate(quiz.questions):
         <details id="{{ id }}">
             <summary id="summary{{ id }}">{{ question.question }}</summary>
+            <label for = "q{{ id }}-text">Question:</label>
+            <input class="w3-input" id="q{{ id }}-text" type="text" value="{{ question.question }}">
         </details>
         % end
     </section>
