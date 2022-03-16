@@ -13,7 +13,7 @@
         <div>QUESTIONS</div>
         % for (id,question) in enumerate(quiz.questions):
         <details id="{{ id }}">
-            <summary>{{ question.question }}</summary>
+            <summary id="summary{{ id }}">{{ question.question }}</summary>
         </details>
         % end
     </section>
