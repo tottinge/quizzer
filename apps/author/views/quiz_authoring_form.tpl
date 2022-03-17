@@ -1,5 +1,8 @@
 % rebase('skeleton.tpl', title=title)
 
+<script>
+    document = {{ raw_quiz }};
+</script>
 <form id="quiz_edit" action="/edit" method="POST">
     <label for="quiz_name">Name</label>
     <input type="text" id="quiz_name" name="name" value="{{ quiz.name }}">
@@ -19,4 +22,5 @@
         </details>
         % end
     </section>
+
 </form>

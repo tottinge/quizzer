@@ -7,6 +7,8 @@ We should define this RESTfully,
    quiz/<quizname>/question/<id> the quiz question
 Should support get, post, delete... which other verbs? Patch? Put?
 """
+from dataclasses import asdict
+
 import bottle
 from bottle import view
 
@@ -37,9 +39,11 @@ def quiz_list():
 def edit_existing(quiz_name: str):
     # ToDo - this is no way to acquire a controller
     author_controller = AuthorController(Quizzology())
+    quiz = author_controller.get_quiz(quiz_name)
     return {
         'title': 'Edit Existing Quiz',
-        'quiz': author_controller.get_quiz(quiz_name)
+        'quiz': quiz,
+        'raw_quiz': asdict(quiz)
     }
 
 

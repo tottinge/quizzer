@@ -1,5 +1,6 @@
 import json
 import unittest
+from dataclasses import asdict
 
 import bs4.element
 from bottle import template
@@ -42,7 +43,8 @@ class StaticFormVerification(unittest.TestCase):
         cls.page_title = 'Edit Quiz'
         cls.html = template('apps/author/views/quiz_authoring_form.tpl', {
             'title': cls.page_title,
-            'quiz': cls.quiz
+            'quiz': cls.quiz,
+            'raw_quiz': asdict(cls.quiz)
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 
