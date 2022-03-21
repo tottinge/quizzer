@@ -5,10 +5,22 @@
 <script>
     document = "{{ asdict(quiz) }}";
 </script>
-<json-form name="title" schema=" " value={{ raw_quiz }}>
-</json-form>
 
-<form id="quiz_edit" action="/edit" method="POST">
+<form id="quiz_edit" action="/author/edit" method="POST">
+    <input type="hidden" name="document" value="{'tiny-dress':22}">
+    <json-form name="charlie" schema=" " value="{{ raw_quiz }}"
+            onChange="changeDocumentValue(this)"
+    ></json-form>
+    <script>
+        function changeDocumentValue(origin) {
+            const value = origin.getAttribute('value')
+            console.log('value is', value)
+            documentField = document.getElementsByName('document')
+            console.log('document is', documentField.innerText)
+            documentField.innerText = value;
+        }
+    </script>
+
     <label for="quiz_name">Name</label>
     <input type="text" id="quiz_name" name="name" value="{{ quiz.name }}">
 

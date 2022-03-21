@@ -58,4 +58,4 @@ def do_nothing_interesting():
 
 @app.post('/edit')
 def just_looking_move_along():
-    return {}
+    return f"Document is {bottle.request.forms.get('document')}"
