@@ -7,17 +7,23 @@
 </script>
 
 <form id="quiz_edit" action="/author/edit" method="POST">
-    <input type="hidden" name="document" value="{'tiny-dress':22}">
-    <json-form name="charlie" schema=" " value="{{ raw_quiz }}"
+
+    <input type="hidden" id="chaplin" name="chaplin" value="{'updated':'false'}">
+
+    <json-form name="charlie" schema="" value="{{ raw_quiz }}"
             onChange="changeDocumentValue(this)"
     ></json-form>
+
     <script>
         function changeDocumentValue(origin) {
-            const value = origin.getAttribute('value')
-            console.log('value is', value)
-            documentField = document.getElementsByName('document')
-            console.log('document is', documentField.innerText)
-            documentField.innerText = value;
+            console.log('----begin');
+            const documentField = document.getElementById("chaplin");
+            console.log("Document was set to ", documentField.value);
+            const value = origin.getAttribute("value");
+            console.log("Charlie is", value);
+            documentField.value = value;
+            console.log("Document now set to ", documentField.value);
+            console.log('----end\n');
         }
     </script>
 

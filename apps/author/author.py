@@ -7,6 +7,7 @@ We should define this RESTfully,
    quiz/<quizname>/question/<id> the quiz question
 Should support get, post, delete... which other verbs? Patch? Put?
 """
+import json
 from dataclasses import asdict
 
 import bottle
@@ -43,7 +44,7 @@ def edit_existing(quiz_name: str):
     return {
         'title': 'Edit Existing Quiz',
         'quiz': quiz,
-        'raw_quiz': asdict(quiz)
+        'raw_quiz': json.dumps(asdict(quiz))
     }
 
 
@@ -57,5 +58,8 @@ def do_nothing_interesting():
 
 
 @app.post('/edit')
-def just_looking_move_along():
-    return f"Document is {bottle.request.forms.get('document')}"
+def update_quiz_from_html_form():
+    doc_field_value = bottle.request.forms.get('chaplin')
+    return f"""
+     <p>Document is {doc_field_value}</p>
+     """
