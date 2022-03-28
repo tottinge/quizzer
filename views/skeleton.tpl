@@ -34,9 +34,11 @@
                     return name.trim() === name_of_cookie
                 }
             ).pop()
-            const [_, value] = desired.split('=');
-            const trimmed = value.replace(/"/g, '')
-            return trimmed
+            if(desired){
+                const [_, value] = desired.split('=');
+                const trimmed = value.replace(/"/g, '')
+                return trimmed
+            }
         }
 
         document.getElementById('user_name').innerText = get_cookie('qz-user-name');
