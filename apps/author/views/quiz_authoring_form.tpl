@@ -10,7 +10,7 @@
 
     <input type="hidden" id="quiz" name="quiz" value="{'updated':'false'}">
 
-    <json-form name="charlie" schema="{}" value="{{ raw_quiz }}"
+    <json-form name="charlie" schema="{{ schema }}" value="{{ raw_quiz }}"
             onChange="changeDocumentValue(this)"
     ></json-form>
 

@@ -44,7 +44,8 @@ class StaticFormVerification(unittest.TestCase):
         cls.html = template('apps/author/views/quiz_authoring_form.tpl', {
             'title': cls.page_title,
             'quiz': cls.quiz,
-            'raw_quiz': asdict(cls.quiz)
+            'raw_quiz': asdict(cls.quiz),
+            'schema':{}
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 

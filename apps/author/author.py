@@ -44,7 +44,8 @@ def edit_existing(quiz_name: str):
     return {
         'title': 'Edit Existing Quiz',
         'quiz': quiz,
-        'raw_quiz': json.dumps(asdict(quiz))
+        'raw_quiz': json.dumps(asdict(quiz)),
+        'schema': {}
     }
 
 
