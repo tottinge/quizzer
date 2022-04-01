@@ -35,6 +35,16 @@ def quiz_list():
     return "<h1>Quiz list</h1>"
 
 
+form_schema = """
+{
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "title": { "type":"string", "required":true },
+   "name": {"type":"string", "required":true }
+}
+"""
+
+
 @app.get('/edit/<quiz_name>')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def edit_existing(quiz_name: str):
@@ -45,7 +55,7 @@ def edit_existing(quiz_name: str):
         'title': 'Edit Existing Quiz',
         'quiz': quiz,
         'raw_quiz': json.dumps(asdict(quiz)),
-        'schema': {}
+        'schema': form_schema
     }
 
 
@@ -54,13 +64,15 @@ def edit_existing(quiz_name: str):
 def do_nothing_interesting():
     return {
         'quiz': Quiz(name='name', title='title'),
-        'title': "Edit Quiz"
+        'title': "Edit Quiz",
+        'raw_quiz': {},
+        'schema': form_schema
     }
 
 
 @app.post('/edit')
 def update_quiz_from_html_form():
-    doc_field_value = bottle.request.forms.get('chaplin')
+    doc_field_value = bottle.request.forms.get('quiz')
     return f"""
      <p>Document is {doc_field_value}</p>
      """
