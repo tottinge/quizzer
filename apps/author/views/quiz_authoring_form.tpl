@@ -24,8 +24,4 @@
 
     <button id="save_changes" type="submit">Save</button>
 
-    <json-form name="tryme" value="{{ try_me_input }}" schema="{{ try_me_schema }}">
-
-    </json-form>
-
 </form>

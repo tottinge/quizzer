@@ -48,40 +48,36 @@ form_schema = """
             "type": "string",
             "title": "Quiz Title"
         },
-        "junk": {
-            "type": "array"
-        },
+        
         "questions": {
             "type": "array",
-            "title": "Questions",
             "items":{
-                    "type":"object",
-                    "title":"Question",
-                    "properties": {
-                        "question":{ "type": "string"},
-                        "answer": {"type": "string"},
-                        "decoys": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "title": "Decoy"
-                                
-                            }
+                "type":"object",
+                "title":"Question",
+                "properties": {
+                    "question":{ 
+                        "type": "string",
+                        "title": "Question"
+                    },
+                    "answer": {
+                        "type": "string",
+                        "title": "Correct Answer"
+                    },
+                    "decoys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "title": "Decoy"
                         }
                     }
                 }
             }
         }
+        
+    }
 }
 """
 
-
-try_me_schema = """
-{
-}
-"""
-
-json.loads(try_me_schema)
 
 @app.get('/edit/<quiz_name>')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
@@ -94,9 +90,6 @@ def edit_existing(quiz_name: str):
         'quiz': quiz,
         'raw_quiz': json.dumps(asdict(quiz)),
         'schema': form_schema,
-
-        'try_me_input': {},
-        'try_me_schema': try_me_schema
     }
 
 
