@@ -35,28 +35,17 @@ def quiz_list():
     return "<h1>Quiz list</h1>"
 
 
+
 form_schema = """
 {
-   "$schema": "https://json-schema.org/draft/2020-12/schema",
-   "type": "object",
-   "properties":{
-        "title": { "type":"string", "required":true, "title":"Quiz Title", "description": "The title of the quiz" },
-        "name": {"type":"string", "required":true }
-   }
-}
-"""
-form_schema = """
-{
-"type": "string",
-"title": "Text field",
-"description": "Single line text field"
-}
-"""
-form_schema = """
-{
-    "type": "string",
-    "title": "Quiz Title", 
-    "description": "The title of the quiz"
+    "type":"object",
+    "properties":{
+        "title": {
+            "type": "string",
+            "title": "Quiz Title", 
+            "description": "The title of the quiz"
+        }
+    }
 }
 """
 
