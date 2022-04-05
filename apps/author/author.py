@@ -63,12 +63,29 @@ form_schema = """
                         "type": "string",
                         "title": "Correct Answer"
                     },
+                    "confirmation": {
+                        "type": "string",
+                        "title": "Confirmation",
+                        "ui": {"widget":  "multiline", "minRows":  5}
+                    },
                     "decoys": {
                         "type": "array",
                         "items": {
                             "type": "string",
                             "title": "Decoy"
                         }
+                    },
+                    "resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "title": "Resource",
+                            "properties": {
+                                "key": "string", 
+                                "url": "string"
+                            }
+                        }
+
                     }
                 }
             }
