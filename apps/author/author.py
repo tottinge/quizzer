@@ -9,6 +9,7 @@ Should support get, post, delete... which other verbs? Patch? Put?
 """
 import json
 from dataclasses import asdict
+from html import escape
 
 import bottle
 from bottle import view
@@ -52,6 +53,7 @@ form_schema = """
         "questions": {
             "type": "array",
             "items":{
+                "ui":{"expandable":true},
                 "type":"object",
                 "title":"Question",
                 "properties": {
@@ -63,11 +65,7 @@ form_schema = """
                         "type": "string",
                         "title": "Correct Answer"
                     },
-                    "confirmation": {
-                        "type": "string",
-                        "title": "Confirmation",
-                        "ui": {"widget":  "multiline", "minRows":  5}
-                    },
+
                     "decoys": {
                         "type": "array",
                         "items": {
@@ -75,14 +73,27 @@ form_schema = """
                             "title": "Decoy"
                         }
                     },
+                    "confirmation": {
+                        "type": "string",
+                        "title": "Confirmation",
+                        "ui": {
+                            "widget":{
+                                "type": "multiline",  
+                                "minRows": 5,
+                                "maxRows": 10
+                            }
+                        }
+                    },                    
                     "resources": {
                         "type": "array",
+                        "ui": { "expandable": true },
+                        "title": "Resources",
                         "items": {
                             "type": "object",
-                            "title": "Resource",
+                            "title": "Resource for further study",
                             "properties": {
-                                "key": "string", 
-                                "url": "string"
+                                "text": {"type":"string", "title": "text"}, 
+                                "url": {"type": "string", "title":  "URL"}
                             }
                         }
 
@@ -124,6 +135,8 @@ def do_nothing_interesting():
 @app.post('/edit')
 def update_quiz_from_html_form():
     doc_field_value = bottle.request.forms.get('quiz')
+    as_json = json.loads(doc_field_value)
+    ready_to_print = escape( json.dumps(as_json, indent=3))
     return f"""
-     <p>Document is {doc_field_value}</p>
+     <p><pre>{ready_to_print}</pre></p>
      """

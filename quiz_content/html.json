@@ -12,7 +12,8 @@
       ],
       "resources": [
         {
-          "HTML Wikipedia": "https://en.wikipedia.org/wiki/HTML"
+          "text": "HTML Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/HTML"
         }
       ]
     },
@@ -27,7 +28,8 @@
       ],
       "resources": [
         {
-          "W3": "https://en.wikipedia.org/wiki/World_Wide_Web_Consortium"
+          "text": "W3",
+          "url": "https://en.wikipedia.org/wiki/World_Wide_Web_Consortium"
         }
       ]
     },
@@ -42,10 +44,12 @@
       ],
       "resources": [
         {
-          "HTML Headings": "https://www.w3schools.com/html/html_headings.asp"
+          "text":"HTML Headings",
+          "url": "https://www.w3schools.com/html/html_headings.asp"
         },
         {
-          "HTML Headings": "https://www.w3schools.com/html/html_headings.asp"
+          "text":"HTML Headings",
+          "url": "https://www.w3schools.com/html/html_headings.asp"
         }
       ]
     }
