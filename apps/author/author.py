@@ -36,8 +36,7 @@ def quiz_list():
     return "<h1>Quiz list</h1>"
 
 
-
-form_schema = """
+FORM_SCHEMA = """
 {
     "type":"object",
     "properties":{
@@ -117,7 +116,7 @@ def edit_existing(quiz_name: str):
         'title': 'Edit Existing Quiz',
         'quiz': quiz,
         'raw_quiz': json.dumps(asdict(quiz)),
-        'schema': form_schema,
+        'schema': FORM_SCHEMA,
     }
 
 
@@ -128,7 +127,7 @@ def do_nothing_interesting():
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
         'raw_quiz': {},
-        'schema': form_schema
+        'schema': FORM_SCHEMA
     }
 
 
@@ -136,7 +135,7 @@ def do_nothing_interesting():
 def update_quiz_from_html_form():
     doc_field_value = bottle.request.forms.get('quiz')
     as_json = json.loads(doc_field_value)
-    ready_to_print = escape( json.dumps(as_json, indent=3))
+    ready_to_print = escape(json.dumps(as_json, indent=3))
     return f"""
      <p><pre>{ready_to_print}</pre></p>
      """

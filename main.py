@@ -29,6 +29,8 @@ from security.authz import require_roles, get_current_user
 from shared.quizzology import Quizzology
 
 HOME_PAGE = '/'
+study_root_page = '/study'
+author_root_page = '/author'
 
 logger: Logger = getLogger(__name__)
 app = bottle.app()
@@ -36,8 +38,8 @@ app = bottle.app()
 quizzology = Quizzology()
 study_use(quizzology)
 
-app.mount('/author', authoring_app)
-app.mount('/study', quizzing_app)
+app.mount(author_root_page, authoring_app)
+app.mount(study_root_page, quizzing_app)
 
 
 @app.route('/login')
@@ -69,9 +71,9 @@ def authentication_endpoint():
 
 def page_for_user(user: Dict):
     destinations={
-        'guest': '/study',
-        'student': '/study',
-        'author': '/author'
+        'guest': study_root_page,
+        'student': study_root_page,
+        'author': author_root_page
     }
     return destinations[user['role']]
 

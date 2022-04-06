@@ -22,8 +22,8 @@ CATS_QUIZ = "/study/catsquiz"
 logging.basicConfig(level=logging.DEBUG)
 
 class TestNavigation(TestCase):
-    browser: WebDriver = None
-    app: Popen[str] = None
+    browser: WebDriver
+    app: Popen[str]
     base_url: str = ""
 
     @classmethod
