@@ -6,6 +6,8 @@ Monitoring (we need a unified dashboard or tool):
 * [Github](https://github.com/tottinge/quizzer/actions )
 * [Heroku](https://dashboard.heroku.com/apps/sample-fun-with-programming/activity)
 
+We periodically have to update the [ChromeDriver](https://chromedriver.chromium.org/downloads).
+
 
 Currently, Quizzology is a slow-coding target. We work on it a bit at a time, and constantly refer to the
 charter except when there is some shiny idea we want to chase.
