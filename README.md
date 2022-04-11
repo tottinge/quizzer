@@ -7,6 +7,12 @@ Monitoring (we need a unified dashboard or tool):
 * [Heroku](https://dashboard.heroku.com/apps/sample-fun-with-programming/activity)
 
 We periodically have to update the [ChromeDriver](https://chromedriver.chromium.org/downloads).
+* Download the chrome driver to the webdrivers/_os_/ directory.
+* Delete the old `chromedriver` file
+* unzip the new chromedriver zip file
+* right-click on the chromedriver and open it
+* give permission to run the chrome driver
+* run the ui-tests
 
 
 Currently, Quizzology is a slow-coding target. We work on it a bit at a time, and constantly refer to the
