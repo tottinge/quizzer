@@ -27,11 +27,10 @@
     <button class="w3-button w3-round w3-light-gray">Additional Resources</button>
     <section class="w3-dropdown-content w3-bar-block w3-border" id="resources">
         % for resource in question.resources:
-            % for text, url in resource.items():
                 <a class="w3-button w3-bar-item"
-                   href="{{ url }}"
+                   href="{{ resource['url'] }}"
                    rel="noreferrer noopener"
-                   target="_blank">{{ text }}
+                   target="_blank">{{ resource['text'] }}
                 </a>
             % end
         % end
