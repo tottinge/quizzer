@@ -22,9 +22,9 @@
         </a>
         {{title}}
     </h1>
-    <span class="w3-display-right">
-        <span id="user_name">default text</span> (<span id="user_role">default role</span>)
-    </span>
+    <a class="w3-display-right w3-button w3-teal" href="/login">
+        <span id="user_name" >default text</span> (<span id="user_role">default role</span>)
+    </a>
 </header>
 
     <script>
