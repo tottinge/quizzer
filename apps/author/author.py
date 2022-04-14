@@ -109,15 +109,19 @@ FORM_SCHEMA = """
 @app.get('/edit/<quiz_name>')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def edit_existing(quiz_name: str):
-    # ToDo - this is no way to acquire a controller
-    author_controller = AuthorController(Quizzology())
-    quiz = author_controller.get_quiz(quiz_name)
+    quiz = get_author_controller().get_quiz(quiz_name)
     return {
         'title': 'Edit Existing Quiz',
         'quiz': quiz,
         'raw_quiz': json.dumps(asdict(quiz)),
         'schema': FORM_SCHEMA,
     }
+
+
+def get_author_controller() -> AuthorController:
+    # ToDo - this is no way to acquire a controller
+    author_controller = AuthorController(Quizzology())
+    return author_controller
 
 
 @app.get('/edit')
@@ -135,7 +139,6 @@ def do_nothing_interesting():
 def update_quiz_from_html_form():
     doc_field_value = bottle.request.forms.get('quiz')
     as_json = json.loads(doc_field_value)
-    ready_to_print = escape(json.dumps(as_json, indent=3))
-    return f"""
-     <p><pre>{ready_to_print}</pre></p>
-     """
+    quiz = Quiz.from_json(as_json)
+    get_author_controller().save(quiz)
+    bottle.redirect(f"/author/edit/{quiz.name}")

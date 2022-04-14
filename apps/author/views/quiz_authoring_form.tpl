@@ -22,6 +22,6 @@
         }
     </script>
 
-    <button id="save_changes" type="submit">Save</button>
+    <button class="w3-button w3-teal" id="save_changes" type="submit">Save</button>
 
 </form>
