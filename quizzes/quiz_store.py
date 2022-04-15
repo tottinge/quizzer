@@ -22,10 +22,6 @@ defang_bad_chars = str.maketrans({
 })
 
 
-def filename_for(name):
-    return sanitize(name.translate(defang_bad_chars) + '.json')
-
-
 class QuizSummary(NamedTuple):
     name: str
     title: str
@@ -40,6 +36,13 @@ class QuizStore:
 
     def __init__(self, dir_name='quiz_content'):
         self.quiz_dir = dir_name
+
+    def filename_for(self, name: str) -> str:
+        existing = self._find_file_for_named_quiz(name)
+        if existing:
+            return existing
+        new_filename = sanitize(name.translate(defang_bad_chars) + '.json')
+        return os.path.join(self.quiz_dir, new_filename)
 
     def get_quiz_summaries(self) -> Iterable[QuizSummary]:
         file_list = self._get_quiz_files_from_directory(self.quiz_dir)
@@ -56,9 +59,7 @@ class QuizStore:
         message: str
 
     def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
-        dir_name = self.quiz_dir
-        file_name = filename_for(quiz.name)
-        filename = os.path.join(dir_name, file_name)
+        filename = self.filename_for(quiz.name)
         try:
             with open(filename, "w") as output:
                 json.dump(asdict(quiz), output)
