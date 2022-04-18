@@ -1,3 +1,4 @@
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -9,7 +10,9 @@ from quizzes.quiz_store import QuizStore
 class TestFilenameGeneration(unittest.TestCase):
 
     def setUp(self):
-        self.quiz_store = QuizStore('/tmp')
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.quiz_store = QuizStore(self.temporary_directory.name)
+
 
     def test_adds_json_extension(self):
         assert_that(self.quiz_store.filename_for("poo"), contains_string("poo.json"))
