@@ -3,9 +3,10 @@ import unittest
 from dataclasses import asdict
 
 import bs4.element
+import hamcrest
 from bottle import template
 from bs4 import BeautifulSoup
-from hamcrest import assert_that, contains_string, not_none, is_
+from hamcrest import assert_that, contains_string, not_none, is_, has_item
 
 from quizzes.quiz import Quiz
 
@@ -73,6 +74,29 @@ class StaticFormVerification(unittest.TestCase):
     def test_successful_save(self):
         message_on_page = self.dom.find('p', id='post-message')
         assert_that(message_on_page.text, is_(self.message))
+
+class RenderWithFailureToSave(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        document = json.loads(sample_quiz_json)
+        cls.quiz = Quiz.from_json(document)
+        cls.page_title = 'Edit Quiz'
+        cls.message = 'failure message'
+        cls.html = template('apps/author/views/quiz_authoring_form.tpl', {
+            'quiz': cls.quiz,
+            'title': cls.page_title,
+            'raw_quiz': asdict(cls.quiz),
+            'schema':{},
+            'message': cls.message,
+            'error':True
+        })
+        cls.dom = BeautifulSoup(cls.html, "html.parser")
+
+    def test_failed_to_save(self):
+        message_on_page = self.dom.find('p', id='post-message')
+        assert_that(message_on_page.text, is_(self.message))
+        assert_that(message_on_page['class'], has_item('w3-pale-red'))
+
 
 
 if __name__ == '__main__':

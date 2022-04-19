@@ -136,6 +136,7 @@ def do_nothing_interesting():
     }
 
 
+# TODO test save failure
 @app.post('/edit')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def update_quiz_from_html_form():
@@ -143,8 +144,6 @@ def update_quiz_from_html_form():
     as_json = json.loads(doc_field_value)
     quiz = Quiz.from_json(as_json)
     result = get_author_controller().save(quiz)
-    result.success
-    result.message
     return {
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
