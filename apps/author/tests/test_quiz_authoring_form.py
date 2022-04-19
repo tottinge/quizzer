@@ -42,12 +42,11 @@ class StaticFormVerification(unittest.TestCase):
         cls.quiz = Quiz.from_json(document)
         cls.page_title = 'Edit Quiz'
         cls.html = template('apps/author/views/quiz_authoring_form.tpl', {
-            'title': cls.page_title,
             'quiz': cls.quiz,
+            'title': cls.page_title,
             'raw_quiz': asdict(cls.quiz),
             'schema':{},
-
-            'try_me_input': {}, 'try_me_schema': {}
+            'message':'',
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 
@@ -57,19 +56,6 @@ class StaticFormVerification(unittest.TestCase):
         assert_that(tab_title, contains_string(self.page_title))
         visible_title = dom.body.header.find('h1', id='title')
         assert_that(visible_title.text, contains_string(self.page_title))
-
-    # def test_form_has_fields(self):
-    #     self.assert_tag_value_matches('quiz_name', self.quiz.name)
-    #     self.assert_tag_value_matches('quiz_title', self.quiz.title)
-    #
-    # def test_first_question_is_displayed(self):
-    #     question = self.quiz.first_question().question
-    #     question_section: BeautifulSoup = self.dom.body.find('section', id='questions')
-    #     assert_that(question_section, is_(not_none()))
-    #     form = question_section.find("details", id="0")
-    #     assert_that(form.summary.text, contains_string(question))
-    #     assert_that(form.find("input", id="q0-text"), is_(not_none()))
-
 
     def assert_tag_value_matches(self, tag_name, actual):
         name_input = self.dom.form.find('input', id=tag_name)

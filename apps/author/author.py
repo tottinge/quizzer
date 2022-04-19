@@ -9,7 +9,6 @@ Should support get, post, delete... which other verbs? Patch? Put?
 """
 import json
 from dataclasses import asdict
-from html import escape
 
 import bottle
 from bottle import view
