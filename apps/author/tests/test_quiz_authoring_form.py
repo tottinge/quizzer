@@ -41,12 +41,13 @@ class StaticFormVerification(unittest.TestCase):
         document = json.loads(sample_quiz_json)
         cls.quiz = Quiz.from_json(document)
         cls.page_title = 'Edit Quiz'
+        cls.message = 'success message'
         cls.html = template('apps/author/views/quiz_authoring_form.tpl', {
             'quiz': cls.quiz,
             'title': cls.page_title,
             'raw_quiz': asdict(cls.quiz),
             'schema':{},
-            'message':'',
+            'message': cls.message,
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 
@@ -68,6 +69,10 @@ class StaticFormVerification(unittest.TestCase):
         )
         assert_that(button, not_none())
         assert_that(button.text, is_("Save"))
+
+    def test_successful_save(self):
+        message_on_page = self.dom.find('p', id='post-message')
+        assert_that(message_on_page.text, is_(self.message))
 
 
 if __name__ == '__main__':
