@@ -5,7 +5,7 @@
 <script>
     document = "{{ asdict(quiz) }}";
 </script>
-
+<p class="w3-panel w3-khaki w3-leftbar w3-border-amber">{{message}}</p>
 <form id="quiz_edit" action="/author/edit" method="POST">
 
     <input type="hidden" id="quiz" name="quiz" value="{'updated':'false'}">

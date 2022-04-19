@@ -115,6 +115,7 @@ def edit_existing(quiz_name: str):
         'quiz': quiz,
         'raw_quiz': json.dumps(asdict(quiz)),
         'schema': FORM_SCHEMA,
+        'message': ""
     }
 
 
@@ -131,14 +132,23 @@ def do_nothing_interesting():
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
         'raw_quiz': {},
-        'schema': FORM_SCHEMA
+        'schema': FORM_SCHEMA,
+        'message': ""
     }
 
 
 @app.post('/edit')
+@view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def update_quiz_from_html_form():
     doc_field_value = bottle.request.forms.get('quiz')
     as_json = json.loads(doc_field_value)
     quiz = Quiz.from_json(as_json)
-    get_author_controller().save(quiz)
-    bottle.redirect(f"/author/edit/{quiz.name}")
+    result = get_author_controller().save(quiz)
+    # bottle.redirect(f"/author/edit/{quiz.name}")
+    return {
+        'quiz': Quiz(name='name', title='title'),
+        'title': "Edit Quiz",
+        'raw_quiz': json.dumps(asdict(quiz)),
+        'schema': FORM_SCHEMA,
+        'message': f'Quiz "{quiz.title}" saved as {result.id}'
+    }
