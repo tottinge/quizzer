@@ -94,7 +94,6 @@ FORM_SCHEMA = """
                                 "url": {"type": "string", "title":  "URL"}
                             }
                         }
-
                     }
                 }
             }
