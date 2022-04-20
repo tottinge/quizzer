@@ -30,11 +30,6 @@ def cover_page():
     }
 
 
-@app.route('/quiz')
-def quiz_list():
-    return "<h1>Quiz list</h1>"
-
-
 FORM_SCHEMA = """
 {
     "type":"object",
@@ -125,7 +120,7 @@ def get_author_controller() -> AuthorController:
 
 @app.get('/edit')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
-def do_nothing_interesting():
+def create_new_quiz():
     return {
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
