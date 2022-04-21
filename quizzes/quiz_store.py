@@ -61,8 +61,7 @@ class QuizStore:
     def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
         filename = self.filename_for(quiz.name)
         try:
-            with open(filename, "w") as output:
-                json.dump(asdict(quiz), output)
+            self._dump_quiz_to(filename, quiz)
             return QuizStore.SaveQuizResult(
                 id=filename,
                 success=True,
@@ -74,6 +73,10 @@ class QuizStore:
                 success=False,
                 message=error.strerror
             )
+
+    def _dump_quiz_to(self, filename, quiz):
+        with open(filename, "w") as output:
+            json.dump(asdict(quiz), output)
 
     def exists(self, quiz_name: str) -> bool:
         found_file_name = self._find_file_for_named_quiz(quiz_name)
