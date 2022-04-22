@@ -30,75 +30,6 @@ def cover_page():
     }
 
 
-FORM_SCHEMA = """
-{
-    "type":"object",
-    "properties":{
-        "name": {
-            "type": "string",
-            "title": "Quiz Name"
-        },
-        "title": {
-            "type": "string",
-            "title": "Quiz Title"
-        },
-        
-        "questions": {
-            "type": "array",
-            "items":{
-                "ui":{"expandable":true},
-                "type":"object",
-                "title":"Question",
-                "properties": {
-                    "question":{ 
-                        "type": "string",
-                        "title": "Question"
-                    },
-                    "answer": {
-                        "type": "string",
-                        "title": "Correct Answer"
-                    },
-
-                    "decoys": {
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "title": "Decoy"
-                        }
-                    },
-                    "confirmation": {
-                        "type": "string",
-                        "title": "Confirmation",
-                        "ui": {
-                            "widget":{
-                                "type": "multiline",  
-                                "minRows": 5,
-                                "maxRows": 10
-                            }
-                        }
-                    },                    
-                    "resources": {
-                        "type": "array",
-                        "ui": { "expandable": true },
-                        "title": "Resources",
-                        "items": {
-                            "type": "object",
-                            "title": "Resource for further study",
-                            "properties": {
-                                "text": {"type":"string", "title": "text"}, 
-                                "url": {"type": "string", "title":  "URL"}
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-    }
-}
-"""
-
-
 @app.get('/edit/<quiz_name>')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def edit_existing(quiz_name: str):
@@ -107,7 +38,6 @@ def edit_existing(quiz_name: str):
         'title': 'Edit Existing Quiz',
         'quiz': quiz,
         'raw_quiz': json.dumps(asdict(quiz)),
-        'schema': FORM_SCHEMA,
         'message': "",
         'error': False
     }
@@ -126,7 +56,6 @@ def create_new_quiz():
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
         'raw_quiz': {},
-        'schema': FORM_SCHEMA,
         'message': "",
         'error': False
     }
@@ -145,7 +74,6 @@ def update_quiz_from_html_form():
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
         'raw_quiz': json.dumps(asdict(quiz)),
-        'schema': FORM_SCHEMA,
         'message': f'Quiz "{quiz.title}" saved as {result.id}',
         'error': error
     }
