@@ -1,0 +1,63 @@
+{
+  "type":"object",
+  "properties":{
+    "name": {
+      "type": "string",
+      "title": "Quiz Name"
+    },
+    "title": {
+      "type": "string",
+      "title": "Quiz Title"
+    },
+    "questions": {
+      "type": "array",
+      "items":{
+        "ui":{"expandable":true},
+        "type":"object",
+        "title":"Question",
+        "properties": {
+          "question":{
+            "type": "string",
+            "title": "Question"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Correct Answer"
+          },
+
+          "decoys": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "Decoy"
+            }
+          },
+          "confirmation": {
+            "type": "string",
+            "title": "Confirmation",
+            "ui": {
+              "widget":{
+                "type": "multiline",
+                "minRows": 5,
+                "maxRows": 10
+              }
+            }
+          },
+          "resources": {
+            "type": "array",
+            "ui": { "expandable": true },
+            "title": "Resources",
+            "items": {
+              "type": "object",
+              "title": "Resource for further study",
+              "properties": {
+                "text": {"type":"string", "title": "text"},
+                "url": {"type": "string", "title":  "URL"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

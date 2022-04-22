@@ -49,6 +49,7 @@ class StaticFormVerification(unittest.TestCase):
             'raw_quiz': asdict(cls.quiz),
             'schema':{},
             'message': cls.message,
+            'error': False
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 

@@ -5,11 +5,17 @@
 <script>
     document = "{{ asdict(quiz) }}";
 </script>
-{% if error %}
+<script>
+    var url="/static/quiz_schema.json"
+    fetch (url).then(
+        function(response) {console.log(response.json())}
+    )
+</script>
+% if error:
     <p id="post-message" class="w3-panel w3-pale-red w3-leftbar w3-border-amber">{{message}}</p>
-{% else %}
+% else:
     <p id="post-message" class="w3-panel w3-khaki w3-leftbar w3-border-amber">{{message}}</p>
-{% endif %}
+% end
 <form id="quiz_edit" action="/author/edit" method="POST">
 
     <input type="hidden" id="quiz" name="quiz" value="{'updated':'false'}">
