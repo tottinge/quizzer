@@ -74,7 +74,7 @@ class StaticFormVerification(unittest.TestCase):
 
     def test_successful_save(self):
         message_on_page = self.dom.find('p', id='post-message')
-        assert_that(message_on_page.text, is_(self.message))
+        assert_that(message_on_page.text, contains_string(self.message))
 
 class RenderWithFailureToSave(unittest.TestCase):
     @classmethod
@@ -95,7 +95,7 @@ class RenderWithFailureToSave(unittest.TestCase):
 
     def test_failed_to_save(self):
         message_on_page = self.dom.find('p', id='post-message')
-        assert_that(message_on_page.text, is_(self.message))
+        assert_that(message_on_page.text, contains_string(self.message))
         assert_that(message_on_page['class'], has_item('w3-pale-red'))
 
 
