@@ -11,11 +11,14 @@
         .then ( response => response.text() )
         .then ( schema => document.getElementById("quiz-editor").setAttribute("schema", schema) )
 </script>
-% if error:
-    <p id="post-message" class="w3-panel w3-pale-red w3-leftbar w3-border-amber">{{message}}</p>
-% else:
-    <p id="post-message" class="w3-panel w3-khaki w3-leftbar w3-border-amber">{{message}}</p>
+
+% if message:
+<p id="post-message"
+   class="w3-panel {{ "w3-pale-red" if error else "w3-khaki"}} w3-leftbar w3-border-amber">
+    {{message}}
+</p>
 % end
+
 <form id="quiz_edit" action="/author/edit" method="POST">
 
     <input type="hidden" id="quiz" name="quiz" value="{'updated':'false'}">
