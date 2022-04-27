@@ -36,8 +36,7 @@
             ).pop()
             if(desired){
                 const [_, value] = desired.split('=');
-                const trimmed = value.replace(/"/g, '')
-                return trimmed
+                return value.replace(/"/g, '')
             }
         }
 
