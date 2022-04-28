@@ -61,7 +61,6 @@ def create_new_quiz():
     }
 
 
-# TODO test save failure
 @app.post('/edit')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def update_quiz_from_html_form():
