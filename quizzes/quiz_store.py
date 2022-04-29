@@ -27,7 +27,7 @@ class QuizSummary(NamedTuple):
     title: str
     id: str
 
-
+# TODO: begin transitioning to mongodb, perhaps with facade or strategy pattern
 class QuizStore:
     """ For consideration
     * why not do a dir walk?
