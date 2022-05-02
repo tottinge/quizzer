@@ -11,8 +11,8 @@
         "<img src=\"/path/to/file\" />"
       ],
       "resources": [
-        {"Image Tags": "https://www.w3schools.com/tags/tag_img.asp"},
-        {"HTML.com": "https://html.com/attributes/img-src/"}
+        {"text":"Image Tags", "url": "https://www.w3schools.com/tags/tag_img.asp"},
+        {"text":"HTML.com",   "url": "https://html.com/attributes/img-src/"}
       ]
     },
     {

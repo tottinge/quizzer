@@ -19,8 +19,8 @@ class TestQuizSelection(TestCase):
 
     def test_renders_menu_with_links_to_quizzes(self):
         page = self.render("_", choices=[
-            ('a', 'a test', 'unused'),
-            ('b', 'b test', 'unused')
+            ('a', 'a test', 'unused', '/favicon.ico'),
+            ('b', 'b test', 'unused', '/favicon.ico')
         ])
         menu_items = page.body.find_all('a', class_='quiz_selection')
         actual = [(b['href'], b.text.strip()) for b in menu_items]

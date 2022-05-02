@@ -26,6 +26,7 @@ class QuizSummary(NamedTuple):
     name: str
     title: str
     id: str
+    image_url: str = None
 
 # TODO: begin transitioning to mongodb, perhaps with facade or strategy pattern
 class QuizStore:
@@ -100,8 +101,12 @@ class QuizStore:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
-                summary = QuizSummary(document['name'], document['title'],
-                                      quiz_filename)
+                summary = QuizSummary(
+                    document['name'],
+                    document['title'],
+                    quiz_filename,
+                    document.get('image', '/favicon.ico')
+                )
                 yield summary
             except json.JSONDecodeError as err:
                 logger.error(f"FAILED: {quiz_filename}: {str(err)}")

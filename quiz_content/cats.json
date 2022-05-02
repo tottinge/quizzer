@@ -1,1 +1,66 @@
-{"name": "catsquiz", "title": "Cats Quiz", "questions": [{"question": "Which cat is sleeping in the window?", "answer": "Gray", "decoys": ["Phydeaux", "Jack", "Fluffybutt"], "resources": [{"text": "Need cats?", "url": "http://catscatscats.html"}], "confirmation": "Gray is obsessed with looking out the window."}, {"question": "Which cat jumps on the counter?", "answer": "Jack", "decoys": ["Phydeaux", "Gray", "Fluffybutt"], "resources": [], "confirmation": ""}, {"question": "Which name is only a nickname?", "answer": "Fluffybutt", "decoys": ["Phydeaux", "Jack", "Gray"], "resources": [], "confirmation": ""}, {"question": "Who is a trash panda?", "answer": "Gray", "decoys": ["Phydeaux", "Jack", "Mr Tiddles"], "resources": [], "confirmation": "He just can't resist chicken leftovers"}, {"question": "Which cat lived in the 70s?", "answer": "Phydeaux", "decoys": ["Gray", "Jack", "Fluffybutt"], "resources": [], "confirmation": "He was Margaret's favorite cat, after 'prince' went wrong"}]}
+{
+  "name": "catsquiz",
+  "title": "Cats Quiz",
+  "questions": [
+    {
+      "question": "Which cat is sleeping in the window?",
+      "answer": "Gray",
+      "decoys": [
+        "Phydeaux",
+        "Jack",
+        "Fluffybutt"
+      ],
+      "resources": [
+        {
+          "text": "Need cats?",
+          "url": "http://catscatscats.html"
+        }
+      ],
+      "confirmation": "Gray is obsessed with looking out the window."
+    },
+    {
+      "question": "Which cat jumps on the counter?",
+      "answer": "Jack",
+      "decoys": [
+        "Phydeaux",
+        "Gray",
+        "Fluffybutt"
+      ],
+      "resources": [],
+      "confirmation": ""
+    },
+    {
+      "question": "Which name is only a nickname?",
+      "answer": "Fluffybutt",
+      "decoys": [
+        "Phydeaux",
+        "Jack",
+        "Gray"
+      ],
+      "resources": [],
+      "confirmation": ""
+    },
+    {
+      "question": "Who is a trash panda?",
+      "answer": "Gray",
+      "decoys": [
+        "Phydeaux",
+        "Jack",
+        "Mr Tiddles"
+      ],
+      "resources": [],
+      "confirmation": "He just can't resist chicken leftovers"
+    },
+    {
+      "question": "Which cat lived in the 70s?",
+      "answer": "Phydeaux",
+      "decoys": [
+        "Gray",
+        "Jack",
+        "Fluffybutt"
+      ],
+      "resources": [],
+      "confirmation": "He was Margaret's favorite cat, after 'prince' went wrong"
+    }
+  ]
+}

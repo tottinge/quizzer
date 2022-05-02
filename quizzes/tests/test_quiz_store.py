@@ -6,6 +6,8 @@ from hamcrest import assert_that, is_
 
 from quizzes.quiz_store import QuizStore, logger, QuizSummary
 
+ico = '/favicon.ico'
+
 
 class QuizStoreTest(unittest.TestCase):
     @patch('os.listdir', return_value=['a.json'])
@@ -13,7 +15,7 @@ class QuizStoreTest(unittest.TestCase):
     @patch('json.load', return_value=dict(name="name", title="a title"))
     def test_it_gets_a_summary_of_test(self, *_):
         store = QuizStore()
-        expected = {QuizSummary('name', 'a title', 'quiz_content/a.json')}
+        expected = {QuizSummary('name', 'a title', 'quiz_content/a.json', ico)}
         actual = set(store.get_quiz_summaries())
         assert_that(actual, is_(expected))
 
@@ -77,7 +79,8 @@ class QuizStoreTest(unittest.TestCase):
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
             expected = [
-                QuizSummary('pass', 'a test that passes', 'd/pass.json')]
+                QuizSummary('pass', 'a test that passes', 'd/pass.json', ico)
+            ]
             actual = store._get_quiz_summaries_from_file_list(['d/pass.json'])
             assert_that(list(actual), is_(expected))
 
@@ -85,12 +88,12 @@ class QuizStoreTest(unittest.TestCase):
     def test_get_summary_returns_multiple_summary(self):
         store = QuizStore()
         expected = [
-            QuizSummary('cats', 'a tests about felines', 'd/cats.json'),
-            QuizSummary('dogs', 'explore the canine world', 'd/dogs.json')
+            QuizSummary('cats', 'a tests about felines', 'd/cats.json', ico),
+            QuizSummary('dogs', 'explore the canine world', 'd/dogs.json', ico)
         ]
-        filenames = [path for (_, _, path) in expected]
+        filenames = [path for (_, _, path, _) in expected]
         json_docs = [dict(name=name, title=title)
-                     for (name, title, _) in expected]
+                     for (name, title, _, _) in expected]
         with patch("json.load", side_effect=json_docs):
             actual = store._get_quiz_summaries_from_file_list(filenames)
             assert_that(list(actual), is_(expected))
