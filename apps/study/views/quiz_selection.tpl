@@ -7,7 +7,7 @@
         % for (name, description, filename) in choices:
         <a class="quiz_selection w3-container w3-card w3-third w3-hover-shadown quiz-card" href="/study/{{name}}">
                 <p class="w3-container w3-center">
-                    <img class="quiz-icon" src="/static/favicon.ico">
+                    <img alt="go to quiz" class="quiz-icon" src="/static/favicon.ico">
                 </p>
                 <footer class="w3-center w3-container w3-large">{{ description }}</footer>
         </a>
