@@ -13,13 +13,11 @@
 <header class="w3-display-container">
     <h1 class="page-title" id="title">
         <a href="/" id="return_link">
-            <img align="left"
-                 hspace="5"
-                 src="/favicon.ico"
-                 style="height:1.1em;"
+            <img src="/favicon.ico"
+                 class="w3-btn"
+                 style="height: 1.1em; vertical-align: top; padding: 0;"
                  alt="The quizzology logo as a link to the home page"
-            />
-        </a>
+            /></a>
         {{title}}
     </h1>
     <a class="w3-display-right w3-button w3-teal" href="/login">
