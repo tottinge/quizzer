@@ -3,7 +3,7 @@
 
 <section class="">
     <h2 class="w3-teal w3-panel">Quizzes Available:</h2>
-    <div lass="w3-container">
+    <div class="w3-container">
         % for (name, description, filename, img_url) in choices:
         <a class="quiz_selection w3-container w3-card w3-third w3-hover-shadow quiz-card" href="/study/{{name}}">
                 <p class="w3-container w3-center">

@@ -3,7 +3,6 @@ from typing import Protocol, Union, Optional, Dict, Callable
 from unittest.mock import patch
 from urllib.parse import urlparse, parse_qs
 
-import bs4
 from behave import when, then, step, given
 from behave.runner import Context
 from bottle import HTTPResponse
@@ -132,6 +131,7 @@ def step_impl(context: OurContext, user: str, route: str):
         context.visit_result = redirect.get_header("Location")
         context.redirect_status = redirect.status
 
+
 @when('guest user visits "{route}"')
 def step_impl(context: OurContext, route: str):
     role, user_name, password = None, 'nonesuch', 'nonesuch'
@@ -174,4 +174,3 @@ def step_impl(context: OurContext, page: str):
     query_parameters = parse_qs(url_parse_result.query)
     [destination] = query_parameters['destination']
     assert_that(destination, is_(page))
-

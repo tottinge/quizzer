@@ -1,6 +1,5 @@
 import unittest
 from http import HTTPStatus
-from http.cookiejar import CookieJar
 from urllib.parse import urlparse
 
 from hamcrest import assert_that, is_
@@ -71,8 +70,6 @@ class TestLoginPage(unittest.TestCase):
         self.set_auth_for("author")
         response = self.app.get("/")
         assert_that(redirect_destination_of(response), is_("/author"))
-
-
 
     def set_auth_for(self, role="student"):
         guest = User(user_name=f"test {role}", password='', role=role)

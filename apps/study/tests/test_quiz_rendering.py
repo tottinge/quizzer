@@ -48,8 +48,8 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_resource_link_appear_in_resource_section(self):
         resource = {
-            "text":"Google That",
-            "url":"https://www.google.com"
+            "text": "Google That",
+            "url": "https://www.google.com"
         }
         page = self.render(resources=[resource])
         actual = self.getResourceAnchorsFromPage(page)
@@ -57,8 +57,8 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_resource_multiple_links(self):
         resources = [
-            {"text":"Google That", "url":"https://www.google.com"},
-            {"text":"Let Me", "url":"https://lmgtfy.app/?q=calligraphy"}
+            {"text": "Google That", "url": "https://www.google.com"},
+            {"text": "Let Me", "url": "https://lmgtfy.app/?q=calligraphy"}
         ]
         page = self.render(resources=resources)
         actual = self.getResourceAnchorsFromPage(page)
@@ -68,7 +68,7 @@ class TestQuizRendering(unittest.TestCase):
     def getResourceAnchorsFromPage(page):
         resources = page.find('section', id='resources')
         return list(
-            {"text": tag.text.strip(), "url":tag['href']}
+            {"text": tag.text.strip(), "url": tag['href']}
             for tag in resources.find_all('a')
         )
 

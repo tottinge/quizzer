@@ -2,11 +2,13 @@
 
 % from dataclasses import asdict
 <script src="//unpkg.com/json-form-custom-element"></script>
+<!--
 <script>
     document = "{{ asdict(quiz) }}";
 </script>
+-->
 <script>
-    var url="/static/quiz_schema.json"
+    const url="/static/quiz_schema.json"
     fetch (url)
         .then ( response => response.text() )
         .then ( schema => document.getElementById("quiz-editor").setAttribute("schema", schema) )

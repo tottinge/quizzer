@@ -7,7 +7,7 @@ class Question:
     question: str
     answer: str
     decoys: list[str] = field(default_factory=list)
-    resources: list[Dict[str,str]] = field(default_factory=list)
+    resources: list[Dict[str, str]] = field(default_factory=list)
     confirmation: str = ''
 
     @staticmethod

@@ -13,7 +13,9 @@ from shared.quizzology import Quizzology
 class TestAuthorController(unittest.TestCase):
     def setUp(self) -> None:
         self.temp_directory = tempfile.TemporaryDirectory()
-        self.quizzology = Quizzology(quiz_store=QuizStore(dir_name=self.temp_directory.name))
+        self.quizzology = Quizzology(
+            quiz_store=QuizStore(dir_name=self.temp_directory.name)
+        )
         self.api = AuthorController(self.quizzology)
         self.quiz = Quiz(name="test quiz", title="New Test Quiz")
 
@@ -35,8 +37,11 @@ class TestAuthorController(unittest.TestCase):
                         f"Shouldn't have saved '{quiz.name}'")
             assert_that(api.quiz_exists(quiz.name), is_(False),
                         f"Shouldn't find newly-created '{quiz.name}'")
-            assert_that(result.message, contains_string("fake error"),
-                        f"Message should contain diagnostic message '{result.message}'")
+            assert_that(
+                result.message,
+                contains_string("fake error"),
+                f"Message should contain diagnostic message '{result.message}'"
+            )
 
 
 

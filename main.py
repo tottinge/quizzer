@@ -70,7 +70,7 @@ def authentication_endpoint():
 
 
 def page_for_user(user: Dict):
-    destinations={
+    destinations = {
         'guest': study_root_page,
         'student': study_root_page,
         'author': author_root_page

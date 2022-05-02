@@ -28,6 +28,7 @@ class QuizSummary(NamedTuple):
     id: str
     image_url: str = None
 
+
 # TODO: begin transitioning to mongodb, perhaps with facade or strategy pattern
 class QuizStore:
     """ For consideration
