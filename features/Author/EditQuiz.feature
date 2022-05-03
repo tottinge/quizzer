@@ -46,13 +46,6 @@ Feature: Edit Quiz
   # ToDo: Additional Tests
   # Delete questions
   # Delete the quiz
-  # change the title
-  # change the name
-  # Change question text
-  # Change question answer
-  # change question decoys
-  # Change the confirmation message
-  # add/delete/update question resources
   # check resource links
   # Duplicate a question within the quiz
   # Duplicate a question to a different quiz
