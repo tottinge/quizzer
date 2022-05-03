@@ -6,7 +6,7 @@ from hamcrest import assert_that, is_, contains_string
 
 from apps.author.author_controller import AuthorController
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
+from quizzes.quiz_file_store import QuizFileStore
 from shared.quizzology import Quizzology
 
 
@@ -14,7 +14,7 @@ class TestAuthorController(unittest.TestCase):
     def setUp(self) -> None:
         self.temp_directory = tempfile.TemporaryDirectory()
         self.quizzology = Quizzology(
-            quiz_store=QuizStore(dir_name=self.temp_directory.name)
+            quiz_store=QuizFileStore(dir_name=self.temp_directory.name)
         )
         self.api = AuthorController(self.quizzology)
         self.quiz = Quiz(name="test quiz", title="New Test Quiz")

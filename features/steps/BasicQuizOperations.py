@@ -10,7 +10,7 @@ from apps.author.author_controller import AuthorController
 from apps.study.studycontroller import StudyController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizStore
+from quizzes.quiz_file_store import QuizFileStore
 from apps.study.session_store import SessionStore, AnswerEntry
 from shared.quizzology import Quizzology
 
@@ -18,7 +18,7 @@ from shared.quizzology import Quizzology
 @given("quizzology is running")
 def step_impl(context: Context):
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
-    quiz_store = QuizStore(context.temporary_directory.name)
+    quiz_store = QuizFileStore(context.temporary_directory.name)
     quizzology = Quizzology(quiz_store, session_store)
 
     study_controller: StudyController = StudyController(quizzology)

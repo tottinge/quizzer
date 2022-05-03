@@ -4,7 +4,8 @@ from unittest.mock import patch, mock_open, MagicMock
 
 from hamcrest import assert_that, is_
 
-from quizzes.quiz_store import QuizStore, logger, QuizSummary
+from quizzes.quiz_store import QuizSummary
+from quizzes.quiz_file_store import logger, QuizFileStore
 
 ico = '/favicon.ico'
 
@@ -14,13 +15,13 @@ class QuizStoreTest(unittest.TestCase):
     @patch('builtins.open')
     @patch('json.load', return_value=dict(name="name", title="a title"))
     def test_it_gets_a_summary_of_test(self, *_):
-        store = QuizStore()
+        store = QuizFileStore()
         expected = {QuizSummary('name', 'a title', 'quiz_content/a.json', ico)}
         actual = set(store.get_quiz_summaries())
         assert_that(actual, is_(expected))
 
     def test_it_retrieves_a_quiz(self, *_):
-        store = QuizStore()
+        store = QuizFileStore()
         test_quiz = 'Testquiz'
         store.get_quiz_summaries = MagicMock(return_value=[
             QuizSummary('Testquiz', '', 'quiz_content/a.json')
@@ -35,7 +36,7 @@ class QuizStoreTest(unittest.TestCase):
 
     @patch('os.listdir', side_effect=FileNotFoundError('boo'))
     def test_returns_empty_list_and_log_exception_if_no_quiz_dir(self, _):
-        store = QuizStore()
+        store = QuizFileStore()
         store.quiz_dir = 'nonesuch_directory_exists_here'
         with patch.object(logger, 'error'):
             returned_summaries = list(store.get_quiz_summaries())
@@ -45,7 +46,7 @@ class QuizStoreTest(unittest.TestCase):
     @patch('builtins.open')
     @patch('json.load', side_effect=JSONDecodeError('yuck', 'testfile', 0))
     def test_json_file_invalid(self, *_):
-        store = QuizStore()
+        store = QuizFileStore()
         store.get_quiz_summaries = MagicMock(return_value=[
             QuizSummary('nonesuch', 'no title', 'nonesuch.json'),
         ])
@@ -55,27 +56,27 @@ class QuizStoreTest(unittest.TestCase):
     def test_get_a_list_of_test_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.json']):
             expected = ["q/a.json", "q/b.json"]
-            store = QuizStore()
+            store = QuizFileStore()
             actual = sorted(store._get_quiz_files_from_directory("q"))
             assert_that(actual, is_(expected))
 
     def test_get_test_files_ignores_non_json_files(self):
         with patch("os.listdir", return_value=['a.json', 'b.txt']):
             expected = {"q/a.json"}
-            store = QuizStore()
+            store = QuizFileStore()
             assert_that(
                 set(store._get_quiz_files_from_directory("q")),
                 is_(expected)
             )
 
     def test_get_summary_handles_empty_lists(self):
-        store = QuizStore()
+        store = QuizFileStore()
         actual = store._get_quiz_summaries_from_file_list([])
         assert_that(list(actual), is_([]))
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_one_summary(self):
-        store = QuizStore()
+        store = QuizFileStore()
         json_for_file = dict(name='pass', title='a test that passes')
         with patch('json.load', return_value=json_for_file):
             expected = [
@@ -86,7 +87,7 @@ class QuizStoreTest(unittest.TestCase):
 
     @patch('builtins.open', mock_open(read_data=None))
     def test_get_summary_returns_multiple_summary(self):
-        store = QuizStore()
+        store = QuizFileStore()
         expected = [
             QuizSummary('cats', 'a tests about felines', 'd/cats.json', ico),
             QuizSummary('dogs', 'explore the canine world', 'd/dogs.json', ico)
