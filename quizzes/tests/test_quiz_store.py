@@ -20,7 +20,7 @@ class QuizStoreTest(unittest.TestCase):
         actual = set(store.get_quiz_summaries())
         assert_that(actual, is_(expected))
 
-    def test_it_retrieves_a_quiz(self, *_):
+    def test_it_retrieves_a_quiz(self):
         store = QuizFileStore()
         test_quiz = 'Testquiz'
         store.get_quiz_summaries = MagicMock(return_value=[
