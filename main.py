@@ -28,15 +28,16 @@ from security.authn import make_bearer_token, authenticate
 from security.authz import require_roles, get_current_user
 from shared.quizzology import Quizzology
 
-HOME_PAGE = '/'
-study_root_page = '/study'
-author_root_page = '/author'
-
-logger: Logger = getLogger(__name__)
-app = bottle.app()
-
 quizzology = Quizzology()
 study_use(quizzology)
+logger: Logger = getLogger(__name__)
+
+HOME_PAGE = '/'
+
+app = bottle.app()
+
+study_root_page = '/study'
+author_root_page = '/author'
 
 app.mount(author_root_page, authoring_app)
 app.mount(study_root_page, quizzing_app)
@@ -85,10 +86,8 @@ def home_page():
         destination = page_for_user(user)
         logger.info("Redirecting {user['name']} to {destination}")
         redirect(destination)
-    except AttributeError:
+    except (AttributeError, ExpiredSignatureError):
         redirect('/login')
-    except ExpiredSignatureError:
-        redirect("/login")
 
 
 @app.route('/favicon.ico')

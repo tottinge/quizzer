@@ -8,7 +8,7 @@ Feature: Student Initiates Quiz
   @finished
   Scenario: Student successfully initiates Cats Quiz
     Given we have a quiz called "cats" with questions
-      | question                       | answer |
+      | text                           | answer |
       | How many feet on a normal cat? | 4      |
       | Do cats eat meat?              | yes    |
     When the student selects the quiz called "cats"

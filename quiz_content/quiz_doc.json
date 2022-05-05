@@ -3,7 +3,7 @@
   "title": "Development Practice Quiz",
   "questions": [
     {
-      "question": "Are radio buttons a better choice than regular buttons?",
+      "text": "Are radio buttons a better choice than regular buttons?",
       "answer": "It Depends",
       "decoys": [
         "Sure",
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "question": "When should you write a unit test?",
+      "text": "When should you write a unit test?",
       "answer": "First, as a way to express the desired behavior",
       "decoys": [
         "Never, they are a waste of time",
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "question": "What if all questions are empty?",
+      "text": "What if all questions are empty?",
       "answer": "",
       "decoys": []
     }

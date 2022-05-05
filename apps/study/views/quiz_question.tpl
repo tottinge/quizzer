@@ -7,7 +7,7 @@
     % shuffle(choices)
 
     <section class="w3-card w3-container">
-        <h3 class="w3-panel w3-teal w3-card-4 question-asked">{{question.question}}</h3>
+        <h3 class="w3-panel w3-teal w3-card-4 question-asked">{{question.text}}</h3>
         % for choice in choices:
         <div class="form-choice">
             <input class="w3-radio" id='{{choice}}' name='answer' type='radio' value='{{choice}}'/>

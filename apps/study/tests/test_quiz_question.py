@@ -5,7 +5,7 @@ from quizzes.question import Question
 
 class TestQuiz(unittest.TestCase):
     def setUp(self):
-        self.question = Question(question='whatever',
+        self.question = Question(text='whatever',
                                  decoys=['falsehood', 'foolishness'],
                                  answer='the truth')
 

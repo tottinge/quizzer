@@ -16,7 +16,7 @@ Feature: Student Researches A Question
   I have a lovely bunch of coconuts
 
     Given we have a quiz called "cats" with questions
-      | question                       | answer |
+      | text                           | answer |
       | How many feet on a normal cat? | 4      |
 #    And associated research text
 #      """ slklkslsakdflkjsdf

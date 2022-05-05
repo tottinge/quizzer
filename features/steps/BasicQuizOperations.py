@@ -31,7 +31,7 @@ def step_impl(context: Context):
 @step('we have a quiz called "{quiz_name}"')
 def step_impl(context: Context, quiz_name: str):
     questions = [
-        Question(question=f"{quiz_name}'s first", decoys=[], answer="?")]
+        Question(text=f"{quiz_name}'s first", decoys=[], answer="?")]
     quiz = Quiz(
         title=f"This is {quiz_name}",
         name=quiz_name,
@@ -42,7 +42,7 @@ def step_impl(context: Context, quiz_name: str):
 
 @given('we have a quiz called "{quiz_name}" with questions')
 def step_impl(context: Context, quiz_name: str):
-    questions = [Question(question=row["question"],
+    questions = [Question(text=row["text"],
                           answer=row["answer"],
                           confirmation=row.get("confirmation", ""),
                           decoys=[])
@@ -115,7 +115,7 @@ def step_impl(context: Context, question_text: str):
     quiz: Quiz = context.recent_answer.quiz
     next_question_number: int = context.recent_answer.next_question_number
     question: Question = quiz.question_by_number(next_question_number)
-    assert_that(question.question, equal_to(question_text))
+    assert_that(question.text, equal_to(question_text))
 
 
 @step("the log shows the question was answered {how}")

@@ -16,7 +16,7 @@ sample_quiz_json = """
     "title":"test_quiz_authoring_form basic input",
     "questions":[
         {
-            "question": "first sample question",
+            "text": "first sample question",
             "answer": "sample-answer",
             "confirmation":"confirmation for first question",
             "decoys": [

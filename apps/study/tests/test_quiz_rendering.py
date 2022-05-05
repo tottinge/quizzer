@@ -19,7 +19,7 @@ class TestQuizRendering(unittest.TestCase):
 
     def test_question_appears_in_form(self):
         question = "is this in a form?"
-        soup = self.render(question=question)
+        soup = self.render(text=question)
         selection = soup.body.form
         self.assertIn(question, selection.text)
 
@@ -33,7 +33,7 @@ class TestQuizRendering(unittest.TestCase):
             title="no resources at all",
             name="resourceless_test",
             questions=[
-                Question(question="Why no resources?", decoys=["Who knows?"],
+                Question(text="Why no resources?", decoys=["Who knows?"],
                          answer="I'm lazy")
             ]
         )
@@ -73,14 +73,14 @@ class TestQuizRendering(unittest.TestCase):
         )
 
     @staticmethod
-    def render(title="_", name="quiz_name", question="?",
+    def render(title="_", name="quiz_name", text="?",
                decoys=("True", "False"), answer="True",
                resources=None):
         document = Quiz(
             title=title,
             name=name,
             questions=[
-                Question(question=question, decoys=decoys, answer=answer,
+                Question(text=text, decoys=decoys, answer=answer,
                          resources=resources or [])
             ]
         )

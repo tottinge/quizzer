@@ -7,7 +7,7 @@ Feature: Answer Questions
   Background:
     Given quizzology is running
     And we have a quiz called "cats" with questions
-      | question                       | answer | confirmation                                                                 |
+      | text                           | answer | confirmation                                                                 |
       | How many feet on a normal cat? | 4      | All cats are 4-legged (quadripedal) animals                                  |
       | Do cats eat meat?              | yes    | Cats are obligate carnivores, meaning that they need to eat meat to survive. |
       | Is this the 3rd question?      | yes    | We only wrote three                                                          |

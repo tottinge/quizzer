@@ -4,7 +4,7 @@ from typing import Dict
 
 @dataclass
 class Question:
-    question: str
+    text: str
     answer: str
     decoys: list[str] = field(default_factory=list)
     resources: list[Dict[str, str]] = field(default_factory=list)

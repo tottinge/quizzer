@@ -3,7 +3,7 @@
   "title": "Basics of HTML",
   "questions": [
     {
-      "question": "How do i display a graphic on a web page?",
+      "text": "How do i display a graphic on a web page?",
       "answer": "<img src=\"URL\" />",
       "decoys": [
         "<photo img=\"URL\" />",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "question": "How does one adjust the spacing around an image?",
+      "text": "How does one adjust the spacing around an image?",
       "answer": "hspace and vspace",
       "decoys": [
         "wrap it in a <section>",

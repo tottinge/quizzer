@@ -22,7 +22,7 @@ class TestSession(unittest.TestCase):
         use_this_quizzology(self.context_with_in_memory_session_store())
 
         self.question = Question(
-            question='whatever',
+            text='whatever',
             decoys=['falsehood', 'foolishness'],
             answer='the truth',
             confirmation="confirmation text"
@@ -87,7 +87,7 @@ class TestSession(unittest.TestCase):
 
     def test_offers_next_question_if_any_exist(self):
         second_question = Question(
-            question="Second",
+            text="Second",
             decoys=[],
             answer="answer"
         )

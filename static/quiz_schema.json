@@ -16,9 +16,9 @@
         "type":"object",
         "title":"Question",
         "properties": {
-          "question":{
+          "text":{
             "type": "string",
-            "title": "Question"
+            "title": "Question To Ask"
           },
           "answer": {
             "type": "string",
@@ -51,7 +51,7 @@
               "type": "object",
               "title": "Resource for further study",
               "properties": {
-                "text": {"type":"string", "title": "text"},
+                "text": {"type":"string", "title": "Link Text"},
                 "url": {"type": "string", "title":  "URL"}
               }
             }

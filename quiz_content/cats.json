@@ -3,7 +3,7 @@
   "title": "Cats Quiz",
   "questions": [
     {
-      "question": "Which cat is sleeping in the window?",
+      "text": "Which cat is sleeping in the window?",
       "answer": "Gray",
       "decoys": [
         "Phydeaux",
@@ -19,7 +19,7 @@
       "confirmation": "Gray is obsessed with looking out the window."
     },
     {
-      "question": "Which cat jumps on the counter?",
+      "text": "Which cat jumps on the counter?",
       "answer": "Jack",
       "decoys": [
         "Phydeaux",
@@ -30,7 +30,7 @@
       "confirmation": ""
     },
     {
-      "question": "Which name is only a nickname?",
+      "text": "Which name is only a nickname?",
       "answer": "Fluffybutt",
       "decoys": [
         "Phydeaux",
@@ -41,7 +41,7 @@
       "confirmation": ""
     },
     {
-      "question": "Who is a trash panda?",
+      "text": "Who is a trash panda?",
       "answer": "Gray",
       "decoys": [
         "Phydeaux",
@@ -52,7 +52,7 @@
       "confirmation": "He just can't resist chicken leftovers"
     },
     {
-      "question": "Which cat lived in the 70s?",
+      "text": "Which cat lived in the 70s?",
       "answer": "Phydeaux",
       "decoys": [
         "Gray",
