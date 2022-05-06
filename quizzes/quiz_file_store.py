@@ -44,6 +44,8 @@ class QuizFileStore:
 
     def get_quiz(self, quiz_name: str) -> Optional[Quiz]:
         filename = self._find_file_for_named_quiz(quiz_name)
+        if not filename:
+            return None
         document = self._read_quiz_document(filename)
         return Quiz.from_json(document) if document else None
 
@@ -104,7 +106,7 @@ class QuizFileStore:
         with open(filename) as input_file:
             return json.load(input_file)
 
-    def _find_file_for_named_quiz(self, quiz_name: str) -> str:
+    def _find_file_for_named_quiz(self, quiz_name: str) -> Optional[str]:
         lookup = {
             summary.name: summary.id
             for summary
