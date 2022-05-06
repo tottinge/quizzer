@@ -46,6 +46,7 @@ app.mount(study_root_page, quizzing_app)
 @app.route('/login')
 @bottle.view("login")
 def login():
+    # pylint disable=no-member
     return {
         "title": "Who are you?",
         "flash": request.query.get("flash", ""),

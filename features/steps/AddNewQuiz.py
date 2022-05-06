@@ -6,6 +6,7 @@ from hamcrest import assert_that, is_
 from apps.author.author_controller import AuthorController
 from quizzes.quiz import Quiz
 
+# pylint disable=no-member
 
 @step("decoys are")
 def step_impl_decoys_are(context: Context):

@@ -64,6 +64,7 @@ def create_new_quiz():
 @app.post('/edit')
 @view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
 def update_quiz_from_html_form():
+    # pylint disable=no-member
     doc_field_value = bottle.request.forms.get('quiz')
     as_json = json.loads(doc_field_value)
     quiz = Quiz.from_json(as_json)

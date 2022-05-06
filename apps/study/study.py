@@ -62,6 +62,7 @@ def url_for(quiz: Quiz, question_number: int):
 
 @app.post('/<quiz_name>/<question_number:int>')
 def check_answer(quiz_name, question_number):
+    # pylint disable=no-member
     selection = request.forms.get('answer')
     quiz = study_controller.get_quiz_by_name(quiz_name)
     return render_judgment(quiz, question_number, selection)
