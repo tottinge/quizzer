@@ -16,7 +16,7 @@ from shared.quizzology import Quizzology
 
 
 @given("quizzology is running")
-def step_impl(context: Context):
+def step_impl_quizzology_is_running(context: Context):
     session_store = SessionStore(TinyDB(storage=MemoryStorage))
     quiz_store = QuizFileStore(context.temporary_directory.name)
     quizzology = Quizzology(quiz_store, session_store)
@@ -29,7 +29,7 @@ def step_impl(context: Context):
 
 
 @step('we have a quiz called "{quiz_name}"')
-def step_impl(context: Context, quiz_name: str):
+def step_impl_we_have_a_quiz(context: Context, quiz_name: str):
     questions = [
         Question(text=f"{quiz_name}'s first", decoys=[], answer="?")]
     quiz = Quiz(
@@ -41,7 +41,7 @@ def step_impl(context: Context, quiz_name: str):
 
 
 @given('we have a quiz called "{quiz_name}" with questions')
-def step_impl(context: Context, quiz_name: str):
+def step_impl_we_have_quiz_with_questions(context: Context, quiz_name: str):
     questions = [Question(text=row["text"],
                           answer=row["answer"],
                           confirmation=row.get("confirmation", ""),
@@ -60,7 +60,7 @@ def current_question(context: Context) -> StudyController.PreparedQuestion:
 
 
 @step('the student selects the quiz called "{quiz_name}"')
-def step_impl(context: Context, quiz_name: str):
+def step_impl_student_selects_quiz_by_name(context: Context, quiz_name: str):
     study_controller: StudyController = context.study_controller
     quiz = study_controller.get_quiz_by_name(quiz_name)
     context.current_question = study_controller.begin_quiz(quiz)
@@ -68,14 +68,14 @@ def step_impl(context: Context, quiz_name: str):
 
 
 @then('the "{quiz_name}" quiz is in-progress')
-def step_impl(context: Context, quiz_name: str):
+def step_impl_quiz_is_in_progress(context: Context, quiz_name: str):
     first_question = current_question(context)
     assert_that(first_question, not_none())
     assert_that(first_question.quiz.name, equal_to(quiz_name))
 
 
 @step('the first "{quiz_name}" question is displayed')
-def step_impl(context: Context, quiz_name: str):
+def step_impl_first_question_is_displayed(context: Context, quiz_name: str):
     question = current_question(context)
     assert_that(question.quiz.name, equal_to(quiz_name))
 
@@ -91,7 +91,7 @@ def save_quiz(context: Context, quiz: Quiz):
 
 
 @when('the student answers "{answer}"')
-def step_impl(context: Context, answer: str):
+def step_impl_student_gives_answer(context: Context, answer: str):
     question = current_question(context)
     context.recent_answer = context.study_controller.record_answer_and_get_status(
         question_number=question.question_number,
@@ -101,17 +101,17 @@ def step_impl(context: Context, answer: str):
 
 
 @then("the answer is confirmed as correct")
-def step_impl(context: Context):
+def step_impl_answer_is_confirmed_correct(context: Context):
     assert_that(context.recent_answer.correct, "Answer should be correct")
 
 
 @step("the confirmation message is delivered")
-def step_impl(context: Context):
+def step_impl_confirmation_message_is_delivered(context: Context):
     assert_that(context.recent_answer.confirmation, is_not(empty()))
 
 
 @step('the next question is "{question_text}"')
-def step_impl(context: Context, question_text: str):
+def step_impl_next_question_text_given(context: Context, question_text: str):
     quiz: Quiz = context.recent_answer.quiz
     next_question_number: int = context.recent_answer.next_question_number
     question: Question = quiz.question_by_number(next_question_number)
@@ -119,7 +119,7 @@ def step_impl(context: Context, question_text: str):
 
 
 @step("the log shows the question was answered {how}")
-def step_impl(context: Context, how: str):
+def step_impl_log_shows_question_answer(context: Context, how: str):
     study_controller: StudyController = context.study_controller
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
@@ -135,14 +135,8 @@ def step_impl(context: Context, how: str):
                 f"User said '{user_choice}', which is answered {how}")
 
 
-@given("we have a question {question}")
-def step_impl(context: Context, question: str):
-    pass
-    # raise NotImplementedError('STEP: Given we have a question <question>')
-
-
 @when("the student provides these answers")
-def step_impl(context: Context):
+def step_impl_student_provides_multiple_answers(context: Context):
     for row in context.table:
         answer, expected = row['answer'], row.get('expected', 'right')
 
@@ -170,13 +164,13 @@ def step_impl(context: Context):
 
 
 @then("we have completed the quiz")
-def step_impl(context: Context):
+def step_impl_quiz_is_completed(context: Context):
     recent_answer: StudyController.RecordedAnswer = context.recent_answer
     assert_that(recent_answer.quiz_is_finished(), is_(True))
 
 
 @step("no incorrect answers were given")
-def step_impl(context: Context):
+def step_impl_all_answers_correct(context: Context):
     session_id = context.recent_answer.session_id
     quiz_name = context.recent_answer.quiz.name
 
@@ -187,12 +181,12 @@ def step_impl(context: Context):
 
 
 @step("we cannot go to the next question")
-def step_impl(context: Context):
+def step_impl_no_next_question(context: Context):
     recent_answer: StudyController.RecordedAnswer = context.recent_answer
     assert_that(recent_answer.next_question_number, none())
 
 
 @step("{oopses:d} incorrect answer was given")
-def step_impl(context: Context, oopses: int):
+def step_impl_answer_was_wrong(context: Context, oopses: int):
     recent_answer: StudyController.RecordedAnswer = context.recent_answer
     assert_that(oopses, equal_to(recent_answer.incorrect_answers))
