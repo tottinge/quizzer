@@ -3,7 +3,6 @@ import unittest
 from dataclasses import asdict
 
 import bs4.element
-import hamcrest
 from bottle import template
 from bs4 import BeautifulSoup
 from hamcrest import assert_that, contains_string, not_none, is_, has_item
@@ -32,6 +31,7 @@ sample_quiz_json = """
 }
 """
 
+
 class StaticFormVerification(unittest.TestCase):
     quiz: Quiz
     page_title: str
@@ -47,7 +47,7 @@ class StaticFormVerification(unittest.TestCase):
             'quiz': cls.quiz,
             'title': cls.page_title,
             'raw_quiz': asdict(cls.quiz),
-            'schema':{},
+            'schema': {},
             'message': cls.message,
             'error': False
         })
@@ -76,6 +76,7 @@ class StaticFormVerification(unittest.TestCase):
         message_on_page = self.dom.find('p', id='post-message')
         assert_that(message_on_page.text, contains_string(self.message))
 
+
 class RenderWithFailureToSave(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -87,9 +88,9 @@ class RenderWithFailureToSave(unittest.TestCase):
             'quiz': cls.quiz,
             'title': cls.page_title,
             'raw_quiz': asdict(cls.quiz),
-            'schema':{},
+            'schema': {},
             'message': cls.message,
-            'error':True
+            'error': True
         })
         cls.dom = BeautifulSoup(cls.html, "html.parser")
 
@@ -97,7 +98,6 @@ class RenderWithFailureToSave(unittest.TestCase):
         message_on_page = self.dom.find('p', id='post-message')
         assert_that(message_on_page.text, contains_string(self.message))
         assert_that(message_on_page['class'], has_item('w3-pale-red'))
-
 
 
 if __name__ == '__main__':
