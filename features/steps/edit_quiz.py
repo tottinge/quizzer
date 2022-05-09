@@ -20,7 +20,7 @@ LocalContext = Union[HasOurStuff, Context]
 
 
 @given('there is a quiz with name "{name}"')
-def step_impl(context: LocalContext, name):
+def step_impl_there_is_a_quiz_with_name(context: LocalContext, name):
     quiz = Quiz(name=name, title=f"Title For Quiz Named {name}")
     result = context.author_controller.save(quiz)
     assert_that(result.success, is_(True))
@@ -28,7 +28,7 @@ def step_impl(context: LocalContext, name):
 
 
 @when("a question is added")
-def step_impl(context: LocalContext):
+def step_impl_a_question_is_added(context: LocalContext):
     table_values = dict(
         (row['FIELD'], row['VALUE'])
         for row in context.table.rows
@@ -45,7 +45,9 @@ def step_impl(context: LocalContext):
 
 
 @then('there is {count} question in "{quiz_name}"')
-def step_impl(context: LocalContext, count: str, quiz_name: str):
+def step_impl_confirm_number_of_questions(
+        context: LocalContext, count: str, quiz_name: str
+    ):
     api: AuthorController = context.author_controller
     quiz = api.get_quiz(quiz_name)
     assert_that(quiz.name, equal_to(quiz_name))
@@ -53,7 +55,7 @@ def step_impl(context: LocalContext, count: str, quiz_name: str):
 
 
 @step("has decoys")
-def step_impl(context: LocalContext):
+def step_impl_has_decoys(context: LocalContext):
     question: Question = context.quiz.first_question()
     new_decoys = [row['DECOYS'] for row in context.table.rows]
     question.decoys = new_decoys
@@ -61,7 +63,7 @@ def step_impl(context: LocalContext):
 
 
 @step("has resources")
-def step_impl(context: LocalContext):
+def step_impl_has_resources(context: LocalContext):
     question: Question = context.quiz.first_question()
     question.resources = [
         [row['DESCRIPTION'], row['URL']]
@@ -71,7 +73,7 @@ def step_impl(context: LocalContext):
 
 
 @step("the first question has")
-def step_impl(context: LocalContext):
+def step_impl_the_first_question_has(context: LocalContext):
     first_row = context.table.rows[0]
     decoy_count = int(first_row['DECOYS'])
     resource_count = int(first_row['RESOURCES'])
