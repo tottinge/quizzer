@@ -13,9 +13,9 @@ class TestFilenameGeneration(unittest.TestCase):
         self.temporary_directory = tempfile.TemporaryDirectory()
         self.quiz_store = QuizFileStore(self.temporary_directory.name)
 
-
     def test_adds_json_extension(self):
-        assert_that(self.quiz_store.filename_for("poo"), contains_string("poo.json"))
+        assert_that(self.quiz_store.filename_for("poo"),
+                    contains_string("poo.json"))
 
     def test_translates_spaces(self):
         actual = self.quiz_store.filename_for('pooh bear and tigger')
@@ -23,7 +23,7 @@ class TestFilenameGeneration(unittest.TestCase):
 
     def test_handles_path_characters(self):
         actual = self.quiz_store.filename_for('~/c:x/y/blah\this\\')
-        end_of_path = len(self.quiz_store.quiz_dir)+1
+        end_of_path = len(self.quiz_store.quiz_dir) + 1
         actual = actual[end_of_path:]
         for unwanted in '/', '\\', ':', '~':
             assert_that(actual, not_(contains_string(unwanted)))
@@ -38,7 +38,8 @@ class TestFilenameGeneration(unittest.TestCase):
         with patch.object(self.quiz_store, "_find_file_for_named_quiz") as mock:
             existing_path = '/zippidy/doo/dah'
             mock.return_value = existing_path
-            assert_that(self.quiz_store.filename_for("whatever"), is_(existing_path))
+            assert_that(self.quiz_store.filename_for("whatever"),
+                        is_(existing_path))
 
 
 if __name__ == '__main__':

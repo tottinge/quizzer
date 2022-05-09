@@ -93,7 +93,8 @@ def save_quiz(context: Context, quiz: Quiz):
 @when('the student answers "{answer}"')
 def step_impl_student_gives_answer(context: Context, answer: str):
     question = current_question(context)
-    context.recent_answer = context.study_controller.record_answer_and_get_status(
+    controller = context.study_controller
+    context.recent_answer = controller.record_answer_and_get_status(
         question_number=question.question_number,
         quiz=question.quiz,
         selection=answer,
@@ -137,12 +138,13 @@ def step_impl_log_shows_question_answer(context: Context, how: str):
 
 @when("the student provides these answers")
 def step_impl_student_provides_multiple_answers(context: Context):
+    controller = context.study_controller
     for row in context.table:
         answer, expected = row['answer'], row.get('expected', 'right')
 
         question = current_question(context)
         recent_answer: StudyController.RecordedAnswer = \
-            context.study_controller.record_answer_and_get_status(
+            controller.record_answer_and_get_status(
                 question_number=question.question_number,
                 quiz=question.quiz,
                 selection=answer,
@@ -156,7 +158,7 @@ def step_impl_student_provides_multiple_answers(context: Context):
 
         more_questions = recent_answer.next_question_number
         if more_questions:
-            new_question = context.study_controller.prepare_quiz_question_document(
+            new_question = controller.prepare_quiz_question_document(
                 recent_answer.quiz,
                 recent_answer.next_question_number
             )

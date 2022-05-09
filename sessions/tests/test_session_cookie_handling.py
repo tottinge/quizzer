@@ -2,8 +2,11 @@ import unittest
 
 from bottle import LocalRequest, LocalResponse
 
-from sessions.session_id import drop_client_session_id, get_client_session_id, \
+from sessions.session_id import (
+    drop_client_session_id,
+    get_client_session_id,
     SESSION_COOKIE_ID
+)
 
 
 class TestSessionCookieHandling(unittest.TestCase):

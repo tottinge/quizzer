@@ -6,6 +6,7 @@ from hamcrest import assert_that, is_
 from apps.author.author_controller import AuthorController
 from quizzes.quiz import Quiz
 
+
 # pylint disable=no-member
 
 @step("decoys are")
@@ -28,7 +29,7 @@ def step_impl_add_quiz(context: Context, name: str, title: str):
 def step_impl_quiz_accessible(context: Context, quiz_name: str):
     controller: AuthorController = context.author_controller
     assert_that(controller.quiz_exists(quiz_name), is_(True),
-        f"Cannot access newly-created '{quiz_name}'")
+                f"Cannot access newly-created '{quiz_name}'")
 
 
 @when('the author adds a question "{question_text}"')
