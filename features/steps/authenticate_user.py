@@ -50,8 +50,10 @@ def step_impl_user_logs_in(context: OurContext, user_id: str, password: str):
                                               db=get_user_db(context))
     if context.authenticated_user:
         token = make_bearer_token(user=context.authenticated_user)
-        context.get_token_mock = patch("security.authz.get_authorization_token",
-                                       return_value=token)
+        context.get_token_mock = patch(
+            "security.authz.get_authorization_token",
+            return_value=token
+        )
         context.get_token_mock.start()
 
 
@@ -85,7 +87,7 @@ def step_impl_user_does_not_exist(context: OurContext, user_id: str):
 @given('an {role} "{user_id}" exists with password "{password}"')
 def step_impl_user_exists_with_password(
         context: OurContext, role: str, user_id: str, password: str
-    ):
+):
     database = get_user_db(context)
     database.create_user(user_id, password=password, role=role)
 
@@ -102,7 +104,7 @@ def step_impl_session_has_expired(context: OurContext):
 @given('an {role} "{user_id}" has logged in with password "{password}"')
 def step_impl_role_based_user_has_logged_in_with_password(
         context: OurContext, role: str, user_id: str, password: str
-    ):
+):
     context.execute_steps(f"""
         Given a {role} "{user_id}" exists with password "{password}"
         And "{user_id}" logs in with password "{password}"
@@ -112,7 +114,7 @@ def step_impl_role_based_user_has_logged_in_with_password(
 @given('the page "{pagename}" is restricted to {role}')
 def step_impl_page_is_restricted_to_role(
         context: OurContext, pagename: str, role: str
-    ):
+):
     roles = [r.strip() for r in role.split(",")]
     role_decorator = security.authz.require_roles(*roles)
     protected_function = role_decorator(lambda: pagename)
@@ -140,7 +142,7 @@ def step_impl_user_visits_route(context: OurContext, user: str, route: str):
 
 @when('guest user visits "{route}"')
 def step_impl_guest_user_risits_route(context: OurContext, route: str):
-    role, user_name, password = None, 'nonesuch', 'nonesuch'
+    user_name, password = 'nonesuch', 'nonesuch'
     context.execute_steps(f"""
         When "{user_name}" logs in with password "{password}"
         And "{user_name}" visits "{route}"
@@ -166,7 +168,9 @@ def step_impl_flash_message_displayed(context: OurContext):
 
 
 @then('the "{expected_page}" is visited')
-def step_impl_expected_page_is_visited(context: OurContext, expected_page: str):
+def step_impl_expected_page_is_visited(
+        context: OurContext, expected_page: str
+):
     if expected_page == "login":
         is_login_page(context)
     else:
@@ -176,7 +180,7 @@ def step_impl_expected_page_is_visited(context: OurContext, expected_page: str):
 @step('the destination "{page}" is passed to the login page')
 def step_impl_destination_page_is_passed_to_login_page(
         context: OurContext, page: str
-    ):
+):
     is_login_page(context)
     url_parse_result = urlparse(context.visit_result)
     query_parameters = parse_qs(url_parse_result.query)

@@ -47,7 +47,7 @@ def step_impl_a_question_is_added(context: LocalContext):
 @then('there is {count} question in "{quiz_name}"')
 def step_impl_confirm_number_of_questions(
         context: LocalContext, count: str, quiz_name: str
-    ):
+):
     api: AuthorController = context.author_controller
     quiz = api.get_quiz(quiz_name)
     assert_that(quiz.name, equal_to(quiz_name))

@@ -19,7 +19,6 @@ class TestAuthorController(unittest.TestCase):
         self.api = AuthorController(self.quizzology)
         self.quiz = Quiz(name="test quiz", title="New Test Quiz")
 
-
     def test_create_new_quiz(self):
         api, quiz = self.api, self.quiz
         result = api.save(quiz)
@@ -42,7 +41,6 @@ class TestAuthorController(unittest.TestCase):
                 contains_string("fake error"),
                 f"Message should contain diagnostic message '{result.message}'"
             )
-
 
 
 class LondonSchoolTests(unittest.TestCase):

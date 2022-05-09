@@ -15,7 +15,10 @@ class TestRoutes(TestCase):
     def test_unauthenticated_user_visiting_session_page_causes_redirect(self):
         response = self.sut.get('/session')
         assert_that(response.status_code, is_(302))
-        assert_that(response.headers.get('Location'), contains_string('/login'))
+        assert_that(
+            response.headers.get('Location'),
+            contains_string('/login')
+        )
 
     def test_study_page_loads_and_has_title(self):
         response = self.sut.get('/study')

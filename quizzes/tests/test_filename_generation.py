@@ -35,7 +35,9 @@ class TestFilenameGeneration(unittest.TestCase):
             assert_that(actual, not_(contains_string(bad_thing)))
 
     def test_does_not_generate_new_filename_for_existing_file(self):
-        with patch.object(self.quiz_store, "_find_file_for_named_quiz") as mock:
+        with patch.object(
+                self.quiz_store, "_find_file_for_named_quiz"
+        ) as mock:
             existing_path = '/zippidy/doo/dah'
             mock.return_value = existing_path
             assert_that(self.quiz_store.filename_for("whatever"),

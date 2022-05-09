@@ -23,7 +23,9 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertTrue(record.is_correct)
         self.assertEqual(session_id, record.session_id)
         self.assertEqual(quiz_name, record.quiz_name)
-        correct = session_store.number_of_correct_answers(session_id, quiz_name)
+        correct = session_store.number_of_correct_answers(
+            session_id, quiz_name
+        )
         self.assertEqual(1, correct)
         incorrect = session_store.number_of_incorrect_answers(session_id,
                                                               quiz_name)
@@ -46,7 +48,6 @@ class SessionStoreStuff(unittest.TestCase):
         self.assertEqual(session_id, record.session_id)
         self.assertEqual(quiz_name, record.quiz_name)
         self.assertEqual(False, record.is_correct)
-
 
     def test_recorded_answers_are_unique_within_session(self):
         session_store = self.session_store
