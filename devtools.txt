@@ -3,3 +3,4 @@ coverage
 bandit
 mypy
 flake8
+types-beautifulsoup4

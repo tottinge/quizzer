@@ -1,5 +1,5 @@
 from tempfile import TemporaryDirectory
-from typing import Protocol, Union, Optional, Dict, Callable
+from typing import Protocol, Union, Optional, Dict, Callable, ByteString
 from unittest.mock import patch
 from urllib.parse import urlparse, parse_qs
 
@@ -178,5 +178,6 @@ def step_impl_destination_page_is_passed_to_login_page(
     is_login_page(context)
     url_parse_result = urlparse(context.visit_result)
     query_parameters = parse_qs(url_parse_result.query)
+    destination: str
     [destination] = query_parameters['destination']
     assert_that(destination, is_(page))
