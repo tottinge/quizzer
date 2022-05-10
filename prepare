@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-git pull &&
+git pull --rebase &&
   pip install --upgrade pip &&
   pip install --upgrade -qr requirements.txt &&
   pip install --upgrade -qr devtools.txt &&
