@@ -10,3 +10,4 @@ selenium
 WebTest
 gunicorn
 pyjwt
+pymongo
