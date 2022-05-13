@@ -1,5 +1,6 @@
 from tempfile import TemporaryDirectory
-from typing import Protocol, Union, Optional, Dict, Callable, ByteString
+from typing import Protocol, Union, Optional, Dict, Callable
+from unittest.mock import Mock
 from unittest.mock import patch
 from urllib.parse import urlparse, parse_qs
 
@@ -13,28 +14,18 @@ from security.authn import make_bearer_token, authenticate
 from shared.user import UserDatabase, User
 
 
-class HasAUser(Protocol):
-    authenticated_user: Optional[User]
-
-
-class HasATempDir(Protocol):
+class CombinedContext(Protocol):
     temporary_directory: Optional[TemporaryDirectory]
-
-
-class HasAUserDb(Protocol):
     user_db: Optional[UserDatabase]
-
-
-class HasRoutes(Protocol):
     routes: Optional[Dict[str, Callable[[], str]]]
-
-
-class HasVisitResult(Protocol):
     visit_result: Optional[str]
+    authenticated_user: Optional[User]
+    get_token_mock: Mock
+    get_request_path_mock: Mock
 
 
 OurContext = Union[
-    HasAUser, HasATempDir, HasAUserDb, HasRoutes, HasVisitResult, Context
+    CombinedContext, Context
 ]
 
 
