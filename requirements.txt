@@ -11,3 +11,4 @@ WebTest
 gunicorn
 pyjwt
 pymongo
+dnspython
