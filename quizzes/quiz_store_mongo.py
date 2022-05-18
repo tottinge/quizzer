@@ -1,6 +1,19 @@
 import os
+from dataclasses import asdict
 
 import pymongo
+
+from quizzes.quiz import Quiz
+from quizzes.quiz_store import SaveQuizResult
+
+
+class MongoConnection:
+    def __init__(self, ):
+        def __enter__(self):
+            ...
+
+    def __exit__(self):
+        ...
 
 
 class MongoFileStore:
@@ -11,12 +24,28 @@ class MongoFileStore:
         self.username = os.environ['QUIZ_MONGO_USER']
         self.password = os.environ['QUIZ_MONGO_PASSWORD']
 
-    def exists(self, quiz_name: str) -> bool:
-        db_connection = pymongo.MongoClient(self.url,
-                                            username=self.username,
-                                            password=self.password)
+    def db_connection(self):
+        return pymongo.MongoClient(
+            self.url,
+            username=self.username,
+            password=self.password
+        )
 
-        quiz_db = db_connection[self.collection]['quizzes']
-        result = quiz_db.count_documents({'name': quiz_name})
-        db_connection.close()
+    def exists(self, quiz_name: str) -> bool:
+        with self.db_connection() as db:
+            quiz_db = db[self.collection]['quizzes']
+            result = quiz_db.count_documents({'name': quiz_name})
         return bool(result)
+
+    def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
+        with self.db_connection() as db:
+            quizzes = db[self.collection]['quizzes']
+            try:
+                result = quizzes.insert_one(document=asdict(quiz))
+                return SaveQuizResult(
+                    result.inserted_id,
+                    success=True,
+                    message=f"quiz [{quiz.name}] saved. Acknowledge: {result.acknowledged}"
+                )
+            except Exception as err:
+                return SaveQuizResult("", False, message=str(err))
