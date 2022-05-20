@@ -1,7 +1,7 @@
 from typing import Optional
 
 from apps.study.session_store import SessionStore, prepare_session_store
-from quizzes.quiz_file_store import QuizFileStore
+from quizzes.quiz_store_file import QuizStoreFile
 from quizzes.quiz_store import StoresQuizzes
 
 
@@ -19,4 +19,4 @@ class Quizzology:
         self.session_store = (session_store
                               if session_store else prepare_session_store())
         self.quiz_store: StoresQuizzes = quiz_store \
-            if quiz_store else QuizFileStore()
+            if quiz_store else QuizStoreFile()

@@ -4,14 +4,14 @@ from unittest.mock import patch
 
 from hamcrest import (assert_that, is_, contains_string, not_)
 
-from quizzes.quiz_file_store import QuizFileStore
+from quizzes.quiz_store_file import QuizStoreFile
 
 
 class TestFilenameGeneration(unittest.TestCase):
 
     def setUp(self):
         self.temporary_directory = tempfile.TemporaryDirectory()
-        self.quiz_store = QuizFileStore(self.temporary_directory.name)
+        self.quiz_store = QuizStoreFile(self.temporary_directory.name)
 
     def test_adds_json_extension(self):
         assert_that(self.quiz_store.filename_for("poo"),

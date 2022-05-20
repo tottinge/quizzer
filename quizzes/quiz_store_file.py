@@ -22,7 +22,7 @@ defang_bad_chars = str.maketrans({
 })
 
 
-class QuizFileStore:
+class QuizStoreFile:
     """ For consideration
     * why not do a dir walk?
     * instead of filename, an ID in summaries?
