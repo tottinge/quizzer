@@ -7,8 +7,7 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import SaveQuizResult
 
 
-class MongoFileStore:
-
+class QuizStoreMongo:
     def __init__(self, db_name=None):
         self.collection = db_name if db_name else 'Quizzology'
         self.url = os.environ['QUIZ_MONGO_URL']
