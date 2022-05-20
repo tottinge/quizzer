@@ -1,5 +1,6 @@
 import os
 from dataclasses import asdict
+from typing import Optional
 
 import pymongo
 
@@ -39,3 +40,7 @@ class QuizStoreMongo:
                 )
             except Exception as err:
                 return SaveQuizResult("", False, message=str(err))
+
+    def get_quiz(self, name: str) -> Optional[Quiz]:
+        with self.db_connection() as db:
+            quizzes = db[self.collection]['quizzes']

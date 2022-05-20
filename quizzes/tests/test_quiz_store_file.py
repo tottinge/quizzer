@@ -10,7 +10,7 @@ from quizzes.quiz_store_file import logger, QuizStoreFile
 ico = '/favicon.ico'
 
 
-class QuizStoreTest(unittest.TestCase):
+class QuizStoreFileTest(unittest.TestCase):
     @patch('os.listdir', return_value=['a.json'])
     @patch('builtins.open')
     @patch('json.load', return_value=dict(name="name", title="a title"))
