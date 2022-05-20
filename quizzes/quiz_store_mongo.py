@@ -7,15 +7,6 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import SaveQuizResult
 
 
-class MongoConnection:
-    def __init__(self, ):
-        def __enter__(self):
-            ...
-
-    def __exit__(self):
-        ...
-
-
 class MongoFileStore:
 
     def __init__(self, db_name=None):
