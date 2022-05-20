@@ -35,14 +35,6 @@ Feature: Edit Quiz
       | DECOYS | RESOURCES |
       | 2      | 3         |
 
-  Scenario: Author adds resources to a question
-    Given there is a quiz named "populated" with 1 question
-    When the author adds resources
-      | Text                       | Url                                   |
-      | Let me google that for you | http://lmgtfy.com/                    |
-      | And then there was one     | http://wikipedia.com?Agatha%20Cristie |
-    Then the question has 2 resources
-
   # ToDo: Additional Tests
   # Delete questions
   # Delete the quiz
