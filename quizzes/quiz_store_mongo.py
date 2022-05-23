@@ -11,11 +11,14 @@ from quizzes.quiz_store import SaveQuizResult
 class QuizStoreMongo:
     def __init__(self, db_name=None):
         self.collection = db_name if db_name else 'Quizzology'
+
+    def get_credentials(self):
         self.url = os.environ['QUIZ_MONGO_URL']
         self.username = os.environ['QUIZ_MONGO_USER']
         self.password = os.environ['QUIZ_MONGO_PASSWORD']
 
     def db_connection(self):
+        self.get_credentials()
         return pymongo.MongoClient(
             self.url,
             username=self.username,
