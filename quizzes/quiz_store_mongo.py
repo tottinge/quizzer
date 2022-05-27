@@ -19,21 +19,22 @@ class QuizStoreMongo:
 
     def db_connection(self):
         self.get_credentials()
-        return pymongo.MongoClient(
+        db = self.db = pymongo.MongoClient(
             self.url,
             username=self.username,
             password=self.password
         )
+        return db
 
     def exists(self, quiz_name: str) -> bool:
         with self.db_connection() as db:
-            quiz_db = db[self.collection]['quizzes']
+            quiz_db = db[self.collection].quizzes
             result = quiz_db.count_documents({'name': quiz_name})
         return bool(result)
 
     def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
         with self.db_connection() as db:
-            quizzes = db[self.collection]['quizzes']
+            quizzes = db[self.collection].quizzes
             try:
                 result = quizzes.insert_one(document=asdict(quiz))
                 return SaveQuizResult(
@@ -46,4 +47,5 @@ class QuizStoreMongo:
 
     def get_quiz(self, name: str) -> Optional[Quiz]:
         with self.db_connection() as db:
-            quizzes = db[self.collection]['quizzes']
+            quizzes = db[self.collection].quizzes
+            return quizzes.find_one({'name':name})

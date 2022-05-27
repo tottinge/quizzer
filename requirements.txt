@@ -12,4 +12,3 @@ gunicorn
 pyjwt
 pymongo
 dnspython
-pymongo-inmemory
