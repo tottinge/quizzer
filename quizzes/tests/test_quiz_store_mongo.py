@@ -18,6 +18,7 @@ class QuizStoreMongoTest(unittest.TestCase):
         result = store.get_quiz('fred')
         assert_that(result["name"], is_("fred"))
         assert_that(result["title"], is_("What we said"))
+        # ToDo: Figure out how to get permission to drop a database
         # store.db_connection().drop_database(test_db_name)
 
 
