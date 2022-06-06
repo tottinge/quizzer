@@ -19,8 +19,8 @@ class QuizStoreMongoTest(unittest.TestCase):
         assert_that(result["name"], is_("fred"))
         assert_that(result["title"], is_("What we said"))
         # TODO: Drop the collection after each test
-
-        # store.collection(store.db_connection()).delete_one({'_id': result['_id']})
+        store.collection(store.db_connection()).delete_one(
+            {'_id': result['_id']})
 
 
 if __name__ == '__main__':
