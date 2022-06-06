@@ -12,17 +12,11 @@ class QuizStoreMongo:
     def __init__(self, collection_name=None):
         self.collection_name = collection_name if collection_name else 'quizzes'
 
-    def get_credentials(self):
-        self.url = os.environ['QUIZ_MONGO_URL']
-        self.username = os.environ['QUIZ_MONGO_USER']
-        self.password = os.environ['QUIZ_MONGO_PASSWORD']
-
     def db_connection(self):
-        self.get_credentials()
-        db = self.db = pymongo.MongoClient(
-            self.url,
-            username=self.username,
-            password=self.password
+        db = pymongo.MongoClient(
+            os.environ['QUIZ_MONGO_URL'],
+            username=(os.environ['QUIZ_MONGO_USER']),
+            password=(os.environ['QUIZ_MONGO_PASSWORD'])
         )
         return db
 
@@ -51,4 +45,4 @@ class QuizStoreMongo:
     def get_quiz(self, name: str) -> Optional[Quiz]:
         with self.db_connection() as db:
             quizzes = self.collection(db)
-            return quizzes.find_one({'name':name})
+            return quizzes.find_one({'name': name})
