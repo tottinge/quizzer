@@ -8,19 +8,26 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store_mongo import QuizStoreMongo
 
 
+@skipIf(os.environ.get("QUIZ_MONGO_URL", None) is None,
+        "No database configured")
 class QuizStoreMongoTest(unittest.TestCase):
-    @skipIf(os.environ.get("QUIZ_MONGO_URL", None) is None,
-            "No database configured")
-    def test_it_retrieves_a_simple_quiz(self):
-        store = QuizStoreMongo("test_quiz_collection")
+    temporary_data_set = "test_quiz_store"
 
+    def setUp(self) -> None:
+        self.store = QuizStoreMongo(self.temporary_data_set)
+
+    def tearDown(self) -> None:
+        with self.store.db_connection() as db:
+            result = db.quizzology.drop_collection(self.temporary_data_set)
+            assert_that(result['ok'], is_(True))
+
+
+    def test_it_creates_and_retrieves_a_simple_quiz(self):
+        store = self.store
         store.save_quiz(Quiz("fred", "What we said", []))
         result = store.get_quiz('fred')
         assert_that(result["name"], is_("fred"))
         assert_that(result["title"], is_("What we said"))
-        # TODO: Drop the collection after each test
-        store.collection(store.db_connection()).delete_one(
-            {'_id': result['_id']})
 
 
 if __name__ == '__main__':
