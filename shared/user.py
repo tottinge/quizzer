@@ -11,7 +11,6 @@ class User(NamedTuple):
 
     @classmethod
     def from_dict(cls, data: dict):
-        logging.info(f"cls is {cls}")
         return cls(**data)
 
 

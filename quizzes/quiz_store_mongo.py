@@ -8,32 +8,37 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import SaveQuizResult
 
 
+def db_connection():
+    db = pymongo.MongoClient(
+        os.environ['QUIZ_MONGO_URL'],
+        username=os.environ.get('QUIZ_MONGO_USER', ''),
+        password=os.environ.get('QUIZ_MONGO_PASSWORD', '')
+    )
+    return db
+
+
 class QuizStoreMongo:
     def __init__(self, collection_name=None):
         self.collection_name = collection_name if collection_name else 'quizzes'
 
-    def db_connection(self):
-        db = pymongo.MongoClient(
-            os.environ['QUIZ_MONGO_URL'],
-            username=(os.environ['QUIZ_MONGO_USER']),
-            password=(os.environ['QUIZ_MONGO_PASSWORD'])
-        )
-        return db
-
     def exists(self, quiz_name: str) -> bool:
-        with self.db_connection() as db:
+        with db_connection() as db:
             quiz_db = self.collection_name(db)
             result = quiz_db.count_documents({'name': quiz_name})
         return bool(result)
 
-    def collection(self, db):
+    def collection(self, db: pymongo.MongoClient) -> pymongo.collection:
         return db.quizzology[self.collection_name]
 
     def save_quiz(self, quiz: Quiz) -> SaveQuizResult:
-        with self.db_connection() as db:
+        with db_connection() as db:
             quizzes = self.collection(db)
             try:
-                result = quizzes.insert_one(document=asdict(quiz))
+                result = quizzes.find_one_and_update(
+                    {"name": quiz.name},
+                    {'$set':asdict(quiz)},
+                    upsert=True
+                )
                 return SaveQuizResult(
                     result.inserted_id,
                     success=True,
@@ -43,6 +48,8 @@ class QuizStoreMongo:
                 return SaveQuizResult("", False, message=str(err))
 
     def get_quiz(self, name: str) -> Optional[Quiz]:
-        with self.db_connection() as db:
+        with db_connection() as db:
             quizzes = self.collection(db)
-            return quizzes.find_one({'name': name})
+            found = quizzes.find_one({'name': name})
+            if found:
+                return Quiz.from_json(found)
