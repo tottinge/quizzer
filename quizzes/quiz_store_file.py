@@ -92,10 +92,10 @@ class QuizStoreFile:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
                 summary = QuizSummary(
-                    document['name'],
-                    document['title'],
-                    quiz_filename,
-                    document.get('image', '/favicon.ico')
+                    name=document['name'],
+                    title=document['title'],
+                    id=quiz_filename,
+                    image_url=document.get('image', '/favicon.ico')
                 )
                 yield summary
             except json.JSONDecodeError as err:

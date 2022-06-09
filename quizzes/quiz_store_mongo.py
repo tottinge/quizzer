@@ -1,11 +1,11 @@
 import os
 from dataclasses import asdict
-from typing import Optional
+from typing import Optional, Iterable
 
 import pymongo
 
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import SaveQuizResult
+from quizzes.quiz_store import SaveQuizResult, QuizSummary
 
 
 def db_connection():
@@ -53,3 +53,15 @@ class QuizStoreMongo:
             found = quizzes.find_one({'name': name})
             if found:
                 return Quiz.from_json(found)
+
+    def get_quiz_summaries(self) -> Iterable[QuizSummary]:
+        with db_connection() as db:
+            quizzes: pymongo.collection = self.collection(db)
+            result = []
+            for item in quizzes.find({}, {'name':1, 'title':1, '_id':1}):
+                result.append( QuizSummary(
+                    name = item['name'],
+                    title= item['title'],
+                    id = item["_id"]
+                ))
+            return result
