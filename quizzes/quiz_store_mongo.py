@@ -36,13 +36,14 @@ class QuizStoreMongo:
             try:
                 result = quizzes.find_one_and_update(
                     {"name": quiz.name},
-                    {'$set':asdict(quiz)},
+                    {'$set': asdict(quiz)},
                     upsert=True
                 )
                 return SaveQuizResult(
                     result.inserted_id,
                     success=True,
-                    message=f"quiz [{quiz.name}] saved. Acknowledge: {result.acknowledged}"
+                    message=(f"quiz [{quiz.name}] saved. "
+                             f"Acknowledge: {result.acknowledged}")
                 )
             except Exception as err:
                 return SaveQuizResult("", False, message=str(err))
@@ -58,10 +59,10 @@ class QuizStoreMongo:
         with db_connection() as db:
             quizzes: pymongo.collection = self.collection(db)
             result = []
-            for item in quizzes.find({}, {'name':1, 'title':1, '_id':1}):
-                result.append( QuizSummary(
-                    name = item['name'],
-                    title= item['title'],
-                    id = item["_id"]
+            for item in quizzes.find({}, {'name': 1, 'title': 1, '_id': 1}):
+                result.append(QuizSummary(
+                    name=item['name'],
+                    title=item['title'],
+                    id=item["_id"]
                 ))
             return result
