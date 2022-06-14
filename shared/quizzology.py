@@ -1,3 +1,4 @@
+import logging
 from os import environ
 from typing import Optional
 
@@ -6,6 +7,7 @@ from quizzes.quiz_store_file import QuizStoreFile
 from quizzes.quiz_store import StoresQuizzes
 from quizzes.quiz_store_mongo import QuizStoreMongo
 
+logger = logging.getLogger(__name__)
 
 class Quizzology:
     """
@@ -26,4 +28,5 @@ class Quizzology:
             selected_store = QuizStoreMongo()
         else:
             selected_store = QuizStoreFile()
+        logger.critical("Selected quiz store is %s", type(selected_store))
         self.quiz_store: StoresQuizzes = selected_store
