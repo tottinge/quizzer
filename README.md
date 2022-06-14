@@ -4,7 +4,7 @@ It runs.
 
 Monitoring (we need a unified dashboard or tool): 
 * [Github](https://github.com/tottinge/quizzer/actions )
-* [Heroku](https://dashboard.heroku.com/apps/sample-fun-with-programming/activity)
+* [Heroku](https://dashboard.heroku.com/apps/quizzology/activity)
 
 We periodically have to update the [ChromeDriver](https://chromedriver.chromium.org/downloads).
 * Download the chrome driver to the webdrivers/_os_/ directory.
