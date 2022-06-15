@@ -59,10 +59,17 @@ class QuizStoreMongo:
         with db_connection() as db:
             quizzes: pymongo.collection = self.collection(db)
             result = []
-            for item in quizzes.find({}, {'name': 1, 'title': 1, '_id': 1}):
-                result.append(QuizSummary(
+            desired_fields = {
+                'name': 1,
+                'title': 1,
+                '_id': 1,
+                'image_url': 1
+            }
+            for item in quizzes.find({}, desired_fields):
+                summary = QuizSummary(
                     name=item['name'],
                     title=item['title'],
-                    id=item["_id"]
-                ))
+                    id=item["_id"],
+                    image_url=item.get('image_url', './favicon.ico'))
+                result.append(summary)
             return result

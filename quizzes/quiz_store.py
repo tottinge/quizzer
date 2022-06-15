@@ -7,7 +7,7 @@ class QuizSummary(NamedTuple):
     name: str
     title: str
     id: str
-    image_url: str = '/favicon.ico'
+    image_url: str
 
 
 class SaveQuizResult(NamedTuple):
