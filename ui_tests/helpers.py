@@ -27,7 +27,7 @@ def launch_quizzology(port) -> Popen[str]:
     return Popen(
         [python, "main.py"],
         env={
-            'PYTHONPATH': os.environ['PYTHONPATH'],
+            **os.environ,
             "QUIZ_PORT": str(port)
         }
     )
