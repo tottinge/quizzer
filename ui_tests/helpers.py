@@ -26,7 +26,7 @@ def launch_quizzology(port) -> Popen[str]:
     python = "./venv/bin/python" if os.path.isdir('./venv') else "python"
     return Popen(
         [python, "main.py"],
-        env={"QUIZ_PORT": str(port)}
+        env={**os.environ, "QUIZ_PORT": str(port)}
     )
 
 
