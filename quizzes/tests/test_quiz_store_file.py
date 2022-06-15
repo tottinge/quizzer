@@ -24,7 +24,7 @@ class QuizStoreFileTest(unittest.TestCase):
         store = QuizStoreFile()
         test_quiz = 'Testquiz'
         store.get_quiz_summaries = MagicMock(return_value=[
-            QuizSummary('Testquiz', '', 'quiz_content/a.json')
+            QuizSummary('Testquiz', '', 'quiz_content/a.json', image_url='')
         ])
         store._read_quiz_doc_from_file = MagicMock(
             return_value=dict(name='Testquiz')
@@ -48,7 +48,7 @@ class QuizStoreFileTest(unittest.TestCase):
     def test_json_file_invalid(self, *_):
         store = QuizStoreFile()
         store.get_quiz_summaries = MagicMock(return_value=[
-            QuizSummary('nonesuch', 'no title', 'nonesuch.json'),
+            QuizSummary('nonesuch', 'no title', 'nonesuch.json', 'no img'),
         ])
         quiz = store.get_quiz('nonesuch')
         assert_that(quiz, is_(None))
