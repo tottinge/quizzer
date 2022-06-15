@@ -95,7 +95,7 @@ class QuizStoreFile:
                     name=document['name'],
                     title=document['title'],
                     id=quiz_filename,
-                    image_url=document.get('image', '/favicon.ico')
+                    image_url=document.get('image_url', '/favicon.ico')
                 )
                 yield summary
             except json.JSONDecodeError as err:

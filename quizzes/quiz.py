@@ -11,6 +11,7 @@ class Quiz:
     name: str
     title: str
     questions: list[Question] = field(default_factory=list)
+    image_url: Optional[str] = field(default='/favicon.ico')
 
     @classmethod
     def from_json(cls, json_document):
@@ -21,7 +22,8 @@ class Quiz:
             questions=[
                 Question.from_json(q)
                 for q in json_document.get('questions', [])
-            ]
+            ],
+            image_url=json_document.get('image_url','/favicon.ico')
         )
 
     def has_questions(self):
