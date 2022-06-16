@@ -9,6 +9,10 @@
       "type": "string",
       "title": "Quiz Title"
     },
+    "image_url": {
+      "type": "string",
+      "title": "Url of image"
+    },
     "questions": {
       "type": "array",
       "items":{
