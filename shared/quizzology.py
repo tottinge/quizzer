@@ -28,5 +28,5 @@ class Quizzology:
             selected_store = QuizStoreMongo()
         else:
             selected_store = QuizStoreFile()
-        logger.critical("Selected quiz store is %s", type(selected_store))
+        logger.info("Selected quiz store is %s", type(selected_store))
         self.quiz_store: StoresQuizzes = selected_store

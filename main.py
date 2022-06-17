@@ -10,6 +10,7 @@ Uses environment variables:
 Main doesn't take any command line parameters, and launches a web server
 that serves up quizzes and tracks answers.
 """
+import logging
 import os
 from logging import getLogger, Logger
 from socket import gethostbyname, gethostname
@@ -31,6 +32,7 @@ from shared.quizzology import Quizzology
 quizzology = Quizzology()
 study_use(quizzology)
 logger: Logger = getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 HOME_PAGE = '/'
 
@@ -96,13 +98,14 @@ def get_favicon():
     return get_static_file('favicon.ico')
 
 
-@app.route('/static/<filename>')
+@app.route('/static/<filename:path>')
 def retrieve_file(filename):
     return get_static_file(filename)
 
 
 def get_static_file(filename):
     root_path = os.environ.get('STATIC_PATH', './static/')
+    logger.debug(f"Getting {filename} from {root_path} ")
     return static_file(filename, root=root_path)
 
 
