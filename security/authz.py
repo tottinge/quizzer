@@ -1,3 +1,4 @@
+import os
 from typing import Dict
 from urllib.parse import urlencode
 
@@ -67,4 +68,4 @@ def get_authorization_token():
     return token
 
 
-SECRET_KEY = 'hardcoded_nonsense'
+SECRET_KEY = os.environ.get('QUIZZOLOGY_KEY', 'hardcoded_nonsense')
