@@ -6,6 +6,7 @@ import pymongo
 
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import SaveQuizResult, QuizSummary
+from quizzes.quiz_store_file import QuizStoreFile
 
 
 def db_connection():
@@ -73,3 +74,12 @@ class QuizStoreMongo:
                     image_url=item.get('image_url', './favicon.ico'))
                 result.append(summary)
             return result
+
+
+def import_from_files():
+    file_store: QuizStoreFile = QuizStoreFile()
+    mongo_store: QuizStoreMongo = QuizStoreMongo()
+    for summary in file_store.get_quiz_summaries():
+        quiz = file_store.get_quiz(summary.name)
+        mongo_store.save_quiz(quiz)
+

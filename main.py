@@ -38,8 +38,8 @@ HOME_PAGE = '/'
 
 app = bottle.app()
 
-study_root_page = '/study'
 author_root_page = '/author'
+study_root_page = '/study'
 
 app.mount(author_root_page, authoring_app)
 app.mount(study_root_page, quizzing_app)
