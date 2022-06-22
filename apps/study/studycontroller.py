@@ -3,7 +3,7 @@ from typing import NamedTuple, Iterable
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizSummary
-from sessions.session_id import SESSION_COOKIE_ID
+from sessions.session_id import SESSION_COOKIE_ID, create_session_id
 from shared.quizzology import Quizzology
 
 
@@ -20,7 +20,7 @@ class StudyController:
 
     @staticmethod
     def begin_session(http_response):
-        http_response.delete_cookie(SESSION_COOKIE_ID)
+        create_session_id(http_response)
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
                       correct, timestamp):

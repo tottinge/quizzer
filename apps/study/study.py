@@ -26,7 +26,6 @@ def menu_of_quizzes(title: str = "Quizzology"):
     """
     Display links to selectable quizzes from quiz store
     """
-    study_controller.begin_session(response)
     summaries = study_controller.get_quiz_summaries()
     return render_menu_of_quizzes(title, summaries)
 
@@ -39,6 +38,7 @@ def render_menu_of_quizzes(title, choices):
 @app.get('/<quiz_name>')
 @view("quiz_question", template_lookup=LOOKUP_PATH)
 def get_quiz_first_question(quiz_name: str):
+    study_controller.begin_session(response)
     # noinspection PyProtectedMember
     return study_controller.begin_quiz(
         study_controller.get_quiz_by_name(quiz_name)

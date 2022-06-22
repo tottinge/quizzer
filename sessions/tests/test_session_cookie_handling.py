@@ -3,7 +3,6 @@ import unittest
 from bottle import LocalRequest, LocalResponse
 
 from sessions.session_id import (
-    drop_client_session_id,
     get_client_session_id,
     SESSION_COOKIE_ID
 )
@@ -49,15 +48,3 @@ class TestSessionCookieHandling(unittest.TestCase):
         session_id = get_client_session_id(request, response)
 
         self.assertEqual("ImFake", session_id)
-
-    def test_can_drop_session_cookie(self):
-        """
-        Surprisingly, deleting a cookie doesn't remove the Set-Cookie
-        header for a value. It merely changes it to a string of double-quotes.
-        The header is *asking* the browser to set the cookie to "".
-        The real activity takes place on the browser.
-        """
-        request, response = self.fresh_session_objects()
-        old_id = get_client_session_id(request, response)
-        drop_client_session_id(response)
-        self.assertNotEqual(old_id, self.get_session_cookie(response))
