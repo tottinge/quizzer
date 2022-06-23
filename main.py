@@ -82,6 +82,7 @@ def page_for_user(user: Dict):
     return destinations[user['role']]
 
 
+
 @app.route('/')
 def home_page():
     try:
@@ -91,6 +92,15 @@ def home_page():
         redirect(destination)
     except (AttributeError, ExpiredSignatureError):
         redirect('/login')
+
+@app.route('/select')
+@bottle.view("quiz_selection")
+def select_quiz():
+    return {
+        "title": "What do you want?",
+        "role": "author",
+        "choices": quizzology.quiz_store.get_quiz_summaries()
+    }
 
 
 @app.route('/favicon.ico')
