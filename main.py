@@ -94,7 +94,7 @@ def home_page():
         redirect('/login')
 
 @app.route('/select')
-@bottle.view("quiz_selection")
+@bottle.view("quiz_choice")
 def select_quiz():
     return {
         "title": "What do you want?",
