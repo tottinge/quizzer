@@ -96,9 +96,10 @@ def home_page():
 @app.route('/select')
 @bottle.view("quiz_choice")
 def select_quiz():
+    user = get_current_user()
     return {
         "title": "What do you want?",
-        "role": "author",
+        "role": user["role"],
         "choices": quizzology.quiz_store.get_quiz_summaries()
     }
 
