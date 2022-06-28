@@ -1,20 +1,31 @@
 .quiz-card {
     /*outline: solid red;*/
-    height: 11rem;
+    height: 12rem;
     width: 200px;
+    margin: 20px 10px;
     text-decoration: none;
 }
 
 .quiz-icon {
     /*outline: solid green;*/
-    width: 60px;
+    width: 50%;
     horiz-align: center;
+    float: none;
+    align-content: center;
+    margin: 5px;
+}
+
+.quiz-title {
+    max-height: 3rem;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .quiz-nav {
     text-decoration: none;
 }
-
 
 .quiz-nav {
     display: block;
