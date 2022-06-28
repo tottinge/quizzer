@@ -6,7 +6,7 @@
     <div class="w3-container">
         % for (name, description, filename, img_url) in choices:
         <section class="w3-display-container quiz-card w3-card w3-third w3-hover-shadow">
-            <a class="quiz_selection" href="/study/{{ name }}">
+            <a class="quiz_selection quiz-nav" href="/study/{{ name }}">
                 <p class="w3-container w3-center">
                     <img alt="go to quiz" class="quiz-icon" style="height: 100%;" src="{{ img_url }}">
                 </p>
