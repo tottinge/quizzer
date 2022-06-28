@@ -74,6 +74,6 @@ def update_quiz_from_html_form():
         'quiz': Quiz(name='name', title='title'),
         'title': "Edit Quiz",
         'raw_quiz': json.dumps(asdict(quiz)),
-        'message': f'Quiz "{quiz.title}" saved as {result.id}',
+        'message': f'Quiz "{quiz.title}" saved as {quiz.name}',
         'error': error
     }
