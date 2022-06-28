@@ -14,3 +14,11 @@
 .quiz-nav {
     text-decoration: none;
 }
+
+
+.quiz-nav {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    /*height: available;*/
+}
