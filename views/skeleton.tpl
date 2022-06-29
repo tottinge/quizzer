@@ -20,7 +20,7 @@
             /></a>
         {{title}}
     </h1>
-    <a class="w3-display-right w3-button w3-teal" href="/login">
+    <a class="w3-display-right w3-button w3-blue-gray" href="/login">
         <span id="user_name" >default text</span> (<span id="user_role">default role</span>)
     </a>
 </header>
