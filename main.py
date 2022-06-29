@@ -89,7 +89,8 @@ def home_page():
         user = get_current_user()
         destination = page_for_user(user)
         logger.info("Redirecting {user['name']} to {destination}")
-        redirect(destination)
+        # redirect(destination)
+        redirect("/select")
     except (AttributeError, ExpiredSignatureError):
         redirect('/login')
 

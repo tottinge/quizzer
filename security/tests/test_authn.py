@@ -59,17 +59,17 @@ class TestLoginPage(unittest.TestCase):
     def test_root_sends_authenticated_guest_to_study(self):
         self.set_auth_for('guest')
         response = self.app.get("/")
-        assert_that(redirect_destination_of(response), is_("/study"))
+        assert_that(redirect_destination_of(response), is_("/select"))
 
     def test_root_sends_authenticated_student_to_study(self):
         self.set_auth_for("student")
         response = self.app.get("/")
-        assert_that(redirect_destination_of(response), is_("/study"))
+        assert_that(redirect_destination_of(response), is_("/select"))
 
     def test_root_sends_authenticated_author_to_author_home_page(self):
         self.set_auth_for("author")
         response = self.app.get("/")
-        assert_that(redirect_destination_of(response), is_("/author"))
+        assert_that(redirect_destination_of(response), is_("/select"))
 
     def set_auth_for(self, role="student"):
         guest = User(user_name=f"test {role}", password='', role=role)
