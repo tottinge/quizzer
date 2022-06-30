@@ -1,6 +1,6 @@
 .quiz-card {
     /*outline: solid red;*/
-    height: 12rem;
+    height: 12.5rem;
     width: 200px;
     margin: 20px 10px;
     text-decoration: none;
@@ -9,10 +9,10 @@
 .quiz-icon {
     /*outline: solid green;*/
     width: 50%;
-    horiz-align: center;
     float: none;
     align-content: center;
     margin: 5px;
+    max-height: 100px;
 }
 
 .quiz-title {
