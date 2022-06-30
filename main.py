@@ -82,27 +82,18 @@ def page_for_user(user: Dict):
     return destinations[user['role']]
 
 
-
 @app.route('/')
-def home_page():
-    try:
-        user = get_current_user()
-        destination = page_for_user(user)
-        logger.info("Redirecting {user['name']} to {destination}")
-        # redirect(destination)
-        redirect("/select")
-    except (AttributeError, ExpiredSignatureError):
-        redirect('/login')
-
-@app.route('/select')
 @bottle.view("quiz_choice")
 def select_quiz():
-    user = get_current_user()
-    return {
-        "title": "What do you want?",
-        "role": user["role"],
-        "choices": quizzology.quiz_store.get_quiz_summaries()
-    }
+    try:
+        user = get_current_user()
+        return {
+            "title": "Quizzology",
+            "role": user["role"],
+            "choices": quizzology.quiz_store.get_quiz_summaries()
+        }
+    except(AttributeError, ExpiredSignatureError):
+        redirect('/login')
 
 
 @app.route('/favicon.ico')

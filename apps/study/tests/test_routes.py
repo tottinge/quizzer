@@ -17,9 +17,3 @@ class TestRoutes(TestCase):
         assert_that(response.status_code, is_(302))
         assert_that(response.headers.get('Location'),
                     contains_string('/login'))
-
-    def test_study_page_loads_and_has_title(self):
-        response = self.sut.get('/study')
-        assert_that(response.status_code, is_(200))
-        title: BeautifulSoup = response.html.find('title')
-        assert_that(title.text, contains_string('Quizzology'))

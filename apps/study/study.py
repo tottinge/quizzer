@@ -21,18 +21,6 @@ LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
 app = Bottle()
 
 
-@app.route('/')
-def menu_of_quizzes(title: str = "Quizzology"):
-    """
-    Display links to selectable quizzes from quiz store
-    """
-    summaries = study_controller.get_quiz_summaries()
-    return render_menu_of_quizzes(title, summaries)
-
-
-@view("quiz_selection", template_lookup=LOOKUP_PATH)
-def render_menu_of_quizzes(title, choices):
-    return dict(title=title, choices=choices)
 
 
 @app.get('/<quiz_name>')
