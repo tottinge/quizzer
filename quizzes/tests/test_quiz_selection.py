@@ -31,8 +31,9 @@ class TestQuizSelection(TestCase):
 
     def render(self, title, choices):
         markup = template(
-            "quiz_selection",
+            "quiz_choice",
             dict(title=title, choices=choices),
-            template_lookup=['./views', './apps/study/views']
+            template_lookup=['./views', './apps/study/views'],
+            role='guest'
         )
         return BeautifulSoup(markup, "html.parser")
