@@ -7,6 +7,10 @@ from subprocess import Popen
 from hamcrest import assert_that, equal_to
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as condition
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 def take_screenshot(browser, screenshot_name):
@@ -38,7 +42,7 @@ size_mobile_iphone_X = '375,812'
 size_mobile_galaxy_s5 = '360,640'
 
 
-def launch_selenium_chrome(headless: bool):
+def launch_selenium_chrome(headless: bool) -> WebDriver:
     setup_path_for_dev_test()
 
     options = Options()
@@ -79,3 +83,13 @@ def get_likely_port() -> int:
     junk_socket.close()
     logging.debug(f"likely_port: Chosen port is {chosen_port}")
     return chosen_port
+
+
+def login(browser: WebDriver, url: str):
+    browser.get(url)
+    WebDriverWait(browser, timeout=2, poll_frequency=0.25).until(
+        condition.title_contains("Who are you")
+    )
+    browser.find_element(By.NAME, 'user_name').send_keys('perry')
+    browser.find_element(By.NAME, 'password').send_keys('passme')
+    browser.find_element(By.ID, "login").click()

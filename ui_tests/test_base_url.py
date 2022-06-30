@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
-    launch_selenium_chrome, get_likely_port, local_ip
+    launch_selenium_chrome, get_likely_port, local_ip, login
 
 
 class BaseUrlTest(TestCase):
@@ -21,6 +21,7 @@ class BaseUrlTest(TestCase):
         cls.base_url = f"http://{host}:{port_number}/"
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
+        login(cls.browser, cls.base_url+"/login")
 
     def setUp(self):
         self.browser.get(self.base_url)
@@ -31,7 +32,6 @@ class BaseUrlTest(TestCase):
         cls.browser.quit()
         cls.app.terminate()
 
-    @skip("SELECT moved, needs login")
     def test_title_exists(self):
         assert_that(self.browser.title, equal_to_ignoring_case('quizzology'))
 
@@ -40,7 +40,6 @@ class BaseUrlTest(TestCase):
         href_value = link.get_attribute('href')
         assert_that(href_value, equal_to(self.base_url))
 
-    @skip("SELECT moved, needs login")
     def test_quiz_links_exist(self):
         browser = self.browser
         browser.find_element(By.LINK_TEXT, "Cats Quiz")

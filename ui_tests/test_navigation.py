@@ -7,7 +7,7 @@ quiz app are not broken for quiz-takers.
 import logging
 import unittest
 from subprocess import Popen
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from hamcrest import assert_that, equal_to, contains_string
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as condition
 from selenium.webdriver.support.wait import WebDriverWait
 
 from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
-    get_likely_port, local_ip
+    get_likely_port, local_ip, login
 
 CATS_QUIZ = "/study/catsquiz"
 logging.basicConfig(level=logging.DEBUG)
@@ -35,13 +35,17 @@ class TestNavigation(TestCase):
         logging.debug("base_url is {cls.base_url}")
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
+        login(cls.browser, cls.base_url + "/login")
+
+
+
+
 
     @classmethod
     def tearDownClass(cls):
         cls.browser.quit()
         cls.app.terminate()
 
-    @skip("SELECT moved, needs login")
     def test_select_a_quiz(self):
         self.get_page("/")
         self.click_link('Cats Quiz')
