@@ -11,12 +11,12 @@ from hamcrest import assert_that, not_none, equal_to, is_, contains_string
 
 import security.authz
 from security.authn import make_bearer_token, authenticate
-from shared.user import UserDatabase, User
+from shared.user import UserStore_File, User, UserStore
 
 
 class CombinedContext(Protocol):
     temporary_directory: Optional[TemporaryDirectory]
-    user_db: Optional[UserDatabase]
+    user_db: Optional[UserStore]
     routes: Optional[Dict[str, Callable[[], str]]]
     visit_result: Optional[str]
     authenticated_user: Optional[User]
@@ -31,7 +31,8 @@ OurContext = Union[
 
 def get_user_db(context: OurContext):
     if not hasattr(context, "user_db"):
-        context.user_db = UserDatabase(context.temporary_directory.name)
+        path = context.temporary_directory.name
+        context.user_db: UserStore = UserStore_File(path)
     return context.user_db
 
 

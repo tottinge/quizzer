@@ -13,5 +13,10 @@
     "user_name": "test_student",
     "password": "testme",
     "role": "student"
+  },
+  {
+    "user_name": "test_author",
+    "password": "testme",
+    "role": "author"
   }
 ]

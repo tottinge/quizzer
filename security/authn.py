@@ -5,7 +5,7 @@ from typing import Optional
 import jwt
 
 from security.authz import SECRET_KEY
-from shared.user import User, UserDatabase
+from shared.user import User, UserStore_File
 
 
 def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
@@ -23,8 +23,8 @@ def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
 
 def authenticate(user_name: str,
                  password: str,
-                 db: UserDatabase = None) -> Optional[User]:
-    db = db or UserDatabase()
+                 db: UserStore_File = None) -> Optional[User]:
+    db = db or UserStore_File()
     try:
         [found] = db.find_user_by_name(user_name)
         if compare_digest(password, found.password):

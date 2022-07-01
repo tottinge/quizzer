@@ -1,7 +1,6 @@
 import json
-import logging
 import os
-from typing import NamedTuple, List, Iterable, Optional
+from typing import NamedTuple, List, Iterable, Optional, Protocol
 
 
 class User(NamedTuple):
@@ -18,7 +17,21 @@ DEFAULT_USER_FILE_PATH = './security/'
 USER_FILE_NAME = 'users.json'
 
 
-class UserDatabase:
+class UserStore(Protocol):
+    def write_users(self, users: Iterable[User]):
+        ...
+
+    def read_users(self, users: Iterable[User]):
+        ...
+
+    def create_user(self, user_name: str, password: str, role: str):
+        ...
+
+    def find_user_by_name(self, user_name):
+        ...
+
+
+class UserStore_File:
     path = DEFAULT_USER_FILE_PATH
     user_file_name: str
 
@@ -26,14 +39,13 @@ class UserDatabase:
         self.path = alternate_file_path or DEFAULT_USER_FILE_PATH
         self.user_file_name = os.path.join(self.path, USER_FILE_NAME)
 
-    def write_users(self, users: Iterable[User],
-                    alternate_file_path: Optional[str] = None):
-        chosen = alternate_file_path or self.path
+    def write_users(self, users: Iterable[User],):
+        chosen = self.user_file_name
         with open(chosen, "w") as user_file:
             json.dump([user._asdict() for user in users], user_file)
 
-    def read_users(self, user_file_name: str = None) -> List[User]:
-        chosen = user_file_name or self.user_file_name
+    def read_users(self) -> List[User]:
+        chosen = self.user_file_name
         try:
             with open(chosen) as users_file:
                 return json.load(users_file, object_hook=User.from_dict)
@@ -41,13 +53,12 @@ class UserDatabase:
             return []
 
     def create_user(self, user_name: str, password: str, role: str):
-        user_file_name = self.user_file_name
-        users = self.read_users(user_file_name)
+        users = self.read_users()
         exists = any(user for user in users if user.user_name == user_name)
         if not exists:
             new_user = User(user_name=user_name, password=password, role=role)
             users.append(new_user)
-        self.write_users(users, user_file_name)
+        self.write_users(users)
 
     def find_user_by_name(self, user_name):
         user_list = self.read_users()
