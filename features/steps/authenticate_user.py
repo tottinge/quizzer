@@ -11,7 +11,9 @@ from hamcrest import assert_that, not_none, equal_to, is_, contains_string
 
 import security.authz
 from security.authn import make_bearer_token, authenticate
-from shared.user import UserStore_File, User, UserStore
+from shared.user import User
+from shared.user_store import UserStore
+from shared.user_store_file import UserStore_File
 
 
 class CombinedContext(Protocol):

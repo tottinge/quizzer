@@ -5,7 +5,8 @@ from typing import Optional
 import jwt
 
 from security.authz import SECRET_KEY
-from shared.user import User, UserStore_File
+from shared.user import User
+from shared.user_store_file import UserStore_File
 
 
 def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
