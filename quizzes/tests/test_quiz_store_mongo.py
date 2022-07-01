@@ -44,9 +44,9 @@ class QuizStoreMongoTest(unittest.TestCase):
         # TODO: we can refactor this to make it nicer
         store = self.store
         for quiz in [
-            Quiz("first", "first quiz", []),
-            Quiz("second", "second quiz", []),
-        ]:
+                Quiz("first", "first quiz", []),
+                Quiz("second", "second quiz", []),
+            ]:
             store.save_quiz(quiz)
         summaries = store.get_quiz_summaries()
         assert_that(len(summaries), is_(2))

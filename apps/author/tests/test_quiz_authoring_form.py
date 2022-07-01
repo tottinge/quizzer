@@ -97,7 +97,7 @@ class RenderWithFailureToSave(unittest.TestCase):
     def test_failed_to_save(self):
         message_on_page = self.dom.find('p', id='post-message')
         assert_that(message_on_page.text, contains_string(self.message))
-        assert_that(message_on_page['class'], has_item('w3-pale-red'))
+        assert_that(message_on_page.get('class'), has_item('w3-pale-red'))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 import tempfile
 
 
-def before_scenario(context, current_scenario):
+def before_scenario(context, _):
     context.temporary_directory = tempfile.TemporaryDirectory()

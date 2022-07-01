@@ -9,6 +9,8 @@ import main
 from security.authn import make_bearer_token
 from shared.user import User
 
+LOGIN_PAGE = "/login"
+
 HOME_PAGE = '/'
 
 
@@ -23,7 +25,7 @@ class TestLoginPage(unittest.TestCase):
         self.app = TestApp(main.app)
 
     def test_login_page_loads(self):
-        self.app.get("/login")
+        self.app.get(LOGIN_PAGE)
 
     def test_guest_auth_with_no_destination_redirects_to_home_page(self):
         response: TestResponse = self.app.post("/auth", {
@@ -46,7 +48,7 @@ class TestLoginPage(unittest.TestCase):
 
     def test_root_sends_unauthenticated_user_to_login_page(self):
         response = self.app.get("/")
-        assert_that(redirect_destination_of(response), is_("/login"))
+        assert_that(redirect_destination_of(response), is_(LOGIN_PAGE))
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
     def test_root_sends_expired_user_to_login_page(self):
@@ -54,7 +56,7 @@ class TestLoginPage(unittest.TestCase):
         expired_token = make_bearer_token(user, hours_to_live=-1)
         self.app.set_cookie('Authorization', f"Bearer {expired_token}")
         response = self.app.get("/", )
-        assert_that(redirect_destination_of(response), is_("/login"))
+        assert_that(redirect_destination_of(response), is_(LOGIN_PAGE))
 
     def test_root_sends_authenticated_guest_to_homepage(self):
         self.set_auth_for('guest')

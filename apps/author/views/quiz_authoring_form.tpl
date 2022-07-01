@@ -32,8 +32,7 @@
     <script>
         function changeDocumentValue(origin) {
             const documentField = document.getElementById("quiz");
-            const value = origin.getAttribute("value");
-            documentField.value = value;
+            documentField.value = origin.getAttribute("value");
         }
     </script>
 
