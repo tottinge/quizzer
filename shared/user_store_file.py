@@ -17,14 +17,12 @@ class UserStore_File:
         self.user_file_name = os.path.join(self.path, USER_FILE_NAME)
 
     def write_users(self, users: Iterable[User], ):
-        chosen = self.user_file_name
-        with open(chosen, "w") as user_file:
+        with open(self.user_file_name, "w") as user_file:
             json.dump([user._asdict() for user in users], user_file)
 
     def read_users(self) -> List[User]:
-        chosen = self.user_file_name
         try:
-            with open(chosen) as users_file:
+            with open(self.user_file_name) as users_file:
                 return json.load(users_file, object_hook=User.from_dict)
         except FileNotFoundError:
             return []
