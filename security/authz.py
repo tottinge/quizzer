@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 import jwt
 from bottle import redirect, request
-from jwt import ExpiredSignatureError, DecodeError
+from jwt import ExpiredSignatureError, DecodeError, InvalidSignatureError
 
 
 def login(flash="", destination="/study"):
@@ -45,6 +45,9 @@ def require_roles(*required_roles):
                 login('You must be logged in to access this page')
             except ExpiredSignatureError:
                 login(flash='Your session has expired',
+                      destination=get_request_path())
+            except InvalidSignatureError:
+                login(flash='Your session was created on a different server',
                       destination=get_request_path())
             except DecodeError:
                 redirect('/login')
