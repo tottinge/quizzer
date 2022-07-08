@@ -52,7 +52,7 @@ class TestLoginPage(unittest.TestCase):
         assert_that(response.status_code, is_(HTTPStatus.FOUND))
 
     def test_root_sends_expired_user_to_login_page(self):
-        user = User(user_name='expired', password='', role='')
+        user = User(user_name='expired', password_hash='', role='')
         expired_token = make_bearer_token(user, hours_to_live=-1)
         self.app.set_cookie('Authorization', f"Bearer {expired_token}")
         response = self.app.get("/", )
@@ -72,10 +72,10 @@ class TestLoginPage(unittest.TestCase):
         self.set_auth_for("author")
         response: TestResponse = self.app.get("/")
         assert_that(response.status_code, is_(HTTPStatus.OK))
-        assert_that(response.html.find('a',id='add_quiz'), not_none())
+        assert_that(response.html.find('a', id='add_quiz'), not_none())
 
     def set_auth_for(self, role="student"):
-        guest = User(user_name=f"test {role}", password='', role=role)
+        guest = User(user_name=f"test {role}", password_hash='', role=role)
         guest_token = make_bearer_token(guest)
         self.app.set_cookie('Authorization', f"Bearer {guest_token}")
 

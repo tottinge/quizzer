@@ -28,8 +28,8 @@ def authenticate(user_name: str,
     db = db or UserStore_File()
     try:
         [found] = db.find_user_by_name(user_name)
-        if compare_digest(password, found.password):
+        if compare_digest(password, found.password_hash):
             return found
         return None
     except ValueError:
-        return User(user_name=user_name, role="guest", password="")
+        return User(user_name=user_name, role="guest", password_hash="")

@@ -1,22 +1,22 @@
 [
   {
     "user_name": "perry",
-    "password": "passme",
+    "password_hash": "passme",
     "role": "author"
   },
   {
     "user_name": "tottinge",
-    "password": "passme",
+    "password_hash": "passme",
     "role": "student"
   },
   {
     "user_name": "test_student",
-    "password": "testme",
+    "password_hash": "testme",
     "role": "student"
   },
   {
     "user_name": "test_author",
-    "password": "testme",
+    "password_hash": "testme",
     "role": "author"
   }
 ]
