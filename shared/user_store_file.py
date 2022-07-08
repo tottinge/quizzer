@@ -31,7 +31,7 @@ class UserStore_File:
         users = self.read_users()
         exists = any(user for user in users if user.user_name == user_name)
         if not exists:
-            new_user = User(user_name=user_name, password=password, role=role)
+            new_user = User(user_name=user_name, password_hash=password, role=role)
             users.append(new_user)
         self.write_users(users)
 
