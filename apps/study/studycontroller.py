@@ -3,7 +3,7 @@ from typing import NamedTuple, Iterable
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizSummary
-from sessions.session_id import SESSION_COOKIE_ID, create_session_id
+from sessions.session_id import create_session_id
 from shared.quizzology import Quizzology
 
 
