@@ -2,7 +2,7 @@ import json
 import os
 from typing import Iterable, List
 
-from shared.user import User
+from shared.user import User, hash_password
 
 USER_FILE_NAME = 'users.json'
 DEFAULT_USER_FILE_PATH = './security/'
@@ -31,7 +31,8 @@ class UserStore_File:
         users = self.read_users()
         exists = any(user for user in users if user.user_name == user_name)
         if not exists:
-            new_user = User(user_name=user_name, password_hash=password, role=role)
+            hash = hash_password(password)
+            new_user = User(user_name=user_name, password_hash=hash, role=role)
             users.append(new_user)
         self.write_users(users)
 

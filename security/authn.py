@@ -5,7 +5,7 @@ from typing import Optional
 import jwt
 
 from security.authz import SECRET_KEY
-from shared.user import User
+from shared.user import User, hash_password
 from shared.user_store_file import UserStore_File
 
 
@@ -28,8 +28,10 @@ def authenticate(user_name: str,
     db = db or UserStore_File()
     try:
         [found] = db.find_user_by_name(user_name)
-        if compare_digest(password, found.password_hash):
+        hash = hash_password(password)
+        if compare_digest(hash, found.password_hash):
             return found
         return None
     except ValueError:
         return User(user_name=user_name, role="guest", password_hash="")
+

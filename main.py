@@ -26,7 +26,7 @@ from apps.author.author import app as authoring_app
 from apps.study.study import app as quizzing_app
 from apps.study.study import use_this_quizzology as study_use
 from security.authn import make_bearer_token, authenticate
-from security.authz import require_roles, get_current_user
+from security.authz import require_roles, get_current_user, build_login_url
 from shared.quizzology import Quizzology
 
 quizzology = Quizzology()
@@ -63,7 +63,8 @@ def authentication_endpoint():
     password = data.get('password')
     user = authenticate(user_name, password)
     if not user:
-        return login("Your credentials did not match any on file.")
+        url = build_login_url(flash="Your credentials did not match any on file.")
+        redirect(url)
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",
                                httponly=True)

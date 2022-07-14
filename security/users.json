@@ -1,22 +1,22 @@
 [
   {
     "user_name": "perry",
-    "password_hash": "passme",
+    "password_hash": "602ca2bda6783b5caea608db82b97742693746ecb32059d33d840a84cd027f1f",
     "role": "author"
   },
   {
     "user_name": "tottinge",
-    "password_hash": "passme",
+    "password_hash": "602ca2bda6783b5caea608db82b97742693746ecb32059d33d840a84cd027f1f",
     "role": "student"
   },
   {
     "user_name": "test_student",
-    "password_hash": "testme",
+    "password_hash": "f1356bd3a83ad610e5090796f507ea9b9282db4969a6d2ff465278f1b15a44b0",
     "role": "student"
   },
   {
     "user_name": "test_author",
-    "password_hash": "testme",
+    "password_hash": "f1356bd3a83ad610e5090796f507ea9b9282db4969a6d2ff465278f1b15a44b0",
     "role": "author"
   }
 ]
