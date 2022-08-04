@@ -25,7 +25,7 @@ def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
 def authenticate(user_name: str,
                  password: str,
                  db: UserStore_File = None) -> Optional[User]:
-    db = db or UserStore_File()
+    db = db or get_user_store()
     try:
         [found] = db.find_user_by_name(user_name)
         hash = hash_password(password)
@@ -34,4 +34,8 @@ def authenticate(user_name: str,
         return None
     except ValueError:
         return User(user_name=user_name, role="guest", password_hash="")
+
+
+def get_user_store():
+    return UserStore_File()
 

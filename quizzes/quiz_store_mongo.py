@@ -7,15 +7,7 @@ import pymongo
 from quizzes.quiz import Quiz
 from quizzes.quiz_store import SaveQuizResult, QuizSummary
 from quizzes.quiz_store_file import QuizStoreFile
-
-
-def db_connection():
-    db = pymongo.MongoClient(
-        os.environ['QUIZ_MONGO_URL'],
-        username=os.environ.get('QUIZ_MONGO_USER', ''),
-        password=os.environ.get('QUIZ_MONGO_PASSWORD', '')
-    )
-    return db
+from shared.mongo_connection import db_connection
 
 
 class QuizStoreMongo:
