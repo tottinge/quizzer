@@ -18,7 +18,7 @@ class QuizStoreMongo:
         with db_connection() as db:
             quiz_db = self.collection_name(db)
             result = quiz_db.count_documents({'name': quiz_name})
-        return bool(result)
+            return bool(result)
 
     def collection(self, db: pymongo.MongoClient) -> pymongo.collection:
         return db.quizzology[self.collection_name]
