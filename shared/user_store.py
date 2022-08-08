@@ -4,12 +4,6 @@ from shared.user import User
 
 
 class UserStore(Protocol):
-    def write_users(self, users: Iterable[User]):
-        ...
-
-    def read_users(self, users: Iterable[User]):
-        ...
-
     def create_user(self, user_name: str, password: str, role: str):
         ...
 
