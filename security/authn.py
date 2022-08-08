@@ -1,3 +1,5 @@
+import logging
+import os.path
 from datetime import timedelta, datetime
 from hmac import compare_digest
 from typing import Optional
@@ -37,5 +39,8 @@ def authenticate(user_name: str,
 
 
 def get_user_store():
-    return UserStore_File()
+    store = UserStore_File()
+    real_path = os.path.realpath(store.path)
+    logging.critical(f"HEY! User store is in {real_path} as {store.user_file_name}")
+    return store
 
