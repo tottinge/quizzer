@@ -37,8 +37,6 @@ jobs:
           behave -t ~@wip -t ~@future -f html -o behave-report.html
       - name: Test with Selenium
         run: |
-          ls ./security
-          if [ -f "./security/users.json" ]; then rm ./security/users.json; fi
           pytest ui_tests
       - name: Check security
         run: |
