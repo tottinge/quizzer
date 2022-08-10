@@ -40,9 +40,8 @@ class TestMongoStore(unittest.TestCase):
         test_records.drop()
 
     def test_create_user_works_for_new_user(self):
-        frank = self.store.create_user('frank', 'fakehash', 'nobody')
-        print(frank)
-        result = self.store.find_user_by_name('frank')
-        print(result)
+        self.store.create_user('frank', 'fakehash', 'nobody')
+        result: User = self.store.find_user_by_name('frank')
+        self.assertEqual('frank', result.user_name)
 
         # store.create_user('notreal', 'fakehash', 'imaginaryfriend')
