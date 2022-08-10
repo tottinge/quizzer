@@ -1,4 +1,3 @@
-import os
 from dataclasses import asdict
 from typing import Optional, Iterable
 
@@ -74,4 +73,3 @@ def import_from_files():
     for summary in file_store.get_quiz_summaries():
         quiz = file_store.get_quiz(summary.name)
         mongo_store.save_quiz(quiz)
-

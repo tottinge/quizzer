@@ -1,5 +1,3 @@
-import logging
-import os.path
 from datetime import timedelta, datetime
 from hmac import compare_digest
 from typing import Optional
@@ -8,6 +6,7 @@ import jwt
 
 from security.authz import SECRET_KEY
 from shared.user import User, hash_password
+from shared.user_store import UserStore
 from shared.user_store_file import UserStore_File
 
 
@@ -26,21 +25,17 @@ def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
 
 def authenticate(user_name: str,
                  password: str,
-                 db: UserStore_File = None) -> Optional[User]:
+                 db: UserStore = None) -> Optional[User]:
     db = db or get_user_store()
     try:
         [found] = db.find_user_by_name(user_name)
-        hash = hash_password(password)
-        if compare_digest(hash, found.password_hash):
+        password_hash = hash_password(password)
+        if compare_digest(password_hash, found.password_hash):
             return found
         return None
     except ValueError:
         return User(user_name=user_name, role="guest", password_hash="")
 
 
-def get_user_store():
-    store = UserStore_File()
-    real_path = os.path.realpath(store.path)
-    logging.critical(f"HEY! User store is in {real_path} as {store.user_file_name}")
-    return store
-
+def get_user_store() -> UserStore:
+    return UserStore_File()
