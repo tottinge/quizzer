@@ -3,7 +3,6 @@ import os
 from typing import Iterable, List
 
 from shared.user import User, hash_password
-from shared.user_store import UserStore
 
 USER_FILE_NAME = 'users.json'
 DEFAULT_USER_FILE_PATH = './security/'
