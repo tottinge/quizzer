@@ -4,3 +4,6 @@ __pycache__
 /logs/
 .mutmut-cache
 /tests/logs
+.scannerwork
+.mypy_cache
+.pytest_cache

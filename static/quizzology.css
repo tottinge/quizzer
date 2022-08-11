@@ -1,5 +1,4 @@
 .quiz-card {
-    /*outline: solid red;*/
     height: 12.5rem;
     width: 200px;
     margin: 20px 10px;
@@ -7,7 +6,6 @@
 }
 
 .quiz-icon {
-    /*outline: solid green;*/
     width: 50%;
     float: none;
     align-content: center;
@@ -24,12 +22,7 @@
 }
 
 .quiz-nav {
-    text-decoration: none;
-}
-
-.quiz-nav {
     display: block;
     text-align: center;
     text-decoration: none;
-    /*height: available;*/
 }

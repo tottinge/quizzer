@@ -1,0 +1,5 @@
+sonar-scanner \
+  -Dsonar.projectKey=quizzology \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.login=sqp_484994ab108e1b88961f02d5b43bf80c403610a8
