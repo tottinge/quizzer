@@ -1,12 +1,13 @@
 import hashlib
 from os import environ
-from typing import NamedTuple
+from typing import NamedTuple, Any
 
 
 class User(NamedTuple):
     user_name: str
     password_hash: str
     role: str
+    id: Any = None
 
     @classmethod
     def from_dict(cls, data: dict):

@@ -11,3 +11,5 @@ class UserStore(Protocol):
         ...
 
 
+class UserAlreadyExists(Exception):
+    pass
