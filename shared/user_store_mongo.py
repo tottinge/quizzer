@@ -24,7 +24,7 @@ class UserStoreMongo:
             users.insert_one(user._asdict())
 
     def find_user_by_name(self, user_name: str) -> Iterable[User]:
-        exclude_id = {'_id':0}
+        exclude_id = {'_id': 0}
         criteria = {"user_name": user_name}
         with db_connection() as db:
             users: Collection = db.quizzology[self.collection_name]

@@ -13,7 +13,7 @@ import security.authz
 from security.authn import make_bearer_token, authenticate
 from shared.user import User
 from shared.user_store import UserStore
-from shared.user_store_file import UserStore_File
+from shared.user_store_file import UserStoreFile
 
 
 class CombinedContext(Protocol):
@@ -34,7 +34,7 @@ OurContext = Union[
 def get_user_db(context: OurContext):
     if not hasattr(context, "user_db"):
         path = context.temporary_directory.name
-        context.user_db: UserStore = UserStore_File(path)
+        context.user_db: UserStore = UserStoreFile(path)
     return context.user_db
 
 

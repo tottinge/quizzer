@@ -9,7 +9,7 @@ USER_FILE_NAME = 'users.json'
 DEFAULT_USER_FILE_PATH = './security/'
 
 
-class UserStore_File:
+class UserStoreFile:
     path = DEFAULT_USER_FILE_PATH
     user_file_name: str
 
