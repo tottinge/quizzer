@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime
 from hmac import compare_digest
+from os import environ
 from typing import Optional
 
 import jwt
@@ -8,6 +9,7 @@ from security.authz import SECRET_KEY
 from shared.user import User, hash_password
 from shared.user_store import UserStore
 from shared.user_store_file import UserStoreFile
+from shared.user_store_mongo import UserStoreMongo
 
 
 def make_bearer_token(user: User, hours_to_live: int = 4) -> str:
@@ -38,5 +40,8 @@ def authenticate(user_name: str,
 
 
 def get_user_store() -> UserStore:
-    # TODO: add the mongo/file switch here!
+    url = environ.get('QUIZ_MONGO_URL')
+    if url:
+        return UserStoreMongo()
     return UserStoreFile()
+

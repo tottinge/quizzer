@@ -7,8 +7,6 @@ from shared.mongo_connection import db_connection
 from shared.user import User
 from shared.user_store import UserAlreadyExists
 
-test_connection = db_connection()['test_users']
-
 
 class UserStoreMongo:
     def __init__(self, collection_name=None):
