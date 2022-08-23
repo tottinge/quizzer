@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
     launch_selenium_chrome, get_likely_port, local_ip, login
 
+# TODO: Create a userStoreFile in a temp directory for the quizzology instance
 
 class BaseUrlTest(TestCase):
     browser: WebDriver

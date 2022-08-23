@@ -21,7 +21,7 @@ from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
 CATS_QUIZ = "/study/catsquiz"
 logging.basicConfig(level=logging.DEBUG)
 
-
+# TODO: Create a userStoreFile in a temp directory for the quizzology instance
 class TestNavigation(TestCase):
     browser: WebDriver
     app: Popen[str]
