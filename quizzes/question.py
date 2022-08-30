@@ -2,8 +2,10 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Dict
 
-def question_id_factory():
+
+def question_id_factory() -> str:
     return str(uuid.uuid4())
+
 
 @dataclass
 class Question:
