@@ -23,12 +23,10 @@ class StudyController:
         create_session_id(http_response)
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
-                      correct, timestamp):
+                      correct, timestamp, question_id):
         self.quizzology.session_store.record_answer(session_id, quiz_name,
-                                                    question_number,
-                                                    selection,
-                                                    correct,
-                                                    timestamp)
+                                                    question_number, selection,
+                                                    correct, "", timestamp)
 
     def number_of_incorrect_answers(self, session_id, quiz_name):
         session_store = self.quizzology.session_store
@@ -84,7 +82,7 @@ class StudyController:
         correct = question.is_correct_answer(selection)
 
         self.record_answer(session_id, quiz.name, question_number, selection,
-                           correct, None)
+                           correct, None, question.question_id)
         incorrect_answers = self.number_of_incorrect_answers(session_id,
                                                              quiz.name)
         next_question_number = quiz.next_question_number(question_number) \

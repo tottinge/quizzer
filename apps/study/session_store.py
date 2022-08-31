@@ -17,6 +17,7 @@ class AnswerEntry:
     question_number: int
     selection: str
     is_correct: bool
+    question_id: str = ""
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat)
 
     @classmethod
@@ -34,7 +35,7 @@ class SessionStore:
         self.storage: tinydb.TinyDB = storage
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
-                      is_correct, timestamp=None):
+                      is_correct, question_id, timestamp=None):
         if not timestamp:
             timestamp = datetime.now().isoformat()
         record = AnswerEntry(session_id, quiz_name, question_number, selection,

@@ -46,7 +46,7 @@ class TestSession(unittest.TestCase):
         timestamp = "TODAY"
         study_controller = apps.study.study.study_controller
         study_controller.record_answer(session_id, name, question, user_answer,
-                                       correct, timestamp)
+                                       correct, timestamp, "")
 
         with self.authorization_as('author', 'test'):
             result = main.show_session()

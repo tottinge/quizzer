@@ -59,7 +59,6 @@ def check_answer(quiz_name, question_number):
 @view("quiz_judgment", template_lookup=LOOKUP_PATH)
 def render_judgment(quiz: Quiz, question_number: int, selection: str):
     session_id = get_client_session_id(request, response)
-    question_id = quiz.question_by_number(question_number).question_id
     results = study_controller.record_answer_and_get_status(
         question_number, quiz, selection, session_id
     )

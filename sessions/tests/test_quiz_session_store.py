@@ -17,7 +17,7 @@ class SessionStoreStuff(unittest.TestCase):
         session_id = 'test_session'
 
         session_store.record_answer(session_id, quiz_name, 10, 'selection',
-                                    True)
+                                    True, "")
 
         [record] = session_store.perfect_answers(session_id, quiz_name)
         self.assertTrue(record.is_correct)
@@ -36,7 +36,7 @@ class SessionStoreStuff(unittest.TestCase):
         session_id = 'test_session'
 
         session_store.record_answer(session_id, quiz_name, 0, 'selection',
-                                    False)
+                                    False, "")
 
         self.assertEqual(0, session_store.number_of_correct_answers(session_id,
                                                                     quiz_name))
@@ -61,7 +61,7 @@ class SessionStoreStuff(unittest.TestCase):
             (session_2, quiz_name, 10, "selection", True)
         ]
         for record in inputs:
-            session_store.record_answer(*record)
+            session_store.record_answer(,
 
         correct_answers_for = session_store.number_of_correct_answers
         incorrect_answers_for = session_store.number_of_incorrect_answers
@@ -81,7 +81,7 @@ class SessionStoreStuff(unittest.TestCase):
             (session_id, 'quiz', 2, '', False),
         ]
         for each in inputs:
-            session_store.record_answer(*each)
+            session_store.record_answer(,
         actual = session_store.questions_answered_correctly(session_id)
 
         self.assertEqual(1, len(actual))
@@ -97,7 +97,7 @@ class SessionStoreStuff(unittest.TestCase):
             (session_id, 'quiz', 2, '', True),
         ]
         for each in inputs:
-            session_store.record_answer(*each)
+            session_store.record_answer(,
         actual = session_store.questions_answered_incorrectly(session_id)
 
         self.assertEqual(1, len(actual))
