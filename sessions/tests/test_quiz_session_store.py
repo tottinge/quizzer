@@ -55,13 +55,13 @@ class SessionStoreStuff(unittest.TestCase):
         session_2 = "test_session_2"
 
         inputs = [
-            (session_1, quiz_name, 10, "selection", True),
-            (session_1, quiz_name, 10, "selection", False),
-            (session_2, quiz_name, 10, "selection", True),
-            (session_2, quiz_name, 10, "selection", True)
+            (session_1, quiz_name, 10, "selection", True, "82ee1cce-c070-416f-b20a-1e8b8d5b225e"),
+            (session_1, quiz_name, 10, "selection", False, "da8db82a-bcf3-4b7f-a24d-317779d2f4f3"),
+            (session_2, quiz_name, 10, "selection", True, "9feadac9-461a-4971-9fc5-c29c71bef400"),
+            (session_2, quiz_name, 10, "selection", True, "31c01cee-9ccf-4862-88bf-287d3a41374e")
         ]
         for record in inputs:
-            session_store.record_answer(,
+            session_store.record_answer(*record)
 
         correct_answers_for = session_store.number_of_correct_answers
         incorrect_answers_for = session_store.number_of_incorrect_answers
@@ -76,12 +76,12 @@ class SessionStoreStuff(unittest.TestCase):
         session_store = self.session_store
         session_id = 'session'
         inputs = [
-            (session_id, 'quiz', 1, '', True),
-            (session_id, 'quiz', 1, '', True),
-            (session_id, 'quiz', 2, '', False),
+            (session_id, 'quiz', 1, '', True, 'e7324052-724b-43b3-a97b-ba09f6ed635c'),
+            (session_id, 'quiz', 1, '', True, 'e3bab1ed-6aa8-47f6-b305-9a63bdd93bb1'),
+            (session_id, 'quiz', 2, '', False, '12839d3a-42d3-41e2-ae89-9ed6a943aa6e'),
         ]
         for each in inputs:
-            session_store.record_answer(,
+            session_store.record_answer(*each)
         actual = session_store.questions_answered_correctly(session_id)
 
         self.assertEqual(1, len(actual))
@@ -91,13 +91,13 @@ class SessionStoreStuff(unittest.TestCase):
         session_store = self.session_store
         session_id = 'session'
         inputs = [
-            (session_id, 'quiz', 1, '', False),
-            (session_id, 'quiz', 1, '', False),
-            (session_id, 'quiz', 1, '', True),
-            (session_id, 'quiz', 2, '', True),
+            (session_id, 'quiz', 1, '', False, '47769af3-3596-4c2c-b879-075c9e9acf9f'),
+            (session_id, 'quiz', 1, '', False, 'e878bde5-d973-4786-a758-ce021cdca0d1'),
+            (session_id, 'quiz', 1, '', True, '8b71a148-b280-4e3d-a0f7-a607067e7d87'),
+            (session_id, 'quiz', 2, '', True, 'eeb1ac27-43e1-4f43-ba25-ac876f7268ff'),
         ]
         for each in inputs:
-            session_store.record_answer(,
+            session_store.record_answer(*each)
         actual = session_store.questions_answered_incorrectly(session_id)
 
         self.assertEqual(1, len(actual))

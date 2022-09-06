@@ -26,7 +26,7 @@ class StudyController:
                       correct, timestamp, question_id):
         self.quizzology.session_store.record_answer(session_id, quiz_name,
                                                     question_number, selection,
-                                                    correct, "", timestamp)
+                                                    correct, question_id, timestamp)
 
     def number_of_incorrect_answers(self, session_id, quiz_name):
         session_store = self.quizzology.session_store

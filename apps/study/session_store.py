@@ -39,7 +39,7 @@ class SessionStore:
         if not timestamp:
             timestamp = datetime.now().isoformat()
         record = AnswerEntry(session_id, quiz_name, question_number, selection,
-                             is_correct, timestamp)
+                             is_correct, question_id, timestamp)
         self.storage.insert(asdict(record))
 
     def perfect_answers(self, session_id, quiz_name) -> List[AnswerEntry]:
