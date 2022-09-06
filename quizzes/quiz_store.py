@@ -1,6 +1,6 @@
 from typing import NamedTuple, Iterable, Protocol, Optional
 
-from quizzes.quiz import Quiz
+from .quiz import Quiz
 
 
 class QuizSummary(NamedTuple):
@@ -16,7 +16,7 @@ class SaveQuizResult(NamedTuple):
     message: str
 
 
-class StoresQuizzes(Protocol):
+class QuizStore(Protocol):
     def get_quiz_summaries(self) -> Iterable[QuizSummary]:
         ...
 
