@@ -11,13 +11,14 @@ from apps.study.studycontroller import StudyController
 from quizzes.question import Question
 from quizzes.quiz import Quiz
 from quizzes.quiz_store_file import QuizStoreFile
-from apps.study.session_store import SessionStore, AnswerEntry
+from apps.study.session_store import AnswerEntry
+from apps.study.session_store_tinydb import SessionStoreTinyDB
 from shared.quizzology import Quizzology
 
 
 @given("quizzology is running")
 def step_impl_quizzology_is_running(context: Context):
-    session_store = SessionStore(TinyDB(storage=MemoryStorage))
+    session_store = SessionStoreTinyDB(TinyDB(storage=MemoryStorage))
     quiz_store = QuizStoreFile(context.temporary_directory.name)
     quizzology = Quizzology(quiz_store, session_store)
 

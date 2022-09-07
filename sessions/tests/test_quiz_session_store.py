@@ -3,13 +3,13 @@ import unittest
 from tinydb import TinyDB
 from tinydb.storages import MemoryStorage
 
-from apps.study.session_store import SessionStore
+from apps.study.session_store_tinydb import SessionStoreTinyDB
 
 
 class SessionStoreStuff(unittest.TestCase):
 
     def setUp(self):
-        self.session_store = SessionStore(TinyDB(storage=MemoryStorage))
+        self.session_store = SessionStoreTinyDB(TinyDB(storage=MemoryStorage))
 
     def test_record_correct_answer(self):
         session_store = self.session_store

@@ -8,7 +8,7 @@ from tinydb.storages import MemoryStorage
 import apps
 import main
 import security.authn
-from apps.study.session_store import SessionStore
+from apps.study.session_store_tinydb import SessionStoreTinyDB
 from apps.study.study import render_judgment, url_for, use_this_quizzology
 from quizzes.question import Question
 from quizzes.quiz import Quiz
@@ -35,7 +35,7 @@ class TestSession(unittest.TestCase):
 
     def context_with_in_memory_session_store(self):
         return Quizzology(session_store=(
-            SessionStore(TinyDB(storage=MemoryStorage))))
+            SessionStoreTinyDB(TinyDB(storage=MemoryStorage))))
 
     def test_answer_appears_in_session_page(self):
         session_id = "id"

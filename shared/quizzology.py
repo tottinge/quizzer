@@ -1,13 +1,18 @@
 import logging
+import os
 from os import environ
 from typing import Optional
 
-from apps.study.session_store import SessionStore, prepare_session_store
-from quizzes.quiz_store_file import QuizStoreFile
+from tinydb import TinyDB
+
+from apps.study.session_store import SessionStore
+from apps.study.session_store_tinydb import SessionStoreTinyDB
 from quizzes.quiz_store import QuizStore
+from quizzes.quiz_store_file import QuizStoreFile
 from quizzes.quiz_store_mongo import QuizStoreMongo
 
 logger = logging.getLogger(__name__)
+
 
 class Quizzology:
     """
@@ -30,3 +35,13 @@ class Quizzology:
             selected_store = QuizStoreFile()
         logger.info("Selected quiz store is %s", type(selected_store))
         self.quiz_store: QuizStore = selected_store
+
+
+PATH_TO_LOG_DB = "logs/session_log.json"  # Misplaced?
+
+
+def prepare_session_store() -> SessionStore:
+    path = os.path.dirname(PATH_TO_LOG_DB)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return SessionStoreTinyDB(TinyDB(PATH_TO_LOG_DB))
