@@ -2,7 +2,7 @@ import logging
 from abc import abstractmethod
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List, Protocol
+from typing import List, Protocol, Iterable
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ class SessionStore(Protocol):
         ...
 
     @abstractmethod
-    def get_all(self):
+    def get_all(self) -> Iterable[AnswerEntry]:
         ...
 
     @abstractmethod
