@@ -14,7 +14,6 @@ class SessionStoreTinyDB(SessionStore):
     """
 
     def __init__(self, storage=None):
-        self.recorded_answers = []
         self.storage: tinydb.TinyDB = storage
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
