@@ -1,3 +1,8 @@
 {
-    "python.pythonPath": "/Users/tottinge/Projects/quizzology/venv/bin/python"
+    "python.pythonPath": "/Users/tottinge/Projects/quizzology/venv/bin/python",
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
