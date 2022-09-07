@@ -33,7 +33,7 @@ class SessionStore(Protocol):
         ...
 
     @abstractmethod
-    def number_of_incorrect_answers(self, session_id, quiz_name):
+    def number_of_incorrect_answers(self, session_id, quiz_name) -> int:
         ...
 
     @abstractmethod
@@ -41,7 +41,8 @@ class SessionStore(Protocol):
         ...
 
     @abstractmethod
-    def get_log_message(self, session_id, quiz_name, question_number):
+    def get_log_message(self, session_id, quiz_name, question_number) \
+            -> AnswerEntry:
         ...
 
 
