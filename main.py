@@ -12,6 +12,7 @@ that serves up quizzes and tracks answers.
 """
 import logging
 import os
+from dataclasses import asdict
 from logging import getLogger, Logger
 from socket import gethostbyname, gethostname
 from typing import Dict
@@ -173,7 +174,7 @@ def show_session():
     )
     from apps.study.study import study_controller
     text_answers = [
-        template.substitute(answer)
+        template.substitute(asdict(answer))
         for answer in study_controller.get_log_messages()
     ]
     return "<br>".join(text_answers)

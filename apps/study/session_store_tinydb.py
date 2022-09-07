@@ -1,6 +1,6 @@
 from dataclasses import asdict
 from datetime import datetime
-from typing import List, Set, Tuple
+from typing import List, Set, Tuple, Iterable
 
 import tinydb
 from tinydb import Query
@@ -75,9 +75,9 @@ class SessionStoreTinyDB(SessionStore):
                not a.is_correct}
         return total.difference(bad)
 
-    def get_all(self):
+    def get_all(self) -> Iterable[AnswerEntry]:
         # TODO - Return List of AnswerEntry instead of TinyDB.Document
-        return self.storage.all()
+        return (AnswerEntry.from_dict(x) for x in self.storage.all())
 
     def get_log_message(self, session_id, quiz_name,
                         question_number) -> AnswerEntry:
