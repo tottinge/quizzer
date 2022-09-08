@@ -42,8 +42,6 @@ class Quiz:
             else None
         )
 
-    # TODO: change to use uuid rather than sequence number
-
     def first_question_number(self):
         return 0 if self.has_questions() else None
 

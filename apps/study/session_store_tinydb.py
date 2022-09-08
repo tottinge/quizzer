@@ -76,7 +76,6 @@ class SessionStoreTinyDB(SessionStore):
         return total.difference(bad)
 
     def get_all(self) -> Iterable[AnswerEntry]:
-        # TODO - Return List of AnswerEntry instead of TinyDB.Document
         return (AnswerEntry.from_dict(x) for x in self.storage.all())
 
     def get_log_message(self, session_id, quiz_name,
