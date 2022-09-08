@@ -1,5 +1,5 @@
 from dataclasses import asdict
-from typing import Optional, Iterable
+from typing import Optional, List
 
 import pymongo
 
@@ -47,7 +47,7 @@ class QuizStoreMongo:
             if found:
                 return Quiz.from_json(found)
 
-    def get_quiz_summaries(self) -> Iterable[QuizSummary]:
+    def get_quiz_summaries(self) -> List[QuizSummary]:
         with db_connection() as db:
             quizzes: pymongo.collection = self.collection(db)
             result = []

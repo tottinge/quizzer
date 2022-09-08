@@ -1,12 +1,10 @@
 import os
 import unittest
-from typing import Iterable
 from unittest import skipIf
 
-from hamcrest import assert_that, is_, has_item, contains_inanyorder
+from hamcrest import assert_that, is_, has_item
 
 from quizzes.quiz import Quiz
-from quizzes.quiz_store import QuizSummary
 from quizzes.quiz_store_mongo import QuizStoreMongo, db_connection
 
 
@@ -22,7 +20,6 @@ class QuizStoreMongoTest(unittest.TestCase):
         with db_connection() as db:
             result = db.quizzology.drop_collection(self.temporary_data_set)
             assert_that(result['ok'], is_(True))
-
 
     def test_it_creates_and_retrieves_a_simple_quiz(self):
         store = self.store
@@ -44,13 +41,13 @@ class QuizStoreMongoTest(unittest.TestCase):
         # TODO: we can refactor this to make it nicer
         store = self.store
         for quiz in [
-                Quiz("first", "first quiz", []),
-                Quiz("second", "second quiz", []),
-            ]:
+            Quiz("first", "first quiz", []),
+            Quiz("second", "second quiz", []),
+        ]:
             store.save_quiz(quiz)
         summaries = store.get_quiz_summaries()
         assert_that(len(summaries), is_(2))
-        criteria = [ (x.name, x.title) for x in summaries]
+        criteria = [(x.name, x.title) for x in summaries]
         expected = [
             ('first', 'first quiz'),
             ('second', 'second quiz')

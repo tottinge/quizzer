@@ -64,7 +64,9 @@ def authentication_endpoint():
     password = data.get('password')
     user = authenticate(user_name, password)
     if not user:
-        url = build_login_url(flash="Your credentials did not match any on file.")
+        url = build_login_url(
+            flash="Your credentials did not match any on file."
+        )
         redirect(url)
     bottle.response.set_cookie('Authorization',
                                f"Bearer {make_bearer_token(user)}",

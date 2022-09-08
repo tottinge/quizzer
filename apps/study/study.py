@@ -21,8 +21,6 @@ LOOKUP_PATH = ['./apps/study/views', *bottle.TEMPLATE_PATH]
 app = Bottle()
 
 
-
-
 @app.get('/<quiz_name>')
 @view("quiz_question", template_lookup=LOOKUP_PATH)
 def get_quiz_first_question(quiz_name: str):

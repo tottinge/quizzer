@@ -1,5 +1,7 @@
-from pymongo import MongoClient
 from os import environ
+
+from pymongo import MongoClient
+
 
 def db_connection() -> MongoClient:
     return MongoClient(

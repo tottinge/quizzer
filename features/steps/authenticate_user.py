@@ -31,10 +31,10 @@ OurContext = Union[
 ]
 
 
-def get_user_db(context: OurContext):
+def get_user_db(context: OurContext) -> UserStore:
     if not hasattr(context, "user_db"):
         path = context.temporary_directory.name
-        context.user_db: UserStore = UserStoreFile(path)
+        context.user_db = UserStoreFile(path)
     return context.user_db
 
 

@@ -55,10 +55,10 @@ class SessionStoreStuff(unittest.TestCase):
         session_2 = "test_session_2"
 
         inputs = [
-            (session_1, quiz_name, 10, "selection", True, "82ee1cce-c070-416f-b20a-1e8b8d5b225e"),
-            (session_1, quiz_name, 10, "selection", False, "da8db82a-bcf3-4b7f-a24d-317779d2f4f3"),
-            (session_2, quiz_name, 10, "selection", True, "9feadac9-461a-4971-9fc5-c29c71bef400"),
-            (session_2, quiz_name, 10, "selection", True, "31c01cee-9ccf-4862-88bf-287d3a41374e")
+            (session_1, quiz_name, 10, "selection", True, "82ee1cce"),
+            (session_1, quiz_name, 10, "selection", False, "da8db82a"),
+            (session_2, quiz_name, 10, "selection", True, "9feadac9"),
+            (session_2, quiz_name, 10, "selection", True, "31c01cee")
         ]
         for record in inputs:
             session_store.record_answer(*record)

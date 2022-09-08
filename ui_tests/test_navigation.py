@@ -21,6 +21,7 @@ from ui_tests.helpers import launch_quizzology, launch_selenium_chrome, \
 CATS_QUIZ = "/study/catsquiz"
 logging.basicConfig(level=logging.DEBUG)
 
+
 # TODO: Create a userStoreFile in a temp directory for the quizzology instance
 class TestNavigation(TestCase):
     browser: WebDriver
@@ -36,10 +37,6 @@ class TestNavigation(TestCase):
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
         login(cls.browser, cls.base_url + "/login")
-
-
-
-
 
     @classmethod
     def tearDownClass(cls):

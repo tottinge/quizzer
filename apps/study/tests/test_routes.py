@@ -1,6 +1,5 @@
 from unittest import TestCase
 
-from bs4 import BeautifulSoup
 from hamcrest import assert_that, is_, contains_string
 from webtest import TestApp
 

@@ -14,6 +14,7 @@ class Session:
     completed_time: datetime  # updated at render_judgement if no next url
     events: List[AnswerEntry]
 
+
 # Todo: move from TinyDB to MongoDB
 # implement the mongo db store
 # excise tinyDB completely

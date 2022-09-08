@@ -1,5 +1,5 @@
 from subprocess import Popen
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from hamcrest import assert_that, equal_to_ignoring_case, equal_to
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 
 from ui_tests.helpers import take_screenshot, launch_quizzology, \
     launch_selenium_chrome, get_likely_port, local_ip, login
+
 
 # TODO: Create a userStoreFile in a temp directory for the quizzology instance
 
@@ -22,7 +23,7 @@ class BaseUrlTest(TestCase):
         cls.base_url = f"http://{host}:{port_number}/"
         cls.app = launch_quizzology(port_number)
         cls.browser = launch_selenium_chrome(headless=True)
-        login(cls.browser, cls.base_url+"/login")
+        login(cls.browser, cls.base_url + "/login")
 
     def setUp(self):
         self.browser.get(self.base_url)

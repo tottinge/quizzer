@@ -7,7 +7,7 @@
         <p>{{confirmation}}</p>
     </div>
     % if next_url:
-    <a class="w3-btn w3-teal w3-round" href={{next_url}} id="next_question">Next Question</a>
+    <a class="w3-btn w3-teal w3-round" id="next_question" href="{{ next_url }}">Next Question</a>
     % else:
     <p>You have completed this quiz!</p>
     <div id="quiz_performance">
