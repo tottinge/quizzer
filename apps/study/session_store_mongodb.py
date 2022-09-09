@@ -23,6 +23,9 @@ class Session:
 # and eventually the cohort conglomeration of sessions
 
 class SessionStoreMongoDB(SessionStore):
+    def __init__(self, dataset_name='log'):
+        self.dataset_name = dataset_name
+
     def record_answer(self, session_id, quiz_name, question_number, selection,
                       is_correct, question_id, timestamp=None):
         entry = AnswerEntry(
@@ -34,8 +37,8 @@ class SessionStoreMongoDB(SessionStore):
             question_id,
             timestamp)
         with db_connection() as db:
-            collection = db['quizzology']['log']
-            collection.add(asdict(entry))
+            collection = db.quizzology[self.dataset_name]
+            collection.insert_one(asdict(entry))
 
     def perfect_answers(self, session_id, quiz_name) -> List[AnswerEntry]:
         pass
