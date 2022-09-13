@@ -6,7 +6,7 @@ from tinydb.storages import MemoryStorage
 from apps.study.session_store_tinydb import SessionStoreTinyDB
 
 
-class SessionStoreStuff(unittest.TestCase):
+class SessionStoreUsingTinyDB(unittest.TestCase):
 
     def setUp(self):
         self.session_store = SessionStoreTinyDB(TinyDB(storage=MemoryStorage))

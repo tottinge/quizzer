@@ -2,6 +2,8 @@ from dataclasses import asdict
 from datetime import datetime
 from typing import List, Iterable
 
+from pymongo.collection import Collection
+
 from apps.study.session_store import SessionStore, AnswerEntry
 from shared.mongo_connection import db_connection
 
@@ -53,5 +55,12 @@ class SessionStoreMongoDB(SessionStore):
 
     def get_log_message(self, session_id, quiz_name,
                         question_number) -> AnswerEntry:
-        pass
-
+        criteria = {
+            'session_id': session_id,
+            'quiz_name': quiz_name,
+            'question_number': question_number
+        }
+        with db_connection() as db:
+            collection: Collection = db.quizzology[self.dataset_name]
+            result = collection.find_one(criteria)
+            return AnswerEntry.from_dict(result)
