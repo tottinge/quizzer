@@ -18,8 +18,8 @@ class MyTestCase(unittest.TestCase):
             test_records = db.quizzology[self.dataset_name]
             test_records.drop()
 
-    def test_something(self):
-        self.store.record_answer(
+    def test_record_answer(self):
+        result: bool = self.store.record_answer(
             'session_uuid',
             'fake_quiz',
             0,
@@ -27,3 +27,4 @@ class MyTestCase(unittest.TestCase):
             True,
             'question_uuid'
         )
+        self.assertTrue(result)

@@ -28,6 +28,7 @@ class SessionStoreMongoDB(SessionStore):
 
     def record_answer(self, session_id, quiz_name, question_number, selection,
                       is_correct, question_id, timestamp=None):
+        timestamp = timestamp if timestamp else datetime.now().astimezone()
         entry = AnswerEntry(
             session_id,
             quiz_name,
@@ -38,7 +39,8 @@ class SessionStoreMongoDB(SessionStore):
             timestamp)
         with db_connection() as db:
             collection = db.quizzology[self.dataset_name]
-            collection.insert_one(asdict(entry))
+            result = collection.insert_one(asdict(entry))
+            return result.inserted_id is not None
 
     def perfect_answers(self, session_id, quiz_name) -> List[AnswerEntry]:
         pass
@@ -52,3 +54,4 @@ class SessionStoreMongoDB(SessionStore):
     def get_log_message(self, session_id, quiz_name,
                         question_number) -> AnswerEntry:
         pass
+

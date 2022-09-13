@@ -25,7 +25,7 @@ class AnswerEntry:
 class SessionStore(Protocol):
     @abstractmethod
     def record_answer(self, session_id, quiz_name, question_number, selection,
-                      is_correct, question_id, timestamp=None):
+                      is_correct, question_id, timestamp=None) -> bool:
         ...
 
     @abstractmethod
