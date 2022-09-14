@@ -19,12 +19,21 @@ class MyTestCase(unittest.TestCase):
             test_records.drop()
 
     def test_record_answer(self):
+        session_uuid = 'session_uuid'
+        quiz_name = 'fake_quiz'
+        question_number = 0
+        selection = 'no real answer'
+        is_correct = True
+        question_id = 'question_uuid'
         result: bool = self.store.record_answer(
-            'session_uuid',
-            'fake_quiz',
-            0,
-            'no real answer',
-            True,
-            'question_uuid'
+            session_uuid,
+            quiz_name,
+            question_number,
+            selection,
+            is_correct,
+            question_id
         )
         self.assertTrue(result)
+        record = self.store.get_log_message(session_uuid, quiz_name,
+                                            question_number)
+        # Todo - Finish implementing assert with the get_log_message result

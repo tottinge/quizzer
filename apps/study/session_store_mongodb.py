@@ -62,5 +62,5 @@ class SessionStoreMongoDB(SessionStore):
         }
         with db_connection() as db:
             collection: Collection = db.quizzology[self.dataset_name]
-            result = collection.find_one(criteria)
+            result = collection.find_one(criteria, projection={"_id":0})
             return AnswerEntry.from_dict(result)
