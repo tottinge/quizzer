@@ -44,4 +44,29 @@ In the works:
 
 Chrome drivers are available at https://chromedriver.chromium.org/downloads 
 
+# Initial Setup for Local Mongodb
+
+## Install docker and launch it. 
+`brew install docker`
+
+You will need to launch this and give the Mac permission to run it.
+
+## Install a Front-end for Mongo
+
+`brew install mongodb-compass`
+
+This gets us the UI for doing data stuff in mongo.
+
+Again, you'll need to launch it and give the Mac permission to run it.
+
+## Download mongo and run it as 'quizzology-data'
+
+`docker run -p 27017:27017 --name quizzology-data -d -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=passme mongo
+`
+
+The image should be running in the background (you get a hash code for 
+it), and should appear in your docker desktop dashboard.
+
+## Install the login table
+
 
