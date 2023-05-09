@@ -15,7 +15,8 @@ class TestQuiz(unittest.TestCase):
             f"Rejected correct answer '{self.question.answer}'")
 
     def test_answer_question_incorrectly(self):
+        negation = f"absolutely not {self.question.answer}"
         self.assertFalse(
-            self.question.is_correct_answer("falsehood"),
-            f"Accepted 'falsehood' where answer is {self.question.answer}"
+            self.question.is_correct_answer(negation),
+            f"Accepted '{negation}' where answer is {self.question.answer}"
         )
