@@ -5,3 +5,5 @@ mypy
 flake8
 types-beautifulsoup4
 pre-commit
+bandit
+black
