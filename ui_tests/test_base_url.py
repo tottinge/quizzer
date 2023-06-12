@@ -44,6 +44,6 @@ class BaseUrlTest(TestCase):
 
     def test_quiz_links_exist(self):
         browser = self.browser
-        browser.find_element(By.LINK_TEXT, "Cats Quiz")
-        browser.find_element(By.LINK_TEXT, 'Basics of HTML')
-        browser.find_element(By.PARTIAL_LINK_TEXT, 'evelopment')
+        self.assertIsNotNone(browser.find_element(By.LINK_TEXT, "Cats Quiz"))
+        self.assertIsNotNone(browser.find_element(By.LINK_TEXT, 'Basics of HTML'))
+        self.assertIsNotNone(browser.find_element(By.PARTIAL_LINK_TEXT, 'evelopment'))
