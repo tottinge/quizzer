@@ -1,4 +1,12 @@
-# Install precommit
+
+# Setting up python precommit plugin
+
+The precommit plugin modifies the project so that every time you perform a commit, it checks (or fixes) certain issues that you would otherwise be bothered with.
+
+This is convenient provided it is fast; we have to keep it fast!
+
+
+## Install precommit
 	venv/bin/activate
 	echo pre-commit > devtools.txt
 	pip install -r devtools.txt
