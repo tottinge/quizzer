@@ -1,0 +1,4 @@
+#!/bin/bash
+. venv/bin/activate
+pytest --ignore=ui_tests
+behave -t ~@wip -t ~@future

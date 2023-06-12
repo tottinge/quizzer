@@ -14,3 +14,9 @@ repos:
     hooks:
       - id: black
         language_version: python 3
+-   repo: local
+    hooks:
+    -   id: run_tests
+        language: script
+        name: Run Tests
+        entry: ./runtests
