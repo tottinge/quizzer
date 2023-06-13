@@ -26,7 +26,7 @@ LOCAL_PATHS = ['./apps/author/views', *bottle.TEMPLATE_PATH]
 @view('quiz_author_home', template_lookup=LOCAL_PATHS)
 def cover_page():
     return {
-        'title': 'Welcome Author'
+        'title': 'Welcome Quiz Author'
     }
 
 
