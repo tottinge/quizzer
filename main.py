@@ -18,9 +18,7 @@ from socket import gethostbyname, gethostname
 from typing import Dict
 
 import bottle
-from bottle import (
-    run, request, static_file, redirect
-)
+from bottle import run, request, static_file, redirect
 from jwt import ExpiredSignatureError
 
 from apps.author.author import app as authoring_app
@@ -30,63 +28,63 @@ from security.authn import make_bearer_token, authenticate
 from security.authz import require_roles, get_current_user, build_login_url
 from shared.quizzology import Quizzology
 
+
 quizzology = Quizzology()
 study_use(quizzology)
 logger: Logger = getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-HOME_PAGE = '/'
+
+HOME_PAGE = "/"
 
 app = bottle.app()
 
-author_root_page = '/author'
-study_root_page = '/study'
+author_root_page = "/author"
+study_root_page = "/study"
 
 app.mount(author_root_page, authoring_app)
 app.mount(study_root_page, quizzing_app)
 
 
-@app.route('/login')
+@app.route("/login")
 @bottle.view("login")
 def login():
     # pylint disable=no-member
     return {
         "title": "Who are you?",
         "flash": request.query.get("flash", ""),
-        "destination": request.query.get("destination", "")
+        "destination": request.query.get("destination", ""),
     }
 
 
-@app.post('/auth')
+@app.post("/auth")
 def authentication_endpoint():
     data: bottle.FormsDict = request.forms
-    user_name = data.get('user_name')
-    password = data.get('password')
+    user_name = data.get("user_name")
+    password = data.get("password")
     user = authenticate(user_name, password)
     if not user:
-        url = build_login_url(
-            flash="Your credentials did not match any on file."
-        )
+        url = build_login_url(flash="Your credentials did not match any on file.")
         redirect(url)
-    bottle.response.set_cookie('Authorization',
-                               f"Bearer {make_bearer_token(user)}",
-                               httponly=True)
-    bottle.response.set_cookie('qz-user-name', user.user_name)
-    bottle.response.set_cookie('qz-user-role', user.role)
-    destination = request.forms.get('destination')
+    bottle.response.set_cookie(
+        "Authorization", f"Bearer {make_bearer_token(user)}", httponly=True
+    )
+    bottle.response.set_cookie("qz-user-name", user.user_name)
+    bottle.response.set_cookie("qz-user-role", user.role)
+    destination = request.forms.get("destination")
     redirect(destination or HOME_PAGE)
 
 
 def page_for_user(user: Dict):
     destinations = {
-        'guest': study_root_page,
-        'student': study_root_page,
-        'author': author_root_page
+        "guest": study_root_page,
+        "student": study_root_page,
+        "author": author_root_page,
     }
-    return destinations[user['role']]
+    return destinations[user["role"]]
 
 
-@app.route('/')
+@app.route("/")
 @bottle.view("quiz_choice")
 def select_quiz():
     try:
@@ -94,24 +92,24 @@ def select_quiz():
         return {
             "title": "Quizzology",
             "role": user["role"],
-            "choices": quizzology.quiz_store.get_quiz_summaries()
+            "choices": quizzology.quiz_store.get_quiz_summaries(),
         }
-    except(AttributeError, ExpiredSignatureError):
-        redirect('/login')
+    except (AttributeError, ExpiredSignatureError):
+        redirect("/login")
 
 
-@app.route('/favicon.ico')
+@app.route("/favicon.ico")
 def get_favicon():
-    return get_static_file('favicon.ico')
+    return get_static_file("favicon.ico")
 
 
-@app.route('/static/<filename:path>')
+@app.route("/static/<filename:path>")
 def retrieve_file(filename):
     return get_static_file(filename)
 
 
 def get_static_file(filename):
-    root_path = os.environ.get('STATIC_PATH', './static/')
+    root_path = os.environ.get("STATIC_PATH", "./static/")
     logger.debug(f"Getting {filename} from {root_path} ")
     return static_file(filename, root=root_path)
 
@@ -123,28 +121,22 @@ def show_me():
     session environment. It's probably not recommended for production
     use - it's hard to say what opportunities it leaves hackers.
     """
-    remote_addr_header = 'REMOTE_ADDR'
+    remote_addr_header = "REMOTE_ADDR"
     x_forward_header = "HTTP_X_FORWARDED_FOR"
 
-    fwd_for = request.environ.get(x_forward_header,
-                                  "not listed in HTTP_X-forwarded")
-    remote = request.environ.get(remote_addr_header,
-                                 "not listed in remote addr")
+    fwd_for = request.environ.get(x_forward_header, "not listed in HTTP_X-forwarded")
+    remote = request.environ.get(remote_addr_header, "not listed in remote addr")
     last_fwd_addr = request.environ.get(x_forward_header, "").split(" ")[-1]
-    who_are_you = (
-            last_fwd_addr
-            or request.environ.get(remote_addr_header)
-            or "a ninja"
-    )
+    who_are_you = last_fwd_addr or request.environ.get(remote_addr_header) or "a ninja"
     print("Remote route", request.remote_route)
-    env_vars = (f"<span>{key}: {value}</span><br>"
-                for (key, value) in
-                sorted(list(request.environ.items()))
-                )
+    env_vars = (
+        f"<span>{key}: {value}</span><br>"
+        for (key, value) in sorted(list(request.environ.items()))
+    )
     return (
-            f"<p>Maybe you're {fwd_for}, and maybe you're {remote}.</p>"
-            + f"<p>I'm guessing you are {who_are_you}.</p>"
-            + "".join(env_vars)
+        f"<p>Maybe you're {fwd_for}, and maybe you're {remote}.</p>"
+        + f"<p>I'm guessing you are {who_are_you}.</p>"
+        + "".join(env_vars)
     )
 
 
@@ -156,18 +148,18 @@ def cookie_explorer():
     understanding how cookies work.
     """
     cookies: bottle.FormsDict = request.cookies
-    result = "".join(
-        f"<p>{key}: {value}</p>" for (key, value) in cookies.items())
+    result = "".join(f"<p>{key}: {value}</p>" for (key, value) in cookies.items())
     return result
 
 
 @app.get("/session")
-@require_roles('student', 'author')
+@require_roles("student", "author")
 def show_session():
     """
     Show session logs: for troubleshooting.
     """
     from string import Template
+
     template = Template(
         "$timestamp $session_id\t"
         "$quiz_name:$question_number\t"
@@ -175,6 +167,7 @@ def show_session():
         "'$selection'"
     )
     from apps.study.study import study_controller
+
     text_answers = [
         template.substitute(asdict(answer))
         for answer in study_controller.get_log_messages()
@@ -184,14 +177,7 @@ def show_session():
 
 def main():
     host_name, port_number = get_endpoint_address()
-    run(
-        app,
-        host=host_name,
-        port=port_number,
-        server='auto',
-        reloader=True,
-        debug=True
-    )
+    run(app, host=host_name, port=port_number, server="auto", reloader=True, debug=True)
 
 
 def local_ip() -> str:
@@ -199,13 +185,13 @@ def local_ip() -> str:
 
 
 def get_endpoint_address() -> tuple[str, int]:
-    host_name = os.environ.get('QUIZ_HOST', local_ip())
-    heroku_port = os.environ.get('PORT', '4000')
-    port_number = int(os.environ.get('QUIZ_PORT', heroku_port))
+    host_name = os.environ.get("QUIZ_HOST", local_ip())
+    heroku_port = os.environ.get("PORT", "4000")
+    port_number = int(os.environ.get("QUIZ_PORT", heroku_port))
     return host_name, port_number
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 
 # Require user to authenticate (a form with a POST w/username & pw) ✓
