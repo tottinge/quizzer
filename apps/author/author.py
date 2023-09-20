@@ -19,27 +19,25 @@ from shared.quizzology import Quizzology
 
 app = bottle.Bottle()
 app.resources.add_path("./apps/author/views")
-LOCAL_PATHS = ['./apps/author/views', *bottle.TEMPLATE_PATH]
+LOCAL_PATHS = ["./apps/author/views", *bottle.TEMPLATE_PATH]
 
 
-@app.route('/')
-@view('quiz_author_home', template_lookup=LOCAL_PATHS)
+@app.route("/")
+@view("quiz_author_home", template_lookup=LOCAL_PATHS)
 def cover_page():
-    return {
-        'title': 'Welcome Quiz Author'
-    }
+    return {"title": "Welcome Quizzology Author"}
 
 
-@app.get('/edit/<quiz_name>')
-@view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
+@app.get("/edit/<quiz_name>")
+@view("quiz_authoring_form", template_lookup=LOCAL_PATHS)
 def edit_existing(quiz_name: str):
     quiz = get_author_controller().get_quiz(quiz_name)
     return {
-        'title': 'Edit Existing Quiz',
-        'quiz': quiz,
-        'raw_quiz': json.dumps(asdict(quiz)),
-        'message': "",
-        'error': False
+        "title": "Edit Existing Quiz",
+        "quiz": quiz,
+        "raw_quiz": json.dumps(asdict(quiz)),
+        "message": "",
+        "error": False,
     }
 
 
@@ -49,31 +47,31 @@ def get_author_controller() -> AuthorController:
     return author_controller
 
 
-@app.get('/edit')
-@view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
+@app.get("/edit")
+@view("quiz_authoring_form", template_lookup=LOCAL_PATHS)
 def create_new_quiz():
     return {
-        'quiz': Quiz(name='name', title='title'),
-        'title': "Edit Quiz",
-        'raw_quiz': {},
-        'message': "",
-        'error': False
+        "quiz": Quiz(name="name", title="title"),
+        "title": "Edit Quiz",
+        "raw_quiz": {},
+        "message": "",
+        "error": False,
     }
 
 
-@app.post('/edit')
-@view('quiz_authoring_form', template_lookup=LOCAL_PATHS)
+@app.post("/edit")
+@view("quiz_authoring_form", template_lookup=LOCAL_PATHS)
 def update_quiz_from_html_form():
     # pylint disable=no-member
-    doc_field_value = bottle.request.forms.get('quiz')
+    doc_field_value = bottle.request.forms.get("quiz")
     as_json = json.loads(doc_field_value)
     quiz = Quiz.from_json(as_json)
     result = get_author_controller().save(quiz)
     error = not result.success
     return {
-        'quiz': Quiz(name='name', title='title'),
-        'title': "Edit Quiz",
-        'raw_quiz': json.dumps(asdict(quiz)),
-        'message': f'Quiz "{quiz.title}" saved as {quiz.name}',
-        'error': error
+        "quiz": Quiz(name="name", title="title"),
+        "title": "Edit Quiz",
+        "raw_quiz": json.dumps(asdict(quiz)),
+        "message": f'Quiz "{quiz.title}" saved as {quiz.name}',
+        "error": error,
     }
