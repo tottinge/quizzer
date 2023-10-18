@@ -7,3 +7,12 @@ __pycache__
 .scannerwork
 .mypy_cache
 .pytest_cache
+/apps/.DS_Store
+/features/.DS_Store
+/quizzes/.DS_Store
+/security/.DS_Store
+/sessions/.DS_Store
+/ui_tests/.DS_Store
+/webdrivers/.DS_Store
+.DS_Store
+/webdrivers/darwin/.DS_Store
