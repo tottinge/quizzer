@@ -4,10 +4,11 @@ tinydb
 sanitize-filename
 behave
 behave-html-formatter==0.9.10
-PyHamcrest
-selenium
+PyHamcrest==2.1.0
+selenium==4.16.0
 WebTest
 gunicorn
 PyJWT
-pymongo
+pymongo==4.6.1
 dnspython
+beaker

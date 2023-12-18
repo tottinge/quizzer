@@ -16,29 +16,44 @@ class SessionStoreTinyDB(SessionStore):
     def __init__(self, storage=None):
         self.storage: tinydb.TinyDB = storage
 
-    def record_answer(self, session_id, quiz_name, question_number, selection,
-                      is_correct, question_id, timestamp=None):
+    def record_answer(
+        self,
+        session_id,
+        quiz_name,
+        question_number,
+        selection,
+        is_correct,
+        question_id,
+        timestamp=None,
+    ):
         if not timestamp:
             timestamp = datetime.now().isoformat()
-        record = AnswerEntry(session_id, quiz_name, question_number, selection,
-                             is_correct, question_id, timestamp)
+        record = AnswerEntry(
+            session_id,
+            quiz_name,
+            question_number,
+            selection,
+            is_correct,
+            question_id,
+            timestamp,
+        )
         self.storage.insert(asdict(record))
 
     def perfect_answers(self, session_id, quiz_name) -> List[AnswerEntry]:
-        criteria = Query()
+        criteria: Query = Query()
         records = self.storage.search(
-            (criteria.session_id == session_id)
-            & (criteria.quiz_name == quiz_name)
-            & (criteria.is_correct == True)
+            criteria.fragment(
+                {"session_id": session_id, "quiz_name": quiz_name, "is_correct": True}
+            )
         )
         return [AnswerEntry.from_dict(x) for x in records]
 
     def incorrect_answers(self, session_id, quiz_name) -> List[AnswerEntry]:
         criteria = Query()
         records = self.storage.search(
-            (criteria.session_id == session_id)
-            & (criteria.quiz_name == quiz_name)
-            & (criteria.is_correct == False)
+            criteria.fragment(
+                {"session_id": session_id, "quiz_name": quiz_name, "is_correct": False}
+            )
         )
         return [AnswerEntry.from_dict(x) for x in records]
 
@@ -48,16 +63,13 @@ class SessionStoreTinyDB(SessionStore):
     def number_of_incorrect_answers(self, session_id, quiz_name) -> int:
         return len(self.incorrect_answers(session_id, quiz_name))
 
-    def questions_answered_incorrectly(self, session_id) \
-            -> Set[Tuple[str, int]]:
+    def questions_answered_incorrectly(self, session_id) -> Set[Tuple[str, int]]:
         """
         Get a list of questions which were answered incorrectly
         at least once during a session.
         """
-        criteria = Query()
         records = self.storage.search(
-            (criteria.session_id == session_id)
-            & (criteria.is_correct == False)
+            Query().fragment({"session_id": session_id, "is_correct": False})
         )
         answers = (AnswerEntry.from_dict(x) for x in records)
         return {(x.quiz_name, x.question_number) for x in answers}
@@ -71,19 +83,19 @@ class SessionStoreTinyDB(SessionStore):
         records = self.storage.search(criteria.session_id == target_session)
         answers = [AnswerEntry.from_dict(x) for x in records]
         total = {(a.quiz_name, a.question_number) for a in answers}
-        bad = {(a.quiz_name, a.question_number) for a in answers if
-               not a.is_correct}
+        bad = {(a.quiz_name, a.question_number) for a in answers if not a.is_correct}
         return total.difference(bad)
 
     def get_all(self) -> Iterable[AnswerEntry]:
         return (AnswerEntry.from_dict(x) for x in self.storage.all())
 
-    def get_log_message(self, session_id, quiz_name,
-                        question_number) -> AnswerEntry:
-        criteria = Query().fragment({
-            'session_id': session_id,
-            'quiz_name': quiz_name,
-            'question_number': question_number
-        })
+    def get_log_message(self, session_id, quiz_name, question_number) -> AnswerEntry:
+        criteria = Query().fragment(
+            {
+                "session_id": session_id,
+                "quiz_name": quiz_name,
+                "question_number": question_number,
+            }
+        )
         records = self.storage.search(criteria)
         return AnswerEntry.from_dict(records[0])
