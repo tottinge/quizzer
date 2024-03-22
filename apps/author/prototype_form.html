@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prototype Editing Form</title>
+    <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet"/>
+    <link href="/static/quizzology.css" rel="stylesheet"/>
+
+</head>
+<body>
+
+<section class="w3-container">
+    <h1 style="float: left;">
+        <input id="title" type="text" style="font-size: xxx-large; outline: none; border: none;" value="Quiz Title">
+    </h1>
+    <input id="quiz-image" type="file" name="quiz.img" style="float: right;">
+</section>
+
+
+<section class="w3-card w3-container">
+    <h3>
+
+        <input class="w3-panel w3-teal w3-card-4 question-asked"
+               type="text"
+               style="outline: none; border:none; width:100%"
+               value="Question Text">
+    </h3>
+    <div class="w3-container">
+        <label for="answer">Correct Answer:</label>
+        <input class="w3-teal w3-input" type="text" id="answer" value="correct"
+               style="outline: none; border:none; width:100%">
+    </div>
+
+    <div class="w3-container">
+        <label for="confirmation">Confirmation Text:</label>
+        <textarea id="confirmation" style="width:100%; color: lightgrey;"></textarea>
+    </div>
+<br>
+    <label for="decoy-list">Decoys</label>
+    <ul id="decoy-list">
+        <li><input type="text" value="First Decoy"></li>
+        <li><input type="text" value="another decoy"></li>
+        <li><input type="text" value="likely decoy"></li>
+        <li><input type="text" value="unlikely decoy"></li>
+    </ul>
+
+    <label for="other-resources">Other Resources</label>
+    <ul id="other-resources">
+        <li>
+            <label for="resource-url">URL</label>
+            <input id="resource-url" type="url">
+            <input id="resource-text" type="text">
+        </li>
+    </ul>
+</section>
+</body>
+</html>
