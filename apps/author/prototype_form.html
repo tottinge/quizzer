@@ -10,32 +10,59 @@
 <body>
 
 <section class="w3-container">
+    <script>
+        function quizImageChanged(e) {
+            const url = document.getElementById('quiz-image').value
+            const picture = document.getElementById('quiz-image-show')
+            picture.setAttribute('src', url)
+        }
+    </script>
     <h1 style="float: left;">
-        <input id="title" type="text" style="font-size: xxx-large; outline: none; border: none;" value="Quiz Title">
+        <input
+                id="title"
+                type="text"
+                style="font-size: xxx-large; outline: none; border: none; width: 100%;"
+                placeholder="Quiz Title"
+        >
     </h1>
-    <input id="quiz-image" type="file" name="quiz.img" style="float: right;">
+    <img id="quiz-image-show"
+         src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L2pvYjY4Ni0yNTMtcC5wbmc.png"
+         style="max-width: 120px;">
+    <input
+            id="quiz-image"
+            type="url"
+            name="quiz.img"
+            style="float: right;"
+            onchange="quizImageChanged()"
+    >
 </section>
 
 
 <section class="w3-card w3-container">
     <h3>
-
         <input class="w3-panel w3-teal w3-card-4 question-asked"
                type="text"
                style="outline: none; border:none; width:100%"
-               value="Question Text">
+               placeholder="Question to ask students"
+               name="quiz-question"
+        >
     </h3>
     <div class="w3-container">
         <label for="answer">Correct Answer:</label>
-        <input class="w3-teal w3-input" type="text" id="answer" value="correct"
+        <input class="w3-teal w3-input"
+               type="text"
+               id="answer"
+               placeholder="correct answer"
                style="outline: none; border:none; width:100%">
     </div>
 
     <div class="w3-container">
         <label for="confirmation">Confirmation Text:</label>
-        <textarea id="confirmation" style="width:100%; color: lightgrey;"></textarea>
+        <textarea id="confirmation"
+                  placeholder="why it is right"
+                  style="width:100%;"></textarea>
     </div>
-<br>
+    <br>
     <label for="decoy-list">Decoys</label>
     <ul id="decoy-list">
         <li><input type="text" value="First Decoy"></li>
@@ -47,9 +74,14 @@
     <label for="other-resources">Other Resources</label>
     <ul id="other-resources">
         <li>
-            <label for="resource-url">URL</label>
-            <input id="resource-url" type="url">
-            <input id="resource-text" type="text">
+            <p>
+                <label for="resource-url">URL</label>
+                <input id="resource-url" type="url" placeholder="url">
+            </p>
+            <p style="align-items: center;">
+                <label for="resource-text">Relevance</label>
+                <textarea id="resource-text" placeholder="why it's relevant"></textarea>
+            </p>
         </li>
     </ul>
 </section>
