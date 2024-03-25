@@ -33,7 +33,7 @@ def launch_quizzology(port) -> Popen[str]:
         env={**os.environ, "QUIZ_PORT": str(port)},
         shell=False,
         text=True,
-    )
+    )  # nosec
 
 
 size_desktop = "1920,1200"
