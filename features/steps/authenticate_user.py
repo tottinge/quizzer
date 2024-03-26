@@ -26,9 +26,7 @@ class CombinedContext(Protocol):
     get_request_path_mock: Mock
 
 
-OurContext = Union[
-    CombinedContext, Context
-]
+OurContext = Union[CombinedContext, Context]
 
 
 def get_user_db(context: OurContext) -> UserStore:
@@ -40,18 +38,19 @@ def get_user_db(context: OurContext) -> UserStore:
 
 @step('"{user_id}" logs in with password "{password}"')
 def step_impl_user_logs_in(context: OurContext, user_id: str, password: str):
-    context.authenticated_user = authenticate(user_id, password,
-                                              db=get_user_db(context))
+    context.authenticated_user = authenticate(
+        user_id, password, db=get_user_db(context)
+    )
     if context.authenticated_user:
         token = make_bearer_token(user=context.authenticated_user)
         context.get_token_mock = patch(
-            "security.authz.get_authorization_token",
-            return_value=token)
+            "security.authz.get_authorization_token", return_value=token
+        )
         context.get_token_mock.start()
 
 
 @then('"{user_id}" is authenticated')
-def step_impluser_is_authenticated(context: OurContext, user_id: str):
+def step_impl_user_is_authenticated(context: OurContext, user_id: str):
     user: User = context.authenticated_user
     assert_that(user, not_none())
     assert_that(user.user_name, equal_to(user_id))
@@ -79,32 +78,35 @@ def step_impl_user_does_not_exist(context: OurContext, user_id: str):
 @given('a {role} "{user_id}" exists with password "{password}"')
 @given('an {role} "{user_id}" exists with password "{password}"')
 def step_impl_user_exists_with_password(
-        context: OurContext, role: str, user_id: str, password: str):
+    context: OurContext, role: str, user_id: str, password: str
+):
     database = get_user_db(context)
     database.create_user(user_id, password=password, role=role)
 
 
 @step("the session has expired")
 def step_impl_session_has_expired(context: OurContext):
-    expired_token = make_bearer_token(user=context.authenticated_user,
-                                      hours_to_live=-1)
-    context.get_token_mock = patch("security.authz.get_authorization_token",
-                                   return_value=expired_token)
+    expired_token = make_bearer_token(user=context.authenticated_user, hours_to_live=-1)
+    context.get_token_mock = patch(
+        "security.authz.get_authorization_token", return_value=expired_token
+    )
     context.get_token_mock.start()
 
 
 @given('an {role} "{user_id}" has logged in with password "{password}"')
 def step_impl_role_based_user_has_logged_in_with_password(
-        context: OurContext, role: str, user_id: str, password: str):
-    context.execute_steps(f"""
+    context: OurContext, role: str, user_id: str, password: str
+):
+    context.execute_steps(
+        f"""
         Given a {role} "{user_id}" exists with password "{password}"
         And "{user_id}" logs in with password "{password}"
-    """)
+    """
+    )
 
 
 @given('the page "{pagename}" is restricted to {role}')
-def step_impl_page_is_restricted_to_role(
-        context: OurContext, pagename: str, role: str):
+def step_impl_page_is_restricted_to_role(context: OurContext, pagename: str, role: str):
     roles = [r.strip() for r in role.split(",")]
     role_decorator = security.authz.require_roles(*roles)
     protected_function = role_decorator(lambda: pagename)
@@ -112,14 +114,14 @@ def step_impl_page_is_restricted_to_role(
 
 
 def set_route(context, pagename, protected_function):
-    routes = getattr(context, 'routes', {})
+    routes = getattr(context, "routes", {})
     routes[pagename] = protected_function
     context.routes = routes
 
 
 @when('"{user}" visits "{route}"')
 def step_impl_user_visits_route(context: OurContext, user: str, route: str):
-    mock = patch('security.authz.get_request_path', return_value=route)
+    mock = patch("security.authz.get_request_path", return_value=route)
     mock.start()
     context.get_request_path_mock = mock
     guarded_route = context.routes[route]
@@ -132,11 +134,13 @@ def step_impl_user_visits_route(context: OurContext, user: str, route: str):
 
 @when('guest user visits "{route}"')
 def step_impl_guest_user_risits_route(context: OurContext, route: str):
-    user_name, password = 'nonesuch', 'nonesuch'
-    context.execute_steps(f"""
+    user_name, password = "nonesuch", "nonesuch"
+    context.execute_steps(
+        f"""
         When "{user_name}" logs in with password "{password}"
         And "{user_name}" visits "{route}"
-    """)
+    """
+    )
 
 
 @then("they should be challenged to re-login")
@@ -145,7 +149,7 @@ def step_impl_user_challenged_to_relogin(context: OurContext):
 
 
 def is_login_page(context):
-    assert_that(context.visit_result, contains_string('/login'))
+    assert_that(context.visit_result, contains_string("/login"))
 
 
 @step("a flash message is displayed")
@@ -153,13 +157,12 @@ def step_impl_flash_message_displayed(context: OurContext):
     is_login_page(context)
     url_parse_result = urlparse(context.visit_result)
     query_parameters = parse_qs(url_parse_result.query)
-    [flash] = query_parameters['flash']
+    [flash] = query_parameters["flash"]
     assert_that(flash, not_none())
 
 
 @then('the "{expected_page}" is visited')
-def step_impl_expected_page_is_visited(
-        context: OurContext, expected_page: str):
+def step_impl_expected_page_is_visited(context: OurContext, expected_page: str):
     if expected_page == "login":
         is_login_page(context)
     else:
@@ -167,11 +170,10 @@ def step_impl_expected_page_is_visited(
 
 
 @step('the destination "{page}" is passed to the login page')
-def step_impl_destination_page_is_passed_to_login_page(
-        context: OurContext, page: str):
+def step_impl_destination_page_is_passed_to_login_page(context: OurContext, page: str):
     is_login_page(context)
     url_parse_result = urlparse(context.visit_result)
     query_parameters = parse_qs(url_parse_result.query)
     destination: str
-    [destination] = query_parameters['destination']
+    [destination] = query_parameters["destination"]
     assert_that(destination, is_(page))

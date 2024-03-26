@@ -91,6 +91,9 @@ def login(browser: WebDriver, url: str):
     WebDriverWait(browser, timeout=2, poll_frequency=0.25).until(
         condition.title_contains("Who are you")
     )
+    # get the user DB
+    # Create the user
+    # Log in as the created user
     browser.find_element(By.NAME, "user_name").send_keys("perry")
     browser.find_element(By.NAME, "password").send_keys("passme")
     browser.find_element(By.ID, "login").click()

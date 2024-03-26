@@ -42,7 +42,6 @@ def authenticate(user_name: str, password: str, db: UserStore = None) -> Optiona
 
 
 def get_user_store() -> UserStore:
-    url = environ.get("QUIZ_MONGO_URL")
-    if url:
+    if environ.get("QUIZ_MONGO_URL"):
         return UserStoreMongo()
-    return UserStoreFile()
+    return UserStoreFile(environ.get("QUIZ_USER_PATH"))
