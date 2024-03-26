@@ -11,31 +11,28 @@ from quizzes.quiz import Quiz
 from quizzes.quiz_store import QuizSummary, SaveQuizResult
 
 logger = getLogger(__name__)
-defang_bad_chars = str.maketrans({
-    '~': '_',
-    ' ': '_',
-    '&': '-n-',
-    '|': '-r-',
-    '"': '',
-    "'": '',
-    ';': ''
-})
+defang_bad_chars = str.maketrans(
+    {"~": "_", " ": "_", "&": "-n-", "|": "-r-", '"': "", "'": "", ";": ""}
+)
 
 
 class QuizStoreFile:
-    """ For consideration
+    """For consideration
     * why not do a dir walk?
     * instead of filename, an ID in summaries?
     """
 
-    def __init__(self, dir_name='quiz_content'):
+    def __init__(self, dir_name="quiz_content"):
         self.quiz_dir = dir_name
+
+    def __str__(self):
+        return f"QuizStoreFile({self.quiz_dir})"
 
     def filename_for(self, name: str) -> str:
         existing = self._find_file_for_named_quiz(name)
         if existing:
             return existing
-        new_filename = sanitize(name.translate(defang_bad_chars) + '.json')
+        new_filename = sanitize(name.translate(defang_bad_chars) + ".json")
         return os.path.join(self.quiz_dir, new_filename)
 
     def get_quiz_summaries(self) -> Iterable[QuizSummary]:
@@ -54,16 +51,10 @@ class QuizStoreFile:
         try:
             self._dump_quiz_to(filename, quiz)
             return SaveQuizResult(
-                id=filename,
-                success=True,
-                message=f'saved quiz to {filename}'
+                id=filename, success=True, message=f"saved quiz to {filename}"
             )
         except OSError as error:
-            return SaveQuizResult(
-                id=filename,
-                success=False,
-                message=error.strerror
-            )
+            return SaveQuizResult(id=filename, success=False, message=error.strerror)
 
     def _dump_quiz_to(self, filename, quiz):
         with open(filename, "w") as output:
@@ -78,24 +69,26 @@ class QuizStoreFile:
     @staticmethod
     def _get_quiz_files_from_directory(directory: str) -> list:
         try:
-            return [os.path.join(directory, x)
-                    for x in os.listdir(directory)
-                    if x.endswith('json')
-                    ]
+            return [
+                os.path.join(directory, x)
+                for x in os.listdir(directory)
+                if x.endswith("json")
+            ]
         except FileNotFoundError as error:
             logger.error(f"Reading quiz directory: {error}")
             return []
 
-    def _get_quiz_summaries_from_file_list(self, quiz_file_paths) \
-            -> Iterable[QuizSummary]:
+    def _get_quiz_summaries_from_file_list(
+        self, quiz_file_paths
+    ) -> Iterable[QuizSummary]:
         for quiz_filename in quiz_file_paths:
             try:
                 document = self._read_quiz_doc_from_file(quiz_filename)
                 summary = QuizSummary(
-                    name=document['name'],
-                    title=document['title'],
+                    name=document["name"],
+                    title=document["title"],
                     id=quiz_filename,
-                    image_url=document.get('image_url', '/favicon.ico')
+                    image_url=document.get("image_url", "/favicon.ico"),
                 )
                 yield summary
             except json.JSONDecodeError as err:
@@ -107,11 +100,7 @@ class QuizStoreFile:
             return json.load(input_file)
 
     def _find_file_for_named_quiz(self, quiz_name: str) -> Optional[str]:
-        lookup = {
-            summary.name: summary.id
-            for summary
-            in self.get_quiz_summaries()
-        }
+        lookup = {summary.name: summary.id for summary in self.get_quiz_summaries()}
         filename = lookup.get(quiz_name)
         return filename
 

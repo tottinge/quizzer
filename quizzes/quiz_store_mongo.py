@@ -11,12 +11,15 @@ from shared.mongo_connection import db_connection
 
 class QuizStoreMongo:
     def __init__(self, collection_name=None):
-        self.collection_name = collection_name if collection_name else 'quizzes'
+        self.collection_name = collection_name if collection_name else "quizzes"
+
+    def __str__(self):
+        return f"QuizStoreMongo({self.collection_name})"
 
     def exists(self, quiz_name: str) -> bool:
         with db_connection() as db:
             quiz_db = self.collection_name(db)
-            result = quiz_db.count_documents({'name': quiz_name})
+            result = quiz_db.count_documents({"name": quiz_name})
             return bool(result)
 
     def collection(self, db: pymongo.MongoClient) -> pymongo.collection:
@@ -27,15 +30,15 @@ class QuizStoreMongo:
             quizzes = self.collection(db)
             try:
                 result = quizzes.find_one_and_update(
-                    {"name": quiz.name},
-                    {'$set': asdict(quiz)},
-                    upsert=True
+                    {"name": quiz.name}, {"$set": asdict(quiz)}, upsert=True
                 )
                 return SaveQuizResult(
                     result.inserted_id,
                     success=True,
-                    message=(f"quiz [{quiz.name}] saved. "
-                             f"Acknowledge: {result.acknowledged}")
+                    message=(
+                        f"quiz [{quiz.name}] saved. "
+                        f"Acknowledge: {result.acknowledged}"
+                    ),
                 )
             except Exception as err:
                 return SaveQuizResult("", False, message=str(err))
@@ -43,7 +46,7 @@ class QuizStoreMongo:
     def get_quiz(self, name: str) -> Optional[Quiz]:
         with db_connection() as db:
             quizzes = self.collection(db)
-            found = quizzes.find_one({'name': name})
+            found = quizzes.find_one({"name": name})
             if found:
                 return Quiz.from_json(found)
 
@@ -51,18 +54,14 @@ class QuizStoreMongo:
         with db_connection() as db:
             quizzes: pymongo.collection = self.collection(db)
             result = []
-            desired_fields = {
-                'name': 1,
-                'title': 1,
-                '_id': 1,
-                'image_url': 1
-            }
+            desired_fields = {"name": 1, "title": 1, "_id": 1, "image_url": 1}
             for item in quizzes.find({}, desired_fields):
                 summary = QuizSummary(
-                    name=item['name'],
-                    title=item['title'],
+                    name=item["name"],
+                    title=item["title"],
                     id=item["_id"],
-                    image_url=item.get('image_url', './favicon.ico'))
+                    image_url=item.get("image_url", "./favicon.ico"),
+                )
                 result.append(summary)
             return result
 

@@ -22,15 +22,17 @@ def take_screenshot(browser, screenshot_name):
     assert_that(saved, equal_to(True))
 
 
-def launch_quizzology(port) -> Popen[str]:
+def launch_quizzology(port: int, user_path: str = None) -> Popen[str]:
     """
     launch the quizzology application
-    :param port:
+    :param port: port number to serve with quizzology server
+    :param user_path: path to dir containing users json file (or None)
     """
     python = "./venv/bin/python" if os.path.isdir("./venv") else "python"
     subprocess_environ = {
         **os.environ,
         "QUIZ_PORT": str(port),
+        "QUIZ_USER_PATH": user_path,
         "QUIZ_LOG_PATH": "./logs/ui_testing.log",
     }
     return Popen(
