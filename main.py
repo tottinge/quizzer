@@ -28,12 +28,12 @@ from security.authn import make_bearer_token, authenticate
 from security.authz import require_roles, get_current_user, build_login_url
 from shared.quizzology import Quizzology
 
+if (path := os.environ.get("QUIZ_LOG_PATH")) is not None:
+    logging.basicConfig(filename=path, encoding="utf-8", level=logging.DEBUG)
+logger: Logger = getLogger(__name__)
 
 quizzology = Quizzology()
 study_use(quizzology)
-logger: Logger = getLogger(__name__)
-logger.setLevel(logging.INFO)
-
 
 HOME_PAGE = "/"
 

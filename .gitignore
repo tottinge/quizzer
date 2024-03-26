@@ -13,6 +13,6 @@ __pycache__
 /security/.DS_Store
 /sessions/.DS_Store
 /ui_tests/.DS_Store
-/webdrivers/.DS_Store
 .DS_Store
-/webdrivers
+webdrivers
+/webdrivers/*

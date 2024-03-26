@@ -28,12 +28,16 @@ def launch_quizzology(port) -> Popen[str]:
     :param port:
     """
     python = "./venv/bin/python" if os.path.isdir("./venv") else "python"
+    subprocess_environ = {
+        **os.environ,
+        "QUIZ_PORT": str(port),
+        "QUIZ_LOG_PATH": "./logs/ui_testing.log",
+    }
     return Popen(
         [python, "main.py"],
-        env={**os.environ, "QUIZ_PORT": str(port)},
-        shell=False,
+        env=subprocess_environ,
         text=True,
-    )  # nosec
+    )
 
 
 size_desktop = "1920,1200"
