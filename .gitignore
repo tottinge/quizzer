@@ -15,4 +15,4 @@ __pycache__
 /ui_tests/.DS_Store
 .DS_Store
 webdrivers
-/webdrivers/*
+/webdrivers/darwin/123
