@@ -14,5 +14,4 @@ __pycache__
 /sessions/.DS_Store
 /ui_tests/.DS_Store
 .DS_Store
-webdrivers
-/webdrivers/darwin/123
+/webdrivers/**
