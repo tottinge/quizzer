@@ -20,6 +20,7 @@ We periodically have to update the [ChromeDriver](https://chromedriver.chromium.
 * QUIZ_SALT - Used in the password hashing.
 * QUIZ_LOG_PATH - Where to write the log file
 * QUIZZOLOGY_KEY
+* QUIZ_USER_PATH - where the user file is stored (for UserStoreFile)
 
 Mongo Database Configuration
 * QUIZ_MONGO_URL

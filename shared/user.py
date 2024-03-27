@@ -9,6 +9,9 @@ class User(NamedTuple):
     role: str
     id: Any = None
 
+    def __str__(self):
+        return f"User({self.user_name}, {self.role})"
+
     @classmethod
     def from_dict(cls, data: dict):
         return cls(**data)
@@ -16,5 +19,5 @@ class User(NamedTuple):
 
 def hash_password(password: str):
     salt = environ.get("QUIZ_SALT", "").encode()
-    digest = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 10000)
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, 10000)
     return digest.hex()
