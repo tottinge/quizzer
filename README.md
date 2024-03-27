@@ -27,6 +27,11 @@ Mongo Database Configuration
 * QUIZ_MONGO_USER
 * QUIZ_MONGO_PASSWORD
 
+* runtime.env - holds configuration for local runtime, used
+sometimes by run configurations.
+This can be used to setup various run configurations for mongo,
+file, temporary, etc.
+
 ## Notes
 
 Currently, Quizzology is a slow-coding target. We work on it a bit at a time, and constantly refer to the

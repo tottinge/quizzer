@@ -1,6 +1,7 @@
 {
   "name": "catsquiz",
   "title": "Cats Quiz",
+  "image_url": "/static/images/kitten.png",
   "questions": [
     {
       "text": "Which cat is sleeping in the window?",
