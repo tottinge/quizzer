@@ -9,9 +9,9 @@
 </head>
 <body>
 
-<section class="w3-container">
+<section id="Heading Section" class="w3-container">
     <script>
-        function quizImageChanged(e) {
+        function quizImageChanged() {
             const url = document.getElementById('quiz-image').value
             const picture = document.getElementById('quiz-image-show')
             picture.setAttribute('src', url)
@@ -39,7 +39,7 @@
 </section>
 
 
-<section class="w3-card w3-container">
+<section id="Question Component" class="w3-card w3-container">
     <h3>
         <input class="w3-panel w3-teal w3-card-4 question-asked"
                type="text"
@@ -64,27 +64,34 @@
                   style="width:100%;"></textarea>
     </div>
     <br>
-    <label for="decoy-list">Decoys</label>
-    <ul id="decoy-list">
-        <li><input type="text" value="First Decoy"></li>
-        <li><input type="text" value="another decoy"></li>
-        <li><input type="text" value="likely decoy"></li>
-        <li><input type="text" value="unlikely decoy"></li>
-    </ul>
 
-    <label for="other-resources">Other Resources</label>
-    <ul id="other-resources">
-        <li>
-            <p>
-                <label for="resource-url">URL</label>
-                <input id="resource-url" type="url" placeholder="url">
-            </p>
-            <p style="align-items: center;">
-                <label for="resource-text">Relevance</label>
-                <textarea id="resource-text" placeholder="why it's relevant"></textarea>
-            </p>
-        </li>
-    </ul>
+
+    <section id="decoys">
+        <label for="decoy-list">Decoys</label>
+        <ul id="decoy-list">
+            <li><input type="text" value="First Decoy"></li>
+            <li><input type="text" value="another decoy"></li>
+            <li><input type="text" value="likely decoy"></li>
+            <li><input type="text" value="unlikely decoy"></li>
+        </ul>
+    </section>
+
+    <section id="resources" class="w3-cyan">
+        <label for="other-resources">Other Resources</label>
+        <ul id="other-resources">
+            <li>
+                <p>
+                    <label for="resource-url">URL</label>
+                    <input id="resource-url" type="url" placeholder="url">
+                </p>
+                <p style="align-items: center;">
+                    <label for="resource-text">Relevance</label>
+                    <textarea id="resource-text" placeholder="why it's relevant"></textarea>
+                </p>
+            </li>
+        </ul>
+    </section>
+
 </section>
 </body>
 </html>
