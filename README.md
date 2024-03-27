@@ -2,7 +2,7 @@
 
 It runs.
 
-Monitoring (we need a unified dashboard or tool): 
+Monitoring (we need a unified dashboard or tool):
 * [Github](https://github.com/tottinge/quizzer/actions )
 * [Heroku](https://dashboard.heroku.com/apps/quizzology/activity)
 
@@ -14,11 +14,24 @@ We periodically have to update the [ChromeDriver](https://chromedriver.chromium.
 * give permission to run the chrome driver
 * run the ui-tests
 
+## Configuration
+
+* QUIZ_HOST
+* QUIZ_SALT - Used in the password hashing.
+* QUIZ_LOG_PATH - Where to write the log file
+* QUIZZOLOGY_KEY
+
+Mongo Database Configuration
+* QUIZ_MONGO_URL
+* QUIZ_MONGO_USER
+* QUIZ_MONGO_PASSWORD
+
+## Notes
 
 Currently, Quizzology is a slow-coding target. We work on it a bit at a time, and constantly refer to the
 charter except when there is some shiny idea we want to chase.
 
-We started pretty much architecture and design free. 
+We started pretty much architecture and design free.
 
 The purpose of this project is not so much to make a project, but to intentionally and carefully practice TDD,
 refactoring, evolutionary design, and minimalism.
@@ -29,7 +42,7 @@ Don't look at it as a finished product, but a starting point for doing fun stuff
 * We started using type hints to enable better IDE support.
 * We've added TinyDB and are transitioning to MongoDB in short order
 * We got interested in selenium and wrote selenium tests of some basic features.
-* We also got interested in BDD and wrote some Behave tests using the model object 
+* We also got interested in BDD and wrote some Behave tests using the model object
 (at the time 'quizzology' class) so that Gherkin was an alternative UI.
 * We dug a bit into Bottle (web framework) lore and found webtest, and will likely move
   our web wiring tests into webtest because it's so much faster than standing up a web server,
@@ -42,11 +55,11 @@ In the works:
 * Make it look less awful
 
 
-Chrome drivers are available at https://chromedriver.chromium.org/downloads 
+Chrome drivers are available at https://chromedriver.chromium.org/downloads
 
 # Initial Setup for Local Mongodb
 
-## Install docker and launch it. 
+## Install docker and launch it.
 `brew install docker`
 
 You will need to launch this and give the Mac permission to run it.
@@ -64,9 +77,7 @@ Again, you'll need to launch it and give the Mac permission to run it.
 `docker run -p 27017:27017 --name quizzology-data -d -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=passme mongo
 `
 
-The image should be running in the background (you get a hash code for 
+The image should be running in the background (you get a hash code for
 it), and should appear in your docker desktop dashboard.
 
 ## Install the login table
-
-
