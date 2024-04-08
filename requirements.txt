@@ -9,6 +9,6 @@ selenium==4.16.0
 WebTest
 gunicorn
 PyJWT
-pymongo==4.6.1
+pymongo==4.6.3
 dnspython
 beaker
