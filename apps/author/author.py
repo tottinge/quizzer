@@ -1,10 +1,10 @@
 """
 Endpoint/app for author a quiz.
-We should define this RESTfully,
+We should define this REST-fully,
    quiz > list of quizzes
-   quiz/<quizname>  whole quiz
-   quiz/<quizname>/question list of quiz questions
-   quiz/<quizname>/question/<id> the quiz question
+   quiz/<quiz-name>  whole quiz
+   quiz/<quiz-name>/question list of quiz questions
+   quiz/<quiz-name>/question/<id> the quiz question
 Should support get, post, delete... which other verbs? Patch? Put?
 """
 import json

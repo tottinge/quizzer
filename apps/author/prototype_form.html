@@ -19,20 +19,15 @@
     </script>
 
 
-    <br>
-    Hey, it's just below me!
-    <div id="title-editor-control">Poopoopoopoo</div>
-    Hey, it's just above me!
-    <br>
-
 
     <h1 style="float: left;">
-        <input
+        Title: <input
                 id="title"
                 type="text"
                 style="font-size: xxx-large; outline: none; border: none; width: 100%;"
                 placeholder="Quiz Title"
         >
+
     </h1>
     <img id="quiz-image-show"
          alt="quiz."
@@ -103,6 +98,10 @@
 
 </section>
 
+    <br>
+    <div id="title-editor-control"></div>
+    <br>
+
 
 <script type="module">
     import {h, render} from 'https://esm.sh/preact';
@@ -110,18 +109,11 @@
 
     const html = htm.bind(h);
 
-    function title_editor(props) {
-        return html`
-                <section>
-                    <input type="text" placeholder="title">
-                    <img src="">
-                    <input type="image">
-            < /section>`
+    function TitleEditor(props) {
+        return "<p>what the heck</p>";
     }
 
-    render(html`
-        <${title_editor} title="junk">`, document.getElementById('title-editor-control')
-    )
+    render(html`<h1>ME</h1>`, document.getElementById('title-editor-control'));
 </script>
 
 </body>
