@@ -3,10 +3,12 @@
 It runs.
 
 Monitoring (we need a unified dashboard or tool):
+
 * [Github](https://github.com/tottinge/quizzer/actions )
 * [Heroku](https://dashboard.heroku.com/apps/quizzology/activity)
 
 We periodically have to update the [ChromeDriver](https://chromedriver.chromium.org/downloads).
+
 * Download the chrome driver to the webdrivers/_os_/ directory.
 * Delete the old `chromedriver` file
 * unzip the new chromedriver zip file
@@ -16,21 +18,22 @@ We periodically have to update the [ChromeDriver](https://chromedriver.chromium.
 
 ## Configuration
 
-* QUIZ_HOST
-* QUIZ_SALT - Used in the password hashing.
-* QUIZ_LOG_PATH - Where to write the log file
-* QUIZZOLOGY_KEY
-* QUIZ_USER_PATH - where the user file is stored (for UserStoreFile)
+	QUIZ_HOST
+	QUIZ_SALT - Used in the password hashing.
+	QUIZ_LOG_PATH - Where to write the log file
+	QUIZZOLOGY_KEY
+	QUIZ_USER_PATH - where the user file is stored (for UserStoreFile)
 
 Mongo Database Configuration
-* QUIZ_MONGO_URL
-* QUIZ_MONGO_USER
-* QUIZ_MONGO_PASSWORD
 
-* runtime.env - holds configuration for local runtime, used
-sometimes by run configurations.
-This can be used to setup various run configurations for mongo,
-file, temporary, etc.
+	QUIZ_MONGO_URL
+	QUIZ_MONGO_USER
+	QUIZ_MONGO_PASSWORD
+
+	runtime.env
+	 - holds configuration for local runtime, used sometimes by run configurations.
+	 - This can be used to setup various run configurations for mongo, file,
+	 - temporary, etc.
 
 ## Notes
 
@@ -43,6 +46,7 @@ The purpose of this project is not so much to make a project, but to intentional
 refactoring, evolutionary design, and minimalism.
 
 Don't look at it as a finished product, but a starting point for doing fun stuff.
+
 * We've added W3.CSS and some HTML5, probably more than we originally intended.
 * We made a heroku app out of this, with GitHub actions for CI
 * We started using type hints to enable better IDE support.
