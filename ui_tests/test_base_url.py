@@ -1,4 +1,5 @@
 import tempfile
+import chromedriver_autoinstaller
 from subprocess import Popen
 from unittest import TestCase
 
@@ -18,6 +19,7 @@ from ui_tests.helpers import (
 
 # TODO: Create a userStoreFile in a temp directory for the quizzology instance
 
+chromedriver_autoinstaller.install()
 
 class BaseUrlTest(TestCase):
     browser: WebDriver
