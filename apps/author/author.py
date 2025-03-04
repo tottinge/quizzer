@@ -32,6 +32,8 @@ def cover_page():
 @view("quiz_authoring_form", template_lookup=LOCAL_PATHS)
 def edit_existing(quiz_name: str):
     quiz = get_author_controller().get_quiz(quiz_name)
+    if quiz is None:
+        bottle.abort(404, f"Quiz {quiz_name} not found")
     return {
         "title": "Edit Existing Quiz",
         "quiz": quiz,
