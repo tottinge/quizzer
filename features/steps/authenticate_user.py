@@ -1,6 +1,5 @@
 from tempfile import TemporaryDirectory
-from typing import Protocol, Union, Optional, Dict, Callable
-from unittest.mock import Mock
+from typing import Protocol, Union, Optional, Dict, Callable, Any
 from unittest.mock import patch
 from urllib.parse import urlparse, parse_qs
 
@@ -16,14 +15,19 @@ from shared.user_store import UserStore
 from shared.user_store_file import UserStoreFile
 
 
+class PatchResult(Protocol):
+    start: Callable[[], Any]
+    stop: Callable[[], Any]
+
+
 class CombinedContext(Protocol):
     temporary_directory: Optional[TemporaryDirectory]
     user_db: Optional[UserStore]
     routes: Optional[Dict[str, Callable[[], str]]]
     visit_result: Optional[str]
     authenticated_user: Optional[User]
-    get_token_mock: Mock
-    get_request_path_mock: Mock
+    get_token_mock: PatchResult
+    get_request_path_mock: PatchResult
 
 
 OurContext = Union[CombinedContext, Context]
