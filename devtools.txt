@@ -9,3 +9,4 @@ black
 ruff
 chromedriver-autoinstaller
 playwright
+allure-behave

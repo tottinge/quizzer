@@ -1,14 +1,1 @@
-{
-  "name": "bdd",
-  "title": "Behavior Driven Development",
-  "questions": [
-    {"text": "What does BDD stand for?",
-      "answer": "Behavior Driven Development",
-      "decoys": ["Business Driven Development", "Baking Daily Donuts"],
-      "resources": [
-        {"text": "Cucumber",
-          "url": "https://cucumber.io/"}],
-      "confirmation": "BDD is....",
-      "question_id": "3f4e3cf9-8359-400d-827b-3fb22c586a82"}
-  ],
-  "image_url": "/static/images/bdd.png"}
+{"name": "bdd", "title": "Behavior Driven Development", "questions": [{"text": "What does BDD stand for?", "answer": "Behavior Driven Development", "decoys": ["Business Driven Development", "Baking Daily Donuts"], "resources": [{"text": "Cucumber", "url": "https://cucumber.io/"}], "confirmation": "BDD is....", "question_id": "3f4e3cf9-8359-400d-827b-3fb22c586a82"}], "image_url": "/static/images/bdd.png"}
