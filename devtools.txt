@@ -8,3 +8,4 @@ pre-commit
 black
 ruff
 chromedriver-autoinstaller
+playwright

@@ -21,7 +21,7 @@
         {{title}}
     </h1>
     <a class="w3-display-right w3-button w3-blue-gray" href="/login">
-        <span id="user_name" >default text</span> (<span id="user_role">default role</span>)
+        <span id="nav-user-name" >default text</span> (<span id="nav-user-role">default role</span>)
     </a>
 </header>
 
