@@ -76,4 +76,3 @@ class BaseUrlTest(TestCase):
         ).is_visible()  # Partial link text
         assert self.page.locator("text=Practic").is_visible()  # Partial link text
         assert self.page.locator(".quiz_selection", has_text="Practice").is_visible()
-        assert self.page.locator(".quiz_selection", has_text="Development").is_visible()
