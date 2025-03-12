@@ -1,1 +1,332 @@
-{"name": "bdd", "title": "Behavior Driven Development", "questions": [{"text": "What does BDD stand for?", "answer": "Behavior Driven Development", "decoys": ["Business Driven Development", "Baking Daily Donuts"], "resources": [{"text": "Cucumber", "url": "https://cucumber.io/"}], "confirmation": "BDD is....", "question_id": "3f4e3cf9-8359-400d-827b-3fb22c586a82"}], "image_url": "/static/images/bdd.png"}
+{
+  "name": "bdd",
+  "title": "Behavior Driven Development",
+  "questions": [
+    {
+      "text": "What does BDD stand for?",
+      "answer": "Behavior Driven Development",
+      "decoys": [
+        "Business Driven Development",
+        "Backlog Driven Development",
+        "Behavior Driven Design",
+        "Bug-Driven Development",
+        "Business Driven Design"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "BDD stands for 'Behavior-Driven Development', which is a software development methodology that focuses on defining and documenting the expected behavior of an application using plain language, enabling better collaboration between developers, testers, and business stakeholders to ensure everyone understands the desired functionality of the software by using scenarios written in a \"Given-When-Then\" format; essentially, it prioritizes clear communication about how the system should behave from the user's perspective. ",
+      "question_id": "8e3d077c-30f7-4aba-a0d3-865aca23d90e"
+    },
+    {
+      "text": "BDD is...",
+      "answer": "All of the Above",
+      "decoys": [
+        "Somewhat similar to Test Driven Development",
+        "Complementary to Test Driven Development",
+        "Driven by user needs expressed in natural language",
+        "None of the above"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "cb666776-174b-44c5-a866-af7eaa95be5e"
+    },
+    {
+      "text": "Question 3?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "a2319906-81b8-4c8a-94b5-acbc0c4ae07e"
+    },
+    {
+      "text": "Question 4?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "c5263ee7-568f-4917-8948-5f2bf4b681e1"
+    },
+    {
+      "text": "Question 5?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "6e78b9e7-b40e-4ffd-ae15-09758b249794"
+    },
+    {
+      "text": "Question 6?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "c293db65-51a2-4983-9406-6c09484349f3"
+    },
+    {
+      "text": "Question 7?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "e702ebdb-8dc0-4aaa-98f0-2a068c740e0c"
+    },
+    {
+      "text": "Question 8?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "a03efc8a-4c99-43aa-8d31-9d162181f09f"
+    },
+    {
+      "text": "Question 9?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "7fa75443-fa3b-41cd-a069-6a9b306a3a8e"
+    },
+    {
+      "text": "Question 10?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "f250fc01-5ca6-4b24-8b11-f1a1787f8352"
+    },
+    {
+      "text": "Question 11?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "84b0d350-43b1-41ae-a393-5b5b13882f07"
+    },
+    {
+      "text": "Question 12?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "dc2369b2-7be2-47e9-a3a4-2b3cec54c241"
+    },
+    {
+      "text": "Question 13?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "4c0daefb-dde2-4a30-8686-9d03c2adea33"
+    },
+    {
+      "text": "Question 14?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "fe878d1e-4093-4f08-806e-3be683394bed"
+    },
+    {
+      "text": "Question 15?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "67ea81b6-84cc-4645-8087-3d94c954a730"
+    },
+    {
+      "text": "Question 16?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "2c4ee7df-f0f4-4fd6-8897-f7d7c8dda108"
+    },
+    {
+      "text": "Question 17?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "06f1bd0c-3055-4867-a104-567301f856bc"
+    },
+    {
+      "text": "Question 18?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "24816be2-69ef-4e28-8360-0c10d6bd766f"
+    },
+    {
+      "text": "Question 19?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "07306c8f-6c8d-496d-aa2a-68a7e6138c14"
+    },
+    {
+      "text": "Question 20?",
+      "answer": "Answer",
+      "decoys": [
+        "Decoy 1",
+        "Decoy 2"
+      ],
+      "resources": [
+        {
+          "text": "Cucumber",
+          "url": "https://cucumber.io/"
+        }
+      ],
+      "confirmation": "Explanation of the correct answer",
+      "question_id": "57e208a5-027d-4d27-8c96-366a84b3865d"
+    }
+  ],
+  "image_url": "/static/images/bdd.png"
+}
