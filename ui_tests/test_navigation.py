@@ -21,7 +21,7 @@ from ui_tests.helpers import (
     launch_selenium_chrome,
     get_likely_port,
     local_ip,
-    login,
+    login, take_screenshot,
 )
 
 CATS_QUIZ = "/study/catsquiz"
@@ -51,10 +51,14 @@ class TestNavigation(TestCase):
         cls.app.terminate()
 
     def test_select_a_quiz(self):
-        self.get_page("/")
-        self.click_link("Cats Quiz")
-        self.wait_for_page_titled("Cats")
-        assert_that(self.browser.title, equal_to("Cats Quiz"))
+        try:
+            self.get_page("/")
+            self.click_link("Cats Quiz")
+            self.wait_for_page_titled("Cats")
+            assert_that(self.browser.title, equal_to("Cats Quiz"))
+        except:
+            take_screenshot(self.browser, "test_select_a_quiz.png")
+            raise
 
     def test_answer_a_question_correctly_and_get_confirmation(self):
         self.reset_session()
