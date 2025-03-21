@@ -4,6 +4,7 @@ import sys
 from socket import gethostbyname, gethostname, socket
 from subprocess import Popen
 
+import chromedriver_autoinstaller
 from hamcrest import assert_that, equal_to
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -28,6 +29,7 @@ def launch_quizzology(port: int, user_path: str = None) -> Popen[str]:
     :param port: port number to serve with quizzology server
     :param user_path: path to dir containing users json file (or None)
     """
+    chromedriver_autoinstaller.install()
     python = "./venv/bin/python" if os.path.isdir("./venv") else "python"
     subprocess_environ = {
         **os.environ,
