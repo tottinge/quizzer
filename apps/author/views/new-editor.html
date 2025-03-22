@@ -1,0 +1,27 @@
+  <!DOCTYPE html>
+    <html>
+    <head>
+        <title>React in Browser</title>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+        <!-- load our controls here -->
+
+        <!-- Call the top-level control from our react thing -->
+        <script type="text/babel">
+          // Your React code here
+          const root = ReactDOM.createRoot(document.getElementById('root'));
+
+          function App() {
+            return <h1>Hello, React!</h1>;
+          }
+
+          root.render(<App />);
+        </script>
+    </body>
+    </html>

@@ -38,8 +38,8 @@
             }
         }
 
-        document.getElementById('user_name').innerText = get_cookie('qz-user-name');
-        document.getElementById('user_role').innerText = get_cookie('qz-user-role');
+        document.getElementById('nav-user-name').innerText = get_cookie('qz-user-name');
+        document.getElementById('nav-user-role').innerText = get_cookie('qz-user-role');
     </script>
 
 {{!base}}

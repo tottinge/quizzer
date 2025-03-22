@@ -11,7 +11,7 @@ import json
 from dataclasses import asdict
 
 import bottle
-from bottle import view
+from bottle import view, template
 
 from apps.author.author_controller import AuthorController
 from quizzes.quiz import Quiz
@@ -26,6 +26,12 @@ LOCAL_PATHS = ["./apps/author/views", *bottle.TEMPLATE_PATH]
 @view("quiz_author_home", template_lookup=LOCAL_PATHS)
 def cover_page():
     return {"title": "Welcome Quizzology Author"}
+
+
+@app.route("/new-editor", template_lookup=LOCAL_PATHS)
+@view("new-editor")
+def new_editor():
+    return {"title": "New Editor"}
 
 
 @app.get("/edit/<quiz_name>")
