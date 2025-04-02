@@ -10,3 +10,4 @@ ruff
 chromedriver-autoinstaller
 playwright
 allure-behave
+ruff

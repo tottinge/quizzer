@@ -11,7 +11,7 @@ import json
 from dataclasses import asdict
 
 import bottle
-from bottle import view, template
+from bottle import view
 
 from apps.author.author_controller import AuthorController
 from quizzes.quiz import Quiz

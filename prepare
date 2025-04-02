@@ -7,7 +7,7 @@ git pull --rebase &&
   pytest --ignore=ui_tests &&
   behave -t ~@wip -t ~@future &&
   pytest ui_tests &&
-#  flake8 --exclude="venv" --ignore=E501 --count . &&
+  ruff check &&
   bandit -lll --exclude ./venv -r . &&
   cat <<-'HERE'
     ___ _   _  ___ ___ ___ ___ ___
